@@ -1,0 +1,19 @@
+# Her site için ayrı bir giriş ekle.
+# adapter: adapters/ klasöründeki modül adı (örn. example_api -> adapters/example_api.py)
+# threshold_try: bu tutarın ALTINDAKİ kazançlar bildirilmez
+# poll_interval_sec: siteyi kaç saniyede bir kontrol edeceği
+
+sites:
+  - name: "Site A"
+    adapter: example_api
+    url: "https://example.com/api/last-winners"
+    threshold_try: 2000
+    poll_interval_sec: 15
+
+  - name: "Site B"
+    adapter: example_html
+    url: "https://example.com/casino/winners"
+    threshold_try: 5000
+    poll_interval_sec: 20
+
+state_file: "seen_wins.json"

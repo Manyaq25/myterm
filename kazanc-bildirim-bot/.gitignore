@@ -1,0 +1,6 @@
+.env
+config.yaml
+seen_wins.json
+__pycache__/
+*.pyc
+.venv/
