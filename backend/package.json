@@ -1,0 +1,12 @@
+{
+  "name": "benim-yerime-takip-et-backend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.117.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "~5.9.2"
+  }
+}

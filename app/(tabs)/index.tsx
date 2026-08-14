@@ -58,6 +58,9 @@ export default function HomeScreen() {
         }
         renderItem={({ item }) => <FollowUpCard item={item} />}
       />
+      <Pressable style={styles.aiFab} onPress={() => router.push('/takip/ai-cikar')}>
+        <Text style={styles.aiFabText}>AI</Text>
+      </Pressable>
       <Pressable style={styles.fab} onPress={() => router.push('/takip/yeni')}>
         <Text style={styles.fabText}>+</Text>
       </Pressable>
@@ -86,4 +89,21 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
   },
   fabText: { color: '#fff', fontSize: 28, lineHeight: 30 },
+  aiFab: {
+    position: 'absolute',
+    right: 20,
+    bottom: 92,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#7c3aed',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  aiFabText: { color: '#fff', fontSize: 15, fontWeight: '800' },
 });
