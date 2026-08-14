@@ -1,0 +1,60 @@
+name: Deploy Backend (Vercel)
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - ".github/workflows/deploy-backend.yml"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Link Vercel project
+        run: vercel link --yes --token "${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Pull Vercel environment
+        run: vercel pull --yes --environment=production --token "${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Set Vercel environment variables
+        run: |
+          set_env() {
+            name="$1"
+            value="$2"
+            if [ -n "$value" ]; then
+              vercel env rm "$name" production --yes --token "${{ secrets.VERCEL_TOKEN }}" 2>/dev/null || true
+              printf '%s' "$value" | vercel env add "$name" production --token "${{ secrets.VERCEL_TOKEN }}"
+            fi
+          }
+          set_env ANTHROPIC_API_KEY "${{ secrets.ANTHROPIC_API_KEY }}"
+          set_env APP_SHARED_SECRET "${{ secrets.APP_SHARED_SECRET }}"
+          set_env ANTHROPIC_MODEL "${{ vars.ANTHROPIC_MODEL }}"
+
+      - name: Build
+        run: vercel build --prod --token "${{ secrets.VERCEL_TOKEN }}"
+
+      - name: Deploy
+        id: deploy
+        run: |
+          url=$(vercel deploy --prebuilt --prod --token "${{ secrets.VERCEL_TOKEN }}")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Deployed to: $url"
+
+      - name: Print deployment URL in job summary
+        run: echo "Backend deployed to ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"

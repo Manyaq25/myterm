@@ -2,7 +2,7 @@ export type FollowUpType = 'promise_made' | 'promise_expected' | 'task' | 'waiti
 
 export type FollowUpStatus = 'open' | 'done' | 'snoozed' | 'cancelled';
 
-export type FollowUpSource = 'manual' | 'voice' | 'screenshot' | 'pdf';
+export type FollowUpSource = 'manual' | 'text' | 'voice' | 'screenshot' | 'pdf';
 
 export interface Person {
   id: string;
