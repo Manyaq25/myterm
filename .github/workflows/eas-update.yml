@@ -1,0 +1,59 @@
+name: EAS Update (Expo Go test link)
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: "Update message"
+        required: false
+        default: "Manual update"
+      branch:
+        description: "EAS update branch/channel"
+        required: false
+        default: "preview"
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Ensure EAS project is linked
+        run: |
+          if ! grep -q '"projectId"' app.json; then
+            eas init --non-interactive --force
+          fi
+
+      - name: Commit app.json if EAS project id was added
+        run: |
+          if ! git diff --quiet -- app.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add app.json
+            git commit -m "chore: link EAS project"
+            git push
+          fi
+
+      - name: Publish update
+        run: eas update --branch "${{ github.event.inputs.branch }}" --message "${{ github.event.inputs.message }}" --non-interactive
+
+      - name: Print preview link in job summary
+        run: |
+          echo "Update published. Open the run logs above for the Expo Go preview link (eas update output)." >> "$GITHUB_STEP_SUMMARY"
