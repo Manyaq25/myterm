@@ -46,8 +46,7 @@ jobs:
             # other, so removing unconditionally up front can race and leave
             # the add failing with "already exists" — retrying after a
             # failed add is more reliable than rm-then-add.
-            add_output=$(printf '%s' "$value" | vercel env add "$name" production --token "${{ secrets.VERCEL_TOKEN }}" 2>&1)
-            add_status=$?
+            add_output=$(printf '%s' "$value" | vercel env add "$name" production --token "${{ secrets.VERCEL_TOKEN }}" 2>&1) && add_status=0 || add_status=$?
             echo "$add_output"
             if [ $add_status -ne 0 ]; then
               if echo "$add_output" | grep -qi "already exists"; then
