@@ -37,9 +37,26 @@ jobs:
           set_env() {
             name="$1"
             value="$2"
-            if [ -n "$value" ]; then
-              vercel env rm "$name" production --yes --token "${{ secrets.VERCEL_TOKEN }}" 2>/dev/null || true
-              printf '%s' "$value" | vercel env add "$name" production --token "${{ secrets.VERCEL_TOKEN }}"
+            if [ -z "$value" ]; then
+              return 0
+            fi
+            # Add first (cheap path, no-op rm avoided). If it already exists,
+            # remove the stale value and retry once. `vercel env rm` and
+            # `env add` are not always immediately consistent with each
+            # other, so removing unconditionally up front can race and leave
+            # the add failing with "already exists" — retrying after a
+            # failed add is more reliable than rm-then-add.
+            add_output=$(printf '%s' "$value" | vercel env add "$name" production --token "${{ secrets.VERCEL_TOKEN }}" 2>&1)
+            add_status=$?
+            echo "$add_output"
+            if [ $add_status -ne 0 ]; then
+              if echo "$add_output" | grep -qi "already exists"; then
+                vercel env rm "$name" production --yes --token "${{ secrets.VERCEL_TOKEN }}"
+                printf '%s' "$value" | vercel env add "$name" production --token "${{ secrets.VERCEL_TOKEN }}"
+              else
+                echo "Failed to set $name" >&2
+                exit 1
+              fi
             fi
           }
           set_env ANTHROPIC_API_KEY "${{ secrets.ANTHROPIC_API_KEY }}"
