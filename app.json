@@ -11,6 +11,9 @@
     "runtimeVersion": {
       "policy": "sdkVersion"
     },
+    "updates": {
+      "url": "https://u.expo.dev/e9b0959d-b211-4b85-8b32-c0f4a2d929e2"
+    },
     "plugins": [
       "expo-router",
       "expo-sqlite",
@@ -34,6 +37,7 @@
       "bundleIdentifier": "com.manyaq25.benimyerimetakipet"
     },
     "android": {
+      "package": "com.manyaq25.benimyerimetakipet",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
