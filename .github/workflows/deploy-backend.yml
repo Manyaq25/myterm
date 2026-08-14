@@ -52,9 +52,29 @@ jobs:
       - name: Deploy
         id: deploy
         run: |
-          url=$(vercel deploy --prebuilt --prod --token "${{ secrets.VERCEL_TOKEN }}")
+          set -e
+          vercel deploy --prebuilt --prod --token "${{ secrets.VERCEL_TOKEN }}" 2>&1 | tee deploy_output.log
+          deployment_url=$(tail -n 20 deploy_output.log | grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' | tail -n 1)
+          # Prefer the stable "Aliased" production domain (persists across deploys)
+          # over the per-deployment URL (changes every deploy).
+          alias_url=$(grep -A1 'Aliased' deploy_output.log | grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' | tail -n 1)
+          url="${alias_url:-$deployment_url}"
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "Deployed to: $url"
+
+      - name: Smoke test /api/extract
+        run: |
+          set -e
+          status=$(curl -sS -o response.json -w "%{http_code}" --max-time 20 \
+            "${{ steps.deploy.outputs.url }}/api/extract" \
+            -H "Content-Type: application/json" \
+            -d '{"text":"Ahmete yarin teklifi gonderecegim"}')
+          echo "HTTP $status"
+          cat response.json
+          if [ "$status" != "200" ]; then
+            echo "Smoke test failed"
+            exit 1
+          fi
 
       - name: Print deployment URL in job summary
         run: echo "Backend deployed to ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
