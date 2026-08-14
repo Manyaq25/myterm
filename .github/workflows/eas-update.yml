@@ -42,6 +42,11 @@ jobs:
           fi
 
       - name: Publish update
+        # BACKEND_URL is the stable Vercel production alias for backend/ (see
+        # deploy-backend.yml's "Deploy" step output). Update this if the
+        # backend project is ever renamed or redeployed under a new alias.
+        env:
+          EXPO_PUBLIC_BACKEND_URL: "https://backend-five-dun-77.vercel.app"
         run: eas update --branch "${{ github.event.inputs.branch }}" --message "${{ github.event.inputs.message }}" --non-interactive
 
       - name: Commit app.json if EAS made changes (projectId / updates.url)
