@@ -1,11 +1,12 @@
 # Backend — AI extraction
 
-Tek endpoint'lik Vercel serverless function: `POST /api/extract`.
+Vercel serverless function'ları: `POST /api/extract` (metin) ve
+`POST /api/transcribe` (sesli not).
 
-Anthropic API anahtarı yalnızca burada, sunucu tarafında tutulur — mobil
+API anahtarları yalnızca burada, sunucu tarafında tutulur — mobil
 uygulamaya asla gömülmez.
 
-## İstek
+## POST /api/extract
 
 ```
 POST /api/extract
@@ -40,9 +41,26 @@ X-App-Secret: <APP_SHARED_SECRET ayarlıysa>
 }
 ```
 
+## POST /api/transcribe
+
+Ses dosyasını (m4a) OpenAI Whisper ile Türkçe metne çevirir, ardından aynı
+extraction pipeline'ını çalıştırır.
+
+```
+POST /api/transcribe
+Content-Type: audio/m4a
+X-App-Secret: <APP_SHARED_SECRET ayarlıysa>
+
+<ham ses baytları>
+```
+
+Yanıt: `{ "transcript": "...", "candidates": [...] }` (candidates şeması
+`/api/extract` ile aynı).
+
 ## Ortam değişkenleri
 
-`.env.example` dosyasına bak. `ANTHROPIC_API_KEY` zorunlu.
+`.env.example` dosyasına bak. `ANTHROPIC_API_KEY` zorunlu. `OPENAI_API_KEY`
+yalnızca `/api/transcribe` için gerekli.
 
 ## Yerel test
 

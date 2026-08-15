@@ -30,6 +30,12 @@
         {
           "faceIDPermission": "Uygulama kilidini açmak için Face ID kullanılıyor."
         }
+      ],
+      [
+        "expo-audio",
+        {
+          "microphonePermission": "Sesli notlarını takip maddesine çevirmek için mikrofon erişimi gerekiyor."
+        }
       ]
     ],
     "ios": {

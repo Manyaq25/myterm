@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.117.1"
+    "@anthropic-ai/sdk": "^0.117.1",
+    "openai": "^7.4.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

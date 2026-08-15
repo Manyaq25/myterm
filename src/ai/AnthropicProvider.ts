@@ -1,4 +1,5 @@
-import type { AIProvider, ExtractedFollowUp } from './types';
+import * as FileSystem from 'expo-file-system/legacy';
+import type { AIProvider, ExtractedFollowUp, TranscriptionResult } from './types';
 
 export class AnthropicProvider implements AIProvider {
   constructor(private readonly backendUrl: string, private readonly appSecret?: string) {}
@@ -20,5 +21,23 @@ export class AnthropicProvider implements AIProvider {
 
     const body = (await response.json()) as { candidates: ExtractedFollowUp[] };
     return body.candidates;
+  }
+
+  async transcribeAndExtract(audioFileUri: string): Promise<TranscriptionResult> {
+    const result = await FileSystem.uploadAsync(`${this.backendUrl}/api/transcribe`, audioFileUri, {
+      httpMethod: 'POST',
+      uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
+      headers: {
+        'Content-Type': 'audio/m4a',
+        ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
+      },
+    });
+
+    if (result.status < 200 || result.status >= 300) {
+      const errorBody = JSON.parse(result.body || '{}');
+      throw new Error(`Transcription failed (${result.status}): ${errorBody.error ?? 'unknown'}`);
+    }
+
+    return JSON.parse(result.body) as TranscriptionResult;
   }
 }

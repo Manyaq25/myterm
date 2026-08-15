@@ -65,8 +65,10 @@ jobs:
             exit 1
           }
           set_env ANTHROPIC_API_KEY "${{ secrets.ANTHROPIC_API_KEY }}"
+          set_env OPENAI_API_KEY "${{ secrets.OPENAI_API_KEY }}"
           set_env APP_SHARED_SECRET "${{ secrets.APP_SHARED_SECRET }}"
           set_env ANTHROPIC_MODEL "${{ vars.ANTHROPIC_MODEL }}"
+          set_env OPENAI_TRANSCRIBE_MODEL "${{ vars.OPENAI_TRANSCRIBE_MODEL }}"
 
       - name: Build
         run: vercel build --prod --token "${{ secrets.VERCEL_TOKEN }}"
