@@ -9,6 +9,12 @@ export interface ExtractedFollowUp {
   note: string | null;
 }
 
+export interface TranscriptionResult {
+  transcript: string;
+  candidates: ExtractedFollowUp[];
+}
+
 export interface AIProvider {
   extractFollowUpsFromText(text: string): Promise<ExtractedFollowUp[]>;
+  transcribeAndExtract(audioFileUri: string): Promise<TranscriptionResult>;
 }

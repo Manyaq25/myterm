@@ -1,4 +1,4 @@
-import type { AIProvider, ExtractedFollowUp } from './types';
+import type { AIProvider, ExtractedFollowUp, TranscriptionResult } from './types';
 
 /**
  * Backend olmadan UI akışını test etmek için. Gerçek bir dil anlayışı yapmaz —
@@ -19,5 +19,10 @@ export class MockAIProvider implements AIProvider {
       confidence: 0.5,
       note: 'Mock AI (test modu) — gerçek çıkarım için backend gerekli.',
     }));
+  }
+
+  async transcribeAndExtract(_audioFileUri: string): Promise<TranscriptionResult> {
+    const transcript = 'Mock AI (test modu) — gerçek deşifre için backend gerekli.';
+    return { transcript, candidates: await this.extractFollowUpsFromText(transcript) };
   }
 }
