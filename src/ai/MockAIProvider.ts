@@ -1,4 +1,4 @@
-import type { AIProvider, ExtractedFollowUp, TranscriptionResult } from './types';
+import type { AIProvider, ExtractedFollowUp, ImageMediaType, TranscriptionResult } from './types';
 
 /**
  * Backend olmadan UI akışını test etmek için. Gerçek bir dil anlayışı yapmaz —
@@ -24,5 +24,18 @@ export class MockAIProvider implements AIProvider {
   async transcribeAndExtract(_audioFileUri: string): Promise<TranscriptionResult> {
     const transcript = 'Mock AI (test modu) — gerçek deşifre için backend gerekli.';
     return { transcript, candidates: await this.extractFollowUpsFromText(transcript) };
+  }
+
+  async extractFollowUpsFromImage(_base64Image: string, _mediaType: ImageMediaType): Promise<ExtractedFollowUp[]> {
+    return [
+      {
+        title: 'Mock AI (test modu) — gerçek görsel analizi için backend gerekli.',
+        type: 'task',
+        personName: null,
+        dueAtISO: null,
+        confidence: 0.5,
+        note: null,
+      },
+    ];
   }
 }
