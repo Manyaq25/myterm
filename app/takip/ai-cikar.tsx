@@ -28,6 +28,7 @@ import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, type FollowUpSource } from '../../src/types';
 import { aiProvider, isUsingMockAI, type ExtractedFollowUp, type ImageMediaType } from '../../src/ai';
 import { scheduleFollowUpReminder } from '../../src/services/notifications';
+import { applyReminderLead } from '../../src/utils/date';
 
 interface Candidate extends ExtractedFollowUp {
   selected: boolean;
@@ -228,25 +229,32 @@ export default function AiCikarScreen() {
       const people = await listPeople(db);
       for (const candidate of selected) {
         let personId: string | null = null;
+        let reminderLeadMinutes = 0;
         const name = candidate.personName?.trim();
         if (name) {
           const existing = people.find((p) => p.name.toLowerCase() === name.toLowerCase());
-          personId = existing ? existing.id : (await createPerson(db, name)).id;
+          if (existing) {
+            personId = existing.id;
+            reminderLeadMinutes = existing.reminderLeadMinutes;
+          } else {
+            personId = (await createPerson(db, name)).id;
+          }
         }
 
         const dueAt = candidate.dueAtISO ? new Date(candidate.dueAtISO).getTime() : null;
+        const remindAt = dueAt ? applyReminderLead(dueAt, reminderLeadMinutes) : null;
         const followUp = await createFollowUp(db, {
           title: candidate.title,
           type: candidate.type,
           personId,
           dueAt,
-          remindAt: dueAt,
+          remindAt,
           source: candidateSource,
           confidence: candidate.confidence,
         });
 
-        if (dueAt && dueAt > Date.now()) {
-          await scheduleFollowUpReminder(followUp.id, candidate.title, 'Zamanı geldi', new Date(dueAt));
+        if (remindAt && remindAt > Date.now()) {
+          await scheduleFollowUpReminder(followUp.id, candidate.title, 'Zamanı geldi', new Date(remindAt));
         }
       }
       router.back();

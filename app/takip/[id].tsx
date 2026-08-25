@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { Link, useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { deleteFollowUp, getFollowUp, updateFollowUpStatus } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, type FollowUpWithPerson } from '../../src/types';
@@ -60,7 +60,13 @@ export default function TakipDetayScreen() {
     <ScrollView contentContainerStyle={styles.content}>
       <Text style={styles.type}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
       <Text style={styles.title}>{item.title}</Text>
-      {item.personName && <Text style={styles.meta}>👤 {item.personName}</Text>}
+      {item.personName && item.personId && (
+        <Link href={`/kisi/${item.personId}`} asChild>
+          <Pressable>
+            <Text style={[styles.meta, styles.personLink]}>👤 {item.personName}</Text>
+          </Pressable>
+        </Link>
+      )}
       {item.dueAt !== null && <Text style={styles.meta}>⏰ {formatDueDate(item.dueAt)}</Text>}
       {item.detail && <Text style={styles.detail}>{item.detail}</Text>}
 
@@ -83,6 +89,7 @@ const styles = StyleSheet.create({
   type: { fontSize: 13, fontWeight: '700', color: '#2563eb', marginBottom: 6 },
   title: { fontSize: 22, fontWeight: '700', color: '#111827', marginBottom: 14 },
   meta: { fontSize: 14, color: '#4b5563', marginBottom: 6 },
+  personLink: { color: '#2563eb', fontWeight: '600' },
   detail: { fontSize: 15, color: '#374151', marginTop: 12, lineHeight: 22 },
   doneButton: {
     marginTop: 28,

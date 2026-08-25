@@ -120,8 +120,20 @@ export async function listPeople(db: SQLiteDatabase): Promise<Person[]> {
   return db.getAllAsync<Person>(`SELECT * FROM people ORDER BY name ASC`);
 }
 
+export async function getPerson(db: SQLiteDatabase, id: string): Promise<Person | null> {
+  const row = await db.getFirstAsync<Person>(`SELECT * FROM people WHERE id = ?`, [id]);
+  return row ?? null;
+}
+
 export async function createPerson(db: SQLiteDatabase, name: string, note?: string | null): Promise<Person> {
-  const person: Person = { id: newId(), name, note: note ?? null, createdAt: Date.now() };
+  const person: Person = {
+    id: newId(),
+    name,
+    note: note ?? null,
+    reminderLeadMinutes: 0,
+    lateSuggestionDismissedAt: null,
+    createdAt: Date.now(),
+  };
   await db.runAsync(`INSERT INTO people (id, name, note, createdAt) VALUES (?, ?, ?, ?)`, [
     person.id,
     person.name,
@@ -129,4 +141,22 @@ export async function createPerson(db: SQLiteDatabase, name: string, note?: stri
     person.createdAt,
   ]);
   return person;
+}
+
+export async function listFollowUpsByPerson(db: SQLiteDatabase, personId: string): Promise<FollowUp[]> {
+  return db.getAllAsync<FollowUp>(`SELECT * FROM follow_ups WHERE personId = ? ORDER BY dueAt ASC, createdAt DESC`, [
+    personId,
+  ]);
+}
+
+export async function setPersonReminderLead(db: SQLiteDatabase, personId: string, minutes: number): Promise<void> {
+  await db.runAsync(`UPDATE people SET reminderLeadMinutes = ?, lateSuggestionDismissedAt = ? WHERE id = ?`, [
+    minutes,
+    Date.now(),
+    personId,
+  ]);
+}
+
+export async function dismissLateSuggestion(db: SQLiteDatabase, personId: string): Promise<void> {
+  await db.runAsync(`UPDATE people SET lateSuggestionDismissedAt = ? WHERE id = ?`, [Date.now(), personId]);
 }

@@ -1,4 +1,4 @@
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 export const CREATE_TABLES_SQL = `
 PRAGMA journal_mode = WAL;
@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS people (
   id TEXT PRIMARY KEY NOT NULL,
   name TEXT NOT NULL,
   note TEXT,
+  reminderLeadMinutes INTEGER NOT NULL DEFAULT 0,
+  lateSuggestionDismissedAt INTEGER,
   createdAt INTEGER NOT NULL
 );
 

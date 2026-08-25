@@ -8,16 +8,26 @@ import type { FollowUpWithPerson } from '../../src/types';
 import { FollowUpCard } from '../../src/components/FollowUpCard';
 import { EmptyState } from '../../src/components/EmptyState';
 import { isOverdue } from '../../src/utils/date';
+import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
+import {
+  acceptLateSuggestion,
+  detectLatePersonSuggestions,
+  dismissLateSuggestion,
+  type LatePersonSuggestion,
+} from '../../src/services/proactiveSuggestions';
 
 export default function HomeScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
   const [items, setItems] = useState<FollowUpWithPerson[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [suggestion, setSuggestion] = useState<LatePersonSuggestion | null>(null);
 
   const load = useCallback(async () => {
     const rows = await listFollowUps(db, ['open', 'snoozed']);
     setItems(rows);
+    const suggestions = await detectLatePersonSuggestions(db);
+    setSuggestion(suggestions[0] ?? null);
   }, [db]);
 
   useFocusEffect(
@@ -46,9 +56,22 @@ export default function HomeScreen() {
           />
         }
         ListHeaderComponent={
-          overdue.length > 0 ? (
-            <Text style={styles.sectionTitle}>Gecikenler ({overdue.length})</Text>
-          ) : null
+          <>
+            {suggestion && (
+              <LateSuggestionCard
+                suggestion={suggestion}
+                onAccept={async () => {
+                  await acceptLateSuggestion(db, suggestion.person.id);
+                  await load();
+                }}
+                onDismiss={async () => {
+                  await dismissLateSuggestion(db, suggestion.person.id);
+                  await load();
+                }}
+              />
+            )}
+            {overdue.length > 0 && <Text style={styles.sectionTitle}>Gecikenler ({overdue.length})</Text>}
+          </>
         }
         ListEmptyComponent={
           <EmptyState
