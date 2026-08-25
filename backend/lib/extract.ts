@@ -25,7 +25,7 @@ const EXTRACT_TOOL: Anthropic.Tool = {
               type: 'string',
               enum: FOLLOW_UP_TYPES as unknown as string[],
               description:
-                'promise_made: kullanıcının verdiği söz. promise_expected: kullanıcıdan beklenen. task: yapılacak iş. waiting_on: kullanıcının birinden beklediği şey.',
+                'promise_made: kullanıcının bir kişiye verdiği söz (özne kullanıcı, bir kişiye yönelik taahhüt). promise_expected: bir kişi tarafından kullanıcıdan beklenen. task: SADECE kullanıcının kendisinin yapacağı ve başka bir kişiye bağlı OLMAYAN eylem. waiting_on: eylemin öznesi kullanıcı değil de başka bir kişiyse (o kişi bir şey yapacak/getirecek/gönderecek/verecek/arayacaksa) HER ZAMAN bu — asla task değil.',
             },
             personName: {
               type: ['string', 'null'],
@@ -71,6 +71,8 @@ function buildSystemPrompt(nowISO: string, extraNote?: string): string {
     'Girdide birden fazla takip maddesi olabilir, hiç olmayabilir de. Sadece gerçekten eyleme geçirilebilir, somut maddeleri çıkar.',
     'Bileşik cümleleri böl: bir cümle birden fazla farklı fiil/taahhüt/beklenti içeriyorsa (ör. virgülle veya "ayrıca", "ondan da", "bir de" gibi bağlaçlarla bağlanmış), her birini AYRI bir madde olarak çıkar — tek bir maddede birleştirme. Her madde tek bir eylemi/beklentiyi anlatmalı.',
     'Örnek: "Ahmete yarın teklifi göndereceğim, ondan da geçen haftaki raporu bekliyorum." metni İKİ ayrı madde üretmeli: (1) "Ahmete teklifi gönder" — promise_made — Ahmet — yarın; (2) "Ahmetten geçen haftaki raporu al" — waiting_on — Ahmet — tarih yok.',
+    'Tür seçerken önce cümlenin ÖZNESİNE (eylemi kimin yapacağına) bak: eylemi yapacak olan kullanıcının KENDİSİ değil de başka bir kişiyse, bu her zaman "waiting_on" olmalı — "task" DEĞİL. "task" yalnızca kullanıcının kendisinin yapacağı ve hiçbir kişiye bağlı olmayan eylemler içindir (ör. "faturayı öde").',
+    'Örnek: "Ali gazete getirecek" → waiting_on (özne Ali; kullanıcı Ali\'nin getirmesini bekliyor), task DEĞİL. "Aliden para alacağım" → waiting_on (kullanıcı Ali\'ye bağımlı bir şey bekliyor). "Faturayı ödeyeceğim" → task (özne kullanıcı, kimseye bağlı değil). "Ahmete teklifi göndereceğim" → promise_made (özne kullanıcı ama bir kişiye yönelik taahhüt).',
     'Sesli not deşifresi olabilir; konuşma dili doldurma kelimelerini ("şey", "yani", "ee") ve yarım kalmış tekrarları göz ardı et.',
     'Bir maddeden emin değilsen (belirsiz ifade, "sanırım" gibi tahmini bir dil, ima yoluyla çıkarım, okunaksız/bulanık kaynak vb.) bunu uydurmak yerine confidence değerini düşük tut (ör. 0.3-0.5) ve note alanına neden emin olmadığını kısaca yaz.',
   ];
