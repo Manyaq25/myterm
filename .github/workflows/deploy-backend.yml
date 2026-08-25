@@ -106,5 +106,38 @@ jobs:
             exit 1
           fi
 
+      - name: Smoke test /api/extract-image
+        run: |
+          set -e
+          pip install --quiet --user pillow
+          python3 - <<'PY'
+          from PIL import Image, ImageDraw
+          import base64, json
+          img = Image.new("RGB", (760, 120), color="white")
+          d = ImageDraw.Draw(img)
+          d.text((10, 40), "Ahmete yarin teklifi gonderecegim, ondan da gecen haftaki raporu bekliyorum.", fill="black")
+          img.save("test-image.png")
+          with open("test-image.png", "rb") as f:
+              b64 = base64.b64encode(f.read()).decode()
+          with open("image_payload.json", "w") as f:
+              json.dump({"imageBase64": b64, "mediaType": "image/png"}, f)
+          PY
+          status=$(curl -sS -o response_image.json -w "%{http_code}" --max-time 30 \
+            "${{ steps.deploy.outputs.url }}/api/extract-image" \
+            -H "Content-Type: application/json" \
+            --data @image_payload.json)
+          echo "HTTP $status"
+          cat response_image.json
+          if [ "$status" != "200" ]; then
+            echo "Smoke test failed"
+            exit 1
+          fi
+          count=$(python3 -c "import json;print(len(json.load(open('response_image.json'))['candidates']))")
+          echo "candidate count: $count"
+          if [ "$count" -lt 1 ]; then
+            echo "Smoke test failed: image extraction should find at least 1 candidate, got $count"
+            exit 1
+          fi
+
       - name: Print deployment URL in job summary
         run: echo "Backend deployed to ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"

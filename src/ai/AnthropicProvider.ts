@@ -1,5 +1,5 @@
 import * as FileSystem from 'expo-file-system/legacy';
-import type { AIProvider, ExtractedFollowUp, TranscriptionResult } from './types';
+import type { AIProvider, ExtractedFollowUp, ImageMediaType, TranscriptionResult } from './types';
 
 export class AnthropicProvider implements AIProvider {
   constructor(private readonly backendUrl: string, private readonly appSecret?: string) {}
@@ -39,5 +39,24 @@ export class AnthropicProvider implements AIProvider {
     }
 
     return JSON.parse(result.body) as TranscriptionResult;
+  }
+
+  async extractFollowUpsFromImage(base64Image: string, mediaType: ImageMediaType): Promise<ExtractedFollowUp[]> {
+    const response = await fetch(`${this.backendUrl}/api/extract-image`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
+      },
+      body: JSON.stringify({ imageBase64: base64Image, mediaType }),
+    });
+
+    if (!response.ok) {
+      const body = await response.json().catch(() => ({}));
+      throw new Error(`Image extraction failed (${response.status}): ${body.error ?? 'unknown'}`);
+    }
+
+    const body = (await response.json()) as { candidates: ExtractedFollowUp[] };
+    return body.candidates;
   }
 }

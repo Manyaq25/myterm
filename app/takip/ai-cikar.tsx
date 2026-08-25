@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
+  Image,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -11,7 +12,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import {
   RecordingPresets,
@@ -20,16 +21,27 @@ import {
   useAudioRecorder,
   useAudioRecorderState,
 } from 'expo-audio';
+import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library';
+import * as FileSystem from 'expo-file-system/legacy';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, type FollowUpSource } from '../../src/types';
-import { aiProvider, isUsingMockAI, type ExtractedFollowUp } from '../../src/ai';
+import { aiProvider, isUsingMockAI, type ExtractedFollowUp, type ImageMediaType } from '../../src/ai';
 import { scheduleFollowUpReminder } from '../../src/services/notifications';
 
 interface Candidate extends ExtractedFollowUp {
   selected: boolean;
 }
 
-type Mode = 'text' | 'voice';
+type Mode = 'text' | 'voice' | 'image';
+
+// Bu eşiğin altındaki adaylar varsayılan olarak seçili gelmez — kullanıcı
+// kendisi gözden geçirip onaylamalı (gizlilik/doğruluk gereksinimi).
+const LOW_CONFIDENCE_THRESHOLD = 0.6;
+
+function toCandidates(results: ExtractedFollowUp[]): Candidate[] {
+  return results.map((r) => ({ ...r, selected: r.confidence >= LOW_CONFIDENCE_THRESHOLD }));
+}
 
 function formatDuration(ms: number): string {
   const totalSeconds = Math.floor(ms / 1000);
@@ -38,9 +50,18 @@ function formatDuration(ms: number): string {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 
+function guessMediaType(filename: string | null | undefined): ImageMediaType {
+  const ext = (filename ?? '').toLowerCase().split('.').pop();
+  if (ext === 'png') return 'image/png';
+  if (ext === 'webp') return 'image/webp';
+  if (ext === 'gif') return 'image/gif';
+  return 'image/jpeg';
+}
+
 export default function AiCikarScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
+  const params = useLocalSearchParams<{ mode?: string; autoScreenshot?: string }>();
 
   const [mode, setMode] = useState<Mode>('text');
   const [text, setText] = useState('');
@@ -55,13 +76,29 @@ export default function AiCikarScreen() {
   const recorderState = useAudioRecorderState(recorder, 200);
   const [hasRecording, setHasRecording] = useState(false);
 
+  const [imagePreviewUri, setImagePreviewUri] = useState<string | null>(null);
+  const [imageBase64, setImageBase64] = useState<string | null>(null);
+  const [imageMediaType, setImageMediaType] = useState<ImageMediaType | null>(null);
+  const [imageLoading, setImageLoading] = useState(false);
+
+  useEffect(() => {
+    if (params.mode === 'image') setMode('image');
+  }, [params.mode]);
+
+  useEffect(() => {
+    if (params.autoScreenshot === '1') {
+      void handleLoadLastScreenshot();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params.autoScreenshot]);
+
   async function handleExtractText() {
     if (!text.trim() || loading) return;
     setLoading(true);
     setError(null);
     try {
       const results = await aiProvider.extractFollowUpsFromText(text.trim());
-      setCandidates(results.map((r) => ({ ...r, selected: true })));
+      setCandidates(toCandidates(results));
       setCandidateSource('text');
       setTranscript(null);
     } catch (e) {
@@ -98,10 +135,79 @@ export default function AiCikarScreen() {
     try {
       const result = await aiProvider.transcribeAndExtract(recorder.uri);
       setTranscript(result.transcript);
-      setCandidates(result.candidates.map((r) => ({ ...r, selected: true })));
+      setCandidates(toCandidates(result.candidates));
       setCandidateSource('voice');
     } catch (e) {
       setError('Deşifre/çıkarım başarısız oldu. Lütfen tekrar dene.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handlePickImage() {
+    setError(null);
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
+      setError('Görsel seçmek için galeri izni gerekiyor.');
+      return;
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      base64: true,
+      quality: 0.7,
+    });
+    if (result.canceled || !result.assets[0]?.base64) return;
+    const asset = result.assets[0];
+    setImagePreviewUri(asset.uri);
+    setImageBase64(asset.base64 ?? null);
+    setImageMediaType((asset.mimeType as ImageMediaType) || guessMediaType(asset.fileName));
+    setCandidates(null);
+  }
+
+  async function handleLoadLastScreenshot() {
+    setImageLoading(true);
+    setError(null);
+    try {
+      const permission = await MediaLibrary.requestPermissionsAsync();
+      if (!permission.granted) {
+        setError('Son ekran görüntünü bulmak için galeri izni gerekiyor.');
+        return;
+      }
+      const page = await MediaLibrary.getAssetsAsync({
+        first: 1,
+        mediaType: 'photo',
+        sortBy: [['creationTime', false]],
+      });
+      const asset = page.assets[0];
+      if (!asset) {
+        setError('Son bir ekran görüntüsü bulunamadı.');
+        return;
+      }
+      const info = await MediaLibrary.getAssetInfoAsync(asset);
+      const uri = info.localUri ?? asset.uri;
+      const base64 = await FileSystem.readAsStringAsync(uri, { encoding: 'base64' });
+      setImagePreviewUri(uri);
+      setImageBase64(base64);
+      setImageMediaType(guessMediaType(asset.filename));
+      setCandidates(null);
+    } catch (e) {
+      setError('Ekran görüntüsü yüklenemedi.');
+    } finally {
+      setImageLoading(false);
+    }
+  }
+
+  async function handleExtractImage() {
+    if (!imageBase64 || !imageMediaType || loading) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const results = await aiProvider.extractFollowUpsFromImage(imageBase64, imageMediaType);
+      setCandidates(toCandidates(results));
+      setCandidateSource('screenshot');
+      setTranscript(null);
+    } catch (e) {
+      setError('Görsel analizi başarısız oldu. Lütfen tekrar dene.');
     } finally {
       setLoading(false);
     }
@@ -175,9 +281,15 @@ export default function AiCikarScreen() {
           >
             <Text style={[styles.modeTabText, mode === 'voice' && styles.modeTabTextActive]}>Sesli</Text>
           </Pressable>
+          <Pressable
+            style={[styles.modeTab, mode === 'image' && styles.modeTabActive]}
+            onPress={() => setMode('image')}
+          >
+            <Text style={[styles.modeTabText, mode === 'image' && styles.modeTabTextActive]}>Görsel</Text>
+          </Pressable>
         </View>
 
-        {mode === 'text' ? (
+        {mode === 'text' && (
           <>
             <Text style={styles.label}>Notunu yapıştır veya yaz</Text>
             <TextInput
@@ -196,7 +308,9 @@ export default function AiCikarScreen() {
               {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
             </Pressable>
           </>
-        ) : (
+        )}
+
+        {mode === 'voice' && (
           <>
             <Text style={styles.label}>Bir ses notu kaydet</Text>
             <View style={styles.recordBox}>
@@ -227,6 +341,36 @@ export default function AiCikarScreen() {
           </>
         )}
 
+        {mode === 'image' && (
+          <>
+            <Text style={styles.label}>Bir görsel seç (ekran görüntüsü, fotoğraf)</Text>
+            {imageLoading ? (
+              <View style={styles.recordBox}>
+                <ActivityIndicator />
+                <Text style={styles.hint}>Son ekran görüntün yükleniyor…</Text>
+              </View>
+            ) : imagePreviewUri ? (
+              <View style={styles.imagePreviewBox}>
+                <Image source={{ uri: imagePreviewUri }} style={styles.imagePreview} resizeMode="contain" />
+                <Pressable style={styles.secondaryButton} onPress={handlePickImage} disabled={loading}>
+                  <Text style={styles.secondaryButtonText}>Başka bir görsel seç</Text>
+                </Pressable>
+              </View>
+            ) : (
+              <Pressable style={styles.pickImageButton} onPress={handlePickImage} disabled={loading}>
+                <Text style={styles.pickImageButtonText}>🖼️ Galeriden seç</Text>
+              </Pressable>
+            )}
+            <Pressable
+              style={[styles.extractButton, (!imageBase64 || loading) && styles.buttonDisabled]}
+              onPress={handleExtractImage}
+              disabled={!imageBase64 || loading}
+            >
+              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
+            </Pressable>
+          </>
+        )}
+
         {error && <Text style={styles.error}>{error}</Text>}
 
         {candidates && (
@@ -248,6 +392,10 @@ export default function AiCikarScreen() {
                       ⏰ {new Date(c.dueAtISO).toLocaleString('tr-TR')}
                     </Text>
                   )}
+                  {c.confidence < LOW_CONFIDENCE_THRESHOLD && (
+                    <Text style={styles.candidateLowConfidence}>❓ Emin değilim — gözden geçir</Text>
+                  )}
+                  {c.note && <Text style={styles.candidateNote}>💬 {c.note}</Text>}
                 </View>
               </Pressable>
             ))}
@@ -305,6 +453,28 @@ const styles = StyleSheet.create({
   extractButtonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
   buttonDisabled: { opacity: 0.5 },
   error: { color: '#dc2626', marginTop: 12, fontSize: 14 },
+  hint: { fontSize: 13, color: '#9ca3af', marginTop: 12 },
+  pickImageButton: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderStyle: 'dashed',
+    paddingVertical: 32,
+    alignItems: 'center',
+  },
+  pickImageButtonText: { fontSize: 16, fontWeight: '600', color: '#374151' },
+  imagePreviewBox: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    padding: 12,
+    alignItems: 'center',
+  },
+  imagePreview: { width: '100%', height: 220, borderRadius: 8, backgroundColor: '#f3f4f6' },
+  secondaryButton: { marginTop: 12, paddingVertical: 8, paddingHorizontal: 16 },
+  secondaryButtonText: { color: '#2563eb', fontSize: 14, fontWeight: '600' },
   recordBox: {
     backgroundColor: '#fff',
     borderRadius: 12,
@@ -358,6 +528,8 @@ const styles = StyleSheet.create({
   candidateType: { fontSize: 12, fontWeight: '700', color: '#2563eb', marginBottom: 2 },
   candidateTitle: { fontSize: 15, fontWeight: '600', color: '#111827' },
   candidateMeta: { fontSize: 13, color: '#6b7280', marginTop: 2 },
+  candidateLowConfidence: { fontSize: 12, color: '#b45309', marginTop: 4, fontWeight: '600' },
+  candidateNote: { fontSize: 12, color: '#9ca3af', marginTop: 4, fontStyle: 'italic' },
   saveButton: {
     marginTop: 8,
     backgroundColor: '#16a34a',

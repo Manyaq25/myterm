@@ -14,7 +14,10 @@ export interface TranscriptionResult {
   candidates: ExtractedFollowUp[];
 }
 
+export type ImageMediaType = 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif';
+
 export interface AIProvider {
   extractFollowUpsFromText(text: string): Promise<ExtractedFollowUp[]>;
   transcribeAndExtract(audioFileUri: string): Promise<TranscriptionResult>;
+  extractFollowUpsFromImage(base64Image: string, mediaType: ImageMediaType): Promise<ExtractedFollowUp[]>;
 }

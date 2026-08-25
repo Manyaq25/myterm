@@ -1,7 +1,8 @@
 # Backend — AI extraction
 
-Vercel serverless function'ları: `POST /api/extract` (metin) ve
-`POST /api/transcribe` (sesli not).
+Vercel serverless function'ları: `POST /api/extract` (metin),
+`POST /api/transcribe` (sesli not) ve `POST /api/extract-image` (görsel/ekran
+görüntüsü).
 
 API anahtarları yalnızca burada, sunucu tarafında tutulur — mobil
 uygulamaya asla gömülmez.
@@ -56,6 +57,25 @@ X-App-Secret: <APP_SHARED_SECRET ayarlıysa>
 
 Yanıt: `{ "transcript": "...", "candidates": [...] }` (candidates şeması
 `/api/extract` ile aynı).
+
+## POST /api/extract-image
+
+Bir görseli (ekran görüntüsü, fotoğraf) Claude'un vision özelliğiyle
+doğrudan analiz eder — OCR yok, ayrı bir model/anahtar gerekmez, aynı
+`ANTHROPIC_API_KEY` kullanılır.
+
+```
+POST /api/extract-image
+Content-Type: application/json
+X-App-Secret: <APP_SHARED_SECRET ayarlıysa>
+
+{ "imageBase64": "<base64>", "mediaType": "image/jpeg" }
+```
+
+`mediaType`: `image/jpeg` | `image/png` | `image/webp` | `image/gif`.
+Base64 payload en fazla ~7MB (yaklaşık 5MB ham görsel).
+
+Yanıt: `{ "candidates": [...] }` (şema `/api/extract` ile aynı).
 
 ## Ortam değişkenleri
 

@@ -36,6 +36,22 @@
         {
           "microphonePermission": "Sesli notlarını takip maddesine çevirmek için mikrofon erişimi gerekiyor."
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Takip maddesi çıkarmak için görsel seçmene izin gerekiyor.",
+          "cameraPermission": false
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Ekran görüntünü bulup takip maddesine çevirmek için galerine erişim gerekiyor.",
+          "savePhotosPermission": "Bu uygulama galerine fotoğraf kaydetmiyor.",
+          "isAccessMediaLocationEnabled": false,
+          "granularPermissions": ["photo"]
+        }
       ]
     ],
     "ios": {

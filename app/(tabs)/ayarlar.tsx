@@ -1,14 +1,20 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Switch, Text, View } from 'react-native';
+import { Alert, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Notifications from 'expo-notifications';
 import { ensureNotificationPermission } from '../../src/services/notifications';
+import {
+  isScreenshotSuggestionEnabled,
+  setScreenshotSuggestionEnabled,
+} from '../../src/services/screenshotSuggestion';
 
 export default function AyarlarScreen() {
   const [notificationsGranted, setNotificationsGranted] = useState(false);
+  const [screenshotSuggestionsOn, setScreenshotSuggestionsOn] = useState(false);
 
   useEffect(() => {
     Notifications.getPermissionsAsync().then((res) => setNotificationsGranted(res.granted));
+    isScreenshotSuggestionEnabled().then(setScreenshotSuggestionsOn);
   }, []);
 
   return (
@@ -35,11 +41,32 @@ export default function AyarlarScreen() {
       </View>
 
       <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Görsel Önerileri</Text>
+        <View style={styles.row}>
+          <Text style={styles.rowLabel}>Ekran görüntüsü önerisi</Text>
+          <Switch
+            value={screenshotSuggestionsOn}
+            onValueChange={async (value) => {
+              const result = await setScreenshotSuggestionEnabled(value);
+              setScreenshotSuggestionsOn(result);
+              if (value && !result) {
+                Alert.alert('İzin gerekli', 'Bu özellik için bildirim izni (ve Android’de galeri izni) gerekiyor.');
+              }
+            }}
+          />
+        </View>
+        <Text style={styles.hint}>
+          Açarsan, ekran görüntüsü aldığında sana bir bildirimle sorarız — "takip listesine
+          eklememi ister misin?". Sadece "evet" dersen o görsel gözden geçirmen için açılır;
+          onaylamadan hiçbir görsel otomatik taranmaz veya AI'ya gönderilmez.
+        </Text>
+      </View>
+
+      <View style={styles.section}>
         <Text style={styles.sectionTitle}>Hakkında</Text>
         <Text style={styles.hint}>Benim Yerime Takip Et — v0.1 (MVP)</Text>
         <Text style={styles.hint}>
-          Uygulama kilidi (Face ID) ve AI tabanlı otomatik çıkarım özellikleri sonraki
-          fazlarda eklenecek.
+          Uygulama kilidi (Face ID) sonraki fazlarda eklenecek.
         </Text>
       </View>
     </SafeAreaView>
