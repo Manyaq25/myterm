@@ -13,11 +13,16 @@ export interface LatePersonSuggestion {
   latestCompletedAt: number;
 }
 
+// Kişiye bağlı bu tiplerdeki maddeler "o kişiden gecikme" sayılır. promise_made/
+// promise_expected kasıtlı olarak dışarıda bırakıldı — onlar kullanıcının KENDİ
+// gecikmesini ifade eder, karşı tarafın değil.
+const LATE_PATTERN_TYPES = ['waiting_on', 'task'] as const;
+
 /**
  * Tamamen yerel, deterministik bir sezgisel kural — Claude'a istek atmaz.
- * Bir kişiden "beklediğim" (waiting_on) son N maddenin hepsi zamanında değil,
- * son tarihinden SONRA tamamlanmışsa bunu bir örüntü sayar. Hiçbir şeyi
- * otomatik değiştirmez; yalnızca kullanıcıya sorulacak bir öneri üretir.
+ * Bir kişiyle ilgili son N maddenin hepsi zamanında değil, son tarihinden
+ * SONRA tamamlanmışsa bunu bir örüntü sayar. Hiçbir şeyi otomatik değiştirmez;
+ * yalnızca kullanıcıya sorulacak bir öneri üretir.
  */
 export async function detectLatePersonSuggestions(db: SQLiteDatabase): Promise<LatePersonSuggestion[]> {
   const people = await listPeople(db);
@@ -28,11 +33,11 @@ export async function detectLatePersonSuggestions(db: SQLiteDatabase): Promise<L
 
     const rows = await db.getAllAsync<FollowUp>(
       `SELECT * FROM follow_ups
-       WHERE personId = ? AND type = 'waiting_on' AND status = 'done'
+       WHERE personId = ? AND type IN (${LATE_PATTERN_TYPES.map(() => '?').join(',')}) AND status = 'done'
          AND dueAt IS NOT NULL AND completedAt IS NOT NULL
        ORDER BY completedAt DESC
        LIMIT ?`,
-      [person.id, LATE_STREAK_THRESHOLD]
+      [person.id, ...LATE_PATTERN_TYPES, LATE_STREAK_THRESHOLD]
     );
 
     if (rows.length < LATE_STREAK_THRESHOLD) continue;
