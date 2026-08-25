@@ -17,3 +17,9 @@ export function isOverdue(timestamp: number | null): boolean {
   if (timestamp === null) return false;
   return timestamp < Date.now();
 }
+
+/** Bir kişi için "daha erken hatırlat" tercihi varsa hatırlatma zamanını öne çeker. */
+export function applyReminderLead(dueAt: number, leadMinutes: number): number {
+  if (!leadMinutes) return dueAt;
+  return dueAt - leadMinutes * 60 * 1000;
+}

@@ -106,6 +106,26 @@ jobs:
             exit 1
           fi
 
+      - name: Smoke test /api/extract — waiting_on vs task classification
+        run: |
+          set -e
+          status=$(curl -sS -o response_type.json -w "%{http_code}" --max-time 20 \
+            "${{ steps.deploy.outputs.url }}/api/extract" \
+            -H "Content-Type: application/json" \
+            -d '{"text":"Ali gazete getirecek."}')
+          echo "HTTP $status"
+          cat response_type.json
+          if [ "$status" != "200" ]; then
+            echo "Smoke test failed"
+            exit 1
+          fi
+          type=$(python3 -c "import json;print(json.load(open('response_type.json'))['candidates'][0]['type'])")
+          echo "type: $type"
+          if [ "$type" != "waiting_on" ]; then
+            echo "Smoke test failed: a sentence whose subject is someone else should classify as waiting_on, got $type"
+            exit 1
+          fi
+
       - name: Smoke test /api/extract-image
         run: |
           set -e

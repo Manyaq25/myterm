@@ -15,6 +15,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, type FollowUpType } from '../../src/types';
 import { scheduleFollowUpReminder } from '../../src/services/notifications';
+import { applyReminderLead } from '../../src/utils/date';
 
 const TYPES = Object.keys(FOLLOW_UP_TYPE_LABELS) as FollowUpType[];
 
@@ -35,25 +36,34 @@ export default function YeniTakipScreen() {
     setSaving(true);
     try {
       let personId: string | null = null;
+      let reminderLeadMinutes = 0;
       const trimmedPerson = personName.trim();
       if (trimmedPerson) {
         const people = await listPeople(db);
         const existing = people.find((p) => p.name.toLowerCase() === trimmedPerson.toLowerCase());
-        personId = existing ? existing.id : (await createPerson(db, trimmedPerson)).id;
+        if (existing) {
+          personId = existing.id;
+          reminderLeadMinutes = existing.reminderLeadMinutes;
+        } else {
+          personId = (await createPerson(db, trimmedPerson)).id;
+        }
       }
+
+      const dueAtMs = dueAt ? dueAt.getTime() : null;
+      const remindAtMs = dueAtMs ? applyReminderLead(dueAtMs, reminderLeadMinutes) : null;
 
       const followUp = await createFollowUp(db, {
         title: title.trim(),
         detail: detail.trim() || null,
         type,
         personId,
-        dueAt: dueAt ? dueAt.getTime() : null,
-        remindAt: dueAt ? dueAt.getTime() : null,
+        dueAt: dueAtMs,
+        remindAt: remindAtMs,
         source: 'manual',
       });
 
-      if (dueAt && dueAt.getTime() > Date.now()) {
-        await scheduleFollowUpReminder(followUp.id, title.trim(), 'Zamanı geldi', dueAt);
+      if (remindAtMs && remindAtMs > Date.now()) {
+        await scheduleFollowUpReminder(followUp.id, title.trim(), 'Zamanı geldi', new Date(remindAtMs));
       }
 
       router.back();

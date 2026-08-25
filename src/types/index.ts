@@ -8,6 +8,8 @@ export interface Person {
   id: string;
   name: string;
   note: string | null;
+  reminderLeadMinutes: number;
+  lateSuggestionDismissedAt: number | null;
   createdAt: number;
 }
 
