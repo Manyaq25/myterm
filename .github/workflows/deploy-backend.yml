@@ -159,5 +159,25 @@ jobs:
             exit 1
           fi
 
+      - name: Smoke test /api/assistant
+        run: |
+          set -e
+          status=$(curl -sS -o response_assistant.json -w "%{http_code}" --max-time 20 \
+            "${{ steps.deploy.outputs.url }}/api/assistant" \
+            -H "Content-Type: application/json" \
+            -d '{"question":"Ahmetle ilgili ne var?","context":"- [Verdiğim söz] Ahmete teklifi gönder | Kişi: Ahmet | Durum: Açık | Son tarih: yok"}')
+          echo "HTTP $status"
+          cat response_assistant.json
+          if [ "$status" != "200" ]; then
+            echo "Smoke test failed"
+            exit 1
+          fi
+          answer_len=$(python3 -c "import json;print(len(json.load(open('response_assistant.json'))['answer']))")
+          echo "answer length: $answer_len"
+          if [ "$answer_len" -lt 1 ]; then
+            echo "Smoke test failed: assistant should return a non-empty answer"
+            exit 1
+          fi
+
       - name: Print deployment URL in job summary
         run: echo "Backend deployed to ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"

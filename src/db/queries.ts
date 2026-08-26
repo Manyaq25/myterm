@@ -1,5 +1,5 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
-import type { FollowUp, FollowUpStatus, FollowUpWithPerson, Person } from '../types';
+import type { FollowUp, FollowUpStatus, FollowUpType, FollowUpWithPerson, Person } from '../types';
 
 function newId(): string {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
@@ -20,6 +20,25 @@ export async function listFollowUps(
        f.dueAt ASC,
        f.createdAt DESC`,
     statuses
+  );
+}
+
+export async function listFollowUpsByType(
+  db: SQLiteDatabase,
+  type: FollowUpType,
+  statuses: FollowUpStatus[] = ['open', 'snoozed']
+): Promise<FollowUpWithPerson[]> {
+  const placeholders = statuses.map(() => '?').join(',');
+  return db.getAllAsync<FollowUpWithPerson>(
+    `SELECT f.*, p.name as personName
+     FROM follow_ups f
+     LEFT JOIN people p ON p.id = f.personId
+     WHERE f.type = ? AND f.status IN (${placeholders})
+     ORDER BY
+       CASE WHEN f.dueAt IS NULL THEN 1 ELSE 0 END,
+       f.dueAt ASC,
+       f.createdAt DESC`,
+    [type, ...statuses]
   );
 }
 

@@ -23,3 +23,9 @@ export function applyReminderLead(dueAt: number, leadMinutes: number): number {
   if (!leadMinutes) return dueAt;
   return dueAt - leadMinutes * 60 * 1000;
 }
+
+/** Son tarihten bu yana kaç tam gün geçtiğini döner (gecikmemişse null). */
+export function daysLate(dueAt: number | null): number | null {
+  if (dueAt === null || dueAt >= Date.now()) return null;
+  return Math.floor((Date.now() - dueAt) / (1000 * 60 * 60 * 24));
+}

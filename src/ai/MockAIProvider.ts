@@ -38,4 +38,8 @@ export class MockAIProvider implements AIProvider {
       },
     ];
   }
+
+  async askAssistant(_question: string, _context: string): Promise<string> {
+    return 'Mock AI (test modu) — gerçek asistan yanıtı için backend gerekli.';
+  }
 }
