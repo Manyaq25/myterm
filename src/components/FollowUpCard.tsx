@@ -35,55 +35,61 @@ export function FollowUpCard({ item, onComplete, onDelete }: Props) {
     </Link>
   );
 
-  if (!canComplete && !onDelete) return card;
+  if (!canComplete && !onDelete) {
+    return <View style={styles.wrapper}>{card}</View>;
+  }
 
   return (
-    <Swipeable
-      ref={swipeableRef}
-      overshootLeft={false}
-      overshootRight={false}
-      renderLeftActions={
-        canComplete
-          ? () => (
-              <Pressable
-                style={[styles.action, styles.completeAction]}
-                onPress={() => {
-                  swipeableRef.current?.close();
-                  onComplete?.();
-                }}
-              >
-                <Text style={styles.actionText}>✓ Tamamlandı</Text>
-              </Pressable>
-            )
-          : undefined
-      }
-      renderRightActions={
-        onDelete
-          ? () => (
-              <Pressable
-                style={[styles.action, styles.deleteAction]}
-                onPress={() => {
-                  swipeableRef.current?.close();
-                  onDelete?.();
-                }}
-              >
-                <Text style={styles.actionText}>Sil</Text>
-              </Pressable>
-            )
-          : undefined
-      }
-    >
-      {card}
-    </Swipeable>
+    <View style={styles.wrapper}>
+      <Swipeable
+        ref={swipeableRef}
+        overshootLeft={false}
+        overshootRight={false}
+        renderLeftActions={
+          canComplete
+            ? () => (
+                <Pressable
+                  style={[styles.action, styles.completeAction]}
+                  onPress={() => {
+                    swipeableRef.current?.close();
+                    onComplete?.();
+                  }}
+                >
+                  <Text style={styles.actionText}>✓ Tamamlandı</Text>
+                </Pressable>
+              )
+            : undefined
+        }
+        renderRightActions={
+          onDelete
+            ? () => (
+                <Pressable
+                  style={[styles.action, styles.deleteAction]}
+                  onPress={() => {
+                    swipeableRef.current?.close();
+                    onDelete?.();
+                  }}
+                >
+                  <Text style={styles.actionText}>Sil</Text>
+                </Pressable>
+              )
+            : undefined
+        }
+      >
+        {card}
+      </Swipeable>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapper: { marginBottom: 14 },
   card: {
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 16,
-    marginBottom: 14,
+    borderWidth: 1,
+    borderColor: '#eef1f6',
     shadowColor: '#0f172a',
     shadowOpacity: 0.06,
     shadowRadius: 10,
@@ -131,10 +137,10 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   action: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     width: 96,
-    marginBottom: 14,
     borderRadius: 16,
   },
   completeAction: { backgroundColor: '#16a34a', marginRight: 10 },
