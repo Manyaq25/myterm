@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DatabaseProvider } from '../src/db/DatabaseProvider';
 import { initScreenshotSuggestions } from '../src/services/screenshotSuggestion';
+import { AppLockGate } from '../src/components/AppLockGate';
 
 export default function RootLayout() {
   const router = useRouter();
@@ -25,16 +26,18 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <DatabaseProvider>
-          <Stack screenOptions={{ headerTitleStyle: { fontWeight: '600' } }}>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="takip/yeni" options={{ presentation: 'modal', title: 'Yeni Takip' }} />
-            <Stack.Screen name="takip/ai-cikar" options={{ presentation: 'modal', title: 'AI ile Çıkar' }} />
-            <Stack.Screen name="takip/[id]" options={{ title: 'Takip Detayı' }} />
-            <Stack.Screen name="kisi/[id]" options={{ title: 'Kişi Profili' }} />
-            <Stack.Screen name="gorunum/bekliyorum" options={{ title: 'Neyi Bekliyorum?' }} />
-            <Stack.Screen name="gorunum/soz-verdim" options={{ title: 'Kime Söz Verdim?' }} />
-            <Stack.Screen name="asistan" options={{ presentation: 'modal', title: 'AI Asistan' }} />
-          </Stack>
+          <AppLockGate>
+            <Stack screenOptions={{ headerTitleStyle: { fontWeight: '600' } }}>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="takip/yeni" options={{ presentation: 'modal', title: 'Yeni Takip' }} />
+              <Stack.Screen name="takip/ai-cikar" options={{ presentation: 'modal', title: 'AI ile Çıkar' }} />
+              <Stack.Screen name="takip/[id]" options={{ title: 'Takip Detayı' }} />
+              <Stack.Screen name="kisi/[id]" options={{ title: 'Kişi Profili' }} />
+              <Stack.Screen name="gorunum/bekliyorum" options={{ title: 'Neyi Bekliyorum?' }} />
+              <Stack.Screen name="gorunum/soz-verdim" options={{ title: 'Kime Söz Verdim?' }} />
+              <Stack.Screen name="asistan" options={{ presentation: 'modal', title: 'AI Asistan' }} />
+            </Stack>
+          </AppLockGate>
         </DatabaseProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
