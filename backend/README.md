@@ -1,8 +1,9 @@
 # Backend — AI extraction
 
 Vercel serverless function'ları: `POST /api/extract` (metin),
-`POST /api/transcribe` (sesli not) ve `POST /api/extract-image` (görsel/ekran
-görüntüsü).
+`POST /api/transcribe` (sesli not), `POST /api/extract-image` (görsel/ekran
+görüntüsü) ve `POST /api/assistant` (mevcut takip verisi üzerinde doğal
+dille soru-cevap, salt okunur).
 
 API anahtarları yalnızca burada, sunucu tarafında tutulur — mobil
 uygulamaya asla gömülmez.
@@ -76,6 +77,24 @@ X-App-Secret: <APP_SHARED_SECRET ayarlıysa>
 Base64 payload en fazla ~7MB (yaklaşık 5MB ham görsel).
 
 Yanıt: `{ "candidates": [...] }` (şema `/api/extract` ile aynı).
+
+## POST /api/assistant
+
+Kullanıcının var olan takip verisi üzerinde doğal dille soru sorup özet/analiz
+almasını sağlar. Yeni veri kaydetmez — salt okunur bir sorgu. Client, güncel
+takip listesini düz metin olarak `context` alanında gönderir.
+
+```
+POST /api/assistant
+Content-Type: application/json
+X-App-Secret: <APP_SHARED_SECRET ayarlıysa>
+
+{ "question": "Bugün ne yapacağım?", "context": "- [Yapılacak iş] Faturayı öde | ..." }
+```
+
+`question` en fazla 500, `context` en fazla ~20000 karakter.
+
+Yanıt: `{ "answer": "..." }`.
 
 ## Ortam değişkenleri
 

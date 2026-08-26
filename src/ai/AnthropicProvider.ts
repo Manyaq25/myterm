@@ -59,4 +59,23 @@ export class AnthropicProvider implements AIProvider {
     const body = (await response.json()) as { candidates: ExtractedFollowUp[] };
     return body.candidates;
   }
+
+  async askAssistant(question: string, context: string): Promise<string> {
+    const response = await fetch(`${this.backendUrl}/api/assistant`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
+      },
+      body: JSON.stringify({ question, context }),
+    });
+
+    if (!response.ok) {
+      const body = await response.json().catch(() => ({}));
+      throw new Error(`Assistant failed (${response.status}): ${body.error ?? 'unknown'}`);
+    }
+
+    const body = (await response.json()) as { answer: string };
+    return body.answer;
+  }
 }

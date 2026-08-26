@@ -31,6 +31,9 @@ export default function RootLayout() {
             <Stack.Screen name="takip/ai-cikar" options={{ presentation: 'modal', title: 'AI ile Çıkar' }} />
             <Stack.Screen name="takip/[id]" options={{ title: 'Takip Detayı' }} />
             <Stack.Screen name="kisi/[id]" options={{ title: 'Kişi Profili' }} />
+            <Stack.Screen name="gorunum/bekliyorum" options={{ title: 'Neyi Bekliyorum?' }} />
+            <Stack.Screen name="gorunum/soz-verdim" options={{ title: 'Kime Söz Verdim?' }} />
+            <Stack.Screen name="asistan" options={{ presentation: 'modal', title: 'AI Asistan' }} />
           </Stack>
         </DatabaseProvider>
       </SafeAreaProvider>

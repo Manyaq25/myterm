@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -57,6 +57,17 @@ export default function HomeScreen() {
         }
         ListHeaderComponent={
           <>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.quickLinksRow}>
+              <Pressable style={styles.quickLink} onPress={() => router.push('/gorunum/bekliyorum')}>
+                <Text style={styles.quickLinkText}>🔎 Neyi Bekliyorum?</Text>
+              </Pressable>
+              <Pressable style={styles.quickLink} onPress={() => router.push('/gorunum/soz-verdim')}>
+                <Text style={styles.quickLinkText}>🤝 Kime Söz Verdim?</Text>
+              </Pressable>
+              <Pressable style={styles.quickLink} onPress={() => router.push('/asistan')}>
+                <Text style={styles.quickLinkText}>💬 AI Asistan</Text>
+              </Pressable>
+            </ScrollView>
             {suggestion && (
               <LateSuggestionCard
                 suggestion={suggestion}
@@ -94,6 +105,17 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f9fafb' },
   listContent: { padding: 16, paddingBottom: 100, flexGrow: 1 },
+  quickLinksRow: { marginBottom: 16 },
+  quickLink: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    borderRadius: 999,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    marginRight: 8,
+  },
+  quickLinkText: { fontSize: 13, fontWeight: '600', color: '#374151' },
   sectionTitle: { fontSize: 13, fontWeight: '700', color: '#dc2626', marginBottom: 8 },
   fab: {
     position: 'absolute',
