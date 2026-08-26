@@ -7,14 +7,17 @@ import {
   isScreenshotSuggestionEnabled,
   setScreenshotSuggestionEnabled,
 } from '../../src/services/screenshotSuggestion';
+import { disableAppLock, enableAppLock, isAppLockEnabled } from '../../src/services/appLock';
 
 export default function AyarlarScreen() {
   const [notificationsGranted, setNotificationsGranted] = useState(false);
   const [screenshotSuggestionsOn, setScreenshotSuggestionsOn] = useState(false);
+  const [appLockOn, setAppLockOn] = useState(false);
 
   useEffect(() => {
     Notifications.getPermissionsAsync().then((res) => setNotificationsGranted(res.granted));
     isScreenshotSuggestionEnabled().then(setScreenshotSuggestionsOn);
+    isAppLockEnabled().then(setAppLockOn);
   }, []);
 
   return (
@@ -63,11 +66,38 @@ export default function AyarlarScreen() {
       </View>
 
       <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Güvenlik</Text>
+        <View style={styles.row}>
+          <Text style={styles.rowLabel}>Uygulama Kilidi</Text>
+          <Switch
+            value={appLockOn}
+            onValueChange={async (value) => {
+              if (value) {
+                const result = await enableAppLock();
+                setAppLockOn(result);
+                if (!result) {
+                  Alert.alert(
+                    'Kilit açılamadı',
+                    'Kimlik doğrulama tamamlanamadı. Cihazında Face ID/Touch ID/şifre kurulu olduğundan emin olup tekrar dener misin?'
+                  );
+                }
+              } else {
+                await disableAppLock();
+                setAppLockOn(false);
+              }
+            }}
+          />
+        </View>
+        <Text style={styles.hint}>
+          Açarsan, uygulama her arka plandan öne geldiğinde (kapatıp açtığında,
+          başka bir uygulamadan geri döndüğünde) Face ID/Touch ID veya cihaz
+          şifreni ister — kişi ve takip verilerin sende kalsın diye.
+        </Text>
+      </View>
+
+      <View style={styles.section}>
         <Text style={styles.sectionTitle}>Hakkında</Text>
         <Text style={styles.hint}>Benim Yerime Takip Et — v0.1 (MVP)</Text>
-        <Text style={styles.hint}>
-          Uygulama kilidi (Face ID) sonraki fazlarda eklenecek.
-        </Text>
       </View>
     </SafeAreaView>
   );
