@@ -17,11 +17,11 @@ export async function ensureNotificationPermission(): Promise<boolean> {
   return requested.granted;
 }
 
-export async function scheduleFollowUpReminder(
-  followUpId: string,
+export async function scheduleNotification(
   title: string,
   body: string,
-  triggerAt: Date
+  triggerAt: Date,
+  data: Record<string, unknown> = {}
 ): Promise<string | null> {
   const granted = await ensureNotificationPermission();
   if (!granted) return null;
@@ -34,13 +34,22 @@ export async function scheduleFollowUpReminder(
   }
 
   return Notifications.scheduleNotificationAsync({
-    content: { title, body, data: { followUpId } },
+    content: { title, body, data },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DATE,
       date: triggerAt,
       ...(Platform.OS === 'android' ? { channelId: 'follow-ups' } : {}),
     },
   });
+}
+
+export async function scheduleFollowUpReminder(
+  followUpId: string,
+  title: string,
+  body: string,
+  triggerAt: Date
+): Promise<string | null> {
+  return scheduleNotification(title, body, triggerAt, { followUpId });
 }
 
 export async function cancelFollowUpReminder(notificationId: string): Promise<void> {

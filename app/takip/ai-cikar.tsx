@@ -27,8 +27,10 @@ import * as FileSystem from 'expo-file-system/legacy';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, type FollowUpSource } from '../../src/types';
 import { aiProvider, isUsingMockAI, type ExtractedFollowUp, type ImageMediaType } from '../../src/ai';
-import { scheduleFollowUpReminder } from '../../src/services/notifications';
 import { applyReminderLead } from '../../src/utils/date';
+import { scheduleMainReminder } from '../../src/services/reminderScheduler';
+import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
+import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
 
 interface Candidate extends ExtractedFollowUp {
   selected: boolean;
@@ -72,6 +74,7 @@ export default function AiCikarScreen() {
   const [candidateSource, setCandidateSource] = useState<FollowUpSource>('text');
   const [transcript, setTranscript] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [importantQueue, setImportantQueue] = useState<{ id: string; title: string; dueAt: number }[]>([]);
 
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const recorderState = useAudioRecorderState(recorder, 200);
@@ -227,6 +230,7 @@ export default function AiCikarScreen() {
     setSaving(true);
     try {
       const people = await listPeople(db);
+      const important: { id: string; title: string; dueAt: number }[] = [];
       for (const candidate of selected) {
         let personId: string | null = null;
         let reminderLeadMinutes = 0;
@@ -253,15 +257,41 @@ export default function AiCikarScreen() {
           confidence: candidate.confidence,
         });
 
-        if (remindAt && remindAt > Date.now()) {
-          await scheduleFollowUpReminder(followUp.id, candidate.title, 'Zamanı geldi', new Date(remindAt));
+        if (remindAt) {
+          await scheduleMainReminder(db, followUp.id, remindAt);
+        }
+
+        if (dueAt) {
+          const isImportant = await isImportantFollowUp(db, { type: candidate.type, dueAt, personId });
+          if (isImportant) {
+            important.push({ id: followUp.id, title: candidate.title, dueAt });
+          }
         }
       }
+
+      if (important.length > 0) {
+        setImportantQueue(important);
+        return;
+      }
+
       router.back();
     } catch (e) {
       Alert.alert('Hata', 'Kaydetme sırasında bir sorun oluştu.');
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleReminderChoice(choice: ExtraReminderChoice) {
+    const [current, ...rest] = importantQueue;
+    if (current) {
+      await scheduleExtraReminders(db, current.id, current.title, current.dueAt, choice);
+    }
+    if (rest.length > 0) {
+      setImportantQueue(rest);
+    } else {
+      setImportantQueue([]);
+      router.back();
     }
   }
 
@@ -422,6 +452,11 @@ export default function AiCikarScreen() {
           </View>
         )}
       </ScrollView>
+      <SmartReminderPrompt
+        visible={importantQueue.length > 0}
+        title={importantQueue[0]?.title ?? ''}
+        onChoose={handleReminderChoice}
+      />
     </KeyboardAvoidingView>
   );
 }
