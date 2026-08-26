@@ -134,7 +134,7 @@ export default function KisiProfiliScreen() {
     .sort((a, b) => (b.completedAt ?? b.updatedAt) - (a.completedAt ?? a.updatedAt));
 
   return (
-    <ScrollView contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <View style={styles.header}>
         <Avatar name={person.name} size={56} />
         <View style={styles.headerText}>
@@ -220,6 +220,7 @@ export default function KisiProfiliScreen() {
 
 const styles = StyleSheet.create({
   centered: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  screen: { backgroundColor: '#eef1f5' },
   content: { padding: 20, paddingBottom: 60 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   headerText: { flex: 1 },
@@ -262,14 +263,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 16,
-    marginBottom: 12,
+    marginBottom: 14,
     borderWidth: 1,
-    borderColor: '#eef1f6',
+    borderColor: '#d7dce3',
     shadowColor: '#0f172a',
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.1,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 3 },
-    elevation: 2,
+    elevation: 3,
   },
   rowOverdue: { borderWidth: 1.5, borderColor: '#fca5a5' },
   rowHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },

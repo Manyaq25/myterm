@@ -17,7 +17,7 @@ export default function NeyiBekliyorumScreen() {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <PersonGroupedList
         groups={groups}
         emptyTitle="Kimseden bir şey beklemiyorsun"
@@ -28,5 +28,6 @@ export default function NeyiBekliyorumScreen() {
 }
 
 const styles = StyleSheet.create({
+  screen: { backgroundColor: '#eef1f5' },
   content: { padding: 20, paddingBottom: 60, flexGrow: 1 },
 });

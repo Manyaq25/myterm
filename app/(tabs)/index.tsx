@@ -117,7 +117,7 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f9fafb' },
+  container: { flex: 1, backgroundColor: '#eef1f5' },
   listContent: { padding: 16, paddingBottom: 100, flexGrow: 1 },
   quickLinksRow: { marginBottom: 16 },
   quickLink: {

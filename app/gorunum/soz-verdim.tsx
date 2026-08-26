@@ -17,7 +17,7 @@ export default function KimeSozVerdimScreen() {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <PersonGroupedList
         groups={groups}
         emptyTitle="Kimseye açık bir sözün yok"
@@ -28,5 +28,6 @@ export default function KimeSozVerdimScreen() {
 }
 
 const styles = StyleSheet.create({
+  screen: { backgroundColor: '#eef1f5' },
   content: { padding: 20, paddingBottom: 60, flexGrow: 1 },
 });

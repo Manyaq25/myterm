@@ -89,7 +89,7 @@ export default function TakiplerScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f9fafb' },
+  container: { flex: 1, backgroundColor: '#eef1f5' },
   searchRow: { paddingHorizontal: 16, paddingTop: 12 },
   searchInput: {
     borderWidth: 1,

@@ -96,18 +96,18 @@ export function FollowUpCard({ item, onComplete, onDelete }: Props) {
 }
 
 const styles = StyleSheet.create({
-  wrapper: { marginBottom: 14 },
+  wrapper: { marginBottom: 16 },
   card: {
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: '#eef1f6',
+    borderColor: '#d7dce3',
     shadowColor: '#0f172a',
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.1,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 3 },
-    elevation: 2,
+    elevation: 3,
   },
   cardOverdue: {
     borderWidth: 1.5,
