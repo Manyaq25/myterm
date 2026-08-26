@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useMemo, useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,6 +7,7 @@ import { listFollowUps } from '../../src/db/queries';
 import type { FollowUpStatus, FollowUpWithPerson } from '../../src/types';
 import { FollowUpCard } from '../../src/components/FollowUpCard';
 import { EmptyState } from '../../src/components/EmptyState';
+import { matchesQuery } from '../../src/utils/search';
 
 const FILTERS: { key: FollowUpStatus[]; label: string }[] = [
   { key: ['open', 'snoozed'], label: 'Açık' },
@@ -18,6 +19,7 @@ export default function TakiplerScreen() {
   const db = useSQLiteContext();
   const [filterIndex, setFilterIndex] = useState(0);
   const [items, setItems] = useState<FollowUpWithPerson[]>([]);
+  const [query, setQuery] = useState('');
 
   const load = useCallback(async () => {
     const rows = await listFollowUps(db, FILTERS[filterIndex].key);
@@ -30,8 +32,22 @@ export default function TakiplerScreen() {
     }, [load])
   );
 
+  const filteredItems = useMemo(
+    () => items.filter((item) => matchesQuery(query, item.title, item.personName, item.detail)),
+    [items, query]
+  );
+
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
+      <View style={styles.searchRow}>
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Ara: kişi, başlık veya not..."
+          value={query}
+          onChangeText={setQuery}
+          clearButtonMode="while-editing"
+        />
+      </View>
       <View style={styles.filterRow}>
         {FILTERS.map((f, idx) => (
           <Pressable
@@ -44,10 +60,12 @@ export default function TakiplerScreen() {
         ))}
       </View>
       <FlatList
-        data={items}
+        data={filteredItems}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
-        ListEmptyComponent={<EmptyState title="Bu filtrede kayıt yok" />}
+        ListEmptyComponent={
+          <EmptyState title={query.trim() ? 'Aramayla eşleşen kayıt yok' : 'Bu filtrede kayıt yok'} />
+        }
         renderItem={({ item }) => <FollowUpCard item={item} />}
       />
     </SafeAreaView>
@@ -56,6 +74,16 @@ export default function TakiplerScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f9fafb' },
+  searchRow: { paddingHorizontal: 16, paddingTop: 12 },
+  searchInput: {
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    fontSize: 15,
+    backgroundColor: '#fff',
+  },
   filterRow: { flexDirection: 'row', gap: 8, paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 },
   filterChip: {
     paddingHorizontal: 14,

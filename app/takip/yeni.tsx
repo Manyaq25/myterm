@@ -14,8 +14,10 @@ import { useSQLiteContext } from 'expo-sqlite';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, type FollowUpType } from '../../src/types';
-import { scheduleFollowUpReminder } from '../../src/services/notifications';
 import { applyReminderLead } from '../../src/utils/date';
+import { scheduleMainReminder } from '../../src/services/reminderScheduler';
+import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
+import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
 
 const TYPES = Object.keys(FOLLOW_UP_TYPE_LABELS) as FollowUpType[];
 
@@ -30,6 +32,9 @@ export default function YeniTakipScreen() {
   const [dueAt, setDueAt] = useState<Date | null>(null);
   const [showPicker, setShowPicker] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [pendingImportant, setPendingImportant] = useState<{ id: string; title: string; dueAt: number } | null>(
+    null
+  );
 
   async function handleSave() {
     if (!title.trim() || saving) return;
@@ -62,14 +67,30 @@ export default function YeniTakipScreen() {
         source: 'manual',
       });
 
-      if (remindAtMs && remindAtMs > Date.now()) {
-        await scheduleFollowUpReminder(followUp.id, title.trim(), 'Zamanı geldi', new Date(remindAtMs));
+      if (remindAtMs) {
+        await scheduleMainReminder(db, followUp.id, remindAtMs);
+      }
+
+      if (dueAtMs) {
+        const important = await isImportantFollowUp(db, { type, dueAt: dueAtMs, personId });
+        if (important) {
+          setPendingImportant({ id: followUp.id, title: title.trim(), dueAt: dueAtMs });
+          return;
+        }
       }
 
       router.back();
     } finally {
       setSaving(false);
     }
+  }
+
+  async function handleReminderChoice(choice: ExtraReminderChoice) {
+    if (pendingImportant) {
+      await scheduleExtraReminders(db, pendingImportant.id, pendingImportant.title, pendingImportant.dueAt, choice);
+    }
+    setPendingImportant(null);
+    router.back();
   }
 
   return (
@@ -139,6 +160,11 @@ export default function YeniTakipScreen() {
           <Text style={styles.saveButtonText}>{saving ? 'Kaydediliyor…' : 'Kaydet'}</Text>
         </Pressable>
       </ScrollView>
+      <SmartReminderPrompt
+        visible={!!pendingImportant}
+        title={pendingImportant?.title ?? ''}
+        onChoose={handleReminderChoice}
+      />
     </KeyboardAvoidingView>
   );
 }

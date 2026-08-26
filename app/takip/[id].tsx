@@ -5,7 +5,8 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { deleteFollowUp, getFollowUp, updateFollowUpStatus } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, type FollowUpWithPerson } from '../../src/types';
 import { formatDueDate } from '../../src/utils/date';
-import { cancelFollowUpReminder } from '../../src/services/notifications';
+import { removeFromReminderDay } from '../../src/services/reminderScheduler';
+import { cancelExtraReminders } from '../../src/services/smartReminders';
 
 export default function TakipDetayScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -35,7 +36,8 @@ export default function TakipDetayScreen() {
 
   async function markDone() {
     if (!item) return;
-    if (item.notificationId) await cancelFollowUpReminder(item.notificationId);
+    await removeFromReminderDay(db, item.remindAt, item.id);
+    await cancelExtraReminders(db, item.id);
     await updateFollowUpStatus(db, item.id, 'done');
     router.back();
   }
@@ -48,7 +50,8 @@ export default function TakipDetayScreen() {
         text: 'Sil',
         style: 'destructive',
         onPress: async () => {
-          if (item.notificationId) await cancelFollowUpReminder(item.notificationId);
+          await removeFromReminderDay(db, item.remindAt, item.id);
+          await cancelExtraReminders(db, item.id);
           await deleteFollowUp(db, item.id);
           router.back();
         },

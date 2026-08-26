@@ -179,3 +179,82 @@ export async function setPersonReminderLead(db: SQLiteDatabase, personId: string
 export async function dismissLateSuggestion(db: SQLiteDatabase, personId: string): Promise<void> {
   await db.runAsync(`UPDATE people SET lateSuggestionDismissedAt = ? WHERE id = ?`, [Date.now(), personId]);
 }
+
+export async function getFollowUpsByIds(db: SQLiteDatabase, ids: string[]): Promise<FollowUp[]> {
+  if (ids.length === 0) return [];
+  const placeholders = ids.map(() => '?').join(',');
+  return db.getAllAsync<FollowUp>(`SELECT * FROM follow_ups WHERE id IN (${placeholders})`, ids);
+}
+
+// --- Akıllı hatırlatma önerisi (ek 1 gün önce / sabah hatırlatmaları) ---
+
+export async function addFollowUpReminder(
+  db: SQLiteDatabase,
+  followUpId: string,
+  notificationId: string,
+  triggerAt: number,
+  kind: string
+): Promise<void> {
+  await db.runAsync(
+    `INSERT INTO follow_up_reminders (id, followUpId, notificationId, triggerAt, kind, createdAt)
+     VALUES (?, ?, ?, ?, ?, ?)`,
+    [newId(), followUpId, notificationId, triggerAt, kind, Date.now()]
+  );
+}
+
+export async function deleteFollowUpReminders(
+  db: SQLiteDatabase,
+  followUpId: string
+): Promise<{ notificationId: string }[]> {
+  const rows = await db.getAllAsync<{ notificationId: string }>(
+    `SELECT notificationId FROM follow_up_reminders WHERE followUpId = ?`,
+    [followUpId]
+  );
+  await db.runAsync(`DELETE FROM follow_up_reminders WHERE followUpId = ?`, [followUpId]);
+  return rows;
+}
+
+// --- Aynı güne denk gelen ana hatırlatmaları birleştirme ---
+
+export async function addReminderDayItem(db: SQLiteDatabase, day: string, followUpId: string): Promise<void> {
+  await db.runAsync(`INSERT OR IGNORE INTO reminder_day_items (day, followUpId) VALUES (?, ?)`, [day, followUpId]);
+}
+
+export async function removeReminderDayItem(db: SQLiteDatabase, day: string, followUpId: string): Promise<void> {
+  await db.runAsync(`DELETE FROM reminder_day_items WHERE day = ? AND followUpId = ?`, [day, followUpId]);
+}
+
+export async function listReminderDayItems(db: SQLiteDatabase, day: string): Promise<string[]> {
+  const rows = await db.getAllAsync<{ followUpId: string }>(
+    `SELECT followUpId FROM reminder_day_items WHERE day = ?`,
+    [day]
+  );
+  return rows.map((r) => r.followUpId);
+}
+
+export async function getReminderDay(
+  db: SQLiteDatabase,
+  day: string
+): Promise<{ day: string; notificationId: string | null } | null> {
+  const row = await db.getFirstAsync<{ day: string; notificationId: string | null }>(
+    `SELECT * FROM reminder_days WHERE day = ?`,
+    [day]
+  );
+  return row ?? null;
+}
+
+export async function upsertReminderDay(
+  db: SQLiteDatabase,
+  day: string,
+  notificationId: string | null
+): Promise<void> {
+  await db.runAsync(
+    `INSERT INTO reminder_days (day, notificationId) VALUES (?, ?)
+     ON CONFLICT(day) DO UPDATE SET notificationId = excluded.notificationId`,
+    [day, notificationId]
+  );
+}
+
+export async function deleteReminderDayRow(db: SQLiteDatabase, day: string): Promise<void> {
+  await db.runAsync(`DELETE FROM reminder_days WHERE day = ?`, [day]);
+}
