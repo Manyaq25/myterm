@@ -97,7 +97,26 @@ export default function AyarlarScreen() {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Hakkında</Text>
-        <Text style={styles.hint}>Benim Yerime Takip Et — v0.1 (MVP)</Text>
+        <Text style={styles.aboutText}>
+          Benim Yerime Takip Et, kimseye verdiğin sözleri ve birinden beklediğin şeyleri unutmaman
+          için var — bir yapılacaklar listesi değil, bir hatırlatma ortağı.
+        </Text>
+
+        <Text style={styles.aboutLabel}>Gizlilik</Text>
+        <Text style={styles.aboutText}>
+          Tüm verilerin (takipler, kişiler, notlar) yalnızca bu cihazda, yerel olarak saklanır —
+          bir sunucuya senkronize edilmez. Metin/sesli not/görsel çıkarımı yaptığında veya AI
+          Asistan'a bir soru sorduğunda, yalnızca o an gönderdiğin içerik AI sağlayıcısına iletilir;
+          başka hiçbir veri arka planda paylaşılmaz.
+        </Text>
+
+        <Text style={styles.aboutLabel}>AI sağlayıcıları</Text>
+        <Text style={styles.aboutText}>
+          Metin/görsel analizi ve AI Asistan için Anthropic (Claude), sesli not deşifresi için
+          OpenAI (Whisper) kullanılıyor.
+        </Text>
+
+        <Text style={styles.aboutVersion}>Benim Yerime Takip Et — v0.1 (MVP)</Text>
       </View>
     </SafeAreaView>
   );
@@ -107,14 +126,20 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f9fafb', padding: 16 },
   section: {
     backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
+    borderRadius: 16,
+    padding: 18,
     marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
+    shadowColor: '#0f172a',
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 1,
   },
-  sectionTitle: { fontSize: 13, fontWeight: '700', color: '#6b7280', marginBottom: 10, textTransform: 'uppercase' },
+  sectionTitle: { fontSize: 12, fontWeight: '700', color: '#6b7280', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.4 },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   rowLabel: { fontSize: 15, color: '#111827' },
-  hint: { fontSize: 13, color: '#9ca3af', marginTop: 8 },
+  hint: { fontSize: 13, color: '#9ca3af', marginTop: 8, lineHeight: 18 },
+  aboutText: { fontSize: 13, color: '#4b5563', lineHeight: 19, marginBottom: 12 },
+  aboutLabel: { fontSize: 12, fontWeight: '700', color: '#374151', marginBottom: 4 },
+  aboutVersion: { fontSize: 12, color: '#9ca3af', marginTop: 4 },
 });

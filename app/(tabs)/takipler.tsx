@@ -8,6 +8,7 @@ import type { FollowUpStatus, FollowUpWithPerson } from '../../src/types';
 import { FollowUpCard } from '../../src/components/FollowUpCard';
 import { EmptyState } from '../../src/components/EmptyState';
 import { matchesQuery } from '../../src/utils/search';
+import { completeFollowUp, removeFollowUp } from '../../src/services/followUpActions';
 
 const FILTERS: { key: FollowUpStatus[]; label: string }[] = [
   { key: ['open', 'snoozed'], label: 'Açık' },
@@ -64,9 +65,24 @@ export default function TakiplerScreen() {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
         ListEmptyComponent={
-          <EmptyState title={query.trim() ? 'Aramayla eşleşen kayıt yok' : 'Bu filtrede kayıt yok'} />
+          <EmptyState
+            icon={query.trim() ? '🔍' : '🗒️'}
+            title={query.trim() ? 'Aramayla eşleşen kayıt yok' : 'Bu filtrede kayıt yok'}
+          />
         }
-        renderItem={({ item }) => <FollowUpCard item={item} />}
+        renderItem={({ item }) => (
+          <FollowUpCard
+            item={item}
+            onComplete={async () => {
+              await completeFollowUp(db, item);
+              await load();
+            }}
+            onDelete={async () => {
+              await removeFollowUp(db, item);
+              await load();
+            }}
+          />
+        )}
       />
     </SafeAreaView>
   );

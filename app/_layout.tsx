@@ -27,7 +27,12 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <DatabaseProvider>
           <AppLockGate>
-            <Stack screenOptions={{ headerTitleStyle: { fontWeight: '600' } }}>
+            <Stack
+              screenOptions={{
+                headerTitleStyle: { fontWeight: '600' },
+                headerBackButtonDisplayMode: 'minimal',
+              }}
+            >
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="takip/yeni" options={{ presentation: 'modal', title: 'Yeni Takip' }} />
               <Stack.Screen name="takip/ai-cikar" options={{ presentation: 'modal', title: 'AI ile Çıkar' }} />

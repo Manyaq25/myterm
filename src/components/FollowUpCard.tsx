@@ -1,19 +1,24 @@
+import { useRef } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
+import { Swipeable } from 'react-native-gesture-handler';
 import type { FollowUpWithPerson } from '../types';
 import { FOLLOW_UP_TYPE_LABELS } from '../types';
 import { formatDueDate, isOverdue } from '../utils/date';
+import { TYPE_COLORS } from '../constants/typeColors';
 
-const TYPE_COLORS: Record<string, string> = {
-  promise_made: '#7c3aed',
-  promise_expected: '#ea580c',
-  task: '#2563eb',
-  waiting_on: '#0d9488',
-};
+interface Props {
+  item: FollowUpWithPerson;
+  onComplete?: () => void;
+  onDelete?: () => void;
+}
 
-export function FollowUpCard({ item }: { item: FollowUpWithPerson }) {
+export function FollowUpCard({ item, onComplete, onDelete }: Props) {
+  const swipeableRef = useRef<Swipeable>(null);
   const overdue = isOverdue(item.dueAt) && item.status === 'open';
-  return (
+  const canComplete = onComplete && (item.status === 'open' || item.status === 'snoozed');
+
+  const card = (
     <Link href={`/takip/${item.id}`} asChild>
       <Pressable style={[styles.card, overdue && styles.cardOverdue]}>
         <View style={styles.headerRow}>
@@ -25,56 +30,114 @@ export function FollowUpCard({ item }: { item: FollowUpWithPerson }) {
           )}
         </View>
         <Text style={styles.title}>{item.title}</Text>
-        {item.personName && <Text style={styles.person}>{item.personName}</Text>}
+        {item.personName && <Text style={styles.person}>👤 {item.personName}</Text>}
       </Pressable>
     </Link>
+  );
+
+  if (!canComplete && !onDelete) return card;
+
+  return (
+    <Swipeable
+      ref={swipeableRef}
+      overshootLeft={false}
+      overshootRight={false}
+      renderLeftActions={
+        canComplete
+          ? () => (
+              <Pressable
+                style={[styles.action, styles.completeAction]}
+                onPress={() => {
+                  swipeableRef.current?.close();
+                  onComplete?.();
+                }}
+              >
+                <Text style={styles.actionText}>✓ Tamamlandı</Text>
+              </Pressable>
+            )
+          : undefined
+      }
+      renderRightActions={
+        onDelete
+          ? () => (
+              <Pressable
+                style={[styles.action, styles.deleteAction]}
+                onPress={() => {
+                  swipeableRef.current?.close();
+                  onDelete?.();
+                }}
+              >
+                <Text style={styles.actionText}>Sil</Text>
+              </Pressable>
+            )
+          : undefined
+      }
+    >
+      {card}
+    </Swipeable>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 14,
+    shadowColor: '#0f172a',
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 2,
   },
   cardOverdue: {
-    borderColor: '#dc2626',
+    borderWidth: 1.5,
+    borderColor: '#fca5a5',
   },
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 6,
+    marginBottom: 8,
   },
   badge: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
     borderRadius: 999,
   },
   badgeText: {
     color: '#fff',
     fontSize: 11,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   due: {
     fontSize: 12,
-    color: '#6b7280',
+    color: '#9ca3af',
+    fontWeight: '600',
   },
   dueOverdue: {
     color: '#dc2626',
-    fontWeight: '600',
+    fontWeight: '700',
   },
   title: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
     color: '#111827',
+    lineHeight: 22,
   },
   person: {
     fontSize: 13,
     color: '#6b7280',
-    marginTop: 2,
+    marginTop: 6,
   },
+  action: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 96,
+    marginBottom: 14,
+    borderRadius: 16,
+  },
+  completeAction: { backgroundColor: '#16a34a', marginRight: 10 },
+  deleteAction: { backgroundColor: '#dc2626', marginLeft: 10 },
+  actionText: { color: '#fff', fontSize: 13, fontWeight: '700' },
 });

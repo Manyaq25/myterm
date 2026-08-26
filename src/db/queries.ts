@@ -149,6 +149,7 @@ export async function createPerson(db: SQLiteDatabase, name: string, note?: stri
     id: newId(),
     name,
     note: note ?? null,
+    phone: null,
     reminderLeadMinutes: 0,
     lateSuggestionDismissedAt: null,
     createdAt: Date.now(),
@@ -178,6 +179,10 @@ export async function setPersonReminderLead(db: SQLiteDatabase, personId: string
 
 export async function dismissLateSuggestion(db: SQLiteDatabase, personId: string): Promise<void> {
   await db.runAsync(`UPDATE people SET lateSuggestionDismissedAt = ? WHERE id = ?`, [Date.now(), personId]);
+}
+
+export async function updatePersonPhone(db: SQLiteDatabase, personId: string, phone: string | null): Promise<void> {
+  await db.runAsync(`UPDATE people SET phone = ? WHERE id = ?`, [phone, personId]);
 }
 
 export async function getFollowUpsByIds(db: SQLiteDatabase, ids: string[]): Promise<FollowUp[]> {
