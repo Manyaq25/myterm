@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
 import { Swipeable } from 'react-native-gesture-handler';
@@ -15,12 +15,21 @@ interface Props {
 
 export function FollowUpCard({ item, onComplete, onDelete }: Props) {
   const swipeableRef = useRef<Swipeable>(null);
+  // react-native-gesture-handler'ın Swipeable'ı, satırın yüksekliğini bir kez
+  // ölçüp önbelleğe alıyor; çok satırlı başlıklarda metin sarmalanması geç
+  // tamamlandığında bu ölçüm bayatlayıp aksiyon panelinin yüksekliği kartla
+  // uyuşmuyor (bir sonraki karta taşıyor). Bunun yerine gerçek yüksekliği
+  // kendimiz ölçüp aksiyon butonuna kesin (explicit) olarak veriyoruz.
+  const [cardHeight, setCardHeight] = useState<number | null>(null);
   const overdue = isOverdue(item.dueAt) && item.status === 'open';
   const canComplete = onComplete && (item.status === 'open' || item.status === 'snoozed');
 
   const card = (
     <Link href={`/takip/${item.id}`} asChild>
-      <Pressable style={[styles.card, overdue && styles.cardOverdue]}>
+      <Pressable
+        style={[styles.card, overdue && styles.cardOverdue]}
+        onLayout={(e) => setCardHeight(e.nativeEvent.layout.height)}
+      >
         <View style={styles.headerRow}>
           <View style={[styles.badge, { backgroundColor: TYPE_COLORS[item.type] ?? '#666' }]}>
             <Text style={styles.badgeText}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
@@ -48,30 +57,34 @@ export function FollowUpCard({ item, onComplete, onDelete }: Props) {
         renderLeftActions={
           canComplete
             ? () => (
-                <Pressable
-                  style={[styles.action, styles.completeAction]}
-                  onPress={() => {
-                    swipeableRef.current?.close();
-                    onComplete?.();
-                  }}
-                >
-                  <Text style={styles.actionText}>✓ Tamamlandı</Text>
-                </Pressable>
+                <View style={[styles.actionContainer, cardHeight ? { height: cardHeight } : null]}>
+                  <Pressable
+                    style={[styles.action, styles.completeAction]}
+                    onPress={() => {
+                      swipeableRef.current?.close();
+                      onComplete?.();
+                    }}
+                  >
+                    <Text style={styles.actionText}>✓ Tamamlandı</Text>
+                  </Pressable>
+                </View>
               )
             : undefined
         }
         renderRightActions={
           onDelete
             ? () => (
-                <Pressable
-                  style={[styles.action, styles.deleteAction]}
-                  onPress={() => {
-                    swipeableRef.current?.close();
-                    onDelete?.();
-                  }}
-                >
-                  <Text style={styles.actionText}>Sil</Text>
-                </Pressable>
+                <View style={[styles.actionContainer, cardHeight ? { height: cardHeight } : null]}>
+                  <Pressable
+                    style={[styles.action, styles.deleteAction]}
+                    onPress={() => {
+                      swipeableRef.current?.close();
+                      onDelete?.();
+                    }}
+                  >
+                    <Text style={styles.actionText}>Sil</Text>
+                  </Pressable>
+                </View>
               )
             : undefined
         }
@@ -136,11 +149,14 @@ const styles = StyleSheet.create({
     color: '#6b7280',
     marginTop: 6,
   },
+  actionContainer: {
+    width: 96,
+    overflow: 'hidden',
+  },
   action: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 96,
     borderRadius: 16,
   },
   completeAction: { backgroundColor: '#16a34a', marginRight: 10 },
