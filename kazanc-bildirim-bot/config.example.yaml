@@ -4,6 +4,12 @@
 # poll_interval_sec: siteyi kaç saniyede bir kontrol edeceği
 
 sites:
+  - name: "GitHub"
+    adapter: github_events
+    url: "https://api.github.com/events"
+    threshold_try: 20  # 20'den fazla commit içeren push'ları bildir (demo)
+    poll_interval_sec: 30
+
   - name: "Site A"
     adapter: example_api
     url: "https://example.com/api/last-winners"
