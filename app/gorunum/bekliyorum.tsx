@@ -5,6 +5,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { listFollowUpsByType } from '../../src/db/queries';
 import { PersonGroupedList } from '../../src/components/PersonGroupedList';
 import { groupFollowUpsByPerson, type PersonGroup } from '../../src/utils/grouping';
+import { SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
 
 export default function NeyiBekliyorumScreen() {
   const db = useSQLiteContext();
@@ -28,6 +29,6 @@ export default function NeyiBekliyorumScreen() {
 }
 
 const styles = StyleSheet.create({
-  screen: { backgroundColor: '#eef1f5' },
+  screen: { backgroundColor: SCREEN_BACKGROUND },
   content: { padding: 20, paddingBottom: 60, flexGrow: 1 },
 });

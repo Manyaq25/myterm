@@ -10,6 +10,7 @@ import { EmptyState } from '../../src/components/EmptyState';
 import { isOverdue } from '../../src/utils/date';
 import { completeFollowUp, removeFollowUp } from '../../src/services/followUpActions';
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
+import { SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
 import {
   acceptLateSuggestion,
   detectLatePersonSuggestions,
@@ -117,7 +118,7 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#eef1f5' },
+  container: { flex: 1, backgroundColor: SCREEN_BACKGROUND },
   listContent: { padding: 16, paddingBottom: 100, flexGrow: 1 },
   quickLinksRow: { marginBottom: 16 },
   quickLink: {

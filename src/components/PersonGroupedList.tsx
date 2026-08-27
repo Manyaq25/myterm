@@ -5,6 +5,7 @@ import { EmptyState } from './EmptyState';
 import { Avatar } from './Avatar';
 import type { PersonGroup } from '../utils/grouping';
 import { daysLate, formatDueDate } from '../utils/date';
+import { CARD_MARGIN_BOTTOM, CARD_SURFACE } from '../constants/cardStyle';
 
 function FollowUpRow({ item }: { item: FollowUpWithPerson }) {
   const late = daysLate(item.dueAt);
@@ -70,17 +71,8 @@ const styles = StyleSheet.create({
   personHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
   personName: { fontSize: 16, fontWeight: '700', color: '#111827' },
   row: {
-    backgroundColor: '#fff',
-    borderRadius: 14,
-    padding: 14,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: '#d7dce3',
-    shadowColor: '#0f172a',
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
+    ...CARD_SURFACE,
+    marginBottom: CARD_MARGIN_BOTTOM,
   },
   rowLateBorder: { borderWidth: 1.5, borderColor: '#fca5a5' },
   rowTitle: { fontSize: 15, fontWeight: '600', color: '#111827' },

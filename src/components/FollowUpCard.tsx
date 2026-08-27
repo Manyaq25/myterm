@@ -6,6 +6,7 @@ import type { FollowUpWithPerson } from '../types';
 import { FOLLOW_UP_TYPE_LABELS } from '../types';
 import { formatDueDate, isOverdue } from '../utils/date';
 import { TYPE_COLORS } from '../constants/typeColors';
+import { CARD_MARGIN_BOTTOM, CARD_SURFACE } from '../constants/cardStyle';
 
 interface Props {
   item: FollowUpWithPerson;
@@ -96,18 +97,9 @@ export function FollowUpCard({ item, onComplete, onDelete }: Props) {
 }
 
 const styles = StyleSheet.create({
-  wrapper: { marginBottom: 16 },
+  wrapper: { marginBottom: CARD_MARGIN_BOTTOM },
   card: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
-    borderColor: '#d7dce3',
-    shadowColor: '#0f172a',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 3,
+    ...CARD_SURFACE,
   },
   cardOverdue: {
     borderWidth: 1.5,

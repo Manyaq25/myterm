@@ -7,6 +7,7 @@ import { FOLLOW_UP_TYPE_LABELS, FOLLOW_UP_STATUS_LABELS, type FollowUp, type Per
 import { formatDueDate, isOverdue } from '../../src/utils/date';
 import { Avatar } from '../../src/components/Avatar';
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
+import { CARD_MARGIN_BOTTOM, CARD_SURFACE, SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
 import {
   acceptLateSuggestion,
   detectLatePersonSuggestions,
@@ -220,7 +221,7 @@ export default function KisiProfiliScreen() {
 
 const styles = StyleSheet.create({
   centered: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  screen: { backgroundColor: '#eef1f5' },
+  screen: { backgroundColor: SCREEN_BACKGROUND },
   content: { padding: 20, paddingBottom: 60 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 14 },
   headerText: { flex: 1 },
@@ -260,17 +261,8 @@ const styles = StyleSheet.create({
   section: { marginTop: 22 },
   sectionTitle: { fontSize: 13, fontWeight: '700', color: '#6b7280', marginBottom: 10, textTransform: 'uppercase' },
   row: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 14,
-    borderWidth: 1,
-    borderColor: '#d7dce3',
-    shadowColor: '#0f172a',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 3,
+    ...CARD_SURFACE,
+    marginBottom: CARD_MARGIN_BOTTOM,
   },
   rowOverdue: { borderWidth: 1.5, borderColor: '#fca5a5' },
   rowHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
