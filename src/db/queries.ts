@@ -5,6 +5,11 @@ function newId(): string {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
+export async function hasAnyFollowUp(db: SQLiteDatabase): Promise<boolean> {
+  const row = await db.getFirstAsync<{ count: number }>('SELECT COUNT(*) as count FROM follow_ups');
+  return (row?.count ?? 0) > 0;
+}
+
 export async function listFollowUps(
   db: SQLiteDatabase,
   statuses: FollowUpStatus[] = ['open', 'snoozed']
