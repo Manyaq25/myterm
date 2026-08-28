@@ -60,6 +60,25 @@ export class AnthropicProvider implements AIProvider {
     return body.candidates;
   }
 
+  async extractFollowUpsFromPdf(base64Pdf: string): Promise<ExtractedFollowUp[]> {
+    const response = await fetch(`${this.backendUrl}/api/extract-pdf`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
+      },
+      body: JSON.stringify({ pdfBase64: base64Pdf }),
+    });
+
+    if (!response.ok) {
+      const body = await response.json().catch(() => ({}));
+      throw new Error(`PDF extraction failed (${response.status}): ${body.error ?? 'unknown'}`);
+    }
+
+    const body = (await response.json()) as { candidates: ExtractedFollowUp[] };
+    return body.candidates;
+  }
+
   async askAssistant(question: string, context: string): Promise<string> {
     const response = await fetch(`${this.backendUrl}/api/assistant`, {
       method: 'POST',

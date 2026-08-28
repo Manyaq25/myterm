@@ -20,5 +20,6 @@ export interface AIProvider {
   extractFollowUpsFromText(text: string): Promise<ExtractedFollowUp[]>;
   transcribeAndExtract(audioFileUri: string): Promise<TranscriptionResult>;
   extractFollowUpsFromImage(base64Image: string, mediaType: ImageMediaType): Promise<ExtractedFollowUp[]>;
+  extractFollowUpsFromPdf(base64Pdf: string): Promise<ExtractedFollowUp[]>;
   askAssistant(question: string, context: string): Promise<string>;
 }

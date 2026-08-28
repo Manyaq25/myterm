@@ -159,6 +159,40 @@ jobs:
             exit 1
           fi
 
+      - name: Smoke test /api/extract-pdf
+        run: |
+          set -e
+          pip install --quiet --user reportlab
+          python3 - <<'PY'
+          from reportlab.pdfgen import canvas
+          import base64, json
+          c = canvas.Canvas("test-doc.pdf")
+          c.drawString(72, 760, "Basvuru Takvimi")
+          c.drawString(72, 730, "18 Agustos: Basvuru formunu gonder")
+          c.drawString(72, 700, "25 Agustos: Evrak teslimi yap")
+          c.save()
+          with open("test-doc.pdf", "rb") as f:
+              b64 = base64.b64encode(f.read()).decode()
+          with open("pdf_payload.json", "w") as f:
+              json.dump({"pdfBase64": b64}, f)
+          PY
+          status=$(curl -sS -o response_pdf.json -w "%{http_code}" --max-time 30 \
+            "${{ steps.deploy.outputs.url }}/api/extract-pdf" \
+            -H "Content-Type: application/json" \
+            --data @pdf_payload.json)
+          echo "HTTP $status"
+          cat response_pdf.json
+          if [ "$status" != "200" ]; then
+            echo "Smoke test failed"
+            exit 1
+          fi
+          count=$(python3 -c "import json;print(len(json.load(open('response_pdf.json'))['candidates']))")
+          echo "candidate count: $count"
+          if [ "$count" -lt 2 ]; then
+            echo "Smoke test failed: multi-date PDF should split into >= 2 candidates, got $count"
+            exit 1
+          fi
+
       - name: Smoke test /api/assistant
         run: |
           set -e
