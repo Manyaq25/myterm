@@ -32,6 +32,7 @@ import { applyReminderLead } from '../../src/utils/date';
 import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
 import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
+import { updateWidgetSummary } from '../../src/services/widget';
 
 interface Candidate extends ExtractedFollowUp {
   selected: boolean;
@@ -320,6 +321,8 @@ export default function AiCikarScreen() {
           }
         }
       }
+
+      await updateWidgetSummary(db);
 
       if (important.length > 0) {
         setImportantQueue(important);

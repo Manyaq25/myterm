@@ -12,6 +12,7 @@ import { completeFollowUp, removeFollowUp } from '../../src/services/followUpAct
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
 import { SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
 import { isOnboardingSeen, markOnboardingSeen } from '../../src/services/onboarding';
+import { updateWidgetSummary } from '../../src/services/widget';
 import {
   acceptLateSuggestion,
   detectLatePersonSuggestions,
@@ -31,6 +32,7 @@ export default function HomeScreen() {
     setItems(rows);
     const suggestions = await detectLatePersonSuggestions(db);
     setSuggestion(suggestions[0] ?? null);
+    await updateWidgetSummary(db);
   }, [db]);
 
   useFocusEffect(
