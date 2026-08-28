@@ -1,12 +1,13 @@
 import { useCallback, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Link, useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { deleteFollowUp, getFollowUp, updateFollowUpStatus } from '../../src/db/queries';
+import { getFollowUp } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, type FollowUpWithPerson } from '../../src/types';
-import { formatDueDate } from '../../src/utils/date';
-import { removeFromReminderDay } from '../../src/services/reminderScheduler';
-import { cancelExtraReminders } from '../../src/services/smartReminders';
+import { formatDueDate, isOverdue } from '../../src/utils/date';
+import { completeFollowUp, removeFollowUp } from '../../src/services/followUpActions';
+import { TYPE_COLORS } from '../../src/constants/typeColors';
+import { Avatar } from '../../src/components/Avatar';
 
 export default function TakipDetayScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -34,11 +35,11 @@ export default function TakipDetayScreen() {
     );
   }
 
+  const overdue = isOverdue(item.dueAt) && item.status === 'open';
+
   async function markDone() {
     if (!item) return;
-    await removeFromReminderDay(db, item.remindAt, item.id);
-    await cancelExtraReminders(db, item.id);
-    await updateFollowUpStatus(db, item.id, 'done');
+    await completeFollowUp(db, item);
     router.back();
   }
 
@@ -50,9 +51,7 @@ export default function TakipDetayScreen() {
         text: 'Sil',
         style: 'destructive',
         onPress: async () => {
-          await removeFromReminderDay(db, item.remindAt, item.id);
-          await cancelExtraReminders(db, item.id);
-          await deleteFollowUp(db, item.id);
+          await removeFollowUp(db, item);
           router.back();
         },
       },
@@ -61,17 +60,24 @@ export default function TakipDetayScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.content}>
-      <Text style={styles.type}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
-      <Text style={styles.title}>{item.title}</Text>
-      {item.personName && item.personId && (
-        <Link href={`/kisi/${item.personId}`} asChild>
-          <Pressable>
-            <Text style={[styles.meta, styles.personLink]}>👤 {item.personName}</Text>
+      <View style={styles.card}>
+        <View style={[styles.badge, { backgroundColor: TYPE_COLORS[item.type] ?? '#666' }]}>
+          <Text style={styles.badgeText}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
+        </View>
+        <Text style={styles.title}>{item.title}</Text>
+
+        {item.personName && item.personId && (
+          <Pressable style={styles.personRow} onPress={() => router.push(`/kisi/${item.personId}`)}>
+            <Avatar name={item.personName} size={26} />
+            <Text style={styles.personText}>{item.personName}</Text>
           </Pressable>
-        </Link>
-      )}
-      {item.dueAt !== null && <Text style={styles.meta}>⏰ {formatDueDate(item.dueAt)}</Text>}
-      {item.detail && <Text style={styles.detail}>{item.detail}</Text>}
+        )}
+
+        {item.dueAt !== null && (
+          <Text style={[styles.meta, overdue && styles.metaOverdue]}>⏰ {formatDueDate(item.dueAt)}</Text>
+        )}
+        {item.detail && <Text style={styles.detail}>{item.detail}</Text>}
+      </View>
 
       {item.status === 'open' && (
         <Pressable style={styles.doneButton} onPress={markDone}>
@@ -89,16 +95,29 @@ export default function TakipDetayScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   content: { padding: 20 },
-  type: { fontSize: 13, fontWeight: '700', color: '#2563eb', marginBottom: 6 },
-  title: { fontSize: 22, fontWeight: '700', color: '#111827', marginBottom: 14 },
-  meta: { fontSize: 14, color: '#4b5563', marginBottom: 6 },
-  personLink: { color: '#2563eb', fontWeight: '600' },
-  detail: { fontSize: 15, color: '#374151', marginTop: 12, lineHeight: 22 },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 18,
+    padding: 20,
+    shadowColor: '#0f172a',
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 2,
+  },
+  badge: { alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999, marginBottom: 10 },
+  badgeText: { color: '#fff', fontSize: 11, fontWeight: '700' },
+  title: { fontSize: 22, fontWeight: '700', color: '#111827', lineHeight: 28 },
+  personRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 14 },
+  personText: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  meta: { fontSize: 14, color: '#6b7280', marginTop: 10 },
+  metaOverdue: { color: '#dc2626', fontWeight: '700' },
+  detail: { fontSize: 15, color: '#374151', marginTop: 14, lineHeight: 22 },
   doneButton: {
-    marginTop: 28,
+    marginTop: 20,
     backgroundColor: '#16a34a',
-    borderRadius: 10,
-    paddingVertical: 14,
+    borderRadius: 14,
+    paddingVertical: 15,
     alignItems: 'center',
   },
   doneButtonText: { color: '#fff', fontSize: 16, fontWeight: '700' },

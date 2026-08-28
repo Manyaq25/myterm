@@ -5,6 +5,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { listFollowUpsByType } from '../../src/db/queries';
 import { PersonGroupedList } from '../../src/components/PersonGroupedList';
 import { groupFollowUpsByPerson, type PersonGroup } from '../../src/utils/grouping';
+import { SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
 
 export default function NeyiBekliyorumScreen() {
   const db = useSQLiteContext();
@@ -17,7 +18,7 @@ export default function NeyiBekliyorumScreen() {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.content}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <PersonGroupedList
         groups={groups}
         emptyTitle="Kimseden bir şey beklemiyorsun"
@@ -28,5 +29,6 @@ export default function NeyiBekliyorumScreen() {
 }
 
 const styles = StyleSheet.create({
+  screen: { backgroundColor: SCREEN_BACKGROUND },
   content: { padding: 20, paddingBottom: 60, flexGrow: 1 },
 });

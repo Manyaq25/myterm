@@ -8,7 +8,9 @@ import type { FollowUpWithPerson } from '../../src/types';
 import { FollowUpCard } from '../../src/components/FollowUpCard';
 import { EmptyState } from '../../src/components/EmptyState';
 import { isOverdue } from '../../src/utils/date';
+import { completeFollowUp, removeFollowUp } from '../../src/services/followUpActions';
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
+import { SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
 import {
   acceptLateSuggestion,
   detectLatePersonSuggestions,
@@ -86,11 +88,24 @@ export default function HomeScreen() {
         }
         ListEmptyComponent={
           <EmptyState
+            icon="🎉"
             title="Şu an takip edilecek bir şey yok"
             subtitle="Bir söz, bir görev veya beklediğin bir şey ekleyerek başla."
           />
         }
-        renderItem={({ item }) => <FollowUpCard item={item} />}
+        renderItem={({ item }) => (
+          <FollowUpCard
+            item={item}
+            onComplete={async () => {
+              await completeFollowUp(db, item);
+              await load();
+            }}
+            onDelete={async () => {
+              await removeFollowUp(db, item);
+              await load();
+            }}
+          />
+        )}
       />
       <Pressable style={styles.aiFab} onPress={() => router.push('/takip/ai-cikar')}>
         <Text style={styles.aiFabText}>AI</Text>
@@ -103,7 +118,7 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f9fafb' },
+  container: { flex: 1, backgroundColor: SCREEN_BACKGROUND },
   listContent: { padding: 16, paddingBottom: 100, flexGrow: 1 },
   quickLinksRow: { marginBottom: 16 },
   quickLink: {
