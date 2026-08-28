@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { Swipeable } from 'react-native-gesture-handler';
 import type { FollowUpWithPerson } from '../types';
 import { FOLLOW_UP_TYPE_LABELS } from '../types';
@@ -15,6 +15,7 @@ interface Props {
 }
 
 export function FollowUpCard({ item, onComplete, onDelete }: Props) {
+  const router = useRouter();
   const swipeableRef = useRef<Swipeable>(null);
   // react-native-gesture-handler'ın Swipeable'ı, satırın yüksekliğini bir kez
   // ölçüp önbelleğe alıyor; çok satırlı başlıklarda metin sarmalanması geç
@@ -26,23 +27,22 @@ export function FollowUpCard({ item, onComplete, onDelete }: Props) {
   const canComplete = onComplete && (item.status === 'open' || item.status === 'snoozed');
 
   const card = (
-    <Link href={`/takip/${item.id}`} asChild>
-      <Pressable
-        style={[styles.card, overdue && styles.cardOverdue]}
-        onLayout={(e) => setCardHeight(e.nativeEvent.layout.height)}
-      >
-        <View style={styles.headerRow}>
-          <View style={[styles.badge, { backgroundColor: TYPE_COLORS[item.type] ?? '#666' }]}>
-            <Text style={styles.badgeText}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
-          </View>
-          {item.dueAt !== null && (
-            <Text style={[styles.due, overdue && styles.dueOverdue]}>{formatDueDate(item.dueAt)}</Text>
-          )}
+    <Pressable
+      style={[styles.card, overdue && styles.cardOverdue]}
+      onLayout={(e) => setCardHeight(e.nativeEvent.layout.height)}
+      onPress={() => router.push(`/takip/${item.id}`)}
+    >
+      <View style={styles.headerRow}>
+        <View style={[styles.badge, { backgroundColor: TYPE_COLORS[item.type] ?? '#666' }]}>
+          <Text style={styles.badgeText}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
         </View>
-        <Text style={styles.title}>{item.title}</Text>
-        {item.personName && <Text style={styles.person}>👤 {item.personName}</Text>}
-      </Pressable>
-    </Link>
+        {item.dueAt !== null && (
+          <Text style={[styles.due, overdue && styles.dueOverdue]}>{formatDueDate(item.dueAt)}</Text>
+        )}
+      </View>
+      <Text style={styles.title}>{item.title}</Text>
+      {item.personName && <Text style={styles.person}>👤 {item.personName}</Text>}
+    </Pressable>
   );
 
   if (!canComplete && !onDelete) {

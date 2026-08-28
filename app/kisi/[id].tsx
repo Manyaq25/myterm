@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Link, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { Alert, Linking, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
 import { getPerson, listFollowUpsByPerson, updatePersonPhone } from '../../src/db/queries';
@@ -36,33 +36,35 @@ async function messagePerson(phone: string) {
 }
 
 function FollowUpRow({ item, phone }: { item: FollowUp; phone?: string | null }) {
+  const router = useRouter();
   const overdue = isOpenOverdue(item);
   const showContactShortcut = overdue && item.type === 'waiting_on' && !!phone;
   return (
-    <Link href={`/takip/${item.id}`} asChild>
-      <Pressable style={[styles.row, overdue && styles.rowOverdue]}>
-        <View style={styles.rowHeader}>
-          <Text style={styles.rowType}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
-          {(item.status === 'done' || item.status === 'cancelled') && (
-            <Text style={styles.rowStatus}>{FOLLOW_UP_STATUS_LABELS[item.status]}</Text>
-          )}
+    <Pressable
+      style={[styles.row, overdue && styles.rowOverdue]}
+      onPress={() => router.push(`/takip/${item.id}`)}
+    >
+      <View style={styles.rowHeader}>
+        <Text style={styles.rowType}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
+        {(item.status === 'done' || item.status === 'cancelled') && (
+          <Text style={styles.rowStatus}>{FOLLOW_UP_STATUS_LABELS[item.status]}</Text>
+        )}
+      </View>
+      <Text style={styles.rowTitle}>{item.title}</Text>
+      {item.dueAt !== null && (
+        <Text style={[styles.rowMeta, overdue && styles.rowMetaOverdue]}>⏰ {formatDueDate(item.dueAt)}</Text>
+      )}
+      {showContactShortcut && (
+        <View style={styles.contactShortcutRow}>
+          <Pressable style={styles.contactShortcut} onPress={() => callPerson(phone!)}>
+            <Text style={styles.contactShortcutText}>📞 Ara</Text>
+          </Pressable>
+          <Pressable style={styles.contactShortcut} onPress={() => messagePerson(phone!)}>
+            <Text style={styles.contactShortcutText}>💬 Mesaj At</Text>
+          </Pressable>
         </View>
-        <Text style={styles.rowTitle}>{item.title}</Text>
-        {item.dueAt !== null && (
-          <Text style={[styles.rowMeta, overdue && styles.rowMetaOverdue]}>⏰ {formatDueDate(item.dueAt)}</Text>
-        )}
-        {showContactShortcut && (
-          <View style={styles.contactShortcutRow}>
-            <Pressable style={styles.contactShortcut} onPress={() => callPerson(phone!)}>
-              <Text style={styles.contactShortcutText}>📞 Ara</Text>
-            </Pressable>
-            <Pressable style={styles.contactShortcut} onPress={() => messagePerson(phone!)}>
-              <Text style={styles.contactShortcutText}>💬 Mesaj At</Text>
-            </Pressable>
-          </View>
-        )}
-      </Pressable>
-    </Link>
+      )}
+    </Pressable>
   );
 }
 

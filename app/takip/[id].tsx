@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Link, useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { getFollowUp } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, type FollowUpWithPerson } from '../../src/types';
@@ -67,12 +67,10 @@ export default function TakipDetayScreen() {
         <Text style={styles.title}>{item.title}</Text>
 
         {item.personName && item.personId && (
-          <Link href={`/kisi/${item.personId}`} asChild>
-            <Pressable style={styles.personRow}>
-              <Avatar name={item.personName} size={26} />
-              <Text style={styles.personText}>{item.personName}</Text>
-            </Pressable>
-          </Link>
+          <Pressable style={styles.personRow} onPress={() => router.push(`/kisi/${item.personId}`)}>
+            <Avatar name={item.personName} size={26} />
+            <Text style={styles.personText}>{item.personName}</Text>
+          </Pressable>
         )}
 
         {item.dueAt !== null && (
