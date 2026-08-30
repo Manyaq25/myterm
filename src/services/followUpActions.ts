@@ -20,3 +20,12 @@ export async function removeFollowUp(db: SQLiteDatabase, item: ReminderRef): Pro
   await deleteFollowUp(db, item.id);
   await updateWidgetSummary(db);
 }
+
+export async function removeFollowUps(db: SQLiteDatabase, items: ReminderRef[]): Promise<void> {
+  for (const item of items) {
+    await removeFromReminderDay(db, item.remindAt, item.id);
+    await cancelExtraReminders(db, item.id);
+    await deleteFollowUp(db, item.id);
+  }
+  await updateWidgetSummary(db);
+}

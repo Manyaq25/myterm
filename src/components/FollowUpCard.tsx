@@ -12,9 +12,12 @@ interface Props {
   item: FollowUpWithPerson;
   onComplete?: () => void;
   onDelete?: () => void;
+  selectionMode?: boolean;
+  selected?: boolean;
+  onToggleSelect?: () => void;
 }
 
-export function FollowUpCard({ item, onComplete, onDelete }: Props) {
+export function FollowUpCard({ item, onComplete, onDelete, selectionMode, selected, onToggleSelect }: Props) {
   const router = useRouter();
   const swipeableRef = useRef<Swipeable>(null);
   // react-native-gesture-handler'ın Swipeable'ı, satırın yüksekliğini bir kez
@@ -26,12 +29,8 @@ export function FollowUpCard({ item, onComplete, onDelete }: Props) {
   const overdue = isOverdue(item.dueAt) && item.status === 'open';
   const canComplete = onComplete && (item.status === 'open' || item.status === 'snoozed');
 
-  const card = (
-    <Pressable
-      style={[styles.card, overdue && styles.cardOverdue]}
-      onLayout={(e) => setCardHeight(e.nativeEvent.layout.height)}
-      onPress={() => router.push(`/takip/${item.id}`)}
-    >
+  const cardBody = (
+    <>
       <View style={styles.headerRow}>
         <View style={[styles.badge, { backgroundColor: TYPE_COLORS[item.type] ?? '#666' }]}>
           <Text style={styles.badgeText}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
@@ -42,10 +41,29 @@ export function FollowUpCard({ item, onComplete, onDelete }: Props) {
       </View>
       <Text style={styles.title}>{item.title}</Text>
       {item.personName && <Text style={styles.person}>👤 {item.personName}</Text>}
+    </>
+  );
+
+  const card = (
+    <Pressable
+      style={[styles.card, overdue && styles.cardOverdue]}
+      onLayout={(e) => setCardHeight(e.nativeEvent.layout.height)}
+      onPress={() => (selectionMode ? onToggleSelect?.() : router.push(`/takip/${item.id}`))}
+    >
+      {selectionMode ? (
+        <View style={styles.selectableRow}>
+          <View style={[styles.checkbox, selected && styles.checkboxChecked]}>
+            {selected && <Text style={styles.checkboxMark}>✓</Text>}
+          </View>
+          <View style={{ flex: 1 }}>{cardBody}</View>
+        </View>
+      ) : (
+        cardBody
+      )}
     </Pressable>
   );
 
-  if (!canComplete && !onDelete) {
+  if (selectionMode || (!canComplete && !onDelete)) {
     return <View style={styles.wrapper}>{card}</View>;
   }
 
@@ -111,6 +129,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
+  selectableRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+  },
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 6,
+    borderWidth: 2,
+    borderColor: '#d1d5db',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 2,
+  },
+  checkboxChecked: { backgroundColor: '#2563eb', borderColor: '#2563eb' },
+  checkboxMark: { color: '#fff', fontSize: 14, fontWeight: '700' },
   badge: {
     paddingHorizontal: 10,
     paddingVertical: 4,
