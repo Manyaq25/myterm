@@ -39,6 +39,19 @@ export class MockAIProvider implements AIProvider {
     ];
   }
 
+  async extractFollowUpsFromPdf(_base64Pdf: string): Promise<ExtractedFollowUp[]> {
+    return [
+      {
+        title: 'Mock AI (test modu) — gerçek belge analizi için backend gerekli.',
+        type: 'task',
+        personName: null,
+        dueAtISO: null,
+        confidence: 0.5,
+        note: null,
+      },
+    ];
+  }
+
   async askAssistant(_question: string, _context: string): Promise<string> {
     return 'Mock AI (test modu) — gerçek asistan yanıtı için backend gerekli.';
   }

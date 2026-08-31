@@ -52,11 +52,18 @@
           "isAccessMediaLocationEnabled": false,
           "granularPermissions": ["photo"]
         }
-      ]
+      ],
+      "@bacons/apple-targets"
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.manyaq25.benimyerimetakipet"
+      "bundleIdentifier": "com.manyaq25.benimyerimetakipet",
+      "entitlements": {
+        "com.apple.security.application-groups": ["group.com.manyaq25.benimyerimetakipet"]
+      },
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["whatsapp", "tg"]
+      }
     },
     "android": {
       "package": "com.manyaq25.benimyerimetakipet",

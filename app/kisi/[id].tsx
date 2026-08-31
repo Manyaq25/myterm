@@ -1,12 +1,14 @@
 import { useCallback, useState } from 'react';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
-import { Alert, Linking, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
 import { getPerson, listFollowUpsByPerson, updatePersonPhone } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, FOLLOW_UP_STATUS_LABELS, type FollowUp, type Person } from '../../src/types';
 import { formatDueDate, isOverdue } from '../../src/utils/date';
 import { Avatar } from '../../src/components/Avatar';
+import { ContactOptions } from '../../src/components/ContactOptions';
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
+import { buildReminderMessage } from '../../src/services/contact';
 import { CARD_MARGIN_BOTTOM, CARD_SURFACE, SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
 import {
   acceptLateSuggestion,
@@ -17,22 +19,6 @@ import {
 
 function isOpenOverdue(item: FollowUp): boolean {
   return (item.status === 'open' || item.status === 'snoozed') && isOverdue(item.dueAt);
-}
-
-async function callPerson(phone: string) {
-  try {
-    await Linking.openURL(`tel:${phone}`);
-  } catch {
-    Alert.alert('Hata', 'Arama başlatılamadı.');
-  }
-}
-
-async function messagePerson(phone: string) {
-  try {
-    await Linking.openURL(`sms:${phone}`);
-  } catch {
-    Alert.alert('Hata', 'Mesaj uygulaması açılamadı.');
-  }
 }
 
 function FollowUpRow({ item, phone }: { item: FollowUp; phone?: string | null }) {
@@ -56,12 +42,7 @@ function FollowUpRow({ item, phone }: { item: FollowUp; phone?: string | null })
       )}
       {showContactShortcut && (
         <View style={styles.contactShortcutRow}>
-          <Pressable style={styles.contactShortcut} onPress={() => callPerson(phone!)}>
-            <Text style={styles.contactShortcutText}>📞 Ara</Text>
-          </Pressable>
-          <Pressable style={styles.contactShortcut} onPress={() => messagePerson(phone!)}>
-            <Text style={styles.contactShortcutText}>💬 Mesaj At</Text>
-          </Pressable>
+          <ContactOptions phone={phone!} message={buildReminderMessage(item.title)} compact />
         </View>
       )}
     </Pressable>
@@ -165,12 +146,7 @@ export default function KisiProfiliScreen() {
         </View>
       ) : person.phone ? (
         <View style={styles.contactRow}>
-          <Pressable style={styles.contactButton} onPress={() => callPerson(person.phone!)}>
-            <Text style={styles.contactButtonText}>📞 Ara</Text>
-          </Pressable>
-          <Pressable style={styles.contactButton} onPress={() => messagePerson(person.phone!)}>
-            <Text style={styles.contactButtonText}>💬 Mesaj Gönder</Text>
-          </Pressable>
+          <ContactOptions phone={person.phone} />
           <Pressable
             style={styles.editPhoneIcon}
             onPress={() => {
@@ -232,14 +208,7 @@ const styles = StyleSheet.create({
   leadBadge: { fontSize: 12, color: '#2563eb', fontWeight: '600', marginTop: 14 },
   empty: { fontSize: 14, color: '#9ca3af', marginTop: 24, textAlign: 'center' },
 
-  contactRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 16 },
-  contactButton: {
-    backgroundColor: '#eff6ff',
-    borderRadius: 999,
-    paddingHorizontal: 14,
-    paddingVertical: 9,
-  },
-  contactButtonText: { color: '#2563eb', fontSize: 13, fontWeight: '700' },
+  contactRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 16, flexWrap: 'wrap' },
   editPhoneIcon: { padding: 8 },
   editPhoneIconText: { fontSize: 15 },
   addPhoneButton: { marginTop: 16, alignSelf: 'flex-start' },
@@ -274,6 +243,4 @@ const styles = StyleSheet.create({
   rowMeta: { fontSize: 13, color: '#6b7280', marginTop: 6 },
   rowMetaOverdue: { color: '#dc2626', fontWeight: '700' },
   contactShortcutRow: { flexDirection: 'row', gap: 8, marginTop: 10 },
-  contactShortcut: { backgroundColor: '#fef2f2', borderRadius: 999, paddingHorizontal: 12, paddingVertical: 6 },
-  contactShortcutText: { color: '#dc2626', fontSize: 12, fontWeight: '700' },
 });

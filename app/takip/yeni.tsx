@@ -18,6 +18,7 @@ import { applyReminderLead } from '../../src/utils/date';
 import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
 import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
+import { updateWidgetSummary } from '../../src/services/widget';
 
 const TYPES = Object.keys(FOLLOW_UP_TYPE_LABELS) as FollowUpType[];
 
@@ -70,6 +71,8 @@ export default function YeniTakipScreen() {
       if (remindAtMs) {
         await scheduleMainReminder(db, followUp.id, remindAtMs);
       }
+
+      await updateWidgetSummary(db);
 
       if (dueAtMs) {
         const important = await isImportantFollowUp(db, { type, dueAt: dueAtMs, personId });

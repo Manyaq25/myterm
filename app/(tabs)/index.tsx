@@ -1,9 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FlatList, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { listFollowUps } from '../../src/db/queries';
+import { hasAnyFollowUp, listFollowUps } from '../../src/db/queries';
 import type { FollowUpWithPerson } from '../../src/types';
 import { FollowUpCard } from '../../src/components/FollowUpCard';
 import { EmptyState } from '../../src/components/EmptyState';
@@ -11,6 +11,8 @@ import { isOverdue } from '../../src/utils/date';
 import { completeFollowUp, removeFollowUp } from '../../src/services/followUpActions';
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
 import { SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
+import { isOnboardingSeen, markOnboardingSeen } from '../../src/services/onboarding';
+import { updateWidgetSummary } from '../../src/services/widget';
 import {
   acceptLateSuggestion,
   detectLatePersonSuggestions,
@@ -30,6 +32,7 @@ export default function HomeScreen() {
     setItems(rows);
     const suggestions = await detectLatePersonSuggestions(db);
     setSuggestion(suggestions[0] ?? null);
+    await updateWidgetSummary(db);
   }, [db]);
 
   useFocusEffect(
@@ -37,6 +40,19 @@ export default function HomeScreen() {
       load();
     }, [load])
   );
+
+  useEffect(() => {
+    (async () => {
+      if (await isOnboardingSeen()) return;
+      if (await hasAnyFollowUp(db)) {
+        // Var olan kullanıcı — daha önce takip oluşturmuş, onboarding'i hiç görmesin.
+        await markOnboardingSeen();
+        return;
+      }
+      router.push('/onboarding');
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const overdue = items.filter((i) => isOverdue(i.dueAt));
   const upcoming = items.filter((i) => !isOverdue(i.dueAt));

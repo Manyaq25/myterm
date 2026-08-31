@@ -23,6 +23,7 @@ import {
 } from 'expo-audio';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
+import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, type FollowUpSource } from '../../src/types';
@@ -31,16 +32,21 @@ import { applyReminderLead } from '../../src/utils/date';
 import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
 import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
+import { updateWidgetSummary } from '../../src/services/widget';
 
 interface Candidate extends ExtractedFollowUp {
   selected: boolean;
 }
 
-type Mode = 'text' | 'voice' | 'image';
+type Mode = 'text' | 'voice' | 'image' | 'pdf';
 
 // Bu eşiğin altındaki adaylar varsayılan olarak seçili gelmez — kullanıcı
 // kendisi gözden geçirip onaylamalı (gizlilik/doğruluk gereksinimi).
 const LOW_CONFIDENCE_THRESHOLD = 0.6;
+
+// Backend'deki MAX_BASE64_LENGTH (7MB) ile aynı — kullanıcıyı yüklemeden
+// önce uyarmak için burada da kontrol ediyoruz.
+const MAX_PDF_BASE64_LENGTH = 7 * 1024 * 1024;
 
 function toCandidates(results: ExtractedFollowUp[]): Candidate[] {
   return results.map((r) => ({ ...r, selected: r.confidence >= LOW_CONFIDENCE_THRESHOLD }));
@@ -84,6 +90,10 @@ export default function AiCikarScreen() {
   const [imageBase64, setImageBase64] = useState<string | null>(null);
   const [imageMediaType, setImageMediaType] = useState<ImageMediaType | null>(null);
   const [imageLoading, setImageLoading] = useState(false);
+
+  const [pdfName, setPdfName] = useState<string | null>(null);
+  const [pdfBase64, setPdfBase64] = useState<string | null>(null);
+  const [pdfLoading, setPdfLoading] = useState(false);
 
   useEffect(() => {
     if (params.mode === 'image') setMode('image');
@@ -217,6 +227,49 @@ export default function AiCikarScreen() {
     }
   }
 
+  async function handlePickPdf() {
+    setError(null);
+    const result = await DocumentPicker.getDocumentAsync({
+      type: 'application/pdf',
+      copyToCacheDirectory: true,
+    });
+    if (result.canceled || !result.assets[0]) return;
+    const asset = result.assets[0];
+    setPdfLoading(true);
+    setCandidates(null);
+    try {
+      const base64 = await FileSystem.readAsStringAsync(asset.uri, { encoding: 'base64' });
+      if (base64.length > MAX_PDF_BASE64_LENGTH) {
+        setError('Belge çok büyük. Daha küçük bir PDF dener misin?');
+        setPdfName(null);
+        setPdfBase64(null);
+        return;
+      }
+      setPdfName(asset.name);
+      setPdfBase64(base64);
+    } catch (e) {
+      setError('Belge okunamadı.');
+    } finally {
+      setPdfLoading(false);
+    }
+  }
+
+  async function handleExtractPdf() {
+    if (!pdfBase64 || loading) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const results = await aiProvider.extractFollowUpsFromPdf(pdfBase64);
+      setCandidates(toCandidates(results));
+      setCandidateSource('pdf');
+      setTranscript(null);
+    } catch (e) {
+      setError('Belge analizi başarısız oldu. Lütfen tekrar dene.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   function toggleCandidate(index: number) {
     setCandidates((prev) =>
       prev ? prev.map((c, i) => (i === index ? { ...c, selected: !c.selected } : c)) : prev
@@ -268,6 +321,8 @@ export default function AiCikarScreen() {
           }
         }
       }
+
+      await updateWidgetSummary(db);
 
       if (important.length > 0) {
         setImportantQueue(important);
@@ -324,6 +379,12 @@ export default function AiCikarScreen() {
             onPress={() => setMode('image')}
           >
             <Text style={[styles.modeTabText, mode === 'image' && styles.modeTabTextActive]}>Görsel</Text>
+          </Pressable>
+          <Pressable
+            style={[styles.modeTab, mode === 'pdf' && styles.modeTabActive]}
+            onPress={() => setMode('pdf')}
+          >
+            <Text style={[styles.modeTabText, mode === 'pdf' && styles.modeTabTextActive]}>Belge</Text>
           </Pressable>
         </View>
 
@@ -403,6 +464,36 @@ export default function AiCikarScreen() {
               style={[styles.extractButton, (!imageBase64 || loading) && styles.buttonDisabled]}
               onPress={handleExtractImage}
               disabled={!imageBase64 || loading}
+            >
+              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
+            </Pressable>
+          </>
+        )}
+
+        {mode === 'pdf' && (
+          <>
+            <Text style={styles.label}>Bir PDF belgesi seç</Text>
+            {pdfLoading ? (
+              <View style={styles.recordBox}>
+                <ActivityIndicator />
+                <Text style={styles.hint}>Belge yükleniyor…</Text>
+              </View>
+            ) : pdfName ? (
+              <View style={styles.imagePreviewBox}>
+                <Text style={styles.pdfNameText}>📄 {pdfName}</Text>
+                <Pressable style={styles.secondaryButton} onPress={handlePickPdf} disabled={loading}>
+                  <Text style={styles.secondaryButtonText}>Başka bir belge seç</Text>
+                </Pressable>
+              </View>
+            ) : (
+              <Pressable style={styles.pickImageButton} onPress={handlePickPdf} disabled={loading}>
+                <Text style={styles.pickImageButtonText}>📄 PDF seç</Text>
+              </Pressable>
+            )}
+            <Pressable
+              style={[styles.extractButton, (!pdfBase64 || loading) && styles.buttonDisabled]}
+              onPress={handleExtractPdf}
+              disabled={!pdfBase64 || loading}
             >
               {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
             </Pressable>
@@ -516,6 +607,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imagePreview: { width: '100%', height: 220, borderRadius: 8, backgroundColor: '#f3f4f6' },
+  pdfNameText: { fontSize: 15, fontWeight: '600', color: '#111827', textAlign: 'center' },
   secondaryButton: { marginTop: 12, paddingVertical: 8, paddingHorizontal: 16 },
   secondaryButtonText: { color: '#2563eb', fontSize: 14, fontWeight: '600' },
   recordBox: {

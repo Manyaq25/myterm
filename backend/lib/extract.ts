@@ -84,6 +84,9 @@ function buildSystemPrompt(nowISO: string, extraNote?: string): string {
 const IMAGE_NOTE =
   'Girdi bir ekran görüntüsü veya fotoğraftır (ör. mesajlaşma uygulaması, e-posta, not, ilan). Önce görseldeki metni oku. Bir sohbet ekranıysa, mesajı gönderen taraf muhtemelen kullanıcının kendisi değildir; kullanıcının verdiği sözleri promise_made, karşı taraftan/kullanıcıdan beklenenleri promise_expected veya waiting_on olarak sınıflandır ve emin olmadığında bunu netleştirmeye çalış.';
 
+const PDF_NOTE =
+  'Girdi bir PDF belgesidir (ör. resmi yazı, sözleşme, form, ilan, takvim/plan). Belgeyi baştan sona oku. Belgede birden fazla tarihe bağlı madde/aşama geçiyorsa (ör. "18 Ağustos: Başvuru", "25 Ağustos: Evrak teslimi"), HER BİRİNİ ayrı bir aday olarak çıkar — tek bir maddede birleştirme. Belgenin geneliyle ilgili ama somut bir eylem/tarih içermeyen bilgileri (ör. sadece başlık, açıklama metni) aday olarak çıkarma.';
+
 export class RefusalError extends Error {}
 
 function extractToolResult(response: Anthropic.Message): ExtractedCandidate[] {
@@ -116,6 +119,34 @@ export async function extractFollowUpsFromText(
     tools: [EXTRACT_TOOL],
     tool_choice: { type: 'tool', name: 'record_follow_ups' },
     messages: [{ role: 'user', content: text }],
+  });
+
+  return extractToolResult(response);
+}
+
+export async function extractFollowUpsFromPdf(
+  client: Anthropic,
+  model: string,
+  base64Pdf: string
+): Promise<ExtractedCandidate[]> {
+  const nowISO = new Date().toISOString();
+
+  const response = await client.messages.create({
+    model,
+    max_tokens: 2048,
+    output_config: { effort: 'high' },
+    system: buildSystemPrompt(nowISO, PDF_NOTE),
+    tools: [EXTRACT_TOOL],
+    tool_choice: { type: 'tool', name: 'record_follow_ups' },
+    messages: [
+      {
+        role: 'user',
+        content: [
+          { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64Pdf } },
+          { type: 'text', text: 'Bu belgedeki takip edilmesi gereken maddeleri çıkar.' },
+        ],
+      },
+    ],
   });
 
   return extractToolResult(response);
