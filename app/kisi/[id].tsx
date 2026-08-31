@@ -26,10 +26,25 @@ function FollowUpRow({ item, phone }: { item: FollowUp; phone?: string | null })
   const router = useRouter();
   const overdue = isOpenOverdue(item);
   const showContactShortcut = overdue && item.type === 'waiting_on' && !!phone;
+  const accessibilityLabel = [
+    FOLLOW_UP_TYPE_LABELS[item.type],
+    item.title,
+    item.status === 'done' || item.status === 'cancelled' ? FOLLOW_UP_STATUS_LABELS[item.status] : null,
+    item.dueAt !== null
+      ? overdue
+        ? `Gecikmiş, son tarih ${formatDueDate(item.dueAt)}`
+        : `Son tarih ${formatDueDate(item.dueAt)}`
+      : null,
+  ]
+    .filter(Boolean)
+    .join('. ');
   return (
     <Pressable
       style={[styles.row, overdue && styles.rowOverdue]}
       onPress={() => router.push(`/takip/${item.id}`)}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint="Detayları görmek için dokun"
     >
       <View style={styles.rowHeader}>
         <Text style={styles.rowType}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
@@ -138,11 +153,17 @@ export default function KisiProfiliScreen() {
             onChangeText={setPhoneInput}
             keyboardType="phone-pad"
             autoFocus
+            accessibilityLabel="Telefon numarası"
           />
-          <Pressable style={styles.phoneSaveButton} onPress={savePhone}>
+          <Pressable style={styles.phoneSaveButton} onPress={savePhone} accessibilityRole="button" accessibilityLabel="Kaydet">
             <Text style={styles.phoneSaveButtonText}>Kaydet</Text>
           </Pressable>
-          <Pressable style={styles.phoneCancelButton} onPress={() => setEditingPhone(false)}>
+          <Pressable
+            style={styles.phoneCancelButton}
+            onPress={() => setEditingPhone(false)}
+            accessibilityRole="button"
+            accessibilityLabel="İptal"
+          >
             <Text style={styles.phoneCancelButtonText}>İptal</Text>
           </Pressable>
         </View>
@@ -155,6 +176,8 @@ export default function KisiProfiliScreen() {
               setPhoneInput(person.phone ?? '');
               setEditingPhone(true);
             }}
+            accessibilityRole="button"
+            accessibilityLabel="Telefon numarasını düzenle"
           >
             <Text style={styles.editPhoneIconText}>✏️</Text>
           </Pressable>
@@ -166,6 +189,8 @@ export default function KisiProfiliScreen() {
             setPhoneInput('');
             setEditingPhone(true);
           }}
+          accessibilityRole="button"
+          accessibilityLabel="Telefon numarası ekle"
         >
           <Text style={styles.addPhoneButtonText}>+ Telefon numarası ekle</Text>
         </Pressable>

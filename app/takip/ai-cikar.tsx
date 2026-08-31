@@ -361,28 +361,40 @@ export default function AiCikarScreen() {
           </View>
         )}
 
-        <View style={styles.modeRow}>
+        <View style={styles.modeRow} accessibilityRole="radiogroup">
           <Pressable
             style={[styles.modeTab, mode === 'text' && styles.modeTabActive]}
             onPress={() => setMode('text')}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: mode === 'text' }}
+            accessibilityLabel="Metin modu"
           >
             <Text style={[styles.modeTabText, mode === 'text' && styles.modeTabTextActive]}>Metin</Text>
           </Pressable>
           <Pressable
             style={[styles.modeTab, mode === 'voice' && styles.modeTabActive]}
             onPress={() => setMode('voice')}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: mode === 'voice' }}
+            accessibilityLabel="Sesli mod"
           >
             <Text style={[styles.modeTabText, mode === 'voice' && styles.modeTabTextActive]}>Sesli</Text>
           </Pressable>
           <Pressable
             style={[styles.modeTab, mode === 'image' && styles.modeTabActive]}
             onPress={() => setMode('image')}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: mode === 'image' }}
+            accessibilityLabel="Görsel modu"
           >
             <Text style={[styles.modeTabText, mode === 'image' && styles.modeTabTextActive]}>Görsel</Text>
           </Pressable>
           <Pressable
             style={[styles.modeTab, mode === 'pdf' && styles.modeTabActive]}
             onPress={() => setMode('pdf')}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: mode === 'pdf' }}
+            accessibilityLabel="Belge modu"
           >
             <Text style={[styles.modeTabText, mode === 'pdf' && styles.modeTabTextActive]}>Belge</Text>
           </Pressable>
@@ -398,11 +410,15 @@ export default function AiCikarScreen() {
               onChangeText={setText}
               multiline
               editable={!loading}
+              accessibilityLabel="Notunu yapıştır veya yaz"
             />
             <Pressable
               style={[styles.extractButton, (!text.trim() || loading) && styles.buttonDisabled]}
               onPress={handleExtractText}
               disabled={!text.trim() || loading}
+              accessibilityRole="button"
+              accessibilityLabel="Çıkar"
+              accessibilityState={{ disabled: !text.trim() || loading, busy: loading }}
             >
               {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
             </Pressable>
@@ -413,13 +429,26 @@ export default function AiCikarScreen() {
           <>
             <Text style={styles.label}>Bir ses notu kaydet</Text>
             <View style={styles.recordBox}>
-              <Text style={styles.recordTimer}>{formatDuration(recorderState.durationMillis)}</Text>
+              <Text style={styles.recordTimer} accessibilityLabel={`Kayıt süresi ${formatDuration(recorderState.durationMillis)}`}>
+                {formatDuration(recorderState.durationMillis)}
+              </Text>
               {!recorderState.isRecording ? (
-                <Pressable style={styles.recordButton} onPress={handleStartRecording} disabled={loading}>
+                <Pressable
+                  style={styles.recordButton}
+                  onPress={handleStartRecording}
+                  disabled={loading}
+                  accessibilityRole="button"
+                  accessibilityLabel={hasRecording ? 'Tekrar kaydet' : 'Kaydı başlat'}
+                >
                   <Text style={styles.recordButtonText}>{hasRecording ? '● Tekrar kaydet' : '● Kaydı başlat'}</Text>
                 </Pressable>
               ) : (
-                <Pressable style={[styles.recordButton, styles.recordButtonStop]} onPress={handleStopRecording}>
+                <Pressable
+                  style={[styles.recordButton, styles.recordButtonStop]}
+                  onPress={handleStopRecording}
+                  accessibilityRole="button"
+                  accessibilityLabel="Kaydı durdur"
+                >
                   <Text style={styles.recordButtonText}>■ Kaydı durdur</Text>
                 </Pressable>
               )}
@@ -428,6 +457,9 @@ export default function AiCikarScreen() {
               style={[styles.extractButton, (!hasRecording || loading) && styles.buttonDisabled]}
               onPress={handleExtractVoice}
               disabled={!hasRecording || loading}
+              accessibilityRole="button"
+              accessibilityLabel="Çıkar"
+              accessibilityState={{ disabled: !hasRecording || loading, busy: loading }}
             >
               {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
             </Pressable>
@@ -450,13 +482,30 @@ export default function AiCikarScreen() {
               </View>
             ) : imagePreviewUri ? (
               <View style={styles.imagePreviewBox}>
-                <Image source={{ uri: imagePreviewUri }} style={styles.imagePreview} resizeMode="contain" />
-                <Pressable style={styles.secondaryButton} onPress={handlePickImage} disabled={loading}>
+                <Image
+                  source={{ uri: imagePreviewUri }}
+                  style={styles.imagePreview}
+                  resizeMode="contain"
+                  accessibilityLabel="Seçilen görsel önizlemesi"
+                />
+                <Pressable
+                  style={styles.secondaryButton}
+                  onPress={handlePickImage}
+                  disabled={loading}
+                  accessibilityRole="button"
+                  accessibilityLabel="Başka bir görsel seç"
+                >
                   <Text style={styles.secondaryButtonText}>Başka bir görsel seç</Text>
                 </Pressable>
               </View>
             ) : (
-              <Pressable style={styles.pickImageButton} onPress={handlePickImage} disabled={loading}>
+              <Pressable
+                style={styles.pickImageButton}
+                onPress={handlePickImage}
+                disabled={loading}
+                accessibilityRole="button"
+                accessibilityLabel="Galeriden görsel seç"
+              >
                 <Text style={styles.pickImageButtonText}>🖼️ Galeriden seç</Text>
               </Pressable>
             )}
@@ -464,6 +513,9 @@ export default function AiCikarScreen() {
               style={[styles.extractButton, (!imageBase64 || loading) && styles.buttonDisabled]}
               onPress={handleExtractImage}
               disabled={!imageBase64 || loading}
+              accessibilityRole="button"
+              accessibilityLabel="Çıkar"
+              accessibilityState={{ disabled: !imageBase64 || loading, busy: loading }}
             >
               {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
             </Pressable>
@@ -481,12 +533,24 @@ export default function AiCikarScreen() {
             ) : pdfName ? (
               <View style={styles.imagePreviewBox}>
                 <Text style={styles.pdfNameText}>📄 {pdfName}</Text>
-                <Pressable style={styles.secondaryButton} onPress={handlePickPdf} disabled={loading}>
+                <Pressable
+                  style={styles.secondaryButton}
+                  onPress={handlePickPdf}
+                  disabled={loading}
+                  accessibilityRole="button"
+                  accessibilityLabel="Başka bir belge seç"
+                >
                   <Text style={styles.secondaryButtonText}>Başka bir belge seç</Text>
                 </Pressable>
               </View>
             ) : (
-              <Pressable style={styles.pickImageButton} onPress={handlePickPdf} disabled={loading}>
+              <Pressable
+                style={styles.pickImageButton}
+                onPress={handlePickPdf}
+                disabled={loading}
+                accessibilityRole="button"
+                accessibilityLabel="PDF seç"
+              >
                 <Text style={styles.pickImageButtonText}>📄 PDF seç</Text>
               </Pressable>
             )}
@@ -494,6 +558,9 @@ export default function AiCikarScreen() {
               style={[styles.extractButton, (!pdfBase64 || loading) && styles.buttonDisabled]}
               onPress={handleExtractPdf}
               disabled={!pdfBase64 || loading}
+              accessibilityRole="button"
+              accessibilityLabel="Çıkar"
+              accessibilityState={{ disabled: !pdfBase64 || loading, busy: loading }}
             >
               {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
             </Pressable>
@@ -507,8 +574,25 @@ export default function AiCikarScreen() {
             <Text style={styles.resultsTitle}>
               {candidates.length === 0 ? 'Herhangi bir takip maddesi bulunamadı.' : 'Bulunanlar — kaydetmeden önce gözden geçir'}
             </Text>
-            {candidates.map((c, i) => (
-              <Pressable key={i} style={styles.candidateCard} onPress={() => toggleCandidate(i)}>
+            {candidates.map((c, i) => {
+              const candidateLabel = [
+                FOLLOW_UP_TYPE_LABELS[c.type],
+                c.title,
+                c.personName ? `Kişi: ${c.personName}` : null,
+                c.dueAtISO ? `Tarih: ${new Date(c.dueAtISO).toLocaleString('tr-TR')}` : null,
+                c.confidence < LOW_CONFIDENCE_THRESHOLD ? 'Emin değilim, gözden geçir' : null,
+              ]
+                .filter(Boolean)
+                .join('. ');
+              return (
+              <Pressable
+                key={i}
+                style={styles.candidateCard}
+                onPress={() => toggleCandidate(i)}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: c.selected }}
+                accessibilityLabel={candidateLabel}
+              >
                 <View style={[styles.checkbox, c.selected && styles.checkboxChecked]}>
                   {c.selected && <Text style={styles.checkboxMark}>✓</Text>}
                 </View>
@@ -527,13 +611,17 @@ export default function AiCikarScreen() {
                   {c.note && <Text style={styles.candidateNote}>💬 {c.note}</Text>}
                 </View>
               </Pressable>
-            ))}
+              );
+            })}
 
             {candidates.length > 0 && (
               <Pressable
                 style={[styles.saveButton, saving && styles.buttonDisabled]}
                 onPress={handleSave}
                 disabled={saving}
+                accessibilityRole="button"
+                accessibilityLabel={`Seçilenleri kaydet (${candidates.filter((c) => c.selected).length})`}
+                accessibilityState={{ disabled: saving, busy: saving }}
               >
                 <Text style={styles.saveButtonText}>
                   {saving ? 'Kaydediliyor…' : `Seçilenleri kaydet (${candidates.filter((c) => c.selected).length})`}

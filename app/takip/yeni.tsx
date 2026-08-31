@@ -102,22 +102,30 @@ export default function YeniTakipScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.label}>Ne takip ediyorsun?</Text>
+        <Text style={styles.label} nativeID="label-title">
+          Ne takip ediyorsun?
+        </Text>
         <TextInput
           style={styles.input}
           placeholder="ör. Ahmet'e teklifi gönder"
           value={title}
           onChangeText={setTitle}
           autoFocus
+          accessibilityLabel="Ne takip ediyorsun?"
         />
 
-        <Text style={styles.label}>Tür</Text>
-        <View style={styles.typeRow}>
+        <Text style={styles.label} nativeID="label-type">
+          Tür
+        </Text>
+        <View style={styles.typeRow} accessibilityRole="radiogroup" accessibilityLabelledBy="label-type">
           {TYPES.map((t) => (
             <Pressable
               key={t}
               onPress={() => setType(t)}
               style={[styles.typeChip, type === t && styles.typeChipActive]}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: type === t }}
+              accessibilityLabel={FOLLOW_UP_TYPE_LABELS[t]}
             >
               <Text style={[styles.typeChipText, type === t && styles.typeChipTextActive]}>
                 {FOLLOW_UP_TYPE_LABELS[t]}
@@ -127,7 +135,13 @@ export default function YeniTakipScreen() {
         </View>
 
         <Text style={styles.label}>Kiminle ilgili? (opsiyonel)</Text>
-        <TextInput style={styles.input} placeholder="ör. Ahmet" value={personName} onChangeText={setPersonName} />
+        <TextInput
+          style={styles.input}
+          placeholder="ör. Ahmet"
+          value={personName}
+          onChangeText={setPersonName}
+          accessibilityLabel="Kiminle ilgili? (opsiyonel)"
+        />
 
         <Text style={styles.label}>Not (opsiyonel)</Text>
         <TextInput
@@ -136,10 +150,18 @@ export default function YeniTakipScreen() {
           value={detail}
           onChangeText={setDetail}
           multiline
+          accessibilityLabel="Not (opsiyonel)"
         />
 
         <Text style={styles.label}>Hatırlatma zamanı (opsiyonel)</Text>
-        <Pressable style={styles.input} onPress={() => setShowPicker(true)}>
+        <Pressable
+          style={styles.input}
+          onPress={() => setShowPicker(true)}
+          accessibilityRole="button"
+          accessibilityLabel={
+            dueAt ? `Hatırlatma zamanı: ${dueAt.toLocaleString('tr-TR')}` : 'Hatırlatma zamanı seç'
+          }
+        >
           <Text style={{ color: dueAt ? '#111827' : '#9ca3af' }}>
             {dueAt ? dueAt.toLocaleString('tr-TR') : 'Tarih ve saat seç'}
           </Text>
@@ -159,6 +181,9 @@ export default function YeniTakipScreen() {
           style={[styles.saveButton, (!title.trim() || saving) && styles.saveButtonDisabled]}
           onPress={handleSave}
           disabled={!title.trim() || saving}
+          accessibilityRole="button"
+          accessibilityLabel="Kaydet"
+          accessibilityState={{ disabled: !title.trim() || saving }}
         >
           <Text style={styles.saveButtonText}>{saving ? 'Kaydediliyor…' : 'Kaydet'}</Text>
         </Pressable>

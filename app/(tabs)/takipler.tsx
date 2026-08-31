@@ -92,11 +92,14 @@ export default function TakiplerScreen() {
           onChangeText={setQuery}
           clearButtonMode="while-editing"
           editable={!selectionMode}
+          accessibilityLabel="Kişi, başlık veya not ara"
         />
         {filteredItems.length > 0 && (
           <Pressable
             style={styles.selectToggle}
             onPress={() => (selectionMode ? exitSelectionMode() : setSelectionMode(true))}
+            accessibilityRole="button"
+            accessibilityLabel={selectionMode ? 'Seçim modunu kapat' : 'Toplu seçim modunu aç'}
           >
             <Text style={styles.selectToggleText}>{selectionMode ? 'İptal' : 'Seç'}</Text>
           </Pressable>
@@ -104,22 +107,31 @@ export default function TakiplerScreen() {
       </View>
       {selectionMode && (
         <View style={styles.selectionBar}>
-          <Pressable onPress={toggleSelectAll}>
+          <Pressable
+            onPress={toggleSelectAll}
+            accessibilityRole="button"
+            accessibilityLabel={selectedIds.size === filteredItems.length ? 'Seçimi kaldır' : 'Tümünü seç'}
+          >
             <Text style={styles.selectionBarLink}>
               {selectedIds.size === filteredItems.length ? 'Seçimi kaldır' : 'Tümünü seç'}
             </Text>
           </Pressable>
-          <Text style={styles.selectionBarCount}>{selectedIds.size} seçili</Text>
+          <Text style={styles.selectionBarCount} accessibilityLiveRegion="polite">
+            {selectedIds.size} seçili
+          </Text>
           <Pressable
             style={[styles.selectionDeleteButton, selectedIds.size === 0 && styles.buttonDisabled]}
             onPress={handleBulkDelete}
             disabled={selectedIds.size === 0}
+            accessibilityRole="button"
+            accessibilityLabel={`Seçilen ${selectedIds.size} kaydı sil`}
+            accessibilityState={{ disabled: selectedIds.size === 0 }}
           >
             <Text style={styles.selectionDeleteButtonText}>Sil</Text>
           </Pressable>
         </View>
       )}
-      <View style={styles.filterRow}>
+      <View style={styles.filterRow} accessibilityRole="radiogroup">
         {FILTERS.map((f, idx) => (
           <Pressable
             key={f.label}
@@ -128,6 +140,9 @@ export default function TakiplerScreen() {
               exitSelectionMode();
             }}
             style={[styles.filterChip, idx === filterIndex && styles.filterChipActive]}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: idx === filterIndex }}
+            accessibilityLabel={f.label}
           >
             <Text style={[styles.filterText, idx === filterIndex && styles.filterTextActive]}>{f.label}</Text>
           </Pressable>

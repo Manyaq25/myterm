@@ -16,16 +16,16 @@ export function SmartReminderPrompt({ visible, title, onChoose }: Props) {
           <Text style={styles.subtitle}>
             "{title}" için 1 gün önce ve/veya aynı gün sabah da hatırlatayım mı?
           </Text>
-          <Pressable style={styles.option} onPress={() => onChoose('day_before')}>
+          <Pressable style={styles.option} onPress={() => onChoose('day_before')} accessibilityRole="button" accessibilityLabel="1 gün önce">
             <Text style={styles.optionText}>1 gün önce</Text>
           </Pressable>
-          <Pressable style={styles.option} onPress={() => onChoose('morning')}>
+          <Pressable style={styles.option} onPress={() => onChoose('morning')} accessibilityRole="button" accessibilityLabel="Aynı gün sabah">
             <Text style={styles.optionText}>Aynı gün sabah</Text>
           </Pressable>
-          <Pressable style={styles.option} onPress={() => onChoose('both')}>
+          <Pressable style={styles.option} onPress={() => onChoose('both')} accessibilityRole="button" accessibilityLabel="İkisi de">
             <Text style={styles.optionText}>İkisi de</Text>
           </Pressable>
-          <Pressable style={styles.decline} onPress={() => onChoose('none')}>
+          <Pressable style={styles.decline} onPress={() => onChoose('none')} accessibilityRole="button" accessibilityLabel="Hayır, gerek yok">
             <Text style={styles.declineText}>Hayır, gerek yok</Text>
           </Pressable>
         </View>

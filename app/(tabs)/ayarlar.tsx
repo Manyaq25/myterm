@@ -82,6 +82,7 @@ export default function AyarlarScreen() {
                 setNotificationsGranted(false);
               }
             }}
+            accessibilityLabel="Hatırlatma bildirimleri"
           />
         </View>
         <Text style={styles.hint}>
@@ -102,6 +103,7 @@ export default function AyarlarScreen() {
                 Alert.alert('İzin gerekli', 'Bu özellik için bildirim izni ve galeri izni gerekiyor.');
               }
             }}
+            accessibilityLabel="Ekran görüntüsü önerisi"
           />
         </View>
         <Text style={styles.hint}>
@@ -114,7 +116,14 @@ export default function AyarlarScreen() {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Veri</Text>
-        <Pressable style={styles.dataButton} onPress={handleExport} disabled={exporting}>
+        <Pressable
+          style={styles.dataButton}
+          onPress={handleExport}
+          disabled={exporting}
+          accessibilityRole="button"
+          accessibilityLabel="Verilerimi Dışa Aktar"
+          accessibilityState={{ disabled: exporting, busy: exporting }}
+        >
           {exporting ? (
             <ActivityIndicator color="#2563eb" />
           ) : (
@@ -130,6 +139,9 @@ export default function AyarlarScreen() {
           style={[styles.dataButton, styles.dangerButton]}
           onPress={handleDeleteAll}
           disabled={deleting}
+          accessibilityRole="button"
+          accessibilityLabel="Hesabımı ve Tüm Verilerimi Sil"
+          accessibilityState={{ disabled: deleting, busy: deleting }}
         >
           {deleting ? (
             <ActivityIndicator color="#dc2626" />
@@ -165,6 +177,7 @@ export default function AyarlarScreen() {
                 setAppLockOn(false);
               }
             }}
+            accessibilityLabel="Uygulama Kilidi"
           />
         </View>
         <Text style={styles.hint}>

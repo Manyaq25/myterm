@@ -18,10 +18,10 @@ export function LateSuggestionCard({ suggestion, onAccept, onDismiss }: Props) {
           Daha erken hatırlatmamı ister misin?
         </Text>
         <View style={styles.actions}>
-          <Pressable style={styles.acceptButton} onPress={onAccept}>
+          <Pressable style={styles.acceptButton} onPress={onAccept} accessibilityRole="button" accessibilityLabel="Evet, daha erken hatırlat">
             <Text style={styles.acceptButtonText}>Evet, daha erken hatırlat</Text>
           </Pressable>
-          <Pressable style={styles.dismissButton} onPress={onDismiss}>
+          <Pressable style={styles.dismissButton} onPress={onDismiss} accessibilityRole="button" accessibilityLabel="Hayır, teşekkürler">
             <Text style={styles.dismissButtonText}>Hayır, teşekkürler</Text>
           </Pressable>
         </View>

@@ -43,6 +43,8 @@ export function ContactOptions({ phone, message, compact }: Props) {
       <Pressable
         style={[styles.button, compact && styles.buttonCompact]}
         onPress={() => openOrAlert(links.tel, 'Arama başlatılamadı.')}
+        accessibilityRole="button"
+        accessibilityLabel="Ara"
       >
         <Ionicons name="call" size={size} color="#2563eb" />
         {!compact && <Text style={styles.buttonText}>Ara</Text>}
@@ -50,6 +52,8 @@ export function ContactOptions({ phone, message, compact }: Props) {
       <Pressable
         style={[styles.button, compact && styles.buttonCompact]}
         onPress={() => openOrAlert(links.sms, 'Mesaj uygulaması açılamadı.')}
+        accessibilityRole="button"
+        accessibilityLabel="Mesaj gönder"
       >
         <Ionicons name="chatbubble-ellipses" size={size} color="#2563eb" />
         {!compact && <Text style={styles.buttonText}>Mesaj</Text>}
@@ -58,6 +62,8 @@ export function ContactOptions({ phone, message, compact }: Props) {
         <Pressable
           style={[styles.button, styles.whatsappButton, compact && styles.buttonCompact]}
           onPress={() => openOrAlert(links.whatsapp, 'WhatsApp açılamadı.')}
+          accessibilityRole="button"
+          accessibilityLabel="WhatsApp'ta mesaj gönder"
         >
           <FontAwesome5 name="whatsapp" size={size} color="#25D366" />
           {!compact && <Text style={[styles.buttonText, styles.whatsappText]}>WhatsApp</Text>}
@@ -67,6 +73,8 @@ export function ContactOptions({ phone, message, compact }: Props) {
         <Pressable
           style={[styles.button, styles.telegramButton, compact && styles.buttonCompact]}
           onPress={() => openOrAlert(links.telegram, 'Telegram açılamadı.')}
+          accessibilityRole="button"
+          accessibilityLabel="Telegram'da mesaj gönder"
         >
           <FontAwesome5 name="telegram" size={size} color="#229ED9" />
           {!compact && <Text style={[styles.buttonText, styles.telegramText]}>Telegram</Text>}

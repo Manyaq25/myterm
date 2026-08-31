@@ -67,7 +67,12 @@ export default function TakipDetayScreen() {
         <Text style={styles.title}>{item.title}</Text>
 
         {item.personName && item.personId && (
-          <Pressable style={styles.personRow} onPress={() => router.push(`/kisi/${item.personId}`)}>
+          <Pressable
+            style={styles.personRow}
+            onPress={() => router.push(`/kisi/${item.personId}`)}
+            accessibilityRole="button"
+            accessibilityLabel={`${item.personName} profilini aç`}
+          >
             <Avatar name={item.personName} size={26} />
             <Text style={styles.personText}>{item.personName}</Text>
           </Pressable>
@@ -80,12 +85,22 @@ export default function TakipDetayScreen() {
       </View>
 
       {item.status === 'open' && (
-        <Pressable style={styles.doneButton} onPress={markDone}>
+        <Pressable
+          style={styles.doneButton}
+          onPress={markDone}
+          accessibilityRole="button"
+          accessibilityLabel="Tamamlandı olarak işaretle"
+        >
           <Text style={styles.doneButtonText}>Tamamlandı olarak işaretle</Text>
         </Pressable>
       )}
 
-      <Pressable style={styles.deleteButton} onPress={handleDelete}>
+      <Pressable
+        style={styles.deleteButton}
+        onPress={handleDelete}
+        accessibilityRole="button"
+        accessibilityLabel="Sil"
+      >
         <Text style={styles.deleteButtonText}>Sil</Text>
       </Pressable>
     </ScrollView>

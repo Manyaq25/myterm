@@ -29,6 +29,32 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
   const overdue = isOverdue(item.dueAt) && item.status === 'open';
   const canComplete = onComplete && (item.status === 'open' || item.status === 'snoozed');
 
+  const accessibilityLabel = [
+    FOLLOW_UP_TYPE_LABELS[item.type],
+    item.title,
+    item.personName ? `Kişi: ${item.personName}` : null,
+    item.dueAt !== null
+      ? overdue
+        ? `Gecikmiş, son tarih ${formatDueDate(item.dueAt)}`
+        : `Son tarih ${formatDueDate(item.dueAt)}`
+      : null,
+  ]
+    .filter(Boolean)
+    .join('. ');
+
+  // VoiceOver kullanıcıları Swipeable'ın kaydırma jestini kolayca
+  // keşfedemeyebilir/gerçekleştiremeyebilir — aynı aksiyonları özel
+  // erişilebilirlik eylemleri (rotor) olarak da sunuyoruz.
+  const accessibilityActions = [
+    ...(canComplete ? [{ name: 'complete', label: 'Tamamlandı olarak işaretle' }] : []),
+    ...(onDelete ? [{ name: 'delete', label: 'Sil' }] : []),
+  ];
+
+  function handleAccessibilityAction(event: { nativeEvent: { actionName: string } }) {
+    if (event.nativeEvent.actionName === 'complete') onComplete?.();
+    if (event.nativeEvent.actionName === 'delete') onDelete?.();
+  }
+
   const cardBody = (
     <>
       <View style={styles.headerRow}>
@@ -49,6 +75,12 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
       style={[styles.card, overdue && styles.cardOverdue]}
       onLayout={(e) => setCardHeight(e.nativeEvent.layout.height)}
       onPress={() => (selectionMode ? onToggleSelect?.() : router.push(`/takip/${item.id}`))}
+      accessibilityRole={selectionMode ? 'checkbox' : 'button'}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint={selectionMode ? undefined : 'Detayları görmek için dokun'}
+      accessibilityState={selectionMode ? { checked: !!selected } : undefined}
+      accessibilityActions={selectionMode ? undefined : accessibilityActions}
+      onAccessibilityAction={selectionMode ? undefined : handleAccessibilityAction}
     >
       {selectionMode ? (
         <View style={styles.selectableRow}>
@@ -83,6 +115,8 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
                       swipeableRef.current?.close();
                       onComplete?.();
                     }}
+                    accessibilityRole="button"
+                    accessibilityLabel="Tamamlandı olarak işaretle"
                   >
                     <Text style={styles.actionText}>✓ Tamamlandı</Text>
                   </Pressable>
@@ -100,6 +134,8 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
                       swipeableRef.current?.close();
                       onDelete?.();
                     }}
+                    accessibilityRole="button"
+                    accessibilityLabel="Sil"
                   >
                     <Text style={styles.actionText}>Sil</Text>
                   </Pressable>

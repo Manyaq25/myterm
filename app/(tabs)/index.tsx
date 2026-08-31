@@ -76,13 +76,28 @@ export default function HomeScreen() {
         ListHeaderComponent={
           <>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.quickLinksRow}>
-              <Pressable style={styles.quickLink} onPress={() => router.push('/gorunum/bekliyorum')}>
+              <Pressable
+                style={styles.quickLink}
+                onPress={() => router.push('/gorunum/bekliyorum')}
+                accessibilityRole="button"
+                accessibilityLabel="Neyi Bekliyorum? görünümünü aç"
+              >
                 <Text style={styles.quickLinkText}>🔎 Neyi Bekliyorum?</Text>
               </Pressable>
-              <Pressable style={styles.quickLink} onPress={() => router.push('/gorunum/soz-verdim')}>
+              <Pressable
+                style={styles.quickLink}
+                onPress={() => router.push('/gorunum/soz-verdim')}
+                accessibilityRole="button"
+                accessibilityLabel="Kime Söz Verdim? görünümünü aç"
+              >
                 <Text style={styles.quickLinkText}>🤝 Kime Söz Verdim?</Text>
               </Pressable>
-              <Pressable style={styles.quickLink} onPress={() => router.push('/asistan')}>
+              <Pressable
+                style={styles.quickLink}
+                onPress={() => router.push('/asistan')}
+                accessibilityRole="button"
+                accessibilityLabel="AI Asistan'ı aç"
+              >
                 <Text style={styles.quickLinkText}>💬 AI Asistan</Text>
               </Pressable>
             </ScrollView>
@@ -123,10 +138,21 @@ export default function HomeScreen() {
           />
         )}
       />
-      <Pressable style={styles.aiFab} onPress={() => router.push('/takip/ai-cikar')}>
+      <Pressable
+        style={styles.aiFab}
+        onPress={() => router.push('/takip/ai-cikar')}
+        accessibilityRole="button"
+        accessibilityLabel="AI ile takip çıkar"
+        accessibilityHint="Metin, ses veya görselden otomatik takip maddesi çıkarır"
+      >
         <Text style={styles.aiFabText}>AI</Text>
       </Pressable>
-      <Pressable style={styles.fab} onPress={() => router.push('/takip/yeni')}>
+      <Pressable
+        style={styles.fab}
+        onPress={() => router.push('/takip/yeni')}
+        accessibilityRole="button"
+        accessibilityLabel="Yeni takip ekle"
+      >
         <Text style={styles.fabText}>+</Text>
       </Pressable>
     </SafeAreaView>
