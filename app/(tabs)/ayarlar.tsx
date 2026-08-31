@@ -54,15 +54,16 @@ export default function AyarlarScreen() {
               const result = await setScreenshotSuggestionEnabled(value);
               setScreenshotSuggestionsOn(result);
               if (value && !result) {
-                Alert.alert('İzin gerekli', 'Bu özellik için bildirim izni (ve Android’de galeri izni) gerekiyor.');
+                Alert.alert('İzin gerekli', 'Bu özellik için bildirim izni ve galeri izni gerekiyor.');
               }
             }}
           />
         </View>
         <Text style={styles.hint}>
-          Açarsan, ekran görüntüsü aldığında sana bir bildirimle sorarız — "takip listesine
-          eklememi ister misin?". Sadece "evet" dersen o görsel gözden geçirmen için açılır;
-          onaylamadan hiçbir görsel otomatik taranmaz veya AI'ya gönderilmez.
+          Açarsan, ekran görüntüsü aldığında (uygulama açıkken veya başka bir uygulamadan
+          buraya döndüğünde) sana bir bildirimle sorarız — "takip listesine eklememi ister
+          misin?". Sadece "evet" dersen o görsel gözden geçirmen için açılır; onaylamadan
+          hiçbir görsel otomatik taranmaz veya AI'ya gönderilmez.
         </Text>
       </View>
 
