@@ -9,6 +9,7 @@ import { Avatar } from '../../src/components/Avatar';
 import { ContactOptions } from '../../src/components/ContactOptions';
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
 import { buildReminderMessage } from '../../src/services/contact';
+import { buildPersonInsights, formatInsightText } from '../../src/services/personInsights';
 import { CARD_MARGIN_BOTTOM, CARD_SURFACE, SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
 import {
   acceptLateSuggestion,
@@ -116,6 +117,7 @@ export default function KisiProfiliScreen() {
   const history = followUps
     .filter((i) => i.status === 'done' || i.status === 'cancelled')
     .sort((a, b) => (b.completedAt ?? b.updatedAt) - (a.completedAt ?? a.updatedAt));
+  const insights = buildPersonInsights(followUps);
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
@@ -173,6 +175,21 @@ export default function KisiProfiliScreen() {
         <Text style={styles.leadBadge}>⏱️ Hatırlatmalar bu kişi için daha erken gönderiliyor</Text>
       )}
 
+      {insights.length > 0 && (
+        <View style={styles.insightsCard}>
+          <Text style={styles.insightsLabel}>📊 Örüntü gözlemi</Text>
+          {insights.map((insight) => (
+            <Text key={insight.type} style={styles.insightsText}>
+              {formatInsightText(insight)}
+            </Text>
+          ))}
+          <Text style={styles.insightsFootnote}>
+            Bu, geçmiş verilerinden çıkarılan basit bir istatistik — gizli bir profil değil, sadece
+            kendi kayıtlarının bir özeti.
+          </Text>
+        </View>
+      )}
+
       {suggestion && (
         <LateSuggestionCard
           suggestion={suggestion}
@@ -206,6 +223,15 @@ const styles = StyleSheet.create({
   name: { fontSize: 24, fontWeight: '700', color: '#111827' },
   note: { fontSize: 14, color: '#6b7280', marginTop: 4 },
   leadBadge: { fontSize: 12, color: '#2563eb', fontWeight: '600', marginTop: 14 },
+  insightsCard: {
+    backgroundColor: '#f5f3ff',
+    borderRadius: 14,
+    padding: 16,
+    marginTop: 16,
+  },
+  insightsLabel: { fontSize: 12, fontWeight: '700', color: '#7c3aed', marginBottom: 8 },
+  insightsText: { fontSize: 14, color: '#374151', lineHeight: 20, marginBottom: 4 },
+  insightsFootnote: { fontSize: 11, color: '#9ca3af', marginTop: 8, lineHeight: 15 },
   empty: { fontSize: 14, color: '#9ca3af', marginTop: 24, textAlign: 'center' },
 
   contactRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 16, flexWrap: 'wrap' },
