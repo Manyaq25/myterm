@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
 import * as Notifications from 'expo-notifications';
 import { ensureNotificationPermission } from '../../src/services/notifications';
 import {
@@ -8,11 +10,54 @@ import {
   setScreenshotSuggestionEnabled,
 } from '../../src/services/screenshotSuggestion';
 import { disableAppLock, enableAppLock, isAppLockEnabled } from '../../src/services/appLock';
+import { deleteAllData, exportAllData } from '../../src/services/dataExport';
 
 export default function AyarlarScreen() {
+  const db = useSQLiteContext();
+  const router = useRouter();
   const [notificationsGranted, setNotificationsGranted] = useState(false);
   const [screenshotSuggestionsOn, setScreenshotSuggestionsOn] = useState(false);
   const [appLockOn, setAppLockOn] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  async function handleExport() {
+    if (exporting) return;
+    setExporting(true);
+    try {
+      await exportAllData(db);
+    } catch (e) {
+      Alert.alert('Hata', 'Verilerin dışa aktarılamadı. Lütfen tekrar dene.');
+    } finally {
+      setExporting(false);
+    }
+  }
+
+  function handleDeleteAll() {
+    if (deleting) return;
+    Alert.alert(
+      'Hesabımı ve tüm verilerimi sil',
+      'Tüm kişiler, takipler ve hatırlatıcılar bu cihazdan kalıcı olarak silinecek. Bu işlem GERİ ALINAMAZ. Devam etmeden önce verilerini dışa aktarmanı öneririz.',
+      [
+        { text: 'Vazgeç', style: 'cancel' },
+        {
+          text: 'Kalıcı olarak sil',
+          style: 'destructive',
+          onPress: async () => {
+            setDeleting(true);
+            try {
+              await deleteAllData(db);
+              router.replace('/onboarding');
+            } catch (e) {
+              Alert.alert('Hata', 'Veriler silinirken bir sorun oluştu.');
+            } finally {
+              setDeleting(false);
+            }
+          },
+        },
+      ]
+    );
+  }
 
   useEffect(() => {
     Notifications.getPermissionsAsync().then((res) => setNotificationsGranted(res.granted));
@@ -64,6 +109,38 @@ export default function AyarlarScreen() {
           buraya döndüğünde) sana bir bildirimle sorarız — "takip listesine eklememi ister
           misin?". Sadece "evet" dersen o görsel gözden geçirmen için açılır; onaylamadan
           hiçbir görsel otomatik taranmaz veya AI'ya gönderilmez.
+        </Text>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Veri</Text>
+        <Pressable style={styles.dataButton} onPress={handleExport} disabled={exporting}>
+          {exporting ? (
+            <ActivityIndicator color="#2563eb" />
+          ) : (
+            <Text style={styles.dataButtonText}>Verilerimi Dışa Aktar</Text>
+          )}
+        </Pressable>
+        <Text style={styles.hint}>
+          Tüm kişilerini, takiplerini ve notlarını okunabilir bir JSON dosyası olarak
+          telefonundaki paylaşım sayfası üzerinden (AirDrop, Dosyalar, e-posta vb.) kaydedebilirsin.
+        </Text>
+
+        <Pressable
+          style={[styles.dataButton, styles.dangerButton]}
+          onPress={handleDeleteAll}
+          disabled={deleting}
+        >
+          {deleting ? (
+            <ActivityIndicator color="#dc2626" />
+          ) : (
+            <Text style={[styles.dataButtonText, styles.dangerButtonText]}>
+              Hesabımı ve Tüm Verilerimi Sil
+            </Text>
+          )}
+        </Pressable>
+        <Text style={styles.hint}>
+          Bu cihazdaki tüm kişi ve takip verilerini kalıcı olarak siler. Geri alınamaz.
         </Text>
       </View>
 
@@ -143,6 +220,16 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   rowLabel: { fontSize: 15, color: '#111827' },
   hint: { fontSize: 13, color: '#9ca3af', marginTop: 8, lineHeight: 18 },
+  dataButton: {
+    backgroundColor: '#eff6ff',
+    borderRadius: 10,
+    paddingVertical: 12,
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  dataButtonText: { color: '#2563eb', fontSize: 14, fontWeight: '700' },
+  dangerButton: { backgroundColor: '#fef2f2' },
+  dangerButtonText: { color: '#dc2626' },
   aboutText: { fontSize: 13, color: '#4b5563', lineHeight: 19, marginBottom: 12 },
   aboutLabel: { fontSize: 12, fontWeight: '700', color: '#374151', marginBottom: 4 },
   aboutVersion: { fontSize: 12, color: '#9ca3af', marginTop: 4 },
