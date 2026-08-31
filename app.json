@@ -60,6 +60,9 @@
       "bundleIdentifier": "com.manyaq25.benimyerimetakipet",
       "entitlements": {
         "com.apple.security.application-groups": ["group.com.manyaq25.benimyerimetakipet"]
+      },
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": ["whatsapp", "tg"]
       }
     },
     "android": {
