@@ -38,6 +38,12 @@ export async function setScreenshotSuggestionEnabled(enabled: boolean): Promise<
     // erişimi gerektiriyor — native listener sadece ön plandayken çalışıyor.
     const mediaPermission = await MediaLibrary.requestPermissionsAsync();
     if (!mediaPermission.granted) return false;
+    // Android 14+ / iOS 14+ kullanıcı "sadece seçili fotoğraflar" (limited)
+    // erişimi verebiliyor — bu durumda YENİ çekilen bir ekran görüntüsü hiçbir
+    // zaman seçili küme içinde olmadığı için getAssetsAsync onu asla görmez ve
+    // arka plan tespiti sessizce çalışmaz gibi görünür. Kullanıcıyı hemen "tümüne
+    // izin ver" seçeneğine yönlendirmeyi deniyoruz.
+    await promptFullAccessIfLimited();
   }
 
   await SecureStore.setItemAsync(SETTING_KEY, enabled ? 'true' : 'false');
@@ -51,7 +57,23 @@ export async function setScreenshotSuggestionEnabled(enabled: boolean): Promise<
 
 export async function initScreenshotSuggestions(): Promise<void> {
   const enabled = await isScreenshotSuggestionEnabled();
-  if (enabled) startListening();
+  if (!enabled) return;
+  startListening();
+  // Özellik daha önce açılmış ama erişim "limited" kalmışsa (bkz. yukarıdaki
+  // not), her açılışta kullanıcıya tekrar tam erişim isteme fırsatı sun —
+  // sistem, kullanıcı zaten "tümüne izin ver" dediyse bu diyaloğu göstermiyor.
+  await promptFullAccessIfLimited();
+}
+
+async function promptFullAccessIfLimited(): Promise<void> {
+  try {
+    const permission = await MediaLibrary.getPermissionsAsync();
+    if (permission.granted && permission.accessPrivileges === 'limited') {
+      await MediaLibrary.presentPermissionsPickerAsync(['photo']);
+    }
+  } catch {
+    // Seçici bu platformda/sürümde yoksa sessizce geç.
+  }
 }
 
 function startListening(): void {
@@ -139,10 +161,11 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
   );
 
   const permission = await MediaLibrary.getPermissionsAsync();
-  if (!permission.granted) {
-    await debugNotify('izin yok', `status=${permission.status} canAskAgain=${permission.canAskAgain}`);
-    return;
-  }
+  await debugNotify(
+    'izin durumu',
+    `granted=${permission.granted} access=${permission.accessPrivileges} status=${permission.status}`
+  );
+  if (!permission.granted) return;
 
   const threshold = since - TIMESTAMP_ROUNDING_BUFFER_MS;
   await debugNotify('eşik', `threshold=${threshold}`);
