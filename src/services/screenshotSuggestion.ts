@@ -82,22 +82,38 @@ function handleAppStateChange(nextState: AppStateStatus): void {
   if (backgroundedAt === null) backgroundedAt = Date.now();
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Uygulama ön plana döndüğü anda Android'in ekran görüntüsünü MediaStore'a
+// işlemesi henüz tamamlanmamış olabilir (birkaç yüz ms'lik bir gecikme) —
+// tek seferlik kontrol bunu kaçırabiliyordu. Kısa aralıklarla birkaç kez
+// deniyoruz.
+const RETRY_DELAYS_MS = [0, 400, 900, 1500];
+
 async function checkForBackgroundScreenshot(since: number): Promise<void> {
   const permission = await MediaLibrary.getPermissionsAsync();
   if (!permission.granted) return;
-  const page = await MediaLibrary.getAssetsAsync({
-    first: 1,
-    mediaType: 'photo',
-    // Android'de ekran görüntülerinin creationTime'ı (MediaStore DATE_TAKEN,
-    // kameranın EXIF "çekilme tarihi"ne dayanır) genelde hiç dolmuyor/0
-    // kalıyor — ekran görüntüsü kamerayla çekilmediği için. modificationTime
-    // (dosyanın diske yazıldığı an) her iki platformda da güvenilir.
-    sortBy: [['modificationTime', false]],
-  });
-  const asset = page.assets[0];
-  if (!asset || asset.modificationTime < since || asset.id === lastNotifiedAssetId) return;
-  lastNotifiedAssetId = asset.id;
-  await notifySuggestion();
+
+  for (const delay of RETRY_DELAYS_MS) {
+    if (delay > 0) await sleep(delay);
+    const page = await MediaLibrary.getAssetsAsync({
+      first: 1,
+      mediaType: 'photo',
+      // Android'de ekran görüntülerinin creationTime'ı (MediaStore DATE_TAKEN,
+      // kameranın EXIF "çekilme tarihi"ne dayanır) genelde hiç dolmuyor/0
+      // kalıyor — ekran görüntüsü kamerayla çekilmediği için. modificationTime
+      // (dosyanın diske yazıldığı an) her iki platformda da güvenilir.
+      sortBy: [['modificationTime', false]],
+    });
+    const asset = page.assets[0];
+    if (!asset || asset.id === lastNotifiedAssetId) continue;
+    if (asset.modificationTime < since) continue;
+    lastNotifiedAssetId = asset.id;
+    await notifySuggestion();
+    return;
+  }
 }
 
 async function notifySuggestion(): Promise<void> {
