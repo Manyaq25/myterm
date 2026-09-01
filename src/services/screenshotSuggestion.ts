@@ -57,15 +57,7 @@ export async function setScreenshotSuggestionEnabled(enabled: boolean): Promise<
 
 export async function initScreenshotSuggestions(): Promise<void> {
   const enabled = await isScreenshotSuggestionEnabled();
-  if (!enabled) return;
-  startListening();
-  // NOT: presentPermissionsPickerAsync() burada, her soğuk başlangıçta
-  // otomatik çağrılıyordu — ama bu, Android'in sistem Ayarlar'ından
-  // kullanıcının manuel olarak "Tümüne her zaman izin ver" seçimini bile her
-  // açılışta "sınırlı"ya geri döndürüyor gibi görünüyor (gerçek cihazda
-  // gözlemlendi). Bu yüzden buradan kaldırıldı — artık sadece kullanıcı
-  // özelliği Ayarlar'dan açtığı anda (setScreenshotSuggestionEnabled içinde,
-  // tek seferlik, açık bir kullanıcı eylemine bağlı olarak) tetikleniyor.
+  if (enabled) startListening();
 }
 
 async function promptFullAccessIfLimited(): Promise<void> {
@@ -104,10 +96,7 @@ function handleAppStateChange(nextState: AppStateStatus): void {
     }
     return;
   }
-  if (backgroundedAt === null) {
-    backgroundedAt = Date.now();
-    void debugNotify('arka plana geçti', `t=${backgroundedAt}`);
-  }
+  if (backgroundedAt === null) backgroundedAt = Date.now();
 }
 
 function sleep(ms: number): Promise<void> {
@@ -118,10 +107,7 @@ function sleep(ms: number): Promise<void> {
 // işlemesi henüz tamamlanmamış olabilir (birkaç yüz ms'lik bir gecikme) —
 // tek seferlik kontrol bunu kaçırabiliyordu. Kısa aralıklarla birkaç kez
 // deniyoruz.
-// GEÇİCİ TEŞHİS: son iki deneme normalden çok daha uzun bekliyor — bu
-// cihazda MediaStore taramasının normalden çok daha yavaş olup olmadığını
-// (ör. birkaç saniye) ayırt etmek için. Kök neden bulununca kısaltılacak.
-const RETRY_DELAYS_MS = [0, 400, 900, 1500, 3000, 5000];
+const RETRY_DELAYS_MS = [0, 400, 900, 1500];
 
 // Android'de MediaStore'un DATE_MODIFIED kolonu saniye hassasiyetinde
 // (alt saniye bilgisi atılıyor) — yani bir asset'in modificationTime'ı
@@ -132,75 +118,12 @@ const RETRY_DELAYS_MS = [0, 400, 900, 1500, 3000, 5000];
 // bu kadarlık bir tolerans payıyla yapıyoruz.
 const TIMESTAMP_ROUNDING_BUFFER_MS = 1500;
 
-// GEÇİCİ TEŞHİS MODU: arka plan tespiti hâlâ tutarsız çalıştığı için, gerçek
-// cihazda hangi adımda koptuğunu görmeden tahmin etmeyi bırakıyoruz. Bu bayrak
-// açıkken her arka plandan dönüşte bir "debug" bildirimi gönderilir. Kök neden
-// bulununca bu bloğu ve DEBUG_DIAGNOSTICS'i kaldır.
-const DEBUG_DIAGNOSTICS = true;
-
-async function debugNotify(title: string, body: string): Promise<void> {
-  if (!DEBUG_DIAGNOSTICS) return;
-  try {
-    if (Platform.OS === 'android') {
-      await Notifications.setNotificationChannelAsync('screenshot-debug', {
-        name: 'Teşhis (geçici)',
-        importance: Notifications.AndroidImportance.DEFAULT,
-      });
-    }
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: `[debug] ${title}`,
-        body,
-        ...(Platform.OS === 'android' ? { channelId: 'screenshot-debug' } : {}),
-      },
-      trigger: null,
-    });
-  } catch {
-    // Teşhis bildirimi başarısız olsa bile asıl akışı bozmasın.
-  }
-}
-
 async function checkForBackgroundScreenshot(since: number): Promise<void> {
-  await debugNotify(
-    'arka plandan döndü',
-    `since=${since} (${new Date(since).toLocaleTimeString()})`
-  );
-
   const permission = await MediaLibrary.getPermissionsAsync();
-  await debugNotify(
-    'izin durumu',
-    `granted=${permission.granted} access=${permission.accessPrivileges} status=${permission.status}`
-  );
   if (!permission.granted) return;
 
-  // Erişim "all" olsa bile mediaType:'photo' filtreli sorgular boş dönüyordu
-  // (bkz. denemeler) — bu, sadece "yeni dosya görünmüyor" değil, filtrenin
-  // kendisiyle veya bu cihazın galerisiyle ilgili daha temel bir şey olabilir.
-  // Filtre olmadan ve mediaType'ı loglayarak bir sondaj atıyoruz.
-  try {
-    const probe = await MediaLibrary.getAssetsAsync({ first: 5 });
-    const types = probe.assets.map((a) => a.mediaType).join(',') || '-';
-    await debugNotify('galeri sondaj', `total=${probe.totalCount} found=${probe.assets.length} types=${types}`);
-  } catch (e) {
-    await debugNotify('galeri sondaj hata', String(e));
-  }
-
-  // total=0 çıkması, uygulamanın bu cihazda MediaStore'dan HİÇBİR ŞEY
-  // görmediğini gösteriyorsa — bunun sorgu filtresiyle mi yoksa cihazın
-  // galeri indeksiyle mi ilgili olduğunu ayırt etmek için albümleri de
-  // sorguluyoruz (ör. "Screenshots", "DCIM" hiç görünüyor mu, kaç öğeli).
-  try {
-    const albums = await MediaLibrary.getAlbumsAsync({ includeSmartAlbums: true });
-    const summary = albums.map((a) => `${a.title}:${a.assetCount}`).join(', ') || '-';
-    await debugNotify('albümler', summary.slice(0, 180));
-  } catch (e) {
-    await debugNotify('albüm hata', String(e));
-  }
-
   const threshold = since - TIMESTAMP_ROUNDING_BUFFER_MS;
-  await debugNotify('eşik', `threshold=${threshold}`);
-  for (let i = 0; i < RETRY_DELAYS_MS.length; i++) {
-    const delay = RETRY_DELAYS_MS[i];
+  for (const delay of RETRY_DELAYS_MS) {
     if (delay > 0) await sleep(delay);
     const page = await MediaLibrary.getAssetsAsync({
       first: 1,
@@ -212,23 +135,12 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
       sortBy: [['modificationTime', false]],
     });
     const asset = page.assets[0];
-    if (!asset) {
-      await debugNotify(`deneme #${i}`, 'hiç asset yok');
-      continue;
-    }
-    const isSame = asset.id === lastNotifiedAssetId;
-    const isOld = asset.modificationTime < threshold;
-    await debugNotify(
-      `deneme #${i}`,
-      `mod=${asset.modificationTime} old=${isOld} same=${isSame} id=${asset.id.slice(0, 8)}`
-    );
-    if (isSame || isOld) continue;
+    if (!asset || asset.id === lastNotifiedAssetId) continue;
+    if (asset.modificationTime < threshold) continue;
     lastNotifiedAssetId = asset.id;
-    await debugNotify('EŞLEŞTİ ✅', `id=${asset.id.slice(0, 8)}`);
     await notifySuggestion();
     return;
   }
-  await debugNotify('eşleşme yok ❌', 'tüm denemeler tükendi');
 }
 
 async function notifySuggestion(): Promise<void> {
