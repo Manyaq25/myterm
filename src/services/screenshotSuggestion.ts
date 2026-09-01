@@ -145,7 +145,7 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
   }
 
   const threshold = since - TIMESTAMP_ROUNDING_BUFFER_MS;
-  let attemptLog = '';
+  await debugNotify('eşik', `threshold=${threshold}`);
   for (let i = 0; i < RETRY_DELAYS_MS.length; i++) {
     const delay = RETRY_DELAYS_MS[i];
     if (delay > 0) await sleep(delay);
@@ -159,16 +159,23 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
       sortBy: [['modificationTime', false]],
     });
     const asset = page.assets[0];
-    const modTime = asset ? asset.modificationTime : null;
-    attemptLog += `\n#${i} d=${delay}ms mod=${modTime} id=${asset?.id?.slice(0, 6) ?? '-'} same=${asset?.id === lastNotifiedAssetId}`;
-    if (!asset || asset.id === lastNotifiedAssetId) continue;
-    if (asset.modificationTime < threshold) continue;
+    if (!asset) {
+      await debugNotify(`deneme #${i}`, 'hiç asset yok');
+      continue;
+    }
+    const isSame = asset.id === lastNotifiedAssetId;
+    const isOld = asset.modificationTime < threshold;
+    await debugNotify(
+      `deneme #${i}`,
+      `mod=${asset.modificationTime} old=${isOld} same=${isSame} id=${asset.id.slice(0, 8)}`
+    );
+    if (isSame || isOld) continue;
     lastNotifiedAssetId = asset.id;
-    await debugNotify('EŞLEŞTİ ✅', `threshold=${threshold}${attemptLog}`);
+    await debugNotify('EŞLEŞTİ ✅', `id=${asset.id.slice(0, 8)}`);
     await notifySuggestion();
     return;
   }
-  await debugNotify('eşleşme yok ❌', `threshold=${threshold}${attemptLog}`);
+  await debugNotify('eşleşme yok ❌', 'tüm denemeler tükendi');
 }
 
 async function notifySuggestion(): Promise<void> {
