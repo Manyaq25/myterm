@@ -190,7 +190,9 @@ export default function AiCikarScreen() {
       const page = await MediaLibrary.getAssetsAsync({
         first: 1,
         mediaType: 'photo',
-        sortBy: [['creationTime', false]],
+        // Android'de ekran görüntülerinin creationTime'ı (kameranın EXIF
+        // tarihine dayanır) genelde boş kalıyor; modificationTime güvenilir.
+        sortBy: [['modificationTime', false]],
       });
       const asset = page.assets[0];
       if (!asset) {

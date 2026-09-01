@@ -88,10 +88,14 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
   const page = await MediaLibrary.getAssetsAsync({
     first: 1,
     mediaType: 'photo',
-    sortBy: [['creationTime', false]],
+    // Android'de ekran görüntülerinin creationTime'ı (MediaStore DATE_TAKEN,
+    // kameranın EXIF "çekilme tarihi"ne dayanır) genelde hiç dolmuyor/0
+    // kalıyor — ekran görüntüsü kamerayla çekilmediği için. modificationTime
+    // (dosyanın diske yazıldığı an) her iki platformda da güvenilir.
+    sortBy: [['modificationTime', false]],
   });
   const asset = page.assets[0];
-  if (!asset || asset.creationTime < since || asset.id === lastNotifiedAssetId) return;
+  if (!asset || asset.modificationTime < since || asset.id === lastNotifiedAssetId) return;
   lastNotifiedAssetId = asset.id;
   await notifySuggestion();
 }
