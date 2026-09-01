@@ -5,12 +5,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { DatabaseProvider } from '../src/db/DatabaseProvider';
 import { initScreenshotSuggestions } from '../src/services/screenshotSuggestion';
+import { checkAndApplyUpdate } from '../src/services/appUpdates';
 import { AppLockGate } from '../src/components/AppLockGate';
 
 export default function RootLayout() {
   const router = useRouter();
 
   useEffect(() => {
+    void checkAndApplyUpdate();
     void initScreenshotSuggestions();
 
     const subscription = Notifications.addNotificationResponseReceivedListener((response) => {
