@@ -92,10 +92,20 @@ function sleep(ms: number): Promise<void> {
 // deniyoruz.
 const RETRY_DELAYS_MS = [0, 400, 900, 1500];
 
+// Android'de MediaStore'un DATE_MODIFIED kolonu saniye hassasiyetinde
+// (alt saniye bilgisi atılıyor) — yani bir asset'in modificationTime'ı
+// gerçek yazılma anından ~999ms öncesine kadar "yuvarlanmış" görünebilir.
+// Uygulama arka plana geçip aynı saniye içinde ekran görüntüsü alınırsa
+// (çok olası — hızlı bir uygulama değişimi) bu yuvarlama, taze görüntüyü
+// "since'den eski" gibi gösterip kaçırmamıza neden oluyordu. Karşılaştırmayı
+// bu kadarlık bir tolerans payıyla yapıyoruz.
+const TIMESTAMP_ROUNDING_BUFFER_MS = 1500;
+
 async function checkForBackgroundScreenshot(since: number): Promise<void> {
   const permission = await MediaLibrary.getPermissionsAsync();
   if (!permission.granted) return;
 
+  const threshold = since - TIMESTAMP_ROUNDING_BUFFER_MS;
   for (const delay of RETRY_DELAYS_MS) {
     if (delay > 0) await sleep(delay);
     const page = await MediaLibrary.getAssetsAsync({
@@ -109,7 +119,7 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
     });
     const asset = page.assets[0];
     if (!asset || asset.id === lastNotifiedAssetId) continue;
-    if (asset.modificationTime < since) continue;
+    if (asset.modificationTime < threshold) continue;
     lastNotifiedAssetId = asset.id;
     await notifySuggestion();
     return;
