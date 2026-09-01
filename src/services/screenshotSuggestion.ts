@@ -118,7 +118,10 @@ function sleep(ms: number): Promise<void> {
 // işlemesi henüz tamamlanmamış olabilir (birkaç yüz ms'lik bir gecikme) —
 // tek seferlik kontrol bunu kaçırabiliyordu. Kısa aralıklarla birkaç kez
 // deniyoruz.
-const RETRY_DELAYS_MS = [0, 400, 900, 1500];
+// GEÇİCİ TEŞHİS: son iki deneme normalden çok daha uzun bekliyor — bu
+// cihazda MediaStore taramasının normalden çok daha yavaş olup olmadığını
+// (ör. birkaç saniye) ayırt etmek için. Kök neden bulununca kısaltılacak.
+const RETRY_DELAYS_MS = [0, 400, 900, 1500, 3000, 5000];
 
 // Android'de MediaStore'un DATE_MODIFIED kolonu saniye hassasiyetinde
 // (alt saniye bilgisi atılıyor) — yani bir asset'in modificationTime'ı
@@ -180,6 +183,18 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
     await debugNotify('galeri sondaj', `total=${probe.totalCount} found=${probe.assets.length} types=${types}`);
   } catch (e) {
     await debugNotify('galeri sondaj hata', String(e));
+  }
+
+  // total=0 çıkması, uygulamanın bu cihazda MediaStore'dan HİÇBİR ŞEY
+  // görmediğini gösteriyorsa — bunun sorgu filtresiyle mi yoksa cihazın
+  // galeri indeksiyle mi ilgili olduğunu ayırt etmek için albümleri de
+  // sorguluyoruz (ör. "Screenshots", "DCIM" hiç görünüyor mu, kaç öğeli).
+  try {
+    const albums = await MediaLibrary.getAlbumsAsync({ includeSmartAlbums: true });
+    const summary = albums.map((a) => `${a.title}:${a.assetCount}`).join(', ') || '-';
+    await debugNotify('albümler', summary.slice(0, 180));
+  } catch (e) {
+    await debugNotify('albüm hata', String(e));
   }
 
   const threshold = since - TIMESTAMP_ROUNDING_BUFFER_MS;
