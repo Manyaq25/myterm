@@ -59,10 +59,13 @@ export async function initScreenshotSuggestions(): Promise<void> {
   const enabled = await isScreenshotSuggestionEnabled();
   if (!enabled) return;
   startListening();
-  // Özellik daha önce açılmış ama erişim "limited" kalmışsa (bkz. yukarıdaki
-  // not), her açılışta kullanıcıya tekrar tam erişim isteme fırsatı sun —
-  // sistem, kullanıcı zaten "tümüne izin ver" dediyse bu diyaloğu göstermiyor.
-  await promptFullAccessIfLimited();
+  // NOT: presentPermissionsPickerAsync() burada, her soğuk başlangıçta
+  // otomatik çağrılıyordu — ama bu, Android'in sistem Ayarlar'ından
+  // kullanıcının manuel olarak "Tümüne her zaman izin ver" seçimini bile her
+  // açılışta "sınırlı"ya geri döndürüyor gibi görünüyor (gerçek cihazda
+  // gözlemlendi). Bu yüzden buradan kaldırıldı — artık sadece kullanıcı
+  // özelliği Ayarlar'dan açtığı anda (setScreenshotSuggestionEnabled içinde,
+  // tek seferlik, açık bir kullanıcı eylemine bağlı olarak) tetikleniyor.
 }
 
 async function promptFullAccessIfLimited(): Promise<void> {
