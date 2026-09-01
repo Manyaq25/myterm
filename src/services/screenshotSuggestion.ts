@@ -79,7 +79,10 @@ function handleAppStateChange(nextState: AppStateStatus): void {
     }
     return;
   }
-  if (backgroundedAt === null) backgroundedAt = Date.now();
+  if (backgroundedAt === null) {
+    backgroundedAt = Date.now();
+    void debugNotify('arka plana geçti', `t=${backgroundedAt}`);
+  }
 }
 
 function sleep(ms: number): Promise<void> {
@@ -101,12 +104,50 @@ const RETRY_DELAYS_MS = [0, 400, 900, 1500];
 // bu kadarlık bir tolerans payıyla yapıyoruz.
 const TIMESTAMP_ROUNDING_BUFFER_MS = 1500;
 
+// GEÇİCİ TEŞHİS MODU: arka plan tespiti hâlâ tutarsız çalıştığı için, gerçek
+// cihazda hangi adımda koptuğunu görmeden tahmin etmeyi bırakıyoruz. Bu bayrak
+// açıkken her arka plandan dönüşte bir "debug" bildirimi gönderilir. Kök neden
+// bulununca bu bloğu ve DEBUG_DIAGNOSTICS'i kaldır.
+const DEBUG_DIAGNOSTICS = true;
+
+async function debugNotify(title: string, body: string): Promise<void> {
+  if (!DEBUG_DIAGNOSTICS) return;
+  try {
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('screenshot-debug', {
+        name: 'Teşhis (geçici)',
+        importance: Notifications.AndroidImportance.DEFAULT,
+      });
+    }
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: `[debug] ${title}`,
+        body,
+        ...(Platform.OS === 'android' ? { channelId: 'screenshot-debug' } : {}),
+      },
+      trigger: null,
+    });
+  } catch {
+    // Teşhis bildirimi başarısız olsa bile asıl akışı bozmasın.
+  }
+}
+
 async function checkForBackgroundScreenshot(since: number): Promise<void> {
+  await debugNotify(
+    'arka plandan döndü',
+    `since=${since} (${new Date(since).toLocaleTimeString()})`
+  );
+
   const permission = await MediaLibrary.getPermissionsAsync();
-  if (!permission.granted) return;
+  if (!permission.granted) {
+    await debugNotify('izin yok', `status=${permission.status} canAskAgain=${permission.canAskAgain}`);
+    return;
+  }
 
   const threshold = since - TIMESTAMP_ROUNDING_BUFFER_MS;
-  for (const delay of RETRY_DELAYS_MS) {
+  let attemptLog = '';
+  for (let i = 0; i < RETRY_DELAYS_MS.length; i++) {
+    const delay = RETRY_DELAYS_MS[i];
     if (delay > 0) await sleep(delay);
     const page = await MediaLibrary.getAssetsAsync({
       first: 1,
@@ -118,12 +159,16 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
       sortBy: [['modificationTime', false]],
     });
     const asset = page.assets[0];
+    const modTime = asset ? asset.modificationTime : null;
+    attemptLog += `\n#${i} d=${delay}ms mod=${modTime} id=${asset?.id?.slice(0, 6) ?? '-'} same=${asset?.id === lastNotifiedAssetId}`;
     if (!asset || asset.id === lastNotifiedAssetId) continue;
     if (asset.modificationTime < threshold) continue;
     lastNotifiedAssetId = asset.id;
+    await debugNotify('EŞLEŞTİ ✅', `threshold=${threshold}${attemptLog}`);
     await notifySuggestion();
     return;
   }
+  await debugNotify('eşleşme yok ❌', `threshold=${threshold}${attemptLog}`);
 }
 
 async function notifySuggestion(): Promise<void> {
