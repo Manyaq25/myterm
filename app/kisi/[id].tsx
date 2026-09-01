@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -8,9 +8,11 @@ import { formatDueDate, isOverdue } from '../../src/utils/date';
 import { Avatar } from '../../src/components/Avatar';
 import { ContactOptions } from '../../src/components/ContactOptions';
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
+import { Button } from '../../src/components/Button';
 import { buildReminderMessage } from '../../src/services/contact';
 import { buildPersonInsights, formatInsightText } from '../../src/services/personInsights';
-import { CARD_MARGIN_BOTTOM, CARD_SURFACE, SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
+import { CARD_MARGIN_BOTTOM, getCardSurface } from '../../src/constants/cardStyle';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 import {
   acceptLateSuggestion,
   detectLatePersonSuggestions,
@@ -23,6 +25,8 @@ function isOpenOverdue(item: FollowUp): boolean {
 }
 
 function FollowUpRow({ item, phone }: { item: FollowUp; phone?: string | null }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const router = useRouter();
   const overdue = isOpenOverdue(item);
   const showContactShortcut = overdue && item.type === 'waiting_on' && !!phone;
@@ -66,6 +70,8 @@ function FollowUpRow({ item, phone }: { item: FollowUp; phone?: string | null })
 }
 
 function Section({ title, items, phone }: { title: string; items: FollowUp[]; phone?: string | null }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   if (items.length === 0) return null;
   return (
     <View style={styles.section}>
@@ -80,6 +86,8 @@ function Section({ title, items, phone }: { title: string; items: FollowUp[]; ph
 }
 
 export default function KisiProfiliScreen() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const { id } = useLocalSearchParams<{ id: string }>();
   const db = useSQLiteContext();
   const [person, setPerson] = useState<Person | null>(null);
@@ -109,7 +117,7 @@ export default function KisiProfiliScreen() {
   if (!person) {
     return (
       <View style={styles.centered}>
-        <Text>Yükleniyor…</Text>
+        <Text style={styles.rowMeta}>Yükleniyor…</Text>
       </View>
     );
   }
@@ -149,23 +157,15 @@ export default function KisiProfiliScreen() {
           <TextInput
             style={styles.phoneInput}
             placeholder="ör. 05XX XXX XX XX"
+            placeholderTextColor={colors.textMuted}
             value={phoneInput}
             onChangeText={setPhoneInput}
             keyboardType="phone-pad"
             autoFocus
             accessibilityLabel="Telefon numarası"
           />
-          <Pressable style={styles.phoneSaveButton} onPress={savePhone} accessibilityRole="button" accessibilityLabel="Kaydet">
-            <Text style={styles.phoneSaveButtonText}>Kaydet</Text>
-          </Pressable>
-          <Pressable
-            style={styles.phoneCancelButton}
-            onPress={() => setEditingPhone(false)}
-            accessibilityRole="button"
-            accessibilityLabel="İptal"
-          >
-            <Text style={styles.phoneCancelButtonText}>İptal</Text>
-          </Pressable>
+          <Button label="Kaydet" onPress={savePhone} />
+          <Button label="İptal" variant="ghostDanger" onPress={() => setEditingPhone(false)} />
         </View>
       ) : person.phone ? (
         <View style={styles.contactRow}>
@@ -239,59 +239,65 @@ export default function KisiProfiliScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  centered: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  screen: { backgroundColor: SCREEN_BACKGROUND },
-  content: { padding: 20, paddingBottom: 60 },
-  header: { flexDirection: 'row', alignItems: 'center', gap: 14 },
-  headerText: { flex: 1 },
-  name: { fontSize: 24, fontWeight: '700', color: '#111827' },
-  note: { fontSize: 14, color: '#6b7280', marginTop: 4 },
-  leadBadge: { fontSize: 12, color: '#2563eb', fontWeight: '600', marginTop: 14 },
-  insightsCard: {
-    backgroundColor: '#f5f3ff',
-    borderRadius: 14,
-    padding: 16,
-    marginTop: 16,
-  },
-  insightsLabel: { fontSize: 12, fontWeight: '700', color: '#7c3aed', marginBottom: 8 },
-  insightsText: { fontSize: 14, color: '#374151', lineHeight: 20, marginBottom: 4 },
-  insightsFootnote: { fontSize: 11, color: '#9ca3af', marginTop: 8, lineHeight: 15 },
-  empty: { fontSize: 14, color: '#9ca3af', marginTop: 24, textAlign: 'center' },
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background },
+    screen: { backgroundColor: colors.background },
+    content: { padding: 20, paddingBottom: 60 },
+    header: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+    headerText: { flex: 1 },
+    name: { fontSize: fontSize.displaySmall, fontFamily: fontFamily.displaySemiBold, color: colors.text },
+    note: { fontSize: fontSize.base, color: colors.textMuted, marginTop: 4, fontFamily: fontFamily.body },
+    leadBadge: { fontSize: fontSize.caption, color: colors.primary, fontFamily: fontFamily.bodySemiBold, marginTop: 14 },
+    insightsCard: {
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 14,
+      padding: 16,
+      marginTop: 16,
+    },
+    insightsLabel: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.primary, marginBottom: 8 },
+    insightsText: { fontSize: fontSize.base, color: colors.text, lineHeight: 20, marginBottom: 4, fontFamily: fontFamily.body },
+    insightsFootnote: { fontSize: fontSize.caption, color: colors.textMuted, marginTop: 8, lineHeight: 15, fontFamily: fontFamily.body },
+    empty: { fontSize: fontSize.base, color: colors.textMuted, marginTop: 24, textAlign: 'center', fontFamily: fontFamily.body },
 
-  contactRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 16, flexWrap: 'wrap' },
-  editPhoneIcon: { padding: 8 },
-  editPhoneIconText: { fontSize: 15 },
-  addPhoneButton: { marginTop: 16, alignSelf: 'flex-start' },
-  addPhoneButtonText: { color: '#2563eb', fontSize: 13, fontWeight: '600' },
-  phoneEditRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 16 },
-  phoneInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    fontSize: 14,
-    backgroundColor: '#fff',
-  },
-  phoneSaveButton: { backgroundColor: '#2563eb', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 9 },
-  phoneSaveButtonText: { color: '#fff', fontSize: 13, fontWeight: '700' },
-  phoneCancelButton: { paddingHorizontal: 6, paddingVertical: 9 },
-  phoneCancelButtonText: { color: '#6b7280', fontSize: 13, fontWeight: '600' },
+    contactRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 16, flexWrap: 'wrap' },
+    editPhoneIcon: { padding: 8 },
+    editPhoneIconText: { fontSize: fontSize.base },
+    addPhoneButton: { marginTop: 16, alignSelf: 'flex-start' },
+    addPhoneButtonText: { color: colors.primary, fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold },
+    phoneEditRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 16 },
+    phoneInput: {
+      flex: 1,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 10,
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      fontSize: fontSize.base,
+      fontFamily: fontFamily.body,
+      color: colors.text,
+      backgroundColor: colors.surface,
+    },
 
-  section: { marginTop: 22 },
-  sectionTitle: { fontSize: 13, fontWeight: '700', color: '#6b7280', marginBottom: 10, textTransform: 'uppercase' },
-  row: {
-    ...CARD_SURFACE,
-    marginBottom: CARD_MARGIN_BOTTOM,
-  },
-  rowOverdue: { borderWidth: 1.5, borderColor: '#fca5a5' },
-  rowHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-  rowType: { fontSize: 11, fontWeight: '700', color: '#2563eb', textTransform: 'uppercase' },
-  rowStatus: { fontSize: 11, fontWeight: '600', color: '#9ca3af' },
-  rowTitle: { fontSize: 16, fontWeight: '700', color: '#111827' },
-  rowMeta: { fontSize: 13, color: '#6b7280', marginTop: 6 },
-  rowMetaOverdue: { color: '#dc2626', fontWeight: '700' },
-  contactShortcutRow: { flexDirection: 'row', gap: 8, marginTop: 10 },
-});
+    section: { marginTop: 22 },
+    sectionTitle: {
+      fontSize: fontSize.small,
+      fontFamily: fontFamily.bodyBold,
+      color: colors.textMuted,
+      marginBottom: 10,
+      textTransform: 'uppercase',
+    },
+    row: {
+      ...getCardSurface(colors),
+      marginBottom: CARD_MARGIN_BOTTOM,
+    },
+    rowOverdue: { borderWidth: 1.5, borderColor: colors.danger },
+    rowHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+    rowType: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.primary, textTransform: 'uppercase' },
+    rowStatus: { fontSize: fontSize.caption, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted },
+    rowTitle: { fontSize: fontSize.subtitle, fontFamily: fontFamily.bodyBold, color: colors.text },
+    rowMeta: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 6, fontFamily: fontFamily.body },
+    rowMetaOverdue: { color: colors.danger, fontFamily: fontFamily.bodyBold },
+    contactShortcutRow: { flexDirection: 'row', gap: 8, marginTop: 10 },
+  });
+}

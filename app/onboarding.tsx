@@ -1,8 +1,10 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Dimensions, NativeScrollEvent, NativeSyntheticEvent, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { markOnboardingSeen } from '../src/services/onboarding';
+import { Button } from '../src/components/Button';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../src/theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -18,6 +20,8 @@ const SLIDES: Slide[] = [
 ];
 
 export default function OnboardingScreen() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const router = useRouter();
   const scrollRef = useRef<ScrollView>(null);
   const [index, setIndex] = useState(0);
@@ -76,31 +80,27 @@ export default function OnboardingScreen() {
         </View>
 
         {isLast ? (
-          <Pressable style={styles.primaryButton} onPress={finish}>
-            <Text style={styles.primaryButtonText}>Başlayalım</Text>
-          </Pressable>
+          <Button label="Başlayalım" onPress={finish} variant="primary" />
         ) : (
-          <Pressable style={styles.primaryButton} onPress={() => goToIndex(index + 1)}>
-            <Text style={styles.primaryButtonText}>İleri</Text>
-          </Pressable>
+          <Button label="İleri" onPress={() => goToIndex(index + 1)} variant="primary" />
         )}
       </View>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  skipButton: { position: 'absolute', top: 12, right: 20, zIndex: 1, padding: 8 },
-  skipButtonText: { fontSize: 14, fontWeight: '600', color: '#9ca3af' },
-  slide: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 36 },
-  icon: { fontSize: 48, marginBottom: 24 },
-  title: { fontSize: 22, fontWeight: '700', color: '#111827', marginBottom: 10, textAlign: 'center' },
-  text: { fontSize: 18, fontWeight: '600', color: '#111827', textAlign: 'center', lineHeight: 26 },
-  footer: { paddingHorizontal: 24, paddingBottom: 16, paddingTop: 8 },
-  dotsRow: { flexDirection: 'row', justifyContent: 'center', gap: 8, marginBottom: 20 },
-  dot: { width: 7, height: 7, borderRadius: 4, backgroundColor: '#e5e7eb' },
-  dotActive: { backgroundColor: '#2563eb', width: 18 },
-  primaryButton: { backgroundColor: '#2563eb', borderRadius: 14, paddingVertical: 16, alignItems: 'center' },
-  primaryButtonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.surface },
+    skipButton: { position: 'absolute', top: 12, right: 20, zIndex: 1, padding: 8 },
+    skipButtonText: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted },
+    slide: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 36 },
+    icon: { fontSize: 48, marginBottom: 24 },
+    title: { fontSize: fontSize.title, fontFamily: fontFamily.displaySemiBold, color: colors.text, marginBottom: 10, textAlign: 'center' },
+    text: { fontSize: fontSize.subtitle, fontFamily: fontFamily.bodySemiBold, color: colors.text, textAlign: 'center', lineHeight: 26 },
+    footer: { paddingHorizontal: 24, paddingBottom: 16, paddingTop: 8 },
+    dotsRow: { flexDirection: 'row', justifyContent: 'center', gap: 8, marginBottom: 20 },
+    dot: { width: 7, height: 7, borderRadius: 4, backgroundColor: colors.surfaceAlt },
+    dotActive: { backgroundColor: colors.primary, width: 18 },
+  });
+}

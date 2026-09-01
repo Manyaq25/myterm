@@ -1,5 +1,7 @@
+import { useMemo } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import type { ExtraReminderChoice } from '../services/smartReminders';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
 
 interface Props {
   visible: boolean;
@@ -8,6 +10,9 @@ interface Props {
 }
 
 export function SmartReminderPrompt({ visible, title, onChoose }: Props) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
+
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View style={styles.backdrop}>
@@ -34,30 +39,32 @@ export function SmartReminderPrompt({ visible, title, onChoose }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
-  },
-  card: {
-    width: '100%',
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 20,
-  },
-  title: { fontSize: 17, fontWeight: '700', color: '#111827', marginBottom: 6 },
-  subtitle: { fontSize: 14, color: '#6b7280', marginBottom: 18, lineHeight: 20 },
-  option: {
-    backgroundColor: '#eff6ff',
-    borderRadius: 10,
-    paddingVertical: 12,
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  optionText: { color: '#2563eb', fontSize: 15, fontWeight: '600' },
-  decline: { paddingVertical: 12, alignItems: 'center', marginTop: 4 },
-  declineText: { color: '#6b7280', fontSize: 14, fontWeight: '600' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    backdrop: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 24,
+    },
+    card: {
+      width: '100%',
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 20,
+    },
+    title: { fontSize: 17, fontFamily: fontFamily.bodyBold, color: colors.text, marginBottom: 6 },
+    subtitle: { fontSize: 14, fontFamily: fontFamily.body, color: colors.textMuted, marginBottom: 18, lineHeight: 20 },
+    option: {
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 10,
+      paddingVertical: 12,
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    optionText: { color: colors.primary, fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold },
+    decline: { paddingVertical: 12, alignItems: 'center', marginTop: 4 },
+    declineText: { color: colors.textMuted, fontSize: 14, fontFamily: fontFamily.bodySemiBold },
+  });
+}

@@ -1,4 +1,6 @@
+import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { useTheme, fontFamily, type ThemeColors } from '../theme';
 
 export function EmptyState({
   title,
@@ -9,6 +11,9 @@ export function EmptyState({
   subtitle?: string;
   icon?: string;
 }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.icon}>{icon}</Text>
@@ -18,25 +23,28 @@ export function EmptyState({
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    paddingVertical: 60,
-    alignItems: 'center',
-  },
-  icon: {
-    fontSize: 40,
-    marginBottom: 12,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#374151',
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#9ca3af',
-    marginTop: 6,
-    textAlign: 'center',
-    paddingHorizontal: 32,
-  },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    container: {
+      paddingVertical: 60,
+      alignItems: 'center',
+    },
+    icon: {
+      fontSize: 40,
+      marginBottom: 12,
+    },
+    title: {
+      fontSize: 16,
+      fontFamily: fontFamily.bodySemiBold,
+      color: colors.text,
+    },
+    subtitle: {
+      fontSize: 14,
+      fontFamily: fontFamily.body,
+      color: colors.textMuted,
+      marginTop: 6,
+      textAlign: 'center',
+      paddingHorizontal: 32,
+    },
+  });
+}

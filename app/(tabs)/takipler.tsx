@@ -9,7 +9,7 @@ import { FollowUpCard } from '../../src/components/FollowUpCard';
 import { EmptyState } from '../../src/components/EmptyState';
 import { matchesQuery } from '../../src/utils/search';
 import { completeFollowUp, removeFollowUp, removeFollowUps } from '../../src/services/followUpActions';
-import { SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
 const FILTERS: { key: FollowUpStatus[]; label: string }[] = [
   { key: ['open', 'snoozed'], label: 'Açık' },
@@ -18,6 +18,8 @@ const FILTERS: { key: FollowUpStatus[]; label: string }[] = [
 ];
 
 export default function TakiplerScreen() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const [filterIndex, setFilterIndex] = useState(0);
   const [items, setItems] = useState<FollowUpWithPerson[]>([]);
@@ -88,6 +90,7 @@ export default function TakiplerScreen() {
         <TextInput
           style={styles.searchInput}
           placeholder="Ara: kişi, başlık veya not..."
+          placeholderTextColor={colors.textMuted}
           value={query}
           onChangeText={setQuery}
           clearButtonMode="while-editing"
@@ -179,47 +182,51 @@ export default function TakiplerScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: SCREEN_BACKGROUND },
-  searchRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 16, paddingTop: 12 },
-  searchInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    fontSize: 15,
-    backgroundColor: '#fff',
-  },
-  selectToggle: { paddingVertical: 8, paddingHorizontal: 4 },
-  selectToggleText: { color: '#2563eb', fontSize: 15, fontWeight: '600' },
-  selectionBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingTop: 12,
-  },
-  selectionBarLink: { color: '#2563eb', fontSize: 13, fontWeight: '600' },
-  selectionBarCount: { color: '#6b7280', fontSize: 13, fontWeight: '600' },
-  selectionDeleteButton: {
-    backgroundColor: '#dc2626',
-    borderRadius: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-  },
-  selectionDeleteButtonText: { color: '#fff', fontSize: 13, fontWeight: '700' },
-  buttonDisabled: { opacity: 0.5 },
-  filterRow: { flexDirection: 'row', gap: 8, paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 },
-  filterChip: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 999,
-    backgroundColor: '#e5e7eb',
-  },
-  filterChipActive: { backgroundColor: '#2563eb' },
-  filterText: { fontSize: 13, color: '#374151', fontWeight: '600' },
-  filterTextActive: { color: '#fff' },
-  listContent: { padding: 16, paddingBottom: 40, flexGrow: 1 },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    searchRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 16, paddingTop: 12 },
+    searchInput: {
+      flex: 1,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 10,
+      paddingHorizontal: 14,
+      paddingVertical: 10,
+      fontSize: fontSize.base,
+      fontFamily: fontFamily.body,
+      color: colors.text,
+      backgroundColor: colors.surface,
+    },
+    selectToggle: { paddingVertical: 8, paddingHorizontal: 4 },
+    selectToggleText: { color: colors.primary, fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold },
+    selectionBar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: 16,
+      paddingTop: 12,
+    },
+    selectionBarLink: { color: colors.primary, fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold },
+    selectionBarCount: { color: colors.textMuted, fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold },
+    selectionDeleteButton: {
+      backgroundColor: colors.danger,
+      borderRadius: 8,
+      paddingHorizontal: 14,
+      paddingVertical: 6,
+    },
+    selectionDeleteButtonText: { color: colors.onPrimary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
+    buttonDisabled: { opacity: 0.5 },
+    filterRow: { flexDirection: 'row', gap: 8, paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 },
+    filterChip: {
+      paddingHorizontal: 14,
+      paddingVertical: 6,
+      borderRadius: 999,
+      backgroundColor: colors.surfaceAlt,
+    },
+    filterChipActive: { backgroundColor: colors.primary },
+    filterText: { fontSize: fontSize.small, color: colors.text, fontFamily: fontFamily.bodySemiBold },
+    filterTextActive: { color: colors.onPrimary },
+    listContent: { padding: 16, paddingBottom: 40, flexGrow: 1 },
+  });
+}

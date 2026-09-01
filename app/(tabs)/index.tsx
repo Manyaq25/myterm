@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -10,7 +10,7 @@ import { EmptyState } from '../../src/components/EmptyState';
 import { isOverdue } from '../../src/utils/date';
 import { completeFollowUp, removeFollowUp } from '../../src/services/followUpActions';
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
-import { SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 import { isOnboardingSeen, markOnboardingSeen } from '../../src/services/onboarding';
 import { updateWidgetSummary } from '../../src/services/widget';
 import {
@@ -21,6 +21,8 @@ import {
 } from '../../src/services/proactiveSuggestions';
 
 export default function HomeScreen() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const router = useRouter();
   const [items, setItems] = useState<FollowUpWithPerson[]>([]);
@@ -159,53 +161,55 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: SCREEN_BACKGROUND },
-  listContent: { padding: 16, paddingBottom: 100, flexGrow: 1 },
-  quickLinksRow: { marginBottom: 16 },
-  quickLink: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    borderRadius: 999,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    marginRight: 8,
-  },
-  quickLinkText: { fontSize: 13, fontWeight: '600', color: '#374151' },
-  sectionTitle: { fontSize: 13, fontWeight: '700', color: '#dc2626', marginBottom: 8 },
-  fab: {
-    position: 'absolute',
-    right: 20,
-    bottom: 24,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: '#2563eb',
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 2 },
-  },
-  fabText: { color: '#fff', fontSize: 28, lineHeight: 30 },
-  aiFab: {
-    position: 'absolute',
-    right: 20,
-    bottom: 92,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: '#7c3aed',
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 2 },
-  },
-  aiFabText: { color: '#fff', fontSize: 15, fontWeight: '800' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    listContent: { padding: 16, paddingBottom: 100, flexGrow: 1 },
+    quickLinksRow: { marginBottom: 16 },
+    quickLink: {
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 999,
+      paddingHorizontal: 14,
+      paddingVertical: 10,
+      marginRight: 8,
+    },
+    quickLinkText: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.text },
+    sectionTitle: { fontSize: fontSize.small, fontFamily: fontFamily.bodyBold, color: colors.danger, marginBottom: 8 },
+    fab: {
+      position: 'absolute',
+      right: 20,
+      bottom: 24,
+      width: 56,
+      height: 56,
+      borderRadius: 18,
+      backgroundColor: colors.primary,
+      alignItems: 'center',
+      justifyContent: 'center',
+      elevation: 4,
+      shadowColor: colors.primary,
+      shadowOpacity: 0.35,
+      shadowRadius: 10,
+      shadowOffset: { width: 0, height: 4 },
+    },
+    fabText: { color: colors.onPrimary, fontSize: 28, lineHeight: 30 },
+    aiFab: {
+      position: 'absolute',
+      right: 20,
+      bottom: 92,
+      width: 56,
+      height: 56,
+      borderRadius: 18,
+      backgroundColor: colors.rose,
+      alignItems: 'center',
+      justifyContent: 'center',
+      elevation: 4,
+      shadowColor: colors.rose,
+      shadowOpacity: 0.35,
+      shadowRadius: 10,
+      shadowOffset: { width: 0, height: 4 },
+    },
+    aiFabText: { color: colors.onPrimary, fontSize: fontSize.small, fontFamily: fontFamily.bodyExtraBold },
+  });
+}

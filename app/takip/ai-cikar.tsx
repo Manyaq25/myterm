@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -33,6 +33,7 @@ import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
 import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
 import { updateWidgetSummary } from '../../src/services/widget';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
 interface Candidate extends ExtractedFollowUp {
   selected: boolean;
@@ -68,6 +69,8 @@ function guessMediaType(filename: string | null | undefined): ImageMediaType {
 }
 
 export default function AiCikarScreen() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const router = useRouter();
   const params = useLocalSearchParams<{ mode?: string; autoScreenshot?: string }>();
@@ -422,7 +425,7 @@ export default function AiCikarScreen() {
               accessibilityLabel="Çıkar"
               accessibilityState={{ disabled: !text.trim() || loading, busy: loading }}
             >
-              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
+              {loading ? <ActivityIndicator color={colors.onPrimary} /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
             </Pressable>
           </>
         )}
@@ -463,7 +466,7 @@ export default function AiCikarScreen() {
               accessibilityLabel="Çıkar"
               accessibilityState={{ disabled: !hasRecording || loading, busy: loading }}
             >
-              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
+              {loading ? <ActivityIndicator color={colors.onPrimary} /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
             </Pressable>
             {transcript !== null && (
               <View style={styles.transcriptBox}>
@@ -519,7 +522,7 @@ export default function AiCikarScreen() {
               accessibilityLabel="Çıkar"
               accessibilityState={{ disabled: !imageBase64 || loading, busy: loading }}
             >
-              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
+              {loading ? <ActivityIndicator color={colors.onPrimary} /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
             </Pressable>
           </>
         )}
@@ -564,7 +567,7 @@ export default function AiCikarScreen() {
               accessibilityLabel="Çıkar"
               accessibilityState={{ disabled: !pdfBase64 || loading, busy: loading }}
             >
-              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
+              {loading ? <ActivityIndicator color={colors.onPrimary} /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
             </Pressable>
           </>
         )}
@@ -642,125 +645,135 @@ export default function AiCikarScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  content: { padding: 20, paddingBottom: 60 },
-  mockBanner: {
-    backgroundColor: '#fef3c7',
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 16,
-  },
-  mockBannerText: { color: '#92400e', fontSize: 13 },
-  modeRow: { flexDirection: 'row', backgroundColor: '#e5e7eb', borderRadius: 10, padding: 4, marginBottom: 20 },
-  modeTab: { flex: 1, paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
-  modeTabActive: { backgroundColor: '#fff' },
-  modeTabText: { fontSize: 14, fontWeight: '600', color: '#6b7280' },
-  modeTabTextActive: { color: '#111827' },
-  label: { fontSize: 13, fontWeight: '600', color: '#6b7280', marginBottom: 6 },
-  input: {
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 15,
-    backgroundColor: '#fff',
-  },
-  multiline: { minHeight: 120, textAlignVertical: 'top' },
-  extractButton: {
-    marginTop: 16,
-    backgroundColor: '#2563eb',
-    borderRadius: 10,
-    paddingVertical: 14,
-    alignItems: 'center',
-  },
-  extractButtonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
-  buttonDisabled: { opacity: 0.5 },
-  error: { color: '#dc2626', marginTop: 12, fontSize: 14 },
-  hint: { fontSize: 13, color: '#9ca3af', marginTop: 12 },
-  pickImageButton: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderStyle: 'dashed',
-    paddingVertical: 32,
-    alignItems: 'center',
-  },
-  pickImageButtonText: { fontSize: 16, fontWeight: '600', color: '#374151' },
-  imagePreviewBox: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    padding: 12,
-    alignItems: 'center',
-  },
-  imagePreview: { width: '100%', height: 220, borderRadius: 8, backgroundColor: '#f3f4f6' },
-  pdfNameText: { fontSize: 15, fontWeight: '600', color: '#111827', textAlign: 'center' },
-  secondaryButton: { marginTop: 12, paddingVertical: 8, paddingHorizontal: 16 },
-  secondaryButtonText: { color: '#2563eb', fontSize: 14, fontWeight: '600' },
-  recordBox: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    padding: 24,
-    alignItems: 'center',
-  },
-  recordTimer: { fontSize: 32, fontWeight: '700', color: '#111827', marginBottom: 16, fontVariant: ['tabular-nums'] },
-  recordButton: {
-    backgroundColor: '#7c3aed',
-    borderRadius: 999,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-  },
-  recordButtonStop: { backgroundColor: '#dc2626' },
-  recordButtonText: { color: '#fff', fontSize: 15, fontWeight: '700' },
-  transcriptBox: {
-    marginTop: 16,
-    backgroundColor: '#f3f4f6',
-    borderRadius: 10,
-    padding: 14,
-  },
-  transcriptLabel: { fontSize: 12, fontWeight: '700', color: '#6b7280', marginBottom: 4 },
-  transcriptText: { fontSize: 14, color: '#374151', lineHeight: 20 },
-  results: { marginTop: 24 },
-  resultsTitle: { fontSize: 14, fontWeight: '600', color: '#374151', marginBottom: 12 },
-  candidateCard: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-  },
-  checkbox: {
-    width: 22,
-    height: 22,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#d1d5db',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 2,
-  },
-  checkboxChecked: { backgroundColor: '#2563eb', borderColor: '#2563eb' },
-  checkboxMark: { color: '#fff', fontSize: 14, fontWeight: '700' },
-  candidateType: { fontSize: 12, fontWeight: '700', color: '#2563eb', marginBottom: 2 },
-  candidateTitle: { fontSize: 15, fontWeight: '600', color: '#111827' },
-  candidateMeta: { fontSize: 13, color: '#6b7280', marginTop: 2 },
-  candidateLowConfidence: { fontSize: 12, color: '#b45309', marginTop: 4, fontWeight: '600' },
-  candidateNote: { fontSize: 12, color: '#9ca3af', marginTop: 4, fontStyle: 'italic' },
-  saveButton: {
-    marginTop: 8,
-    backgroundColor: '#16a34a',
-    borderRadius: 10,
-    paddingVertical: 14,
-    alignItems: 'center',
-  },
-  saveButtonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    content: { padding: 20, paddingBottom: 60 },
+    mockBanner: {
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 10,
+      padding: 12,
+      marginBottom: 16,
+    },
+    mockBannerText: { color: colors.gold, fontSize: fontSize.small, fontFamily: fontFamily.body },
+    modeRow: { flexDirection: 'row', backgroundColor: colors.surfaceAlt, borderRadius: 10, padding: 4, marginBottom: 20 },
+    modeTab: { flex: 1, paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
+    modeTabActive: { backgroundColor: colors.surface },
+    modeTabText: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted },
+    modeTabTextActive: { color: colors.text },
+    label: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted, marginBottom: 6 },
+    input: {
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 10,
+      paddingHorizontal: 14,
+      paddingVertical: 12,
+      fontSize: fontSize.base,
+      fontFamily: fontFamily.body,
+      color: colors.text,
+      backgroundColor: colors.surface,
+    },
+    multiline: { minHeight: 120, textAlignVertical: 'top' },
+    extractButton: {
+      marginTop: 16,
+      backgroundColor: colors.primary,
+      borderRadius: 10,
+      paddingVertical: 14,
+      alignItems: 'center',
+    },
+    extractButtonText: { color: colors.onPrimary, fontSize: fontSize.button, fontFamily: fontFamily.bodyBold },
+    buttonDisabled: { opacity: 0.5 },
+    error: { color: colors.danger, marginTop: 12, fontSize: fontSize.small, fontFamily: fontFamily.body },
+    hint: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 12, fontFamily: fontFamily.body },
+    pickImageButton: {
+      backgroundColor: colors.surface,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderStyle: 'dashed',
+      paddingVertical: 32,
+      alignItems: 'center',
+    },
+    pickImageButtonText: { fontSize: fontSize.button, fontFamily: fontFamily.bodySemiBold, color: colors.text },
+    imagePreviewBox: {
+      backgroundColor: colors.surface,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: 12,
+      alignItems: 'center',
+    },
+    imagePreview: { width: '100%', height: 220, borderRadius: 8, backgroundColor: colors.surfaceAlt },
+    pdfNameText: { fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold, color: colors.text, textAlign: 'center' },
+    secondaryButton: { marginTop: 12, paddingVertical: 8, paddingHorizontal: 16 },
+    secondaryButtonText: { color: colors.primary, fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold },
+    recordBox: {
+      backgroundColor: colors.surface,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: 24,
+      alignItems: 'center',
+    },
+    recordTimer: {
+      fontSize: fontSize.display,
+      fontFamily: fontFamily.bodyBold,
+      color: colors.text,
+      marginBottom: 16,
+      fontVariant: ['tabular-nums'],
+    },
+    recordButton: {
+      backgroundColor: colors.rose,
+      borderRadius: 999,
+      paddingHorizontal: 24,
+      paddingVertical: 12,
+    },
+    recordButtonStop: { backgroundColor: colors.danger },
+    recordButtonText: { color: colors.onPrimary, fontSize: fontSize.base, fontFamily: fontFamily.bodyBold },
+    transcriptBox: {
+      marginTop: 16,
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 10,
+      padding: 14,
+    },
+    transcriptLabel: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.textMuted, marginBottom: 4 },
+    transcriptText: { fontSize: fontSize.small, color: colors.text, lineHeight: 20, fontFamily: fontFamily.body },
+    results: { marginTop: 24 },
+    resultsTitle: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.text, marginBottom: 12 },
+    candidateCard: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 12,
+      backgroundColor: colors.surface,
+      borderRadius: 12,
+      padding: 14,
+      marginBottom: 10,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    checkbox: {
+      width: 22,
+      height: 22,
+      borderRadius: 6,
+      borderWidth: 2,
+      borderColor: colors.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 2,
+    },
+    checkboxChecked: { backgroundColor: colors.primary, borderColor: colors.primary },
+    checkboxMark: { color: colors.onPrimary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
+    candidateType: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.primary, marginBottom: 2 },
+    candidateTitle: { fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold, color: colors.text },
+    candidateMeta: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 2, fontFamily: fontFamily.body },
+    candidateLowConfidence: { fontSize: fontSize.caption, color: colors.gold, marginTop: 4, fontFamily: fontFamily.bodySemiBold },
+    candidateNote: { fontSize: fontSize.caption, color: colors.textMuted, marginTop: 4, fontStyle: 'italic', fontFamily: fontFamily.body },
+    saveButton: {
+      marginTop: 8,
+      backgroundColor: colors.success,
+      borderRadius: 10,
+      paddingVertical: 14,
+      alignItems: 'center',
+    },
+    saveButtonText: { color: colors.onPrimary, fontSize: fontSize.button, fontFamily: fontFamily.bodyBold },
+  });
+}

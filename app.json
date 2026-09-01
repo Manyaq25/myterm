@@ -6,7 +6,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "runtimeVersion": {
       "policy": "sdkVersion"
@@ -21,8 +21,20 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/icon.png",
-          "color": "#ffffff"
+          "icon": "./assets/android-icon-monochrome.png",
+          "color": "#0E5C56"
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 220,
+          "resizeMode": "contain",
+          "backgroundColor": "#0E5C56",
+          "dark": {
+            "backgroundColor": "#0E1A18"
+          }
         }
       ],
       [
@@ -68,7 +80,7 @@
     "android": {
       "package": "com.manyaq25.benimyerimetakipet",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#0E5C56",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"

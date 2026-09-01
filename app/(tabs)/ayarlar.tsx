@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -11,8 +11,11 @@ import {
 } from '../../src/services/screenshotSuggestion';
 import { disableAppLock, enableAppLock, isAppLockEnabled } from '../../src/services/appLock';
 import { deleteAllData, exportAllData } from '../../src/services/dataExport';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
 export default function AyarlarScreen() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const router = useRouter();
   const [notificationsGranted, setNotificationsGranted] = useState(false);
@@ -125,7 +128,7 @@ export default function AyarlarScreen() {
           accessibilityState={{ disabled: exporting, busy: exporting }}
         >
           {exporting ? (
-            <ActivityIndicator color="#2563eb" />
+            <ActivityIndicator color={colors.primary} />
           ) : (
             <Text style={styles.dataButtonText}>Verilerimi Dışa Aktar</Text>
           )}
@@ -144,7 +147,7 @@ export default function AyarlarScreen() {
           accessibilityState={{ disabled: deleting, busy: deleting }}
         >
           {deleting ? (
-            <ActivityIndicator color="#dc2626" />
+            <ActivityIndicator color={colors.danger} />
           ) : (
             <Text style={[styles.dataButtonText, styles.dangerButtonText]}>
               Hesabımı ve Tüm Verilerimi Sil
@@ -215,35 +218,44 @@ export default function AyarlarScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f9fafb' },
-  scrollContent: { padding: 16, paddingBottom: 40 },
-  section: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 18,
-    marginBottom: 16,
-    shadowColor: '#0f172a',
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 1,
-  },
-  sectionTitle: { fontSize: 12, fontWeight: '700', color: '#6b7280', marginBottom: 12, textTransform: 'uppercase', letterSpacing: 0.4 },
-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  rowLabel: { fontSize: 15, color: '#111827' },
-  hint: { fontSize: 13, color: '#9ca3af', marginTop: 8, lineHeight: 18 },
-  dataButton: {
-    backgroundColor: '#eff6ff',
-    borderRadius: 10,
-    paddingVertical: 12,
-    alignItems: 'center',
-    marginTop: 12,
-  },
-  dataButtonText: { color: '#2563eb', fontSize: 14, fontWeight: '700' },
-  dangerButton: { backgroundColor: '#fef2f2' },
-  dangerButtonText: { color: '#dc2626' },
-  aboutText: { fontSize: 13, color: '#4b5563', lineHeight: 19, marginBottom: 12 },
-  aboutLabel: { fontSize: 12, fontWeight: '700', color: '#374151', marginBottom: 4 },
-  aboutVersion: { fontSize: 12, color: '#9ca3af', marginTop: 4 },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background },
+    scrollContent: { padding: 16, paddingBottom: 40 },
+    section: {
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      padding: 18,
+      marginBottom: 16,
+      shadowColor: colors.text,
+      shadowOpacity: 0.05,
+      shadowRadius: 8,
+      shadowOffset: { width: 0, height: 2 },
+      elevation: 1,
+    },
+    sectionTitle: {
+      fontSize: fontSize.caption,
+      fontFamily: fontFamily.bodyBold,
+      color: colors.textMuted,
+      marginBottom: 12,
+      textTransform: 'uppercase',
+      letterSpacing: 0.4,
+    },
+    row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    rowLabel: { fontSize: fontSize.base, fontFamily: fontFamily.body, color: colors.text },
+    hint: { fontSize: fontSize.small, fontFamily: fontFamily.body, color: colors.textMuted, marginTop: 8, lineHeight: 18 },
+    dataButton: {
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 10,
+      paddingVertical: 12,
+      alignItems: 'center',
+      marginTop: 12,
+    },
+    dataButtonText: { color: colors.primary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
+    dangerButton: { backgroundColor: colors.surfaceAlt },
+    dangerButtonText: { color: colors.danger },
+    aboutText: { fontSize: fontSize.small, fontFamily: fontFamily.body, color: colors.textMuted, lineHeight: 19, marginBottom: 12 },
+    aboutLabel: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.text, marginBottom: 4 },
+    aboutVersion: { fontSize: fontSize.caption, fontFamily: fontFamily.body, color: colors.textMuted, marginTop: 4 },
+  });
+}

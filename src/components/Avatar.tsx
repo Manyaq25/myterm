@@ -1,11 +1,11 @@
+import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { useTheme, fontFamily, type ThemeColors } from '../theme';
 
-const PALETTE = ['#2563eb', '#7c3aed', '#0d9488', '#ea580c', '#dc2626', '#059669', '#4f46e5', '#c026d3'];
-
-function colorForName(name: string): string {
+function colorForName(name: string, palette: string[]): string {
   let hash = 0;
   for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
-  return PALETTE[hash % PALETTE.length];
+  return palette[hash % palette.length];
 }
 
 function initialsForName(name: string): string {
@@ -16,11 +16,18 @@ function initialsForName(name: string): string {
 }
 
 export function Avatar({ name, size = 40 }: { name: string; size?: number }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
+  const palette = useMemo(
+    () => [colors.primary, colors.rose, colors.coral, colors.gold, colors.primarySoft, colors.danger, colors.success],
+    [colors]
+  );
+
   return (
     <View
       style={[
         styles.circle,
-        { width: size, height: size, borderRadius: size / 2, backgroundColor: colorForName(name) },
+        { width: size, height: size, borderRadius: size / 2, backgroundColor: colorForName(name, palette) },
       ]}
     >
       <Text style={[styles.text, { fontSize: size * 0.4 }]}>{initialsForName(name)}</Text>
@@ -28,7 +35,9 @@ export function Avatar({ name, size = 40 }: { name: string; size?: number }) {
   );
 }
 
-const styles = StyleSheet.create({
-  circle: { alignItems: 'center', justifyContent: 'center' },
-  text: { color: '#fff', fontWeight: '700' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    circle: { alignItems: 'center', justifyContent: 'center' },
+    text: { color: colors.onPrimary, fontFamily: fontFamily.bodyBold },
+  });
+}

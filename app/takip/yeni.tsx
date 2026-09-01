@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -19,10 +19,14 @@ import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
 import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
 import { updateWidgetSummary } from '../../src/services/widget';
+import { Button } from '../../src/components/Button';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
 const TYPES = Object.keys(FOLLOW_UP_TYPE_LABELS) as FollowUpType[];
 
 export default function YeniTakipScreen() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const router = useRouter();
 
@@ -162,7 +166,7 @@ export default function YeniTakipScreen() {
             dueAt ? `Hatırlatma zamanı: ${dueAt.toLocaleString('tr-TR')}` : 'Hatırlatma zamanı seç'
           }
         >
-          <Text style={{ color: dueAt ? '#111827' : '#9ca3af' }}>
+          <Text style={{ color: dueAt ? colors.text : colors.textMuted }}>
             {dueAt ? dueAt.toLocaleString('tr-TR') : 'Tarih ve saat seç'}
           </Text>
         </Pressable>
@@ -177,16 +181,15 @@ export default function YeniTakipScreen() {
           />
         )}
 
-        <Pressable
-          style={[styles.saveButton, (!title.trim() || saving) && styles.saveButtonDisabled]}
-          onPress={handleSave}
-          disabled={!title.trim() || saving}
-          accessibilityRole="button"
-          accessibilityLabel="Kaydet"
-          accessibilityState={{ disabled: !title.trim() || saving }}
-        >
-          <Text style={styles.saveButtonText}>{saving ? 'Kaydediliyor…' : 'Kaydet'}</Text>
-        </Pressable>
+        <View style={styles.saveButtonWrap}>
+          <Button
+            label="Kaydet"
+            onPress={handleSave}
+            disabled={!title.trim()}
+            loading={saving}
+            accessibilityLabel="Kaydet"
+          />
+        </View>
       </ScrollView>
       <SmartReminderPrompt
         visible={!!pendingImportant}
@@ -197,31 +200,27 @@ export default function YeniTakipScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  content: { padding: 20, paddingBottom: 60 },
-  label: { fontSize: 13, fontWeight: '600', color: '#6b7280', marginTop: 16, marginBottom: 6 },
-  input: {
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 15,
-    backgroundColor: '#fff',
-  },
-  multiline: { minHeight: 80, textAlignVertical: 'top' },
-  typeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  typeChip: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999, backgroundColor: '#e5e7eb' },
-  typeChipActive: { backgroundColor: '#2563eb' },
-  typeChipText: { fontSize: 13, color: '#374151', fontWeight: '600' },
-  typeChipTextActive: { color: '#fff' },
-  saveButton: {
-    marginTop: 28,
-    backgroundColor: '#2563eb',
-    borderRadius: 10,
-    paddingVertical: 14,
-    alignItems: 'center',
-  },
-  saveButtonDisabled: { backgroundColor: '#93c5fd' },
-  saveButtonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    content: { padding: 20, paddingBottom: 60 },
+    label: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted, marginTop: 16, marginBottom: 6 },
+    input: {
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 10,
+      paddingHorizontal: 14,
+      paddingVertical: 12,
+      fontSize: fontSize.base,
+      fontFamily: fontFamily.body,
+      color: colors.text,
+      backgroundColor: colors.surface,
+    },
+    multiline: { minHeight: 80, textAlignVertical: 'top' },
+    typeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+    typeChip: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999, backgroundColor: colors.surfaceAlt },
+    typeChipActive: { backgroundColor: colors.primary },
+    typeChipText: { fontSize: fontSize.small, color: colors.text, fontFamily: fontFamily.bodySemiBold },
+    typeChipTextActive: { color: colors.onPrimary },
+    saveButtonWrap: { marginTop: 28 },
+  });
+}

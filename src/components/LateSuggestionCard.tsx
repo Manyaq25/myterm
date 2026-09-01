@@ -1,5 +1,7 @@
+import { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { LatePersonSuggestion } from '../services/proactiveSuggestions';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
 
 interface Props {
   suggestion: LatePersonSuggestion;
@@ -8,6 +10,8 @@ interface Props {
 }
 
 export function LateSuggestionCard({ suggestion, onAccept, onDismiss }: Props) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const { person, lateCount } = suggestion;
   return (
     <View style={styles.card}>
@@ -30,31 +34,33 @@ export function LateSuggestionCard({ suggestion, onAccept, onDismiss }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  card: {
-    flexDirection: 'row',
-    gap: 10,
-    backgroundColor: '#eff6ff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#bfdbfe',
-    padding: 14,
-    marginBottom: 14,
-  },
-  icon: { fontSize: 20 },
-  text: { fontSize: 14, color: '#1e3a8a', lineHeight: 20 },
-  bold: { fontWeight: '700' },
-  actions: { flexDirection: 'row', gap: 10, marginTop: 12 },
-  acceptButton: {
-    backgroundColor: '#2563eb',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  acceptButtonText: { color: '#fff', fontSize: 13, fontWeight: '700' },
-  dismissButton: {
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  dismissButtonText: { color: '#6b7280', fontSize: 13, fontWeight: '600' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    card: {
+      flexDirection: 'row',
+      gap: 10,
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: 14,
+      marginBottom: 14,
+    },
+    icon: { fontSize: 20 },
+    text: { fontSize: 14, fontFamily: fontFamily.body, color: colors.text, lineHeight: 20 },
+    bold: { fontFamily: fontFamily.bodyBold },
+    actions: { flexDirection: 'row', gap: 10, marginTop: 12 },
+    acceptButton: {
+      backgroundColor: colors.primary,
+      borderRadius: 8,
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+    },
+    acceptButtonText: { color: colors.onPrimary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
+    dismissButton: {
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+    },
+    dismissButtonText: { color: colors.textMuted, fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold },
+  });
+}

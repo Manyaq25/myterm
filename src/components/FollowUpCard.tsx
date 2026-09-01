@@ -1,12 +1,12 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Swipeable } from 'react-native-gesture-handler';
 import type { FollowUpWithPerson } from '../types';
 import { FOLLOW_UP_TYPE_LABELS } from '../types';
 import { formatDueDate, isOverdue } from '../utils/date';
-import { TYPE_COLORS } from '../constants/typeColors';
-import { CARD_MARGIN_BOTTOM, CARD_SURFACE } from '../constants/cardStyle';
+import { CARD_MARGIN_BOTTOM, getCardSurface } from '../constants/cardStyle';
+import { useTheme, getTypeColor, fontFamily, fontSize, type ThemeColors } from '../theme';
 
 interface Props {
   item: FollowUpWithPerson;
@@ -18,6 +18,8 @@ interface Props {
 }
 
 export function FollowUpCard({ item, onComplete, onDelete, selectionMode, selected, onToggleSelect }: Props) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const router = useRouter();
   const swipeableRef = useRef<Swipeable>(null);
   // react-native-gesture-handler'ın Swipeable'ı, satırın yüksekliğini bir kez
@@ -58,7 +60,7 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
   const cardBody = (
     <>
       <View style={styles.headerRow}>
-        <View style={[styles.badge, { backgroundColor: TYPE_COLORS[item.type] ?? '#666' }]}>
+        <View style={[styles.badge, { backgroundColor: getTypeColor(item.type, colors) }]}>
           <Text style={styles.badgeText}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
         </View>
         {item.dueAt !== null && (
@@ -150,79 +152,82 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
   );
 }
 
-const styles = StyleSheet.create({
-  wrapper: { marginBottom: CARD_MARGIN_BOTTOM },
-  card: {
-    ...CARD_SURFACE,
-  },
-  cardOverdue: {
-    borderWidth: 1.5,
-    borderColor: '#fca5a5',
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  selectableRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
-  },
-  checkbox: {
-    width: 22,
-    height: 22,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#d1d5db',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 2,
-  },
-  checkboxChecked: { backgroundColor: '#2563eb', borderColor: '#2563eb' },
-  checkboxMark: { color: '#fff', fontSize: 14, fontWeight: '700' },
-  badge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 999,
-  },
-  badgeText: {
-    color: '#fff',
-    fontSize: 11,
-    fontWeight: '700',
-  },
-  due: {
-    fontSize: 12,
-    color: '#9ca3af',
-    fontWeight: '600',
-  },
-  dueOverdue: {
-    color: '#dc2626',
-    fontWeight: '700',
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#111827',
-    lineHeight: 22,
-  },
-  person: {
-    fontSize: 13,
-    color: '#6b7280',
-    marginTop: 6,
-  },
-  actionContainer: {
-    width: 96,
-    overflow: 'hidden',
-  },
-  action: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 16,
-  },
-  completeAction: { backgroundColor: '#16a34a', marginRight: 10 },
-  deleteAction: { backgroundColor: '#dc2626', marginLeft: 10 },
-  actionText: { color: '#fff', fontSize: 13, fontWeight: '700' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    wrapper: { marginBottom: CARD_MARGIN_BOTTOM },
+    card: {
+      ...getCardSurface(colors),
+    },
+    cardOverdue: {
+      borderWidth: 1.5,
+      borderColor: colors.danger,
+    },
+    headerRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    selectableRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 12,
+    },
+    checkbox: {
+      width: 22,
+      height: 22,
+      borderRadius: 6,
+      borderWidth: 2,
+      borderColor: colors.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 2,
+    },
+    checkboxChecked: { backgroundColor: colors.primary, borderColor: colors.primary },
+    checkboxMark: { color: colors.onPrimary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
+    badge: {
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: 999,
+    },
+    badgeText: {
+      color: colors.onPrimary,
+      fontSize: fontSize.caption,
+      fontFamily: fontFamily.bodyBold,
+    },
+    due: {
+      fontSize: fontSize.caption,
+      color: colors.textMuted,
+      fontFamily: fontFamily.bodySemiBold,
+    },
+    dueOverdue: {
+      color: colors.danger,
+      fontFamily: fontFamily.bodyBold,
+    },
+    title: {
+      fontSize: fontSize.subtitle,
+      fontFamily: fontFamily.bodyBold,
+      color: colors.text,
+      lineHeight: 22,
+    },
+    person: {
+      fontSize: fontSize.small,
+      color: colors.textMuted,
+      marginTop: 6,
+      fontFamily: fontFamily.body,
+    },
+    actionContainer: {
+      width: 96,
+      overflow: 'hidden',
+    },
+    action: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 16,
+    },
+    completeAction: { backgroundColor: colors.success, marginRight: 10 },
+    deleteAction: { backgroundColor: colors.danger, marginLeft: 10 },
+    actionText: { color: colors.onPrimary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
+  });
+}

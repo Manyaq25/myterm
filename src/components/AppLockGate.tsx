@@ -1,9 +1,13 @@
-import { useEffect, useRef, useState } from 'react';
-import { AppState, type AppStateStatus, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { AppState, type AppStateStatus, StyleSheet, Text, View } from 'react-native';
 import * as ScreenCapture from 'expo-screen-capture';
 import { authenticate, isAppLockEnabled } from '../services/appLock';
+import { Button } from './Button';
+import { useTheme, fontFamily, type ThemeColors } from '../theme';
 
 export function AppLockGate({ children }: { children: React.ReactNode }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const [ready, setReady] = useState(false);
   const [locked, setLocked] = useState(false);
   const lockedRef = useRef(false);
@@ -68,31 +72,28 @@ export function AppLockGate({ children }: { children: React.ReactNode }) {
           <Text style={styles.icon}>🔒</Text>
           <Text style={styles.title}>Uygulama Kilitli</Text>
           <Text style={styles.subtitle}>Devam etmek için kimliğini doğrula.</Text>
-          <Pressable style={styles.button} onPress={tryUnlock}>
-            <Text style={styles.buttonText}>Kilidi Aç</Text>
-          </Pressable>
+          <Button label="Kilidi Aç" onPress={tryUnlock} variant="primary" />
         </View>
       )}
     </>
   );
 }
 
-const styles = StyleSheet.create({
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#111827',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1000,
-  },
-  icon: { fontSize: 48, marginBottom: 16 },
-  title: { fontSize: 20, fontWeight: '700', color: '#fff', marginBottom: 6 },
-  subtitle: { fontSize: 14, color: '#9ca3af', marginBottom: 28 },
-  button: {
-    backgroundColor: '#2563eb',
-    borderRadius: 10,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-  },
-  buttonText: { color: '#fff', fontSize: 15, fontWeight: '700' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    overlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: colors.text,
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 1000,
+    },
+    icon: { fontSize: 48, marginBottom: 16 },
+    title: { fontSize: 20, fontFamily: fontFamily.bodyBold, color: colors.onPrimary, marginBottom: 6 },
+    // textMuted açık/koyu modda kendi zemin rengiyle (colors.background/surface)
+    // kontrast için tasarlandı — burada zemin colors.text (ters çevrilmiş bir
+    // overlay) olduğundan textMuted neredeyse görünmez olurdu. onPrimary +
+    // opacity ile aynı ters-kontrast mantığını koruyoruz.
+    subtitle: { fontSize: 14, fontFamily: fontFamily.body, color: colors.onPrimary, opacity: 0.75, marginBottom: 28 },
+  });
+}
