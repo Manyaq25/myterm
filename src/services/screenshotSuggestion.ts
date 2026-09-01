@@ -167,6 +167,18 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
   );
   if (!permission.granted) return;
 
+  // Erişim "all" olsa bile mediaType:'photo' filtreli sorgular boş dönüyordu
+  // (bkz. denemeler) — bu, sadece "yeni dosya görünmüyor" değil, filtrenin
+  // kendisiyle veya bu cihazın galerisiyle ilgili daha temel bir şey olabilir.
+  // Filtre olmadan ve mediaType'ı loglayarak bir sondaj atıyoruz.
+  try {
+    const probe = await MediaLibrary.getAssetsAsync({ first: 5 });
+    const types = probe.assets.map((a) => a.mediaType).join(',') || '-';
+    await debugNotify('galeri sondaj', `total=${probe.totalCount} found=${probe.assets.length} types=${types}`);
+  } catch (e) {
+    await debugNotify('galeri sondaj hata', String(e));
+  }
+
   const threshold = since - TIMESTAMP_ROUNDING_BUFFER_MS;
   await debugNotify('eşik', `threshold=${threshold}`);
   for (let i = 0; i < RETRY_DELAYS_MS.length; i++) {
