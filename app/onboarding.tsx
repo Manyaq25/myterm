@@ -67,7 +67,7 @@ export default function OnboardingScreen() {
         ))}
         <View style={[styles.slide, { width: SCREEN_WIDTH }]}>
           <Text style={styles.icon}>👋</Text>
-          <Text style={styles.title}>Benim Yerime Takip Et</Text>
+          <Text style={styles.title}>Synvia AI</Text>
           <Text style={styles.text}>Hazırsan başlayabiliriz.</Text>
         </View>
       </ScrollView>

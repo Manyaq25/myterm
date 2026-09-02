@@ -193,7 +193,7 @@ export default function AyarlarScreen() {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Hakkında</Text>
         <Text style={styles.aboutText}>
-          Benim Yerime Takip Et, kimseye verdiğin sözleri ve birinden beklediğin şeyleri unutmaman
+          Synvia AI, kimseye verdiğin sözleri ve birinden beklediğin şeyleri unutmaman
           için var — bir yapılacaklar listesi değil, bir hatırlatma ortağı.
         </Text>
 
@@ -211,7 +211,7 @@ export default function AyarlarScreen() {
           OpenAI (Whisper) kullanılıyor.
         </Text>
 
-        <Text style={styles.aboutVersion}>Benim Yerime Takip Et — v0.1 (MVP)</Text>
+        <Text style={styles.aboutVersion}>Synvia AI — v0.1 (MVP)</Text>
       </View>
       </ScrollView>
     </SafeAreaView>
