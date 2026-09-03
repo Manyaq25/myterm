@@ -25,24 +25,29 @@ export function AnimatedSplash({ onFinish }: { onFinish: () => void }) {
   const [visible, setVisible] = useState(true);
 
   const iconOpacity = useSharedValue(0);
-  const iconScale = useSharedValue(0.72);
+  const iconScale = useSharedValue(0.5);
   const textOpacity = useSharedValue(0);
   const textTranslateY = useSharedValue(8);
   const overlayOpacity = useSharedValue(1);
 
   useEffect(() => {
-    iconOpacity.value = withTiming(1, { duration: 500, easing: Easing.out(Easing.ease) });
+    // By the time this mounts, the (unanimatable) native splash has already
+    // been on screen for however long fonts took to load — often 1s+ on a
+    // cold start on a real device. So this JS-driven sequence is kept short
+    // and the icon's motion deliberately large, or it reads as more dead
+    // time tacked onto an already-long wait rather than a distinct arrival.
+    iconOpacity.value = withTiming(1, { duration: 320, easing: Easing.out(Easing.ease) });
     iconScale.value = withSequence(
-      withTiming(1.04, { duration: 500, easing: Easing.out(Easing.cubic) }),
-      withTiming(1, { duration: 180, easing: Easing.out(Easing.quad) })
+      withTiming(1.08, { duration: 340, easing: Easing.out(Easing.cubic) }),
+      withTiming(1, { duration: 140, easing: Easing.out(Easing.quad) })
     );
 
-    textOpacity.value = withDelay(500, withTiming(1, { duration: 420, easing: Easing.out(Easing.ease) }));
-    textTranslateY.value = withDelay(500, withTiming(0, { duration: 420, easing: Easing.out(Easing.cubic) }));
+    textOpacity.value = withDelay(320, withTiming(1, { duration: 320, easing: Easing.out(Easing.ease) }));
+    textTranslateY.value = withDelay(320, withTiming(0, { duration: 320, easing: Easing.out(Easing.cubic) }));
 
     overlayOpacity.value = withDelay(
-      1150,
-      withTiming(0, { duration: 250, easing: Easing.in(Easing.ease) }, (finished) => {
+      780,
+      withTiming(0, { duration: 220, easing: Easing.in(Easing.ease) }, (finished) => {
         if (finished) {
           runOnJS(setVisible)(false);
           runOnJS(onFinish)();
