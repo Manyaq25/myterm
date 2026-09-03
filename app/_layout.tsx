@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
@@ -16,12 +16,14 @@ import { DatabaseProvider } from '../src/db/DatabaseProvider';
 import { initScreenshotSuggestions } from '../src/services/screenshotSuggestion';
 import { checkAndApplyUpdate } from '../src/services/appUpdates';
 import { AppLockGate } from '../src/components/AppLockGate';
+import { AnimatedSplash } from '../src/components/AnimatedSplash';
 import { fontFamily } from '../src/theme/typography';
 
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const router = useRouter();
+  const [showIntro, setShowIntro] = useState(true);
   const [fontsLoaded, fontError] = useFonts({
     Fraunces_500Medium,
     Fraunces_600SemiBold,
@@ -82,6 +84,7 @@ export default function RootLayout() {
           </AppLockGate>
         </DatabaseProvider>
       </SafeAreaProvider>
+      {showIntro && <AnimatedSplash onFinish={() => setShowIntro(false)} />}
     </GestureHandlerRootView>
   );
 }
