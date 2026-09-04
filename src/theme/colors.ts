@@ -1,7 +1,11 @@
 // "Düğüm Kimlik Sistemi" — onaylanan renk paleti. Sistem mavisi yerine çini
-// esintili bir teal ana renk, sıcak gül kurusu/mercan vurguları ve altın bir
-// aksan kullanıyor. Her iki mod da burada tanımlı; ekranlar doğrudan hex
-// yazmak yerine useTheme() üzerinden bu tokenlara erişmeli.
+// esintili bir teal ana renk (marka/arka plan — ikon ve splash varlıklarına
+// gömülü olduğu için sabit tutuluyor), uygulama ikonundaki halkalardan
+// örneklenen canlı pembe ve altın vurgular kullanıyor. rose/coral/gold sadece
+// "takip tipi" rozetlerinde değil, aktif durum göstergeleri gibi arayüz
+// vurgularında da bilinçli kullanılmalı — aksi halde her şey primary teal'e
+// kayıyor. Her iki mod da burada tanımlı; ekranlar doğrudan hex yazmak
+// yerine useTheme() üzerinden bu tokenlara erişmeli.
 
 import type { FollowUpType } from '../types';
 
@@ -26,9 +30,9 @@ export const lightColors: ThemeColors = {
   primary: '#0E5C56', // Çini
   primarySoft: '#3E8C82', // Çini Açık
   onPrimary: '#FDFDFC',
-  rose: '#A63D5D', // Gül Kurusu
-  coral: '#CE7A4E', // Mercan
-  gold: '#B3891F', // Bakır Altın
+  rose: '#E0246E', // Mercan Pembe — ikondaki canlı pembe halkayla eşleşiyor
+  coral: '#E2794A', // Mercan
+  gold: '#D19A1E', // Bakır Altın — ikondaki düğüm altınıyla eşleşiyor
   background: '#EEF2F0', // Kâğıt
   surface: '#FFFFFF',
   surfaceAlt: '#E3E9E6',
@@ -43,7 +47,7 @@ export const darkColors: ThemeColors = {
   primary: '#57AB9F',
   primarySoft: '#2E5F58',
   onPrimary: '#0E1A18',
-  rose: '#DD8BA1',
+  rose: '#F0699B',
   coral: '#E59A71',
   gold: '#DCB245',
   background: '#0E1A18',

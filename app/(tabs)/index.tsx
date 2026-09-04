@@ -151,7 +151,7 @@ export default function HomeScreen() {
               {showScrollHint && (
                 <View style={styles.scrollHintBadge} pointerEvents="none">
                   <Animated.View style={hintStyle}>
-                    <ChevronRight color={colors.primary} size={16} strokeWidth={2.5} />
+                    <ChevronRight color={colors.rose} size={18} strokeWidth={3} />
                   </Animated.View>
                 </View>
               )}

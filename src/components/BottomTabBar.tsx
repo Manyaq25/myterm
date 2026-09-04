@@ -34,7 +34,12 @@ export function BottomTabBar({ state, descriptors, navigation, insets }: BottomT
         accessibilityState={isFocused ? { selected: true } : {}}
         accessibilityLabel={label}
       >
-        {isFocused && <View style={styles.activeGlow} />}
+        {isFocused && (
+          <View style={styles.activeGlowWrap} pointerEvents="none">
+            <View style={styles.activeGlowOuter} />
+            <View style={styles.activeGlowInner} />
+          </View>
+        )}
         {icon}
         <Text style={[styles.label, { color: tintColor }, isFocused && styles.labelActive]} numberOfLines={1}>
           {label}
@@ -93,18 +98,30 @@ function getStyles(colors: ThemeColors) {
       gap: 3,
       paddingVertical: 2,
     },
-    activeGlow: {
+    // Layered flat-color rounded rects instead of shadow/elevation — RN's
+    // Android elevation shadow ignores borderRadius cleanly in some cases
+    // and was leaving a visible rectangular halo behind the rounded glow.
+    activeGlowWrap: {
       position: 'absolute',
-      top: -6,
-      width: 56,
-      height: 40,
-      borderRadius: 16,
-      backgroundColor: `${colors.primary}1F`,
-      shadowColor: colors.primary,
-      shadowOpacity: 0.4,
-      shadowRadius: 10,
-      shadowOffset: { width: 0, height: 0 },
-      elevation: 3,
+      top: -8,
+      width: 64,
+      height: 44,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    activeGlowOuter: {
+      position: 'absolute',
+      width: 64,
+      height: 44,
+      borderRadius: 22,
+      backgroundColor: `${colors.gold}17`,
+    },
+    activeGlowInner: {
+      position: 'absolute',
+      width: 46,
+      height: 34,
+      borderRadius: 17,
+      backgroundColor: `${colors.gold}2E`,
     },
     label: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyMedium },
     labelActive: { fontFamily: fontFamily.bodyBold },
