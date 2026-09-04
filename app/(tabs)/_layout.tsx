@@ -2,16 +2,15 @@ import { Tabs } from 'expo-router';
 import { Home, ListChecks, Settings } from 'lucide-react-native';
 import { useTheme } from '../../src/theme';
 import { fontFamily } from '../../src/theme/typography';
+import { BottomTabBar } from '../../src/components/BottomTabBar';
 
 export default function TabsLayout() {
   const { colors } = useTheme();
 
   return (
     <Tabs
+      tabBar={(props) => <BottomTabBar {...props} />}
       screenOptions={{
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.textMuted,
-        tabBarStyle: { backgroundColor: colors.surface, borderTopColor: colors.border },
         headerStyle: { backgroundColor: colors.surface },
         headerTitleStyle: { fontFamily: fontFamily.displaySemiBold, color: colors.text },
         headerTintColor: colors.primary,

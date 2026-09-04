@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { FlatList, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ChevronRight } from 'lucide-react-native';
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 import { hasAnyFollowUp, listFollowUps } from '../../src/db/queries';
 import type { FollowUpWithPerson } from '../../src/types';
 import { FollowUpCard } from '../../src/components/FollowUpCard';
@@ -28,6 +30,34 @@ export default function HomeScreen() {
   const [items, setItems] = useState<FollowUpWithPerson[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [suggestion, setSuggestion] = useState<LatePersonSuggestion | null>(null);
+  const [showScrollHint, setShowScrollHint] = useState(false);
+  const quickLinksContentWidth = useRef(0);
+  const quickLinksContainerWidth = useRef(0);
+  const hintBounce = useSharedValue(0);
+
+  useEffect(() => {
+    hintBounce.value = withRepeat(
+      withSequence(
+        withTiming(6, { duration: 550, easing: Easing.out(Easing.quad) }),
+        withTiming(0, { duration: 550, easing: Easing.in(Easing.quad) })
+      ),
+      -1
+    );
+  }, [hintBounce]);
+
+  const hintStyle = useAnimatedStyle(() => ({ transform: [{ translateX: hintBounce.value }] }));
+
+  function checkQuickLinksOverflow() {
+    if (quickLinksContentWidth.current > quickLinksContainerWidth.current + 4) {
+      setShowScrollHint(true);
+    }
+  }
+
+  function handleQuickLinksScroll(e: NativeSyntheticEvent<NativeScrollEvent>) {
+    const { contentOffset, contentSize, layoutMeasurement } = e.nativeEvent;
+    const distanceFromEnd = contentSize.width - layoutMeasurement.width - contentOffset.x;
+    setShowScrollHint(distanceFromEnd > 16);
+  }
 
   const load = useCallback(async () => {
     const rows = await listFollowUps(db, ['open', 'snoozed']);
@@ -77,32 +107,55 @@ export default function HomeScreen() {
         }
         ListHeaderComponent={
           <>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.quickLinksRow}>
-              <Pressable
-                style={styles.quickLink}
-                onPress={() => router.push('/gorunum/bekliyorum')}
-                accessibilityRole="button"
-                accessibilityLabel="Neyi Bekliyorum? görünümünü aç"
+            <View style={styles.quickLinksWrap}>
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                style={styles.quickLinksRow}
+                onScroll={handleQuickLinksScroll}
+                scrollEventThrottle={32}
+                onLayout={(e) => {
+                  quickLinksContainerWidth.current = e.nativeEvent.layout.width;
+                  checkQuickLinksOverflow();
+                }}
+                onContentSizeChange={(contentWidth) => {
+                  quickLinksContentWidth.current = contentWidth;
+                  checkQuickLinksOverflow();
+                }}
               >
-                <Text style={styles.quickLinkText}>🔎 Neyi Bekliyorum?</Text>
-              </Pressable>
-              <Pressable
-                style={styles.quickLink}
-                onPress={() => router.push('/gorunum/soz-verdim')}
-                accessibilityRole="button"
-                accessibilityLabel="Kime Söz Verdim? görünümünü aç"
-              >
-                <Text style={styles.quickLinkText}>🤝 Kime Söz Verdim?</Text>
-              </Pressable>
-              <Pressable
-                style={styles.quickLink}
-                onPress={() => router.push('/asistan')}
-                accessibilityRole="button"
-                accessibilityLabel="AI Asistan'ı aç"
-              >
-                <Text style={styles.quickLinkText}>💬 AI Asistan</Text>
-              </Pressable>
-            </ScrollView>
+                <Pressable
+                  style={styles.quickLink}
+                  onPress={() => router.push('/gorunum/bekliyorum')}
+                  accessibilityRole="button"
+                  accessibilityLabel="Neyi Bekliyorum? görünümünü aç"
+                >
+                  <Text style={styles.quickLinkText}>🔎 Neyi Bekliyorum?</Text>
+                </Pressable>
+                <Pressable
+                  style={styles.quickLink}
+                  onPress={() => router.push('/gorunum/soz-verdim')}
+                  accessibilityRole="button"
+                  accessibilityLabel="Kime Söz Verdim? görünümünü aç"
+                >
+                  <Text style={styles.quickLinkText}>🤝 Kime Söz Verdim?</Text>
+                </Pressable>
+                <Pressable
+                  style={styles.quickLink}
+                  onPress={() => router.push('/asistan')}
+                  accessibilityRole="button"
+                  accessibilityLabel="AI Asistan'ı aç"
+                >
+                  <Text style={styles.quickLinkText}>💬 AI Asistan</Text>
+                </Pressable>
+              </ScrollView>
+              {showScrollHint && (
+                <View style={styles.scrollHintBadge} pointerEvents="none">
+                  <Animated.View style={hintStyle}>
+                    <ChevronRight color={colors.primary} size={16} strokeWidth={2.5} />
+                  </Animated.View>
+                </View>
+              )}
+            </View>
             {suggestion && (
               <LateSuggestionCard
                 suggestion={suggestion}
@@ -140,23 +193,6 @@ export default function HomeScreen() {
           />
         )}
       />
-      <Pressable
-        style={styles.aiFab}
-        onPress={() => router.push('/takip/ai-cikar')}
-        accessibilityRole="button"
-        accessibilityLabel="AI ile takip çıkar"
-        accessibilityHint="Metin, ses veya görselden otomatik takip maddesi çıkarır"
-      >
-        <Text style={styles.aiFabText}>AI</Text>
-      </Pressable>
-      <Pressable
-        style={styles.fab}
-        onPress={() => router.push('/takip/yeni')}
-        accessibilityRole="button"
-        accessibilityLabel="Yeni takip ekle"
-      >
-        <Text style={styles.fabText}>+</Text>
-      </Pressable>
     </SafeAreaView>
   );
 }
@@ -165,7 +201,8 @@ function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
     container: { flex: 1, backgroundColor: colors.background },
     listContent: { padding: 16, paddingBottom: 100, flexGrow: 1 },
-    quickLinksRow: { marginBottom: 16 },
+    quickLinksWrap: { marginBottom: 16 },
+    quickLinksRow: {},
     quickLink: {
       backgroundColor: colors.surface,
       borderWidth: 1,
@@ -177,39 +214,21 @@ function getStyles(colors: ThemeColors) {
     },
     quickLinkText: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.text },
     sectionTitle: { fontSize: fontSize.small, fontFamily: fontFamily.bodyBold, color: colors.danger, marginBottom: 8 },
-    fab: {
+    scrollHintBadge: {
       position: 'absolute',
-      right: 20,
-      bottom: 24,
-      width: 56,
-      height: 56,
-      borderRadius: 18,
-      backgroundColor: colors.primary,
+      right: 2,
+      top: 8,
+      bottom: 8,
+      width: 26,
+      borderRadius: 13,
       alignItems: 'center',
       justifyContent: 'center',
-      elevation: 4,
-      shadowColor: colors.primary,
-      shadowOpacity: 0.35,
-      shadowRadius: 10,
-      shadowOffset: { width: 0, height: 4 },
+      backgroundColor: colors.surface,
+      shadowColor: colors.text,
+      shadowOpacity: 0.12,
+      shadowRadius: 6,
+      shadowOffset: { width: -1, height: 0 },
+      elevation: 2,
     },
-    fabText: { color: colors.onPrimary, fontSize: 28, lineHeight: 30 },
-    aiFab: {
-      position: 'absolute',
-      right: 20,
-      bottom: 92,
-      width: 56,
-      height: 56,
-      borderRadius: 18,
-      backgroundColor: colors.rose,
-      alignItems: 'center',
-      justifyContent: 'center',
-      elevation: 4,
-      shadowColor: colors.rose,
-      shadowOpacity: 0.35,
-      shadowRadius: 10,
-      shadowOffset: { width: 0, height: 4 },
-    },
-    aiFabText: { color: colors.onPrimary, fontSize: fontSize.small, fontFamily: fontFamily.bodyExtraBold },
   });
 }
