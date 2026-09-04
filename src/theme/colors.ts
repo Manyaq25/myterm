@@ -33,7 +33,7 @@ export const lightColors: ThemeColors = {
   rose: '#E0246E', // Mercan Pembe — ikondaki canlı pembe halkayla eşleşiyor
   coral: '#E2794A', // Mercan
   gold: '#D19A1E', // Bakır Altın — ikondaki düğüm altınıyla eşleşiyor
-  background: '#EEF2F0', // Kâğıt
+  background: '#FAF7F2', // Kâğıt — sıcak krem, tüm arayüzün teal'e kaymasını önlemek için gri-teal tondan çıkarıldı
   surface: '#FFFFFF',
   surfaceAlt: '#E3E9E6',
   text: '#122421', // Mürekkep

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ThemedSwitch } from '../../src/components/ThemedSwitch';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -75,7 +76,7 @@ export default function AyarlarScreen() {
         <Text style={styles.sectionTitle}>Bildirimler</Text>
         <View style={styles.row}>
           <Text style={styles.rowLabel}>Hatırlatma bildirimleri</Text>
-          <Switch
+          <ThemedSwitch
             value={notificationsGranted}
             onValueChange={async (value) => {
               if (value) {
@@ -97,7 +98,7 @@ export default function AyarlarScreen() {
         <Text style={styles.sectionTitle}>Görsel Önerileri</Text>
         <View style={styles.row}>
           <Text style={styles.rowLabel}>Ekran görüntüsü önerisi</Text>
-          <Switch
+          <ThemedSwitch
             value={screenshotSuggestionsOn}
             onValueChange={async (value) => {
               const result = await setScreenshotSuggestionEnabled(value);
@@ -163,7 +164,7 @@ export default function AyarlarScreen() {
         <Text style={styles.sectionTitle}>Güvenlik</Text>
         <View style={styles.row}>
           <Text style={styles.rowLabel}>Uygulama Kilidi</Text>
-          <Switch
+          <ThemedSwitch
             value={appLockOn}
             onValueChange={async (value) => {
               if (value) {

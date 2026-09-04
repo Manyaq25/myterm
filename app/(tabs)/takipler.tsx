@@ -17,6 +17,17 @@ const FILTERS: { key: FollowUpStatus[]; label: string }[] = [
   { key: ['cancelled'], label: 'İptal' },
 ];
 
+function getFilterColor(idx: number, colors: ThemeColors): string {
+  switch (idx) {
+    case 1:
+      return colors.success;
+    case 2:
+      return colors.coral;
+    default:
+      return colors.primary;
+  }
+}
+
 export default function TakiplerScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
@@ -142,7 +153,10 @@ export default function TakiplerScreen() {
               setFilterIndex(idx);
               exitSelectionMode();
             }}
-            style={[styles.filterChip, idx === filterIndex && styles.filterChipActive]}
+            style={[
+              styles.filterChip,
+              idx === filterIndex && { backgroundColor: getFilterColor(idx, colors) },
+            ]}
             accessibilityRole="radio"
             accessibilityState={{ checked: idx === filterIndex }}
             accessibilityLabel={f.label}
@@ -224,7 +238,6 @@ function getStyles(colors: ThemeColors) {
       borderRadius: 999,
       backgroundColor: colors.surfaceAlt,
     },
-    filterChipActive: { backgroundColor: colors.primary },
     filterText: { fontSize: fontSize.small, color: colors.text, fontFamily: fontFamily.bodySemiBold },
     filterTextActive: { color: colors.onPrimary },
     listContent: { padding: 16, paddingBottom: 40, flexGrow: 1 },
