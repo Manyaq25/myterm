@@ -119,27 +119,33 @@ const RETRY_DELAYS_MS = [0, 400, 900, 1500];
 const TIMESTAMP_ROUNDING_BUFFER_MS = 1500;
 
 async function checkForBackgroundScreenshot(since: number): Promise<void> {
-  const permission = await MediaLibrary.getPermissionsAsync();
-  if (!permission.granted) return;
+  try {
+    const permission = await MediaLibrary.getPermissionsAsync();
+    if (!permission.granted) return;
 
-  const threshold = since - TIMESTAMP_ROUNDING_BUFFER_MS;
-  for (const delay of RETRY_DELAYS_MS) {
-    if (delay > 0) await sleep(delay);
-    const page = await MediaLibrary.getAssetsAsync({
-      first: 1,
-      mediaType: 'photo',
-      // Android'de ekran görüntülerinin creationTime'ı (MediaStore DATE_TAKEN,
-      // kameranın EXIF "çekilme tarihi"ne dayanır) genelde hiç dolmuyor/0
-      // kalıyor — ekran görüntüsü kamerayla çekilmediği için. modificationTime
-      // (dosyanın diske yazıldığı an) her iki platformda da güvenilir.
-      sortBy: [['modificationTime', false]],
-    });
-    const asset = page.assets[0];
-    if (!asset || asset.id === lastNotifiedAssetId) continue;
-    if (asset.modificationTime < threshold) continue;
-    lastNotifiedAssetId = asset.id;
-    await notifySuggestion();
-    return;
+    const threshold = since - TIMESTAMP_ROUNDING_BUFFER_MS;
+    for (const delay of RETRY_DELAYS_MS) {
+      if (delay > 0) await sleep(delay);
+      const page = await MediaLibrary.getAssetsAsync({
+        first: 1,
+        mediaType: 'photo',
+        // Android'de ekran görüntülerinin creationTime'ı (MediaStore DATE_TAKEN,
+        // kameranın EXIF "çekilme tarihi"ne dayanır) genelde hiç dolmuyor/0
+        // kalıyor — ekran görüntüsü kamerayla çekilmediği için. modificationTime
+        // (dosyanın diske yazıldığı an) her iki platformda da güvenilir.
+        sortBy: [['modificationTime', false]],
+      });
+      const asset = page.assets[0];
+      if (!asset || asset.id === lastNotifiedAssetId) continue;
+      if (asset.modificationTime < threshold) continue;
+      lastNotifiedAssetId = asset.id;
+      await notifySuggestion();
+      return;
+    }
+  } catch {
+    // Bu, en iyi çaba ile çalışan arka plan taraması — izin durumu tutarsız
+    // olsa veya galeri erişimi anlık olarak başarısız olsa bile kullanıcıyı
+    // hiçbir şekilde rahatsız etmemeli (kırmızı hata ekranı dahil).
   }
 }
 
