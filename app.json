@@ -66,7 +66,8 @@
           "granularPermissions": ["photo"]
         }
       ],
-      "@bacons/apple-targets"
+      "@bacons/apple-targets",
+      "./plugins/withAdjustNothingKeyboard"
     ],
     "ios": {
       "supportsTablet": true,
@@ -87,7 +88,6 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "softwareKeyboardLayoutMode": "adjustNothing",
       "permissions": [
         "android.permission.USE_BIOMETRIC",
         "android.permission.USE_FINGERPRINT"
