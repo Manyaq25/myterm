@@ -49,7 +49,7 @@ export default function AsistanScreen() {
   }
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       {isUsingMockAI && (
         <View style={styles.mockBanner}>
           <Text style={styles.mockBannerText}>
