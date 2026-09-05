@@ -15,6 +15,7 @@ import {
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useHeaderHeight } from '@react-navigation/elements';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   RecordingPresets,
   requestRecordingPermissionsAsync,
@@ -75,6 +76,7 @@ export default function AiCikarScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
   const headerHeight = useHeaderHeight();
+  const insets = useSafeAreaInsets();
   const params = useLocalSearchParams<{ mode?: string; autoScreenshot?: string }>();
 
   const [mode, setMode] = useState<Mode>('text');
@@ -361,7 +363,7 @@ export default function AiCikarScreen() {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={headerHeight}
+      keyboardVerticalOffset={headerHeight + (Platform.OS === 'android' ? insets.bottom : 0)}
     >
       <ScrollView contentContainerStyle={styles.content}>
         {isUsingMockAI && (

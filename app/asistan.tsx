@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useHeaderHeight } from '@react-navigation/elements';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { aiProvider, isUsingMockAI } from '../src/ai';
 import { buildAssistantContext } from '../src/services/assistantContext';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../src/theme';
@@ -28,6 +29,7 @@ export default function AsistanScreen() {
   const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const headerHeight = useHeaderHeight();
+  const insets = useSafeAreaInsets();
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,7 +56,7 @@ export default function AsistanScreen() {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={headerHeight}
+      keyboardVerticalOffset={headerHeight + (Platform.OS === 'android' ? insets.bottom : 0)}
     >
       {isUsingMockAI && (
         <View style={styles.mockBanner}>

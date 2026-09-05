@@ -12,6 +12,7 @@ import {
 import { useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useHeaderHeight } from '@react-navigation/elements';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, type FollowUpType } from '../../src/types';
@@ -31,6 +32,7 @@ export default function YeniTakipScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
   const headerHeight = useHeaderHeight();
+  const insets = useSafeAreaInsets();
 
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
@@ -107,7 +109,7 @@ export default function YeniTakipScreen() {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={headerHeight}
+      keyboardVerticalOffset={headerHeight + (Platform.OS === 'android' ? insets.bottom : 0)}
     >
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.label} nativeID="label-title">
