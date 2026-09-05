@@ -14,6 +14,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useKeyboardHeight } from '../../src/hooks/useKeyboardHeight';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, type FollowUpType } from '../../src/types';
 import { applyReminderLead } from '../../src/utils/date';
@@ -33,6 +34,7 @@ export default function YeniTakipScreen() {
   const router = useRouter();
   const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
+  const keyboardHeight = useKeyboardHeight();
 
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
@@ -105,13 +107,18 @@ export default function YeniTakipScreen() {
     router.back();
   }
 
+  const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
+  const containerProps =
+    Platform.OS === 'ios' ? { behavior: 'padding' as const, keyboardVerticalOffset: headerHeight } : {};
+
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={headerHeight + (Platform.OS === 'android' ? insets.bottom : 0)}
-    >
-      <ScrollView contentContainerStyle={styles.content}>
+    <Container style={{ flex: 1 }} {...containerProps}>
+      <ScrollView
+        contentContainerStyle={[
+          styles.content,
+          Platform.OS === 'android' && { paddingBottom: 60 + insets.bottom + keyboardHeight },
+        ]}
+      >
         <Text style={styles.label} nativeID="label-title">
           Ne takip ediyorsun?
         </Text>
@@ -232,7 +239,7 @@ export default function YeniTakipScreen() {
         title={pendingImportant?.title ?? ''}
         onChoose={handleReminderChoice}
       />
-    </KeyboardAvoidingView>
+    </Container>
   );
 }
 

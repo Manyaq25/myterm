@@ -16,6 +16,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useKeyboardHeight } from '../../src/hooks/useKeyboardHeight';
 import {
   RecordingPresets,
   requestRecordingPermissionsAsync,
@@ -77,6 +78,7 @@ export default function AiCikarScreen() {
   const router = useRouter();
   const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
+  const keyboardHeight = useKeyboardHeight();
   const params = useLocalSearchParams<{ mode?: string; autoScreenshot?: string }>();
 
   const [mode, setMode] = useState<Mode>('text');
@@ -359,13 +361,18 @@ export default function AiCikarScreen() {
     }
   }
 
+  const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
+  const containerProps =
+    Platform.OS === 'ios' ? { behavior: 'padding' as const, keyboardVerticalOffset: headerHeight } : {};
+
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={headerHeight + (Platform.OS === 'android' ? insets.bottom : 0)}
-    >
-      <ScrollView contentContainerStyle={styles.content}>
+    <Container style={{ flex: 1 }} {...containerProps}>
+      <ScrollView
+        contentContainerStyle={[
+          styles.content,
+          Platform.OS === 'android' && { paddingBottom: 60 + insets.bottom + keyboardHeight },
+        ]}
+      >
         {isUsingMockAI && (
           <View style={styles.mockBanner}>
             <Text style={styles.mockBannerText}>
@@ -649,7 +656,7 @@ export default function AiCikarScreen() {
         title={importantQueue[0]?.title ?? ''}
         onChoose={handleReminderChoice}
       />
-    </KeyboardAvoidingView>
+    </Container>
   );
 }
 

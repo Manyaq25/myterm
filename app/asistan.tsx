@@ -15,6 +15,7 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { aiProvider, isUsingMockAI } from '../src/ai';
 import { buildAssistantContext } from '../src/services/assistantContext';
+import { useKeyboardHeight } from '../src/hooks/useKeyboardHeight';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../src/theme';
 
 interface Exchange {
@@ -30,6 +31,7 @@ export default function AsistanScreen() {
   const db = useSQLiteContext();
   const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
+  const keyboardHeight = useKeyboardHeight();
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -52,12 +54,12 @@ export default function AsistanScreen() {
     }
   }
 
+  const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
+  const containerProps =
+    Platform.OS === 'ios' ? { behavior: 'padding' as const, keyboardVerticalOffset: headerHeight } : {};
+
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={headerHeight + (Platform.OS === 'android' ? insets.bottom : 0)}
-    >
+    <Container style={{ flex: 1 }} {...containerProps}>
       {isUsingMockAI && (
         <View style={styles.mockBanner}>
           <Text style={styles.mockBannerText}>
@@ -99,7 +101,12 @@ export default function AsistanScreen() {
         {error && <Text style={styles.error}>{error}</Text>}
       </ScrollView>
 
-      <View style={styles.inputRow}>
+      <View
+        style={[
+          styles.inputRow,
+          Platform.OS === 'android' && { paddingBottom: 16 + insets.bottom + keyboardHeight },
+        ]}
+      >
         <TextInput
           style={styles.input}
           placeholder="Bir şey sor…"
@@ -117,7 +124,7 @@ export default function AsistanScreen() {
           <Text style={styles.sendButtonText}>Sor</Text>
         </Pressable>
       </View>
-    </KeyboardAvoidingView>
+    </Container>
   );
 }
 
