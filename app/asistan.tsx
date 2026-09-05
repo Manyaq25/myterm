@@ -117,7 +117,7 @@ function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
     mockBanner: { backgroundColor: colors.surfaceAlt, padding: 12 },
     mockBannerText: { color: colors.gold, fontSize: fontSize.small, fontFamily: fontFamily.body },
-    content: { padding: 20, paddingBottom: 20, flexGrow: 1, justifyContent: 'flex-end' },
+    content: { padding: 20, paddingBottom: 20, flexGrow: 1 },
     suggestions: { marginTop: 8 },
     suggestionsTitle: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted, marginBottom: 10 },
     suggestionChip: {
