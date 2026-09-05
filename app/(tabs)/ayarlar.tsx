@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { ThemedSwitch } from '../../src/components/ThemedSwitch';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -12,6 +13,13 @@ import {
 } from '../../src/services/screenshotSuggestion';
 import { disableAppLock, enableAppLock, isAppLockEnabled } from '../../src/services/appLock';
 import { deleteAllData, exportAllData } from '../../src/services/dataExport';
+import {
+  getStoredLanguage,
+  LANGUAGE_NAMES,
+  setAppLanguage,
+  SUPPORTED_LANGUAGES,
+  type SupportedLanguage,
+} from '../../src/i18n';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
 export default function AyarlarScreen() {
@@ -19,11 +27,14 @@ export default function AyarlarScreen() {
   const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const router = useRouter();
+  const { t } = useTranslation();
   const [notificationsGranted, setNotificationsGranted] = useState(false);
   const [screenshotSuggestionsOn, setScreenshotSuggestionsOn] = useState(false);
   const [appLockOn, setAppLockOn] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage | null>(null);
+  const [languageModalVisible, setLanguageModalVisible] = useState(false);
 
   async function handleExport() {
     if (exporting) return;
@@ -31,7 +42,7 @@ export default function AyarlarScreen() {
     try {
       await exportAllData(db);
     } catch (e) {
-      Alert.alert('Hata', 'Verilerin dışa aktarılamadı. Lütfen tekrar dene.');
+      Alert.alert(t('common.error'), t('ayarlar.exportError'));
     } finally {
       setExporting(false);
     }
@@ -40,12 +51,12 @@ export default function AyarlarScreen() {
   function handleDeleteAll() {
     if (deleting) return;
     Alert.alert(
-      'Hesabımı ve tüm verilerimi sil',
-      'Tüm kişiler, takipler ve hatırlatıcılar bu cihazdan kalıcı olarak silinecek. Bu işlem GERİ ALINAMAZ. Devam etmeden önce verilerini dışa aktarmanı öneririz.',
+      t('ayarlar.deleteAllAlertTitle'),
+      t('ayarlar.deleteAllAlertMessage'),
       [
-        { text: 'Vazgeç', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Kalıcı olarak sil',
+          text: t('ayarlar.deleteAllConfirm'),
           style: 'destructive',
           onPress: async () => {
             setDeleting(true);
@@ -53,7 +64,7 @@ export default function AyarlarScreen() {
               await deleteAllData(db);
               router.replace('/onboarding');
             } catch (e) {
-              Alert.alert('Hata', 'Veriler silinirken bir sorun oluştu.');
+              Alert.alert(t('common.error'), t('ayarlar.deleteAllError'));
             } finally {
               setDeleting(false);
             }
@@ -63,19 +74,26 @@ export default function AyarlarScreen() {
     );
   }
 
+  async function handleSelectLanguage(language: SupportedLanguage | null) {
+    await setAppLanguage(language);
+    setSelectedLanguage(language);
+    setLanguageModalVisible(false);
+  }
+
   useEffect(() => {
     Notifications.getPermissionsAsync().then((res) => setNotificationsGranted(res.granted));
     isScreenshotSuggestionEnabled().then(setScreenshotSuggestionsOn);
     isAppLockEnabled().then(setAppLockOn);
+    getStoredLanguage().then(setSelectedLanguage);
   }, []);
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Bildirimler</Text>
+        <Text style={styles.sectionTitle}>{t('ayarlar.sectionNotifications')}</Text>
         <View style={styles.row}>
-          <Text style={styles.rowLabel}>Hatırlatma bildirimleri</Text>
+          <Text style={styles.rowLabel}>{t('ayarlar.reminderNotifications')}</Text>
           <ThemedSwitch
             value={notificationsGranted}
             onValueChange={async (value) => {
@@ -86,84 +104,85 @@ export default function AyarlarScreen() {
                 setNotificationsGranted(false);
               }
             }}
-            accessibilityLabel="Hatırlatma bildirimleri"
+            accessibilityLabel={t('ayarlar.reminderNotifications')}
           />
         </View>
-        <Text style={styles.hint}>
-          Kapalıysa takiplerin için zamanı geldiğinde bildirim alamazsın.
-        </Text>
+        <Text style={styles.hint}>{t('ayarlar.notificationsHint')}</Text>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Görsel Önerileri</Text>
+        <Text style={styles.sectionTitle}>{t('ayarlar.sectionImageSuggestions')}</Text>
         <View style={styles.row}>
-          <Text style={styles.rowLabel}>Ekran görüntüsü önerisi</Text>
+          <Text style={styles.rowLabel}>{t('ayarlar.screenshotSuggestion')}</Text>
           <ThemedSwitch
             value={screenshotSuggestionsOn}
             onValueChange={async (value) => {
               const result = await setScreenshotSuggestionEnabled(value);
               setScreenshotSuggestionsOn(result);
               if (value && !result) {
-                Alert.alert('İzin gerekli', 'Bu özellik için bildirim izni ve galeri izni gerekiyor.');
+                Alert.alert(t('ayarlar.permissionRequiredTitle'), t('ayarlar.permissionRequiredMessage'));
               }
             }}
-            accessibilityLabel="Ekran görüntüsü önerisi"
+            accessibilityLabel={t('ayarlar.screenshotSuggestion')}
           />
         </View>
-        <Text style={styles.hint}>
-          Açarsan, ekran görüntüsü aldığında (uygulama açıkken veya başka bir uygulamadan
-          buraya döndüğünde) sana bir bildirimle sorarız — "takip listesine eklememi ister
-          misin?". Sadece "evet" dersen o görsel gözden geçirmen için açılır; onaylamadan
-          hiçbir görsel otomatik taranmaz veya AI'ya gönderilmez.
-        </Text>
+        <Text style={styles.hint}>{t('ayarlar.screenshotHint')}</Text>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Veri</Text>
+        <Text style={styles.sectionTitle}>{t('ayarlar.sectionLanguage')}</Text>
+        <Pressable
+          style={styles.row}
+          onPress={() => setLanguageModalVisible(true)}
+          accessibilityRole="button"
+          accessibilityLabel={t('ayarlar.sectionLanguage')}
+        >
+          <Text style={styles.rowLabel}>{t('ayarlar.sectionLanguage')}</Text>
+          <Text style={styles.languageValue}>
+            {selectedLanguage ? LANGUAGE_NAMES[selectedLanguage] : t('ayarlar.languageSystemDefault')} ›
+          </Text>
+        </Pressable>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>{t('ayarlar.sectionData')}</Text>
         <Pressable
           style={styles.dataButton}
           onPress={handleExport}
           disabled={exporting}
           accessibilityRole="button"
-          accessibilityLabel="Verilerimi Dışa Aktar"
+          accessibilityLabel={t('ayarlar.exportButton')}
           accessibilityState={{ disabled: exporting, busy: exporting }}
         >
           {exporting ? (
             <ActivityIndicator color={colors.primary} />
           ) : (
-            <Text style={styles.dataButtonText}>Verilerimi Dışa Aktar</Text>
+            <Text style={styles.dataButtonText}>{t('ayarlar.exportButton')}</Text>
           )}
         </Pressable>
-        <Text style={styles.hint}>
-          Tüm kişilerini, takiplerini ve notlarını okunabilir bir JSON dosyası olarak
-          telefonundaki paylaşım sayfası üzerinden (AirDrop, Dosyalar, e-posta vb.) kaydedebilirsin.
-        </Text>
+        <Text style={styles.hint}>{t('ayarlar.exportHint')}</Text>
 
         <Pressable
           style={[styles.dataButton, styles.dangerButton]}
           onPress={handleDeleteAll}
           disabled={deleting}
           accessibilityRole="button"
-          accessibilityLabel="Hesabımı ve Tüm Verilerimi Sil"
+          accessibilityLabel={t('ayarlar.deleteAllButton')}
           accessibilityState={{ disabled: deleting, busy: deleting }}
         >
           {deleting ? (
             <ActivityIndicator color={colors.danger} />
           ) : (
-            <Text style={[styles.dataButtonText, styles.dangerButtonText]}>
-              Hesabımı ve Tüm Verilerimi Sil
-            </Text>
+            <Text style={[styles.dataButtonText, styles.dangerButtonText]}>{t('ayarlar.deleteAllButton')}</Text>
           )}
         </Pressable>
-        <Text style={styles.hint}>
-          Bu cihazdaki tüm kişi ve takip verilerini kalıcı olarak siler. Geri alınamaz.
-        </Text>
+        <Text style={styles.hint}>{t('ayarlar.deleteAllHint')}</Text>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Güvenlik</Text>
+        <Text style={styles.sectionTitle}>{t('ayarlar.sectionSecurity')}</Text>
         <View style={styles.row}>
-          <Text style={styles.rowLabel}>Uygulama Kilidi</Text>
+          <Text style={styles.rowLabel}>{t('ayarlar.appLock')}</Text>
           <ThemedSwitch
             value={appLockOn}
             onValueChange={async (value) => {
@@ -171,50 +190,66 @@ export default function AyarlarScreen() {
                 const result = await enableAppLock();
                 setAppLockOn(result);
                 if (!result) {
-                  Alert.alert(
-                    'Kilit açılamadı',
-                    'Kimlik doğrulama tamamlanamadı. Cihazında Face ID/Touch ID/şifre kurulu olduğundan emin olup tekrar dener misin?'
-                  );
+                  Alert.alert(t('ayarlar.appLockFailedTitle'), t('ayarlar.appLockFailedMessage'));
                 }
               } else {
                 await disableAppLock();
                 setAppLockOn(false);
               }
             }}
-            accessibilityLabel="Uygulama Kilidi"
+            accessibilityLabel={t('ayarlar.appLock')}
           />
         </View>
-        <Text style={styles.hint}>
-          Açarsan, uygulama her arka plandan öne geldiğinde (kapatıp açtığında,
-          başka bir uygulamadan geri döndüğünde) Face ID/Touch ID veya cihaz
-          şifreni ister — kişi ve takip verilerin sende kalsın diye.
-        </Text>
+        <Text style={styles.hint}>{t('ayarlar.appLockHint')}</Text>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Hakkında</Text>
-        <Text style={styles.aboutText}>
-          Synvia AI, kimseye verdiğin sözleri ve birinden beklediğin şeyleri unutmaman
-          için var — bir yapılacaklar listesi değil, bir hatırlatma ortağı.
-        </Text>
+        <Text style={styles.sectionTitle}>{t('ayarlar.sectionAbout')}</Text>
+        <Text style={styles.aboutText}>{t('ayarlar.aboutText')}</Text>
 
-        <Text style={styles.aboutLabel}>Gizlilik</Text>
-        <Text style={styles.aboutText}>
-          Tüm verilerin (takipler, kişiler, notlar) yalnızca bu cihazda, yerel olarak saklanır —
-          bir sunucuya senkronize edilmez. Metin/sesli not/görsel çıkarımı yaptığında veya AI
-          Asistan'a bir soru sorduğunda, yalnızca o an gönderdiğin içerik AI sağlayıcısına iletilir;
-          başka hiçbir veri arka planda paylaşılmaz.
-        </Text>
+        <Text style={styles.aboutLabel}>{t('ayarlar.privacyLabel')}</Text>
+        <Text style={styles.aboutText}>{t('ayarlar.privacyText')}</Text>
 
-        <Text style={styles.aboutLabel}>AI sağlayıcıları</Text>
-        <Text style={styles.aboutText}>
-          Metin/görsel analizi ve AI Asistan için Anthropic (Claude), sesli not deşifresi için
-          OpenAI (Whisper) kullanılıyor.
-        </Text>
+        <Text style={styles.aboutLabel}>{t('ayarlar.aiProvidersLabel')}</Text>
+        <Text style={styles.aboutText}>{t('ayarlar.aiProvidersText')}</Text>
 
-        <Text style={styles.aboutVersion}>Synvia AI — v0.1 (MVP)</Text>
+        <Text style={styles.aboutVersion}>{t('ayarlar.version')}</Text>
       </View>
       </ScrollView>
+
+      <Modal visible={languageModalVisible} transparent animationType="fade" onRequestClose={() => setLanguageModalVisible(false)}>
+        <Pressable style={styles.modalBackdrop} onPress={() => setLanguageModalVisible(false)}>
+          <View style={styles.modalCard}>
+            <ScrollView>
+              <Pressable
+                style={styles.languageOption}
+                onPress={() => handleSelectLanguage(null)}
+                accessibilityRole="button"
+                accessibilityLabel={t('ayarlar.languageSystemDefault')}
+              >
+                <Text style={[styles.languageOptionText, selectedLanguage === null && styles.languageOptionTextActive]}>
+                  {t('ayarlar.languageSystemDefault')}
+                </Text>
+              </Pressable>
+              {SUPPORTED_LANGUAGES.map((language) => (
+                <Pressable
+                  key={language}
+                  style={styles.languageOption}
+                  onPress={() => handleSelectLanguage(language)}
+                  accessibilityRole="button"
+                  accessibilityLabel={LANGUAGE_NAMES[language]}
+                >
+                  <Text
+                    style={[styles.languageOptionText, selectedLanguage === language && styles.languageOptionTextActive]}
+                  >
+                    {LANGUAGE_NAMES[language]}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        </Pressable>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -244,6 +279,7 @@ function getStyles(colors: ThemeColors) {
     },
     row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
     rowLabel: { fontSize: fontSize.base, fontFamily: fontFamily.body, color: colors.text },
+    languageValue: { fontSize: fontSize.base, fontFamily: fontFamily.body, color: colors.textMuted },
     hint: { fontSize: fontSize.small, fontFamily: fontFamily.body, color: colors.textMuted, marginTop: 8, lineHeight: 18 },
     dataButton: {
       backgroundColor: colors.surfaceAlt,
@@ -258,5 +294,22 @@ function getStyles(colors: ThemeColors) {
     aboutText: { fontSize: fontSize.small, fontFamily: fontFamily.body, color: colors.textMuted, lineHeight: 19, marginBottom: 12 },
     aboutLabel: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.text, marginBottom: 4 },
     aboutVersion: { fontSize: fontSize.caption, fontFamily: fontFamily.body, color: colors.textMuted, marginTop: 4 },
+    modalBackdrop: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 24,
+    },
+    modalCard: {
+      width: '100%',
+      maxHeight: '70%',
+      backgroundColor: colors.surface,
+      borderRadius: 16,
+      paddingVertical: 8,
+    },
+    languageOption: { paddingVertical: 14, paddingHorizontal: 20 },
+    languageOptionText: { fontSize: fontSize.base, fontFamily: fontFamily.body, color: colors.text },
+    languageOptionTextActive: { fontFamily: fontFamily.bodyBold, color: colors.primary },
   });
 }

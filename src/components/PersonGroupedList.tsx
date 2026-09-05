@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import type { FollowUpWithPerson } from '../types';
 import { EmptyState } from './EmptyState';
 import { Avatar } from './Avatar';
@@ -13,6 +14,7 @@ function FollowUpRow({ item }: { item: FollowUpWithPerson }) {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
   const router = useRouter();
+  const { t } = useTranslation();
   const late = daysLate(item.dueAt);
   return (
     <Pressable
@@ -21,11 +23,13 @@ function FollowUpRow({ item }: { item: FollowUpWithPerson }) {
     >
       <Text style={styles.rowTitle}>{item.title}</Text>
       {late !== null ? (
-        <Text style={styles.rowLate}>⚠️ {late === 0 ? 'Bugün gecikti' : `${late} gündür gecikti`}</Text>
+        <Text style={styles.rowLate}>
+          ⚠️ {late === 0 ? t('personGroupedList.lateToday') : t('personGroupedList.lateDays', { count: late })}
+        </Text>
       ) : item.dueAt !== null ? (
         <Text style={styles.rowMeta}>⏰ {formatDueDate(item.dueAt)}</Text>
       ) : (
-        <Text style={styles.rowMeta}>Tarih yok</Text>
+        <Text style={styles.rowMeta}>{t('personGroupedList.noDate')}</Text>
       )}
     </Pressable>
   );

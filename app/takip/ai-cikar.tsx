@@ -13,6 +13,7 @@ import {
   View,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -29,7 +30,8 @@ import * as MediaLibrary from 'expo-media-library';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
-import { FOLLOW_UP_TYPE_LABELS, type FollowUpSource } from '../../src/types';
+import type { FollowUpSource } from '../../src/types';
+import { followUpTypeLabel } from '../../src/i18n/labels';
 import { aiProvider, isUsingMockAI, type ExtractedFollowUp, type ImageMediaType } from '../../src/ai';
 import { applyReminderLead } from '../../src/utils/date';
 import { scheduleMainReminder } from '../../src/services/reminderScheduler';
@@ -76,6 +78,7 @@ export default function AiCikarScreen() {
   const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const router = useRouter();
+  const { t, i18n } = useTranslation();
   const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
   const keyboardHeight = useKeyboardHeight();
@@ -125,7 +128,7 @@ export default function AiCikarScreen() {
       setCandidateSource('text');
       setTranscript(null);
     } catch (e) {
-      setError('Çıkarım başarısız oldu. Lütfen tekrar dene.');
+      setError(t('aiCikar.textError'));
     } finally {
       setLoading(false);
     }
@@ -135,7 +138,7 @@ export default function AiCikarScreen() {
     setError(null);
     const permission = await requestRecordingPermissionsAsync();
     if (!permission.granted) {
-      setError('Kayıt yapmak için mikrofon izni gerekiyor.');
+      setError(t('aiCikar.micPermissionError'));
       return;
     }
     await setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
@@ -161,7 +164,7 @@ export default function AiCikarScreen() {
       setCandidates(toCandidates(result.candidates));
       setCandidateSource('voice');
     } catch (e) {
-      setError('Deşifre/çıkarım başarısız oldu. Lütfen tekrar dene.');
+      setError(t('aiCikar.voiceError'));
     } finally {
       setLoading(false);
     }
@@ -171,7 +174,7 @@ export default function AiCikarScreen() {
     setError(null);
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permission.granted) {
-      setError('Görsel seçmek için galeri izni gerekiyor.');
+      setError(t('aiCikar.galleryPermissionError'));
       return;
     }
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -193,7 +196,7 @@ export default function AiCikarScreen() {
     try {
       const permission = await MediaLibrary.requestPermissionsAsync();
       if (!permission.granted) {
-        setError('Son ekran görüntünü bulmak için galeri izni gerekiyor.');
+        setError(t('aiCikar.screenshotPermissionError'));
         return;
       }
       const page = await MediaLibrary.getAssetsAsync({
@@ -205,7 +208,7 @@ export default function AiCikarScreen() {
       });
       const asset = page.assets[0];
       if (!asset) {
-        setError('Son bir ekran görüntüsü bulunamadı.');
+        setError(t('aiCikar.screenshotNotFound'));
         return;
       }
       const info = await MediaLibrary.getAssetInfoAsync(asset);
@@ -216,7 +219,7 @@ export default function AiCikarScreen() {
       setImageMediaType(guessMediaType(asset.filename));
       setCandidates(null);
     } catch (e) {
-      setError('Ekran görüntüsü yüklenemedi.');
+      setError(t('aiCikar.screenshotLoadError'));
     } finally {
       setImageLoading(false);
     }
@@ -232,7 +235,7 @@ export default function AiCikarScreen() {
       setCandidateSource('screenshot');
       setTranscript(null);
     } catch (e) {
-      setError('Görsel analizi başarısız oldu. Lütfen tekrar dene.');
+      setError(t('aiCikar.imageError'));
     } finally {
       setLoading(false);
     }
@@ -251,7 +254,7 @@ export default function AiCikarScreen() {
     try {
       const base64 = await FileSystem.readAsStringAsync(asset.uri, { encoding: 'base64' });
       if (base64.length > MAX_PDF_BASE64_LENGTH) {
-        setError('Belge çok büyük. Daha küçük bir PDF dener misin?');
+        setError(t('aiCikar.pdfTooLarge'));
         setPdfName(null);
         setPdfBase64(null);
         return;
@@ -259,7 +262,7 @@ export default function AiCikarScreen() {
       setPdfName(asset.name);
       setPdfBase64(base64);
     } catch (e) {
-      setError('Belge okunamadı.');
+      setError(t('aiCikar.pdfReadError'));
     } finally {
       setPdfLoading(false);
     }
@@ -275,7 +278,7 @@ export default function AiCikarScreen() {
       setCandidateSource('pdf');
       setTranscript(null);
     } catch (e) {
-      setError('Belge analizi başarısız oldu. Lütfen tekrar dene.');
+      setError(t('aiCikar.pdfError'));
     } finally {
       setLoading(false);
     }
@@ -342,7 +345,7 @@ export default function AiCikarScreen() {
 
       router.back();
     } catch (e) {
-      Alert.alert('Hata', 'Kaydetme sırasında bir sorun oluştu.');
+      Alert.alert(t('common.error'), t('aiCikar.saveError'));
     } finally {
       setSaving(false);
     }
@@ -375,9 +378,7 @@ export default function AiCikarScreen() {
       >
         {isUsingMockAI && (
           <View style={styles.mockBanner}>
-            <Text style={styles.mockBannerText}>
-              Test modu: gerçek AI backend'i henüz bağlı değil, sonuçlar sahte (mock) olacak.
-            </Text>
+            <Text style={styles.mockBannerText}>{t('aiCikar.mockBanner')}</Text>
           </View>
         )}
 
@@ -387,69 +388,84 @@ export default function AiCikarScreen() {
             onPress={() => setMode('text')}
             accessibilityRole="radio"
             accessibilityState={{ checked: mode === 'text' }}
-            accessibilityLabel="Metin modu"
+            accessibilityLabel={t('aiCikar.modeTextA11y')}
           >
-            <Text style={[styles.modeTabText, mode === 'text' && styles.modeTabTextActive]}>Metin</Text>
+            <Text style={[styles.modeTabText, mode === 'text' && styles.modeTabTextActive]}>
+              {t('aiCikar.modeText')}
+            </Text>
           </Pressable>
           <Pressable
             style={[styles.modeTab, mode === 'voice' && styles.modeTabActive]}
             onPress={() => setMode('voice')}
             accessibilityRole="radio"
             accessibilityState={{ checked: mode === 'voice' }}
-            accessibilityLabel="Sesli mod"
+            accessibilityLabel={t('aiCikar.modeVoiceA11y')}
           >
-            <Text style={[styles.modeTabText, mode === 'voice' && styles.modeTabTextActive]}>Sesli</Text>
+            <Text style={[styles.modeTabText, mode === 'voice' && styles.modeTabTextActive]}>
+              {t('aiCikar.modeVoice')}
+            </Text>
           </Pressable>
           <Pressable
             style={[styles.modeTab, mode === 'image' && styles.modeTabActive]}
             onPress={() => setMode('image')}
             accessibilityRole="radio"
             accessibilityState={{ checked: mode === 'image' }}
-            accessibilityLabel="Görsel modu"
+            accessibilityLabel={t('aiCikar.modeImageA11y')}
           >
-            <Text style={[styles.modeTabText, mode === 'image' && styles.modeTabTextActive]}>Görsel</Text>
+            <Text style={[styles.modeTabText, mode === 'image' && styles.modeTabTextActive]}>
+              {t('aiCikar.modeImage')}
+            </Text>
           </Pressable>
           <Pressable
             style={[styles.modeTab, mode === 'pdf' && styles.modeTabActive]}
             onPress={() => setMode('pdf')}
             accessibilityRole="radio"
             accessibilityState={{ checked: mode === 'pdf' }}
-            accessibilityLabel="Belge modu"
+            accessibilityLabel={t('aiCikar.modePdfA11y')}
           >
-            <Text style={[styles.modeTabText, mode === 'pdf' && styles.modeTabTextActive]}>Belge</Text>
+            <Text style={[styles.modeTabText, mode === 'pdf' && styles.modeTabTextActive]}>
+              {t('aiCikar.modePdf')}
+            </Text>
           </Pressable>
         </View>
 
         {mode === 'text' && (
           <>
-            <Text style={styles.label}>Notunu yapıştır veya yaz</Text>
+            <Text style={styles.label}>{t('aiCikar.textLabel')}</Text>
             <TextInput
               style={[styles.input, styles.multiline]}
-              placeholder="ör. Ahmete yarın teklifi göndereceğim, ondan da geçen haftaki raporu bekliyorum."
+              placeholder={t('aiCikar.textPlaceholder')}
               value={text}
               onChangeText={setText}
               multiline
               editable={!loading}
-              accessibilityLabel="Notunu yapıştır veya yaz"
+              accessibilityLabel={t('aiCikar.textLabel')}
             />
             <Pressable
               style={[styles.extractButton, (!text.trim() || loading) && styles.buttonDisabled]}
               onPress={handleExtractText}
               disabled={!text.trim() || loading}
               accessibilityRole="button"
-              accessibilityLabel="Çıkar"
+              accessibilityLabel={t('aiCikar.extract')}
               accessibilityState={{ disabled: !text.trim() || loading, busy: loading }}
             >
-              {loading ? <ActivityIndicator color={colors.onPrimary} /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
+              {loading ? (
+                <ActivityIndicator color={colors.onPrimary} />
+              ) : (
+                <Text style={styles.extractButtonText}>{t('aiCikar.extract')}</Text>
+              )}
             </Pressable>
           </>
         )}
 
         {mode === 'voice' && (
           <>
-            <Text style={styles.label}>Bir ses notu kaydet</Text>
+            <Text style={styles.label}>{t('aiCikar.voiceLabel')}</Text>
             <View style={styles.recordBox}>
-              <Text style={styles.recordTimer} accessibilityLabel={`Kayıt süresi ${formatDuration(recorderState.durationMillis)}`}>
+              <Text
+                style={styles.recordTimer}
+                accessibilityLabel={t('aiCikar.recordTimerA11y', { duration: formatDuration(recorderState.durationMillis) })}
+              >
                 {formatDuration(recorderState.durationMillis)}
               </Text>
               {!recorderState.isRecording ? (
@@ -458,18 +474,20 @@ export default function AiCikarScreen() {
                   onPress={handleStartRecording}
                   disabled={loading}
                   accessibilityRole="button"
-                  accessibilityLabel={hasRecording ? 'Tekrar kaydet' : 'Kaydı başlat'}
+                  accessibilityLabel={hasRecording ? t('aiCikar.recordAgainA11y') : t('aiCikar.recordStartA11y')}
                 >
-                  <Text style={styles.recordButtonText}>{hasRecording ? '● Tekrar kaydet' : '● Kaydı başlat'}</Text>
+                  <Text style={styles.recordButtonText}>
+                    {hasRecording ? t('aiCikar.recordAgain') : t('aiCikar.recordStart')}
+                  </Text>
                 </Pressable>
               ) : (
                 <Pressable
                   style={[styles.recordButton, styles.recordButtonStop]}
                   onPress={handleStopRecording}
                   accessibilityRole="button"
-                  accessibilityLabel="Kaydı durdur"
+                  accessibilityLabel={t('aiCikar.recordStopA11y')}
                 >
-                  <Text style={styles.recordButtonText}>■ Kaydı durdur</Text>
+                  <Text style={styles.recordButtonText}>{t('aiCikar.recordStop')}</Text>
                 </Pressable>
               )}
             </View>
@@ -478,15 +496,19 @@ export default function AiCikarScreen() {
               onPress={handleExtractVoice}
               disabled={!hasRecording || loading}
               accessibilityRole="button"
-              accessibilityLabel="Çıkar"
+              accessibilityLabel={t('aiCikar.extract')}
               accessibilityState={{ disabled: !hasRecording || loading, busy: loading }}
             >
-              {loading ? <ActivityIndicator color={colors.onPrimary} /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
+              {loading ? (
+                <ActivityIndicator color={colors.onPrimary} />
+              ) : (
+                <Text style={styles.extractButtonText}>{t('aiCikar.extract')}</Text>
+              )}
             </Pressable>
             {transcript !== null && (
               <View style={styles.transcriptBox}>
-                <Text style={styles.transcriptLabel}>Duyulan:</Text>
-                <Text style={styles.transcriptText}>{transcript || '(anlaşılamadı)'}</Text>
+                <Text style={styles.transcriptLabel}>{t('aiCikar.transcriptLabel')}</Text>
+                <Text style={styles.transcriptText}>{transcript || t('aiCikar.transcriptEmpty')}</Text>
               </View>
             )}
           </>
@@ -494,11 +516,11 @@ export default function AiCikarScreen() {
 
         {mode === 'image' && (
           <>
-            <Text style={styles.label}>Bir görsel seç (ekran görüntüsü, fotoğraf)</Text>
+            <Text style={styles.label}>{t('aiCikar.imageLabel')}</Text>
             {imageLoading ? (
               <View style={styles.recordBox}>
                 <ActivityIndicator />
-                <Text style={styles.hint}>Son ekran görüntün yükleniyor…</Text>
+                <Text style={styles.hint}>{t('aiCikar.imageLoadingScreenshot')}</Text>
               </View>
             ) : imagePreviewUri ? (
               <View style={styles.imagePreviewBox}>
@@ -506,16 +528,16 @@ export default function AiCikarScreen() {
                   source={{ uri: imagePreviewUri }}
                   style={styles.imagePreview}
                   resizeMode="contain"
-                  accessibilityLabel="Seçilen görsel önizlemesi"
+                  accessibilityLabel={t('aiCikar.imagePreviewA11y')}
                 />
                 <Pressable
                   style={styles.secondaryButton}
                   onPress={handlePickImage}
                   disabled={loading}
                   accessibilityRole="button"
-                  accessibilityLabel="Başka bir görsel seç"
+                  accessibilityLabel={t('aiCikar.pickAnotherImage')}
                 >
-                  <Text style={styles.secondaryButtonText}>Başka bir görsel seç</Text>
+                  <Text style={styles.secondaryButtonText}>{t('aiCikar.pickAnotherImage')}</Text>
                 </Pressable>
               </View>
             ) : (
@@ -524,9 +546,9 @@ export default function AiCikarScreen() {
                 onPress={handlePickImage}
                 disabled={loading}
                 accessibilityRole="button"
-                accessibilityLabel="Galeriden görsel seç"
+                accessibilityLabel={t('aiCikar.pickImageGalleryA11y')}
               >
-                <Text style={styles.pickImageButtonText}>🖼️ Galeriden seç</Text>
+                <Text style={styles.pickImageButtonText}>{t('aiCikar.pickImageGallery')}</Text>
               </Pressable>
             )}
             <Pressable
@@ -534,21 +556,25 @@ export default function AiCikarScreen() {
               onPress={handleExtractImage}
               disabled={!imageBase64 || loading}
               accessibilityRole="button"
-              accessibilityLabel="Çıkar"
+              accessibilityLabel={t('aiCikar.extract')}
               accessibilityState={{ disabled: !imageBase64 || loading, busy: loading }}
             >
-              {loading ? <ActivityIndicator color={colors.onPrimary} /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
+              {loading ? (
+                <ActivityIndicator color={colors.onPrimary} />
+              ) : (
+                <Text style={styles.extractButtonText}>{t('aiCikar.extract')}</Text>
+              )}
             </Pressable>
           </>
         )}
 
         {mode === 'pdf' && (
           <>
-            <Text style={styles.label}>Bir PDF belgesi seç</Text>
+            <Text style={styles.label}>{t('aiCikar.pdfLabel')}</Text>
             {pdfLoading ? (
               <View style={styles.recordBox}>
                 <ActivityIndicator />
-                <Text style={styles.hint}>Belge yükleniyor…</Text>
+                <Text style={styles.hint}>{t('aiCikar.pdfLoadingText')}</Text>
               </View>
             ) : pdfName ? (
               <View style={styles.imagePreviewBox}>
@@ -558,9 +584,9 @@ export default function AiCikarScreen() {
                   onPress={handlePickPdf}
                   disabled={loading}
                   accessibilityRole="button"
-                  accessibilityLabel="Başka bir belge seç"
+                  accessibilityLabel={t('aiCikar.pickAnotherPdf')}
                 >
-                  <Text style={styles.secondaryButtonText}>Başka bir belge seç</Text>
+                  <Text style={styles.secondaryButtonText}>{t('aiCikar.pickAnotherPdf')}</Text>
                 </Pressable>
               </View>
             ) : (
@@ -569,9 +595,9 @@ export default function AiCikarScreen() {
                 onPress={handlePickPdf}
                 disabled={loading}
                 accessibilityRole="button"
-                accessibilityLabel="PDF seç"
+                accessibilityLabel={t('aiCikar.pickPdf')}
               >
-                <Text style={styles.pickImageButtonText}>📄 PDF seç</Text>
+                <Text style={styles.pickImageButtonText}>{t('aiCikar.pickPdf')}</Text>
               </Pressable>
             )}
             <Pressable
@@ -579,10 +605,14 @@ export default function AiCikarScreen() {
               onPress={handleExtractPdf}
               disabled={!pdfBase64 || loading}
               accessibilityRole="button"
-              accessibilityLabel="Çıkar"
+              accessibilityLabel={t('aiCikar.extract')}
               accessibilityState={{ disabled: !pdfBase64 || loading, busy: loading }}
             >
-              {loading ? <ActivityIndicator color={colors.onPrimary} /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
+              {loading ? (
+                <ActivityIndicator color={colors.onPrimary} />
+              ) : (
+                <Text style={styles.extractButtonText}>{t('aiCikar.extract')}</Text>
+              )}
             </Pressable>
           </>
         )}
@@ -592,15 +622,15 @@ export default function AiCikarScreen() {
         {candidates && (
           <View style={styles.results}>
             <Text style={styles.resultsTitle}>
-              {candidates.length === 0 ? 'Herhangi bir takip maddesi bulunamadı.' : 'Bulunanlar — kaydetmeden önce gözden geçir'}
+              {candidates.length === 0 ? t('aiCikar.resultsEmpty') : t('aiCikar.resultsTitle')}
             </Text>
             {candidates.map((c, i) => {
               const candidateLabel = [
-                FOLLOW_UP_TYPE_LABELS[c.type],
+                followUpTypeLabel(c.type, t),
                 c.title,
-                c.personName ? `Kişi: ${c.personName}` : null,
-                c.dueAtISO ? `Tarih: ${new Date(c.dueAtISO).toLocaleString('tr-TR')}` : null,
-                c.confidence < LOW_CONFIDENCE_THRESHOLD ? 'Emin değilim, gözden geçir' : null,
+                c.personName ? t('aiCikar.personLabel', { name: c.personName }) : null,
+                c.dueAtISO ? t('aiCikar.dateLabel', { date: new Date(c.dueAtISO).toLocaleString(i18n.language) }) : null,
+                c.confidence < LOW_CONFIDENCE_THRESHOLD ? t('aiCikar.lowConfidenceA11y') : null,
               ]
                 .filter(Boolean)
                 .join('. ');
@@ -617,16 +647,14 @@ export default function AiCikarScreen() {
                   {c.selected && <Text style={styles.checkboxMark}>✓</Text>}
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.candidateType}>{FOLLOW_UP_TYPE_LABELS[c.type]}</Text>
+                  <Text style={styles.candidateType}>{followUpTypeLabel(c.type, t)}</Text>
                   <Text style={styles.candidateTitle}>{c.title}</Text>
                   {c.personName && <Text style={styles.candidateMeta}>👤 {c.personName}</Text>}
                   {c.dueAtISO && (
-                    <Text style={styles.candidateMeta}>
-                      ⏰ {new Date(c.dueAtISO).toLocaleString('tr-TR')}
-                    </Text>
+                    <Text style={styles.candidateMeta}>⏰ {new Date(c.dueAtISO).toLocaleString(i18n.language)}</Text>
                   )}
                   {c.confidence < LOW_CONFIDENCE_THRESHOLD && (
-                    <Text style={styles.candidateLowConfidence}>❓ Emin değilim — gözden geçir</Text>
+                    <Text style={styles.candidateLowConfidence}>{t('aiCikar.lowConfidenceText')}</Text>
                   )}
                   {c.note && <Text style={styles.candidateNote}>💬 {c.note}</Text>}
                 </View>
@@ -640,11 +668,13 @@ export default function AiCikarScreen() {
                 onPress={handleSave}
                 disabled={saving}
                 accessibilityRole="button"
-                accessibilityLabel={`Seçilenleri kaydet (${candidates.filter((c) => c.selected).length})`}
+                accessibilityLabel={t('aiCikar.saveSelected', { count: candidates.filter((c) => c.selected).length })}
                 accessibilityState={{ disabled: saving, busy: saving }}
               >
                 <Text style={styles.saveButtonText}>
-                  {saving ? 'Kaydediliyor…' : `Seçilenleri kaydet (${candidates.filter((c) => c.selected).length})`}
+                  {saving
+                    ? t('aiCikar.saving')
+                    : t('aiCikar.saveSelected', { count: candidates.filter((c) => c.selected).length })}
                 </Text>
               </Pressable>
             )}

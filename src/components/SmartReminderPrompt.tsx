@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import type { ExtraReminderChoice } from '../services/smartReminders';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
 
@@ -12,26 +13,45 @@ interface Props {
 export function SmartReminderPrompt({ visible, title, onChoose }: Props) {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
+  const { t } = useTranslation();
 
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View style={styles.backdrop}>
         <View style={styles.card}>
-          <Text style={styles.title}>Bu iş önemli görünüyor</Text>
-          <Text style={styles.subtitle}>
-            "{title}" için 1 gün önce ve/veya aynı gün sabah da hatırlatayım mı?
-          </Text>
-          <Pressable style={styles.option} onPress={() => onChoose('day_before')} accessibilityRole="button" accessibilityLabel="1 gün önce">
-            <Text style={styles.optionText}>1 gün önce</Text>
+          <Text style={styles.title}>{t('smartReminderPrompt.title')}</Text>
+          <Text style={styles.subtitle}>{t('smartReminderPrompt.subtitle', { title })}</Text>
+          <Pressable
+            style={styles.option}
+            onPress={() => onChoose('day_before')}
+            accessibilityRole="button"
+            accessibilityLabel={t('smartReminderPrompt.dayBefore')}
+          >
+            <Text style={styles.optionText}>{t('smartReminderPrompt.dayBefore')}</Text>
           </Pressable>
-          <Pressable style={styles.option} onPress={() => onChoose('morning')} accessibilityRole="button" accessibilityLabel="Aynı gün sabah">
-            <Text style={styles.optionText}>Aynı gün sabah</Text>
+          <Pressable
+            style={styles.option}
+            onPress={() => onChoose('morning')}
+            accessibilityRole="button"
+            accessibilityLabel={t('smartReminderPrompt.morning')}
+          >
+            <Text style={styles.optionText}>{t('smartReminderPrompt.morning')}</Text>
           </Pressable>
-          <Pressable style={styles.option} onPress={() => onChoose('both')} accessibilityRole="button" accessibilityLabel="İkisi de">
-            <Text style={styles.optionText}>İkisi de</Text>
+          <Pressable
+            style={styles.option}
+            onPress={() => onChoose('both')}
+            accessibilityRole="button"
+            accessibilityLabel={t('smartReminderPrompt.both')}
+          >
+            <Text style={styles.optionText}>{t('smartReminderPrompt.both')}</Text>
           </Pressable>
-          <Pressable style={styles.decline} onPress={() => onChoose('none')} accessibilityRole="button" accessibilityLabel="Hayır, gerek yok">
-            <Text style={styles.declineText}>Hayır, gerek yok</Text>
+          <Pressable
+            style={styles.decline}
+            onPress={() => onChoose('none')}
+            accessibilityRole="button"
+            accessibilityLabel={t('smartReminderPrompt.decline')}
+          >
+            <Text style={styles.declineText}>{t('smartReminderPrompt.decline')}</Text>
           </Pressable>
         </View>
       </View>

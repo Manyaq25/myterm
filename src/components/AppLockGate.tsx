@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AppState, type AppStateStatus, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import * as ScreenCapture from 'expo-screen-capture';
 import { authenticate, isAppLockEnabled } from '../services/appLock';
 import { Button } from './Button';
@@ -8,6 +9,7 @@ import { useTheme, fontFamily, type ThemeColors } from '../theme';
 export function AppLockGate({ children }: { children: React.ReactNode }) {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
+  const { t } = useTranslation();
   const [ready, setReady] = useState(false);
   const [locked, setLocked] = useState(false);
   const lockedRef = useRef(false);
@@ -70,9 +72,9 @@ export function AppLockGate({ children }: { children: React.ReactNode }) {
       {locked && (
         <View style={styles.overlay}>
           <Text style={styles.icon}>🔒</Text>
-          <Text style={styles.title}>Uygulama Kilitli</Text>
-          <Text style={styles.subtitle}>Devam etmek için kimliğini doğrula.</Text>
-          <Button label="Kilidi Aç" onPress={tryUnlock} variant="primary" />
+          <Text style={styles.title}>{t('appLockGate.title')}</Text>
+          <Text style={styles.subtitle}>{t('appLockGate.subtitle')}</Text>
+          <Button label={t('appLockGate.unlock')} onPress={tryUnlock} variant="primary" />
         </View>
       )}
     </>

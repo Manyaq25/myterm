@@ -13,6 +13,7 @@ import {
 import { useSQLiteContext } from 'expo-sqlite';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import { aiProvider, isUsingMockAI } from '../src/ai';
 import { buildAssistantContext } from '../src/services/assistantContext';
 import { useKeyboardHeight } from '../src/hooks/useKeyboardHeight';
@@ -23,12 +24,12 @@ interface Exchange {
   answer: string;
 }
 
-const SUGGESTIONS = ['Bugün ne yapacağım?', 'Kimlerden bir şey bekliyorum?', 'Bu hafta kaç aktif takibim var?'];
-
 export default function AsistanScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
+  const { t } = useTranslation();
+  const SUGGESTIONS = [t('asistan.suggestion1'), t('asistan.suggestion2'), t('asistan.suggestion3')];
   const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
   const keyboardHeight = useKeyboardHeight();
@@ -48,7 +49,7 @@ export default function AsistanScreen() {
       setHistory((prev) => [...prev, { question: finalQuestion, answer }]);
       setQuestion('');
     } catch (e) {
-      setError('Cevap alınamadı. Lütfen tekrar dene.');
+      setError(t('asistan.errorText'));
     } finally {
       setLoading(false);
     }
@@ -62,16 +63,14 @@ export default function AsistanScreen() {
     <Container style={{ flex: 1 }} {...containerProps}>
       {isUsingMockAI && (
         <View style={styles.mockBanner}>
-          <Text style={styles.mockBannerText}>
-            Test modu: gerçek AI backend'i henüz bağlı değil, cevaplar sahte (mock) olacak.
-          </Text>
+          <Text style={styles.mockBannerText}>{t('asistan.mockBanner')}</Text>
         </View>
       )}
 
       <ScrollView contentContainerStyle={styles.content}>
         {history.length === 0 && !loading && (
           <View style={styles.suggestions}>
-            <Text style={styles.suggestionsTitle}>Sorabileceklerin:</Text>
+            <Text style={styles.suggestionsTitle}>{t('asistan.suggestionsTitle')}</Text>
             {SUGGESTIONS.map((s) => (
               <Pressable key={s} style={styles.suggestionChip} onPress={() => handleAsk(s)}>
                 <Text style={styles.suggestionChipText}>{s}</Text>
@@ -94,7 +93,7 @@ export default function AsistanScreen() {
         {loading && (
           <View style={styles.loadingRow}>
             <ActivityIndicator />
-            <Text style={styles.loadingText}>Takip listen taranıyor…</Text>
+            <Text style={styles.loadingText}>{t('asistan.loadingText')}</Text>
           </View>
         )}
 
@@ -109,7 +108,7 @@ export default function AsistanScreen() {
       >
         <TextInput
           style={styles.input}
-          placeholder="Bir şey sor…"
+          placeholder={t('asistan.inputPlaceholder')}
           value={question}
           onChangeText={setQuestion}
           editable={!loading}
@@ -121,7 +120,7 @@ export default function AsistanScreen() {
           onPress={() => handleAsk()}
           disabled={!question.trim() || loading}
         >
-          <Text style={styles.sendButtonText}>Sor</Text>
+          <Text style={styles.sendButtonText}>{t('asistan.send')}</Text>
         </Pressable>
       </View>
     </Container>

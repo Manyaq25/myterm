@@ -18,12 +18,16 @@ import { checkAndApplyUpdate } from '../src/services/appUpdates';
 import { AppLockGate } from '../src/components/AppLockGate';
 import { AnimatedSplash } from '../src/components/AnimatedSplash';
 import { fontFamily } from '../src/theme/typography';
+import { languageReady } from '../src/i18n';
+import { useTranslation } from 'react-i18next';
 
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [showIntro, setShowIntro] = useState(true);
+  const [i18nReady, setI18nReady] = useState(false);
   const [fontsLoaded, fontError] = useFonts({
     Fraunces_500Medium,
     Fraunces_600SemiBold,
@@ -35,10 +39,14 @@ export default function RootLayout() {
   });
 
   useEffect(() => {
-    if (fontsLoaded || fontError) {
+    languageReady.then(() => setI18nReady(true));
+  }, []);
+
+  useEffect(() => {
+    if ((fontsLoaded || fontError) && i18nReady) {
       void SplashScreen.hideAsync();
     }
-  }, [fontsLoaded, fontError]);
+  }, [fontsLoaded, fontError, i18nReady]);
 
   useEffect(() => {
     void checkAndApplyUpdate();
@@ -53,7 +61,7 @@ export default function RootLayout() {
     return () => subscription.remove();
   }, [router]);
 
-  if (!fontsLoaded && !fontError) {
+  if ((!fontsLoaded && !fontError) || !i18nReady) {
     return null;
   }
 
@@ -73,13 +81,13 @@ export default function RootLayout() {
                 name="onboarding"
                 options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }}
               />
-              <Stack.Screen name="takip/yeni" options={{ presentation: 'modal', title: 'Yeni Takip' }} />
-              <Stack.Screen name="takip/ai-cikar" options={{ presentation: 'modal', title: 'AI ile Çıkar' }} />
-              <Stack.Screen name="takip/[id]" options={{ title: 'Takip Detayı' }} />
-              <Stack.Screen name="kisi/[id]" options={{ title: 'Kişi Profili' }} />
-              <Stack.Screen name="gorunum/bekliyorum" options={{ title: 'Neyi Bekliyorum?' }} />
-              <Stack.Screen name="gorunum/soz-verdim" options={{ title: 'Kime Söz Verdim?' }} />
-              <Stack.Screen name="asistan" options={{ presentation: 'modal', title: 'AI Asistan' }} />
+              <Stack.Screen name="takip/yeni" options={{ presentation: 'modal', title: t('stackTitles.yeniTakip') }} />
+              <Stack.Screen name="takip/ai-cikar" options={{ presentation: 'modal', title: t('stackTitles.aiIleCikar') }} />
+              <Stack.Screen name="takip/[id]" options={{ title: t('stackTitles.takipDetay') }} />
+              <Stack.Screen name="kisi/[id]" options={{ title: t('stackTitles.kisiProfili') }} />
+              <Stack.Screen name="gorunum/bekliyorum" options={{ title: t('stackTitles.neyiBekliyorum') }} />
+              <Stack.Screen name="gorunum/soz-verdim" options={{ title: t('stackTitles.kimeSozVerdim') }} />
+              <Stack.Screen name="asistan" options={{ presentation: 'modal', title: t('stackTitles.aiAsistan') }} />
             </Stack>
           </AppLockGate>
         </DatabaseProvider>

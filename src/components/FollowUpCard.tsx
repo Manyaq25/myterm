@@ -1,12 +1,13 @@
 import { useMemo, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { Swipeable } from 'react-native-gesture-handler';
 import type { FollowUpWithPerson } from '../types';
-import { FOLLOW_UP_TYPE_LABELS } from '../types';
 import { formatDueDate, isOverdue } from '../utils/date';
 import { CARD_MARGIN_BOTTOM, getCardSurface } from '../constants/cardStyle';
 import { useTheme, getTypeColor, fontFamily, fontSize, type ThemeColors } from '../theme';
+import { followUpTypeLabel } from '../i18n/labels';
 
 interface Props {
   item: FollowUpWithPerson;
@@ -21,6 +22,7 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
   const router = useRouter();
+  const { t } = useTranslation();
   const swipeableRef = useRef<Swipeable>(null);
   // react-native-gesture-handler'ın Swipeable'ı, satırın yüksekliğini bir kez
   // ölçüp önbelleğe alıyor; çok satırlı başlıklarda metin sarmalanması geç
@@ -32,13 +34,13 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
   const canComplete = onComplete && (item.status === 'open' || item.status === 'snoozed');
 
   const accessibilityLabel = [
-    FOLLOW_UP_TYPE_LABELS[item.type],
+    followUpTypeLabel(item.type, t),
     item.title,
-    item.personName ? `Kişi: ${item.personName}` : null,
+    item.personName ? t('followUpCard.personLabel', { name: item.personName }) : null,
     item.dueAt !== null
       ? overdue
-        ? `Gecikmiş, son tarih ${formatDueDate(item.dueAt)}`
-        : `Son tarih ${formatDueDate(item.dueAt)}`
+        ? t('followUpCard.overdueLabel', { date: formatDueDate(item.dueAt) })
+        : t('followUpCard.dueLabel', { date: formatDueDate(item.dueAt) })
       : null,
   ]
     .filter(Boolean)
@@ -48,8 +50,8 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
   // keşfedemeyebilir/gerçekleştiremeyebilir — aynı aksiyonları özel
   // erişilebilirlik eylemleri (rotor) olarak da sunuyoruz.
   const accessibilityActions = [
-    ...(canComplete ? [{ name: 'complete', label: 'Tamamlandı olarak işaretle' }] : []),
-    ...(onDelete ? [{ name: 'delete', label: 'Sil' }] : []),
+    ...(canComplete ? [{ name: 'complete', label: t('followUpCard.completeA11y') }] : []),
+    ...(onDelete ? [{ name: 'delete', label: t('common.delete') }] : []),
   ];
 
   function handleAccessibilityAction(event: { nativeEvent: { actionName: string } }) {
@@ -61,7 +63,7 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
     <>
       <View style={styles.headerRow}>
         <View style={[styles.badge, { backgroundColor: getTypeColor(item.type, colors) }]}>
-          <Text style={styles.badgeText}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
+          <Text style={styles.badgeText}>{followUpTypeLabel(item.type, t)}</Text>
         </View>
         {item.dueAt !== null && (
           <Text style={[styles.due, overdue && styles.dueOverdue]}>{formatDueDate(item.dueAt)}</Text>
@@ -79,7 +81,7 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
       onPress={() => (selectionMode ? onToggleSelect?.() : router.push(`/takip/${item.id}`))}
       accessibilityRole={selectionMode ? 'checkbox' : 'button'}
       accessibilityLabel={accessibilityLabel}
-      accessibilityHint={selectionMode ? undefined : 'Detayları görmek için dokun'}
+      accessibilityHint={selectionMode ? undefined : t('followUpCard.detailsHint')}
       accessibilityState={selectionMode ? { checked: !!selected } : undefined}
       accessibilityActions={selectionMode ? undefined : accessibilityActions}
       onAccessibilityAction={selectionMode ? undefined : handleAccessibilityAction}
@@ -118,9 +120,9 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
                       onComplete?.();
                     }}
                     accessibilityRole="button"
-                    accessibilityLabel="Tamamlandı olarak işaretle"
+                    accessibilityLabel={t('followUpCard.completeA11y')}
                   >
-                    <Text style={styles.actionText}>✓ Tamamlandı</Text>
+                    <Text style={styles.actionText}>{t('followUpCard.completeSwipe')}</Text>
                   </Pressable>
                 </View>
               )
@@ -137,9 +139,9 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
                       onDelete?.();
                     }}
                     accessibilityRole="button"
-                    accessibilityLabel="Sil"
+                    accessibilityLabel={t('common.delete')}
                   >
-                    <Text style={styles.actionText}>Sil</Text>
+                    <Text style={styles.actionText}>{t('common.delete')}</Text>
                   </Pressable>
                 </View>
               )

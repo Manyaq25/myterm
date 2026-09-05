@@ -35,16 +35,6 @@ export interface FollowUpWithPerson extends FollowUp {
   personName: string | null;
 }
 
-export const FOLLOW_UP_TYPE_LABELS: Record<FollowUpType, string> = {
-  promise_made: 'Verdiğim söz',
-  promise_expected: 'Benden beklenen',
-  task: 'Yapılacak iş',
-  waiting_on: 'Birinden beklediğim',
-};
+export const FOLLOW_UP_TYPES: FollowUpType[] = ['promise_made', 'promise_expected', 'task', 'waiting_on'];
 
-export const FOLLOW_UP_STATUS_LABELS: Record<FollowUpStatus, string> = {
-  open: 'Açık',
-  done: 'Tamamlandı',
-  snoozed: 'Ertelendi',
-  cancelled: 'İptal edildi',
-};
+export const FOLLOW_UP_STATUSES: FollowUpStatus[] = ['open', 'done', 'snoozed', 'cancelled'];

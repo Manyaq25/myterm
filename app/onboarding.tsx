@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
 import { Dimensions, NativeScrollEvent, NativeSyntheticEvent, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { markOnboardingSeen } from '../src/services/onboarding';
 import { Button } from '../src/components/Button';
@@ -13,16 +14,16 @@ interface Slide {
   text: string;
 }
 
-const SLIDES: Slide[] = [
-  { icon: '🧭', text: 'Unutman gerekenleri değil, unutmaman gerekenleri takip eder.' },
-  { icon: '🎙️ 📝 🖼️ 📄', text: 'Sesinden, notlarından, ekran görüntülerinden ve belgelerinden takip çıkarabilir.' },
-  { icon: '🔒', text: 'Kontrol sende. AI hiçbir şeyi iznin olmadan takip etmek zorunda değil.' },
-];
-
 export default function OnboardingScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
   const router = useRouter();
+  const { t } = useTranslation();
+  const SLIDES: Slide[] = [
+    { icon: '🧭', text: t('onboarding.slide1') },
+    { icon: '🎙️ 📝 🖼️ 📄', text: t('onboarding.slide2') },
+    { icon: '🔒', text: t('onboarding.slide3') },
+  ];
   const scrollRef = useRef<ScrollView>(null);
   const [index, setIndex] = useState(0);
   const totalSlides = SLIDES.length + 1;
@@ -47,7 +48,7 @@ export default function OnboardingScreen() {
     <SafeAreaView style={styles.container}>
       {!isLast && (
         <Pressable style={styles.skipButton} onPress={finish}>
-          <Text style={styles.skipButtonText}>Atla</Text>
+          <Text style={styles.skipButtonText}>{t('onboarding.skip')}</Text>
         </Pressable>
       )}
 
@@ -68,7 +69,7 @@ export default function OnboardingScreen() {
         <View style={[styles.slide, { width: SCREEN_WIDTH }]}>
           <Text style={styles.icon}>👋</Text>
           <Text style={styles.title}>Synvia AI</Text>
-          <Text style={styles.text}>Hazırsan başlayabiliriz.</Text>
+          <Text style={styles.text}>{t('onboarding.welcomeText')}</Text>
         </View>
       </ScrollView>
 
@@ -80,9 +81,9 @@ export default function OnboardingScreen() {
         </View>
 
         {isLast ? (
-          <Button label="Başlayalım" onPress={finish} variant="primary" />
+          <Button label={t('onboarding.start')} onPress={finish} variant="primary" />
         ) : (
-          <Button label="İleri" onPress={() => goToIndex(index + 1)} variant="primary" />
+          <Button label={t('onboarding.next')} onPress={() => goToIndex(index + 1)} variant="primary" />
         )}
       </View>
     </SafeAreaView>

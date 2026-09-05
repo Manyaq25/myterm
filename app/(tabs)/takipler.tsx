@@ -1,6 +1,8 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Alert, FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useFocusEffect } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import type { TFunction } from 'i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { listFollowUps } from '../../src/db/queries';
@@ -11,11 +13,13 @@ import { matchesQuery } from '../../src/utils/search';
 import { completeFollowUp, removeFollowUp, removeFollowUps } from '../../src/services/followUpActions';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
-const FILTERS: { key: FollowUpStatus[]; label: string }[] = [
-  { key: ['open', 'snoozed'], label: 'Açık' },
-  { key: ['done'], label: 'Tamamlanan' },
-  { key: ['cancelled'], label: 'İptal' },
-];
+function getFilters(t: TFunction): { key: FollowUpStatus[]; label: string }[] {
+  return [
+    { key: ['open', 'snoozed'], label: t('takipler.filterOpen') },
+    { key: ['done'], label: t('takipler.filterDone') },
+    { key: ['cancelled'], label: t('takipler.filterCancelled') },
+  ];
+}
 
 function getFilterColor(idx: number, colors: ThemeColors): string {
   switch (idx) {
@@ -32,6 +36,8 @@ export default function TakiplerScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
+  const { t } = useTranslation();
+  const filters = useMemo(() => getFilters(t), [t]);
   const [filterIndex, setFilterIndex] = useState(0);
   const [items, setItems] = useState<FollowUpWithPerson[]>([]);
   const [query, setQuery] = useState('');
@@ -39,9 +45,9 @@ export default function TakiplerScreen() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   const load = useCallback(async () => {
-    const rows = await listFollowUps(db, FILTERS[filterIndex].key);
+    const rows = await listFollowUps(db, filters[filterIndex].key);
     setItems(rows);
-  }, [db, filterIndex]);
+  }, [db, filterIndex, filters]);
 
   useFocusEffect(
     useCallback(() => {
@@ -78,12 +84,12 @@ export default function TakiplerScreen() {
     const selected = filteredItems.filter((item) => selectedIds.has(item.id));
     if (selected.length === 0) return;
     Alert.alert(
-      'Seçilenleri sil',
-      `${selected.length} kayıt silinecek. Bu işlem geri alınamaz.`,
+      t('takipler.bulkDeleteAlertTitle'),
+      t('takipler.bulkDeleteAlertMessage', { count: selected.length }),
       [
-        { text: 'Vazgeç', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Sil',
+          text: t('common.delete'),
           style: 'destructive',
           onPress: async () => {
             await removeFollowUps(db, selected);
@@ -100,22 +106,24 @@ export default function TakiplerScreen() {
       <View style={styles.searchRow}>
         <TextInput
           style={styles.searchInput}
-          placeholder="Ara: kişi, başlık veya not..."
+          placeholder={t('takipler.searchPlaceholder')}
           placeholderTextColor={colors.textMuted}
           value={query}
           onChangeText={setQuery}
           clearButtonMode="while-editing"
           editable={!selectionMode}
-          accessibilityLabel="Kişi, başlık veya not ara"
+          accessibilityLabel={t('takipler.searchA11y')}
         />
         {filteredItems.length > 0 && (
           <Pressable
             style={styles.selectToggle}
             onPress={() => (selectionMode ? exitSelectionMode() : setSelectionMode(true))}
             accessibilityRole="button"
-            accessibilityLabel={selectionMode ? 'Seçim modunu kapat' : 'Toplu seçim modunu aç'}
+            accessibilityLabel={selectionMode ? t('takipler.closeSelectModeA11y') : t('takipler.openSelectModeA11y')}
           >
-            <Text style={styles.selectToggleText}>{selectionMode ? 'İptal' : 'Seç'}</Text>
+            <Text style={styles.selectToggleText}>
+              {selectionMode ? t('takipler.selectToggleCancel') : t('takipler.selectToggleSelect')}
+            </Text>
           </Pressable>
         )}
       </View>
@@ -124,29 +132,29 @@ export default function TakiplerScreen() {
           <Pressable
             onPress={toggleSelectAll}
             accessibilityRole="button"
-            accessibilityLabel={selectedIds.size === filteredItems.length ? 'Seçimi kaldır' : 'Tümünü seç'}
+            accessibilityLabel={selectedIds.size === filteredItems.length ? t('takipler.deselectAll') : t('takipler.selectAll')}
           >
             <Text style={styles.selectionBarLink}>
-              {selectedIds.size === filteredItems.length ? 'Seçimi kaldır' : 'Tümünü seç'}
+              {selectedIds.size === filteredItems.length ? t('takipler.deselectAll') : t('takipler.selectAll')}
             </Text>
           </Pressable>
           <Text style={styles.selectionBarCount} accessibilityLiveRegion="polite">
-            {selectedIds.size} seçili
+            {t('takipler.selectedCount', { count: selectedIds.size })}
           </Text>
           <Pressable
             style={[styles.selectionDeleteButton, selectedIds.size === 0 && styles.buttonDisabled]}
             onPress={handleBulkDelete}
             disabled={selectedIds.size === 0}
             accessibilityRole="button"
-            accessibilityLabel={`Seçilen ${selectedIds.size} kaydı sil`}
+            accessibilityLabel={t('takipler.bulkDeleteA11y', { count: selectedIds.size })}
             accessibilityState={{ disabled: selectedIds.size === 0 }}
           >
-            <Text style={styles.selectionDeleteButtonText}>Sil</Text>
+            <Text style={styles.selectionDeleteButtonText}>{t('common.delete')}</Text>
           </Pressable>
         </View>
       )}
       <View style={styles.filterRow} accessibilityRole="radiogroup">
-        {FILTERS.map((f, idx) => (
+        {filters.map((f, idx) => (
           <Pressable
             key={f.label}
             onPress={() => {
@@ -172,7 +180,7 @@ export default function TakiplerScreen() {
         ListEmptyComponent={
           <EmptyState
             icon={query.trim() ? '🔍' : '🗒️'}
-            title={query.trim() ? 'Aramayla eşleşen kayıt yok' : 'Bu filtrede kayıt yok'}
+            title={query.trim() ? t('takipler.emptySearchTitle') : t('takipler.emptyFilterTitle')}
           />
         }
         renderItem={({ item }) => (

@@ -1,9 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { getFollowUp } from '../../src/db/queries';
-import { FOLLOW_UP_TYPE_LABELS, type FollowUpWithPerson } from '../../src/types';
+import type { FollowUpWithPerson } from '../../src/types';
+import { followUpTypeLabel } from '../../src/i18n/labels';
 import { formatDueDate, isOverdue } from '../../src/utils/date';
 import { completeFollowUp, removeFollowUp } from '../../src/services/followUpActions';
 import { Avatar } from '../../src/components/Avatar';
@@ -13,6 +15,7 @@ import { useTheme, getTypeColor, fontFamily, fontSize, type ThemeColors } from '
 export default function TakipDetayScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const db = useSQLiteContext();
   const router = useRouter();
@@ -33,7 +36,7 @@ export default function TakipDetayScreen() {
   if (!item) {
     return (
       <View style={styles.container}>
-        <Text style={styles.detail}>Yükleniyor…</Text>
+        <Text style={styles.detail}>{t('common.loading')}</Text>
       </View>
     );
   }
@@ -48,10 +51,10 @@ export default function TakipDetayScreen() {
 
   async function handleDelete() {
     if (!item) return;
-    Alert.alert('Sil', 'Bu takip kalıcı olarak silinsin mi?', [
-      { text: 'Vazgeç', style: 'cancel' },
+    Alert.alert(t('takipDetay.deleteAlertTitle'), t('takipDetay.deleteAlertMessage'), [
+      { text: t('common.cancel'), style: 'cancel' },
       {
-        text: 'Sil',
+        text: t('common.delete'),
         style: 'destructive',
         onPress: async () => {
           await removeFollowUp(db, item);
@@ -65,7 +68,7 @@ export default function TakipDetayScreen() {
     <ScrollView contentContainerStyle={styles.content}>
       <View style={styles.card}>
         <View style={[styles.badge, { backgroundColor: getTypeColor(item.type, colors) }]}>
-          <Text style={styles.badgeText}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
+          <Text style={styles.badgeText}>{followUpTypeLabel(item.type, t)}</Text>
         </View>
         <Text style={styles.title}>{item.title}</Text>
 
@@ -74,7 +77,7 @@ export default function TakipDetayScreen() {
             style={styles.personRow}
             onPress={() => router.push(`/kisi/${item.personId}`)}
             accessibilityRole="button"
-            accessibilityLabel={`${item.personName} profilini aç`}
+            accessibilityLabel={t('takipDetay.personProfileA11y', { name: item.personName })}
           >
             <Avatar name={item.personName} size={26} />
             <Text style={styles.personText}>{item.personName}</Text>
@@ -89,11 +92,11 @@ export default function TakipDetayScreen() {
 
       {item.status === 'open' && (
         <View style={styles.doneButtonWrap}>
-          <Button label="Tamamlandı olarak işaretle" variant="success" onPress={markDone} />
+          <Button label={t('takipDetay.markDone')} variant="success" onPress={markDone} />
         </View>
       )}
 
-      <Button label="Sil" variant="ghostDanger" onPress={handleDelete} />
+      <Button label={t('common.delete')} variant="ghostDanger" onPress={handleDelete} />
     </ScrollView>
   );
 }

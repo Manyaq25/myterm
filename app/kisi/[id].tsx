@@ -1,9 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { getPerson, listFollowUpsByPerson, updatePersonPhone } from '../../src/db/queries';
-import { FOLLOW_UP_TYPE_LABELS, FOLLOW_UP_STATUS_LABELS, type FollowUp, type Person } from '../../src/types';
+import type { FollowUp, Person } from '../../src/types';
+import { followUpStatusLabel, followUpTypeLabel } from '../../src/i18n/labels';
 import { formatDueDate, isOverdue } from '../../src/utils/date';
 import { Avatar } from '../../src/components/Avatar';
 import { ContactOptions } from '../../src/components/ContactOptions';
@@ -28,16 +30,17 @@ function FollowUpRow({ item, phone }: { item: FollowUp; phone?: string | null })
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
   const router = useRouter();
+  const { t } = useTranslation();
   const overdue = isOpenOverdue(item);
   const showContactShortcut = overdue && item.type === 'waiting_on' && !!phone;
   const accessibilityLabel = [
-    FOLLOW_UP_TYPE_LABELS[item.type],
+    followUpTypeLabel(item.type, t),
     item.title,
-    item.status === 'done' || item.status === 'cancelled' ? FOLLOW_UP_STATUS_LABELS[item.status] : null,
+    item.status === 'done' || item.status === 'cancelled' ? followUpStatusLabel(item.status, t) : null,
     item.dueAt !== null
       ? overdue
-        ? `Gecikmiş, son tarih ${formatDueDate(item.dueAt)}`
-        : `Son tarih ${formatDueDate(item.dueAt)}`
+        ? t('kisiProfili.rowOverdueLabel', { date: formatDueDate(item.dueAt) })
+        : t('kisiProfili.rowDueLabel', { date: formatDueDate(item.dueAt) })
       : null,
   ]
     .filter(Boolean)
@@ -48,12 +51,12 @@ function FollowUpRow({ item, phone }: { item: FollowUp; phone?: string | null })
       onPress={() => router.push(`/takip/${item.id}`)}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
-      accessibilityHint="Detayları görmek için dokun"
+      accessibilityHint={t('kisiProfili.detailsHint')}
     >
       <View style={styles.rowHeader}>
-        <Text style={styles.rowType}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
+        <Text style={styles.rowType}>{followUpTypeLabel(item.type, t)}</Text>
         {(item.status === 'done' || item.status === 'cancelled') && (
-          <Text style={styles.rowStatus}>{FOLLOW_UP_STATUS_LABELS[item.status]}</Text>
+          <Text style={styles.rowStatus}>{followUpStatusLabel(item.status, t)}</Text>
         )}
       </View>
       <Text style={styles.rowTitle}>{item.title}</Text>
@@ -72,12 +75,11 @@ function FollowUpRow({ item, phone }: { item: FollowUp; phone?: string | null })
 function Section({ title, items, phone }: { title: string; items: FollowUp[]; phone?: string | null }) {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
+  const { t } = useTranslation();
   if (items.length === 0) return null;
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>
-        {title} ({items.length})
-      </Text>
+      <Text style={styles.sectionTitle}>{t('kisiProfili.sectionCountTitle', { title, count: items.length })}</Text>
       {items.map((item) => (
         <FollowUpRow key={item.id} item={item} phone={phone} />
       ))}
@@ -88,6 +90,7 @@ function Section({ title, items, phone }: { title: string; items: FollowUp[]; ph
 export default function KisiProfiliScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const db = useSQLiteContext();
   const [person, setPerson] = useState<Person | null>(null);
@@ -117,7 +120,7 @@ export default function KisiProfiliScreen() {
   if (!person) {
     return (
       <View style={styles.centered}>
-        <Text style={styles.rowMeta}>Yükleniyor…</Text>
+        <Text style={styles.rowMeta}>{t('common.loading')}</Text>
       </View>
     );
   }
@@ -156,16 +159,16 @@ export default function KisiProfiliScreen() {
         <View style={styles.phoneEditRow}>
           <TextInput
             style={styles.phoneInput}
-            placeholder="ör. 05XX XXX XX XX"
+            placeholder={t('kisiProfili.phonePlaceholder')}
             placeholderTextColor={colors.textMuted}
             value={phoneInput}
             onChangeText={setPhoneInput}
             keyboardType="phone-pad"
             autoFocus
-            accessibilityLabel="Telefon numarası"
+            accessibilityLabel={t('kisiProfili.phoneA11y')}
           />
-          <Button label="Kaydet" onPress={savePhone} />
-          <Button label="İptal" variant="ghostDanger" onPress={() => setEditingPhone(false)} />
+          <Button label={t('common.save')} onPress={savePhone} />
+          <Button label={t('common.cancelShort')} variant="ghostDanger" onPress={() => setEditingPhone(false)} />
         </View>
       ) : person.phone ? (
         <View style={styles.contactRow}>
@@ -177,7 +180,7 @@ export default function KisiProfiliScreen() {
               setEditingPhone(true);
             }}
             accessibilityRole="button"
-            accessibilityLabel="Telefon numarasını düzenle"
+            accessibilityLabel={t('kisiProfili.editPhoneA11y')}
           >
             <Text style={styles.editPhoneIconText}>✏️</Text>
           </Pressable>
@@ -190,28 +193,23 @@ export default function KisiProfiliScreen() {
             setEditingPhone(true);
           }}
           accessibilityRole="button"
-          accessibilityLabel="Telefon numarası ekle"
+          accessibilityLabel={t('kisiProfili.addPhoneA11y')}
         >
-          <Text style={styles.addPhoneButtonText}>+ Telefon numarası ekle</Text>
+          <Text style={styles.addPhoneButtonText}>{t('kisiProfili.addPhoneButton')}</Text>
         </Pressable>
       )}
 
-      {person.reminderLeadMinutes > 0 && (
-        <Text style={styles.leadBadge}>⏱️ Hatırlatmalar bu kişi için daha erken gönderiliyor</Text>
-      )}
+      {person.reminderLeadMinutes > 0 && <Text style={styles.leadBadge}>{t('kisiProfili.leadBadge')}</Text>}
 
       {insights.length > 0 && (
         <View style={styles.insightsCard}>
-          <Text style={styles.insightsLabel}>📊 Örüntü gözlemi</Text>
+          <Text style={styles.insightsLabel}>{t('kisiProfili.insightsLabel')}</Text>
           {insights.map((insight) => (
             <Text key={insight.type} style={styles.insightsText}>
-              {formatInsightText(insight)}
+              {formatInsightText(insight, t)}
             </Text>
           ))}
-          <Text style={styles.insightsFootnote}>
-            Bu, geçmiş verilerinden çıkarılan basit bir istatistik — gizli bir profil değil, sadece
-            kendi kayıtlarının bir özeti.
-          </Text>
+          <Text style={styles.insightsFootnote}>{t('kisiProfili.insightsFootnote')}</Text>
         </View>
       )}
 
@@ -229,12 +227,12 @@ export default function KisiProfiliScreen() {
         />
       )}
 
-      <Section title="Gecikenler" items={overdue} phone={person.phone} />
-      <Section title="Ondan beklediklerim" items={waitingOn} />
-      <Section title="Ona verdiklerim" items={given} />
-      <Section title="Geçmiş" items={history} />
+      <Section title={t('kisiProfili.sectionOverdue')} items={overdue} phone={person.phone} />
+      <Section title={t('kisiProfili.sectionWaitingOn')} items={waitingOn} />
+      <Section title={t('kisiProfili.sectionGiven')} items={given} />
+      <Section title={t('kisiProfili.sectionHistory')} items={history} />
 
-      {followUps.length === 0 && <Text style={styles.empty}>Bu kişiyle ilgili henüz bir takip yok.</Text>}
+      {followUps.length === 0 && <Text style={styles.empty}>{t('kisiProfili.emptyFollowUps')}</Text>}
     </ScrollView>
   );
 }

@@ -1,3 +1,4 @@
+import type { TFunction } from 'i18next';
 import type { FollowUp, FollowUpType } from '../types';
 
 // En az bu kadar madde olmadan bir "genellikle" örüntüsü çıkarmıyoruz —
@@ -80,18 +81,18 @@ export function buildPersonInsights(items: FollowUp[]): PersonInsight[] {
   return [waiting, promised].filter((i): i is PersonInsight => i !== null);
 }
 
-export function formatInsightText(insight: PersonInsight): string {
-  const topicPart = insight.commonTopic ? ` (çoğunlukla "${insight.commonTopic}" ile ilgili)` : '';
+export function formatInsightText(insight: PersonInsight, t: TFunction): string {
+  const topicPart = insight.commonTopic ? t('personInsights.topicPart', { topic: insight.commonTopic }) : '';
   if (insight.type === 'waiting_on') {
     const delayPart =
       insight.averageDelayDays !== null
-        ? ` Genelde ortalama ${insight.averageDelayDays} gün gecikiyor.`
-        : ' Genelde zamanında geliyor.';
-    return `Ondan şimdiye kadar ${insight.count} kez bir şey bekledin${topicPart}.${delayPart}`;
+        ? t('personInsights.waitingOnDelayed', { days: insight.averageDelayDays })
+        : t('personInsights.waitingOnOnTime');
+    return t('personInsights.waitingOnBase', { count: insight.count, topicPart }) + delayPart;
   }
   const delayPart =
     insight.averageDelayDays !== null
-      ? ` Sözlerini ortalama ${insight.averageDelayDays} gün geç tutuyorsun.`
-      : ' Sözlerini genelde zamanında tutuyorsun.';
-  return `Ona şimdiye kadar ${insight.count} kez söz verdin${topicPart}.${delayPart}`;
+      ? t('personInsights.promiseMadeDelayed', { days: insight.averageDelayDays })
+      : t('personInsights.promiseMadeOnTime');
+  return t('personInsights.promiseMadeBase', { count: insight.count, topicPart }) + delayPart;
 }

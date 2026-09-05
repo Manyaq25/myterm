@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronRight } from 'lucide-react-native';
@@ -27,6 +28,7 @@ export default function HomeScreen() {
   const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const router = useRouter();
+  const { t } = useTranslation();
   const [items, setItems] = useState<FollowUpWithPerson[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [suggestion, setSuggestion] = useState<LatePersonSuggestion | null>(null);
@@ -127,25 +129,25 @@ export default function HomeScreen() {
                   style={styles.quickLink}
                   onPress={() => router.push('/gorunum/bekliyorum')}
                   accessibilityRole="button"
-                  accessibilityLabel="Neyi Bekliyorum? görünümünü aç"
+                  accessibilityLabel={t('home.quickLinkBekliyorumA11y')}
                 >
-                  <Text style={styles.quickLinkText}>🔎 Neyi Bekliyorum?</Text>
+                  <Text style={styles.quickLinkText}>{t('home.quickLinkBekliyorum')}</Text>
                 </Pressable>
                 <Pressable
                   style={styles.quickLink}
                   onPress={() => router.push('/gorunum/soz-verdim')}
                   accessibilityRole="button"
-                  accessibilityLabel="Kime Söz Verdim? görünümünü aç"
+                  accessibilityLabel={t('home.quickLinkSozVerdimA11y')}
                 >
-                  <Text style={styles.quickLinkText}>🤝 Kime Söz Verdim?</Text>
+                  <Text style={styles.quickLinkText}>{t('home.quickLinkSozVerdim')}</Text>
                 </Pressable>
                 <Pressable
                   style={styles.quickLink}
                   onPress={() => router.push('/asistan')}
                   accessibilityRole="button"
-                  accessibilityLabel="AI Asistan'ı aç"
+                  accessibilityLabel={t('home.quickLinkAsistanA11y')}
                 >
-                  <Text style={styles.quickLinkText}>💬 AI Asistan</Text>
+                  <Text style={styles.quickLinkText}>{t('home.quickLinkAsistan')}</Text>
                 </Pressable>
               </ScrollView>
               {showScrollHint && (
@@ -169,15 +171,13 @@ export default function HomeScreen() {
                 }}
               />
             )}
-            {overdue.length > 0 && <Text style={styles.sectionTitle}>Gecikenler ({overdue.length})</Text>}
+            {overdue.length > 0 && (
+              <Text style={styles.sectionTitle}>{t('home.overdueSectionTitle', { count: overdue.length })}</Text>
+            )}
           </>
         }
         ListEmptyComponent={
-          <EmptyState
-            icon="🎉"
-            title="Şu an takip edilecek bir şey yok"
-            subtitle="Bir söz, bir görev veya beklediğin bir şey ekleyerek başla."
-          />
+          <EmptyState icon="🎉" title={t('home.emptyTitle')} subtitle={t('home.emptySubtitle')} />
         }
         renderItem={({ item }) => (
           <FollowUpCard

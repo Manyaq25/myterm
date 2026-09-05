@@ -1,12 +1,14 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { Plus, Sparkles } from 'lucide-react-native';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
 
 export function BottomTabBar({ state, descriptors, navigation, insets }: BottomTabBarProps) {
   const { colors } = useTheme();
   const router = useRouter();
+  const { t } = useTranslation();
   const styles = getStyles(colors);
 
   const [homeRoute, takiplerRoute, ayarlarRoute] = state.routes;
@@ -57,11 +59,11 @@ export function BottomTabBar({ state, descriptors, navigation, insets }: BottomT
         onPress={() => router.push('/takip/yeni')}
         style={styles.item}
         accessibilityRole="button"
-        accessibilityLabel="Yeni takip ekle"
+        accessibilityLabel={t('bottomTabBar.addA11y')}
       >
         <Plus color={colors.textMuted} size={24} strokeWidth={2} />
         <Text style={[styles.label, { color: colors.textMuted }]} numberOfLines={1}>
-          Ekle
+          {t('bottomTabBar.add')}
         </Text>
       </Pressable>
 
@@ -69,11 +71,11 @@ export function BottomTabBar({ state, descriptors, navigation, insets }: BottomT
         onPress={() => router.push('/takip/ai-cikar')}
         style={styles.item}
         accessibilityRole="button"
-        accessibilityLabel="Yapay zeka ile takip çıkar"
+        accessibilityLabel={t('bottomTabBar.smartAddA11y')}
       >
         <Sparkles color={colors.textMuted} size={24} strokeWidth={2} />
         <Text style={[styles.label, { color: colors.textMuted }]} numberOfLines={1}>
-          Akıllı Ekle
+          {t('bottomTabBar.smartAdd')}
         </Text>
       </Pressable>
 

@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useFocusEffect } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { listFollowUpsByType } from '../../src/db/queries';
 import { PersonGroupedList } from '../../src/components/PersonGroupedList';
@@ -11,6 +12,7 @@ export default function NeyiBekliyorumScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
+  const { t } = useTranslation();
   const [groups, setGroups] = useState<PersonGroup[]>([]);
 
   useFocusEffect(
@@ -23,8 +25,8 @@ export default function NeyiBekliyorumScreen() {
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <PersonGroupedList
         groups={groups}
-        emptyTitle="Kimseden bir şey beklemiyorsun"
-        emptySubtitle="Birinden beklediğin bir şey olduğunda burada kişi bazlı görünecek."
+        emptyTitle={t('bekliyorum.emptyTitle')}
+        emptySubtitle={t('bekliyorum.emptySubtitle')}
       />
     </ScrollView>
   );

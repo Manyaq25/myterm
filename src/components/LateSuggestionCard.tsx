@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import type { LatePersonSuggestion } from '../services/proactiveSuggestions';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
 
@@ -12,21 +13,29 @@ interface Props {
 export function LateSuggestionCard({ suggestion, onAccept, onDismiss }: Props) {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
+  const { t } = useTranslation();
   const { person, lateCount } = suggestion;
   return (
     <View style={styles.card}>
       <Text style={styles.icon}>💡</Text>
       <View style={{ flex: 1 }}>
-        <Text style={styles.text}>
-          <Text style={styles.bold}>{person.name}</Text>'ten beklediğin işler son {lateCount} seferdir gecikmiş.
-          Daha erken hatırlatmamı ister misin?
-        </Text>
+        <Text style={styles.text}>{t('lateSuggestionCard.message', { name: person.name, count: lateCount })}</Text>
         <View style={styles.actions}>
-          <Pressable style={styles.acceptButton} onPress={onAccept} accessibilityRole="button" accessibilityLabel="Evet, daha erken hatırlat">
-            <Text style={styles.acceptButtonText}>Evet, daha erken hatırlat</Text>
+          <Pressable
+            style={styles.acceptButton}
+            onPress={onAccept}
+            accessibilityRole="button"
+            accessibilityLabel={t('lateSuggestionCard.accept')}
+          >
+            <Text style={styles.acceptButtonText}>{t('lateSuggestionCard.accept')}</Text>
           </Pressable>
-          <Pressable style={styles.dismissButton} onPress={onDismiss} accessibilityRole="button" accessibilityLabel="Hayır, teşekkürler">
-            <Text style={styles.dismissButtonText}>Hayır, teşekkürler</Text>
+          <Pressable
+            style={styles.dismissButton}
+            onPress={onDismiss}
+            accessibilityRole="button"
+            accessibilityLabel={t('lateSuggestionCard.dismiss')}
+          >
+            <Text style={styles.dismissButtonText}>{t('lateSuggestionCard.dismiss')}</Text>
           </Pressable>
         </View>
       </View>
@@ -48,7 +57,6 @@ function getStyles(colors: ThemeColors) {
     },
     icon: { fontSize: 20 },
     text: { fontSize: 14, fontFamily: fontFamily.body, color: colors.text, lineHeight: 20 },
-    bold: { fontFamily: fontFamily.bodyBold },
     actions: { flexDirection: 'row', gap: 10, marginTop: 12 },
     acceptButton: {
       backgroundColor: colors.primary,

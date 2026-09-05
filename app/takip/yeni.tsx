@@ -10,13 +10,15 @@ import {
   View,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useKeyboardHeight } from '../../src/hooks/useKeyboardHeight';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
-import { FOLLOW_UP_TYPE_LABELS, type FollowUpType } from '../../src/types';
+import { FOLLOW_UP_TYPES, type FollowUpType } from '../../src/types';
+import { followUpTypeLabel } from '../../src/i18n/labels';
 import { applyReminderLead } from '../../src/utils/date';
 import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
@@ -25,13 +27,12 @@ import { updateWidgetSummary } from '../../src/services/widget';
 import { Button } from '../../src/components/Button';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
-const TYPES = Object.keys(FOLLOW_UP_TYPE_LABELS) as FollowUpType[];
-
 export default function YeniTakipScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const router = useRouter();
+  const { t, i18n } = useTranslation();
   const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
   const keyboardHeight = useKeyboardHeight();
@@ -120,67 +121,69 @@ export default function YeniTakipScreen() {
         ]}
       >
         <Text style={styles.label} nativeID="label-title">
-          Ne takip ediyorsun?
+          {t('yeni.labelTitle')}
         </Text>
         <TextInput
           style={styles.input}
-          placeholder="ör. Ahmet'e teklifi gönder"
+          placeholder={t('yeni.titlePlaceholder')}
           value={title}
           onChangeText={setTitle}
           autoFocus
-          accessibilityLabel="Ne takip ediyorsun?"
+          accessibilityLabel={t('yeni.labelTitle')}
         />
 
         <Text style={styles.label} nativeID="label-type">
-          Tür
+          {t('yeni.labelType')}
         </Text>
         <View style={styles.typeRow} accessibilityRole="radiogroup" accessibilityLabelledBy="label-type">
-          {TYPES.map((t) => (
+          {FOLLOW_UP_TYPES.map((typeOption) => (
             <Pressable
-              key={t}
-              onPress={() => setType(t)}
-              style={[styles.typeChip, type === t && styles.typeChipActive]}
+              key={typeOption}
+              onPress={() => setType(typeOption)}
+              style={[styles.typeChip, type === typeOption && styles.typeChipActive]}
               accessibilityRole="radio"
-              accessibilityState={{ checked: type === t }}
-              accessibilityLabel={FOLLOW_UP_TYPE_LABELS[t]}
+              accessibilityState={{ checked: type === typeOption }}
+              accessibilityLabel={followUpTypeLabel(typeOption, t)}
             >
-              <Text style={[styles.typeChipText, type === t && styles.typeChipTextActive]}>
-                {FOLLOW_UP_TYPE_LABELS[t]}
+              <Text style={[styles.typeChipText, type === typeOption && styles.typeChipTextActive]}>
+                {followUpTypeLabel(typeOption, t)}
               </Text>
             </Pressable>
           ))}
         </View>
 
-        <Text style={styles.label}>Kiminle ilgili? (opsiyonel)</Text>
+        <Text style={styles.label}>{t('yeni.labelPerson')}</Text>
         <TextInput
           style={styles.input}
-          placeholder="ör. Ahmet"
+          placeholder={t('yeni.personPlaceholder')}
           value={personName}
           onChangeText={setPersonName}
-          accessibilityLabel="Kiminle ilgili? (opsiyonel)"
+          accessibilityLabel={t('yeni.labelPerson')}
         />
 
-        <Text style={styles.label}>Not (opsiyonel)</Text>
+        <Text style={styles.label}>{t('yeni.labelNote')}</Text>
         <TextInput
           style={[styles.input, styles.multiline]}
-          placeholder="Ek detay..."
+          placeholder={t('yeni.notePlaceholder')}
           value={detail}
           onChangeText={setDetail}
           multiline
-          accessibilityLabel="Not (opsiyonel)"
+          accessibilityLabel={t('yeni.labelNote')}
         />
 
-        <Text style={styles.label}>Hatırlatma zamanı (opsiyonel)</Text>
+        <Text style={styles.label}>{t('yeni.labelDueAt')}</Text>
         <Pressable
           style={styles.input}
           onPress={() => (Platform.OS === 'android' ? setAndroidPickerStage('date') : setShowPicker(true))}
           accessibilityRole="button"
           accessibilityLabel={
-            dueAt ? `Hatırlatma zamanı: ${dueAt.toLocaleString('tr-TR')}` : 'Hatırlatma zamanı seç'
+            dueAt
+              ? t('yeni.dueAtSetA11y', { date: dueAt.toLocaleString(i18n.language) })
+              : t('yeni.dueAtUnsetA11y')
           }
         >
           <Text style={{ color: dueAt ? colors.text : colors.textMuted }}>
-            {dueAt ? dueAt.toLocaleString('tr-TR') : 'Tarih ve saat seç'}
+            {dueAt ? dueAt.toLocaleString(i18n.language) : t('yeni.dueAtPlaceholder')}
           </Text>
         </Pressable>
         {Platform.OS === 'ios' && showPicker && (
@@ -226,11 +229,11 @@ export default function YeniTakipScreen() {
 
         <View style={styles.saveButtonWrap}>
           <Button
-            label="Kaydet"
+            label={t('common.save')}
             onPress={handleSave}
             disabled={!title.trim()}
             loading={saving}
-            accessibilityLabel="Kaydet"
+            accessibilityLabel={t('common.save')}
           />
         </View>
       </ScrollView>
