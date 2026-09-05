@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
+import { useHeaderHeight } from '@react-navigation/elements';
 import { aiProvider, isUsingMockAI } from '../src/ai';
 import { buildAssistantContext } from '../src/services/assistantContext';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../src/theme';
@@ -26,6 +27,7 @@ export default function AsistanScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
+  const headerHeight = useHeaderHeight();
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +51,11 @@ export default function AsistanScreen() {
   }
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={headerHeight}
+    >
       {isUsingMockAI && (
         <View style={styles.mockBanner}>
           <Text style={styles.mockBannerText}>

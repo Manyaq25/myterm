@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
+import { useHeaderHeight } from '@react-navigation/elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
 import { FOLLOW_UP_TYPE_LABELS, type FollowUpType } from '../../src/types';
@@ -29,6 +30,7 @@ export default function YeniTakipScreen() {
   const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const router = useRouter();
+  const headerHeight = useHeaderHeight();
 
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
@@ -36,6 +38,7 @@ export default function YeniTakipScreen() {
   const [personName, setPersonName] = useState('');
   const [dueAt, setDueAt] = useState<Date | null>(null);
   const [showPicker, setShowPicker] = useState(false);
+  const [androidPickerStage, setAndroidPickerStage] = useState<'date' | 'time' | null>(null);
   const [saving, setSaving] = useState(false);
   const [pendingImportant, setPendingImportant] = useState<{ id: string; title: string; dueAt: number } | null>(
     null
@@ -104,6 +107,7 @@ export default function YeniTakipScreen() {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={headerHeight}
     >
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.label} nativeID="label-title">
@@ -160,7 +164,7 @@ export default function YeniTakipScreen() {
         <Text style={styles.label}>Hatırlatma zamanı (opsiyonel)</Text>
         <Pressable
           style={styles.input}
-          onPress={() => setShowPicker(true)}
+          onPress={() => (Platform.OS === 'android' ? setAndroidPickerStage('date') : setShowPicker(true))}
           accessibilityRole="button"
           accessibilityLabel={
             dueAt ? `Hatırlatma zamanı: ${dueAt.toLocaleString('tr-TR')}` : 'Hatırlatma zamanı seç'
@@ -170,13 +174,43 @@ export default function YeniTakipScreen() {
             {dueAt ? dueAt.toLocaleString('tr-TR') : 'Tarih ve saat seç'}
           </Text>
         </Pressable>
-        {showPicker && (
+        {Platform.OS === 'ios' && showPicker && (
           <DateTimePicker
             value={dueAt ?? new Date()}
             mode="datetime"
             onChange={(_, selected) => {
-              setShowPicker(Platform.OS === 'ios');
+              setShowPicker(false);
               if (selected) setDueAt(selected);
+            }}
+          />
+        )}
+        {Platform.OS === 'android' && androidPickerStage === 'date' && (
+          <DateTimePicker
+            value={dueAt ?? new Date()}
+            mode="date"
+            onChange={(event, selected) => {
+              setAndroidPickerStage(null);
+              if (event.type !== 'set' || !selected) return;
+              const base = dueAt ?? new Date();
+              const combined = new Date(selected);
+              combined.setHours(base.getHours(), base.getMinutes(), 0, 0);
+              setDueAt(combined);
+              setAndroidPickerStage('time');
+            }}
+          />
+        )}
+        {Platform.OS === 'android' && androidPickerStage === 'time' && (
+          <DateTimePicker
+            value={dueAt ?? new Date()}
+            mode="time"
+            onChange={(event, selected) => {
+              setAndroidPickerStage(null);
+              if (event.type !== 'set' || !selected) return;
+              setDueAt((prev) => {
+                const combined = new Date(prev ?? new Date());
+                combined.setHours(selected.getHours(), selected.getMinutes(), 0, 0);
+                return combined;
+              });
             }}
           />
         )}
