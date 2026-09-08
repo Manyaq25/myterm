@@ -20,6 +20,7 @@ import {
   SUPPORTED_LANGUAGES,
   type SupportedLanguage,
 } from '../../src/i18n';
+import { restorePurchases, useSubscription, type SubscriptionStatus } from '../../src/services/subscription';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
 export default function AyarlarScreen() {
@@ -35,6 +36,8 @@ export default function AyarlarScreen() {
   const [deleting, setDeleting] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage | null>(null);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
+  const { status: subscriptionStatus } = useSubscription();
+  const [restoring, setRestoring] = useState(false);
 
   async function handleExport() {
     if (exporting) return;
@@ -79,6 +82,27 @@ export default function AyarlarScreen() {
     setSelectedLanguage(language);
     setLanguageModalVisible(false);
   }
+
+  async function handleRestore() {
+    if (restoring) return;
+    setRestoring(true);
+    try {
+      const restored = await restorePurchases();
+      Alert.alert(
+        restored ? t('premium.restoreSuccessTitle') : t('premium.restoreNoneTitle'),
+        restored ? t('premium.restoreSuccessMessage') : t('premium.restoreNoneMessage')
+      );
+    } finally {
+      setRestoring(false);
+    }
+  }
+
+  const subscriptionStatusLabel: Record<SubscriptionStatus, string> = {
+    free: t('ayarlar.subscriptionFree'),
+    trial: t('ayarlar.subscriptionTrial'),
+    active: t('ayarlar.subscriptionActive'),
+    expired: t('ayarlar.subscriptionExpired'),
+  };
 
   useEffect(() => {
     Notifications.getPermissionsAsync().then((res) => setNotificationsGranted(res.granted));
@@ -141,6 +165,33 @@ export default function AyarlarScreen() {
           <Text style={styles.languageValue}>
             {selectedLanguage ? LANGUAGE_NAMES[selectedLanguage] : t('ayarlar.languageSystemDefault')} ›
           </Text>
+        </Pressable>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>{t('ayarlar.sectionSubscription')}</Text>
+        <Pressable
+          style={styles.row}
+          onPress={() => router.push('/premium')}
+          accessibilityRole="button"
+          accessibilityLabel={t('ayarlar.sectionSubscription')}
+        >
+          <Text style={styles.rowLabel}>{t('ayarlar.subscriptionPlan')}</Text>
+          <Text style={styles.languageValue}>{subscriptionStatusLabel[subscriptionStatus]} ›</Text>
+        </Pressable>
+        <Pressable
+          style={styles.dataButton}
+          onPress={handleRestore}
+          disabled={restoring}
+          accessibilityRole="button"
+          accessibilityLabel={t('premium.restoreButton')}
+          accessibilityState={{ disabled: restoring, busy: restoring }}
+        >
+          {restoring ? (
+            <ActivityIndicator color={colors.primary} />
+          ) : (
+            <Text style={styles.dataButtonText}>{t('premium.restoreButton')}</Text>
+          )}
         </Pressable>
       </View>
 

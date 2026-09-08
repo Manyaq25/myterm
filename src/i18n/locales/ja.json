@@ -20,7 +20,8 @@
     "kisiProfili": "人物プロフィール",
     "neyiBekliyorum": "何を待っている？",
     "kimeSozVerdim": "誰に約束した？",
-    "aiAsistan": "AIアシスタント"
+    "aiAsistan": "AIアシスタント",
+    "premium": "プレミアムにアップグレード"
   },
   "followUpType": {
     "promise_made": "自分がした約束",
@@ -91,7 +92,9 @@
     "rowDueLabel": "期限：{{date}}",
     "personLabel": "人物：{{name}}",
     "detailsHint": "タップして詳細を見る",
-    "profileOpenA11y": "{{name}}のプロフィールを開く"
+    "profileOpenA11y": "{{name}}のプロフィールを開く",
+    "insightsTeaserText": "この人物のパターン要約は準備できていますが、プレミアム機能です。",
+    "insightsTeaserCta": "プレミアムにアップグレード"
   },
   "onboarding": {
     "skip": "スキップ",
@@ -218,7 +221,13 @@
     "aiProvidersText": "テキスト/画像解析とAIアシスタントにはAnthropic（Claude）を、音声メモの文字起こしにはOpenAI（Whisper）を使用しています。",
     "version": "Synvia AI — v0.1（MVP）",
     "sectionLanguage": "言語",
-    "languageSystemDefault": "システム言語"
+    "languageSystemDefault": "システム言語",
+    "sectionSubscription": "サブスクリプション",
+    "subscriptionPlan": "現在のプラン",
+    "subscriptionFree": "無料",
+    "subscriptionTrial": "無料トライアル",
+    "subscriptionActive": "プレミアム(有効)",
+    "subscriptionExpired": "期限切れ"
   },
   "bottomTabBar": {
     "add": "追加",
@@ -275,5 +284,38 @@
     "promiseMadeBase": "これまでにこの人に{{count}}回約束をしました{{topicPart}}。",
     "promiseMadeDelayed": " 通常、約束を平均{{days}}日ほど遅れて守っています。",
     "promiseMadeOnTime": " 通常は約束を時間通りに守っています。"
+  },
+  "aiUsage": {
+    "limitReachedMessage": "今月のAI抽出回数の上限に達しました(月{{limit}}回)。プレミアムにアップグレードすると無制限に使えます。",
+    "goPremiumButton": "プレミアムにアップグレード",
+    "remainingHint": "今月は{{used}}/{{limit}}回のAI抽出を使用しました。"
+  },
+  "premium": {
+    "title": "プレミアムにアップグレード",
+    "subtitle": "無料版とプレミアム版の違いを、はっきりとお伝えします。",
+    "alreadyActive": "すでにプレミアムをご利用中です。ありがとうございます!🎉",
+    "freeColumn": "無料",
+    "premiumColumn": "プレミアム",
+    "feature": {
+      "manualTracking": "手動でのフォローアップ作成",
+      "aiExtractionLimited": "月間のAI抽出回数に制限あり",
+      "aiExtractionUnlimited": "AI抽出が無制限",
+      "smartReminders": "スマートリマインダー提案",
+      "personInsights": "関係性インサイトの要約",
+      "widgetSiri": "ウィジェットとSiriショートカット"
+    },
+    "priceSuffix": "{{price}} / 月",
+    "subscribeButton": "登録する",
+    "purchasing": "処理中…",
+    "purchaseError": "購入を完了できませんでした。もう一度お試しください。",
+    "disclosure": "サブスクリプションは自動更新されます。App Store / Google Playのアカウント設定からいつでも解約できます。",
+    "offeringUnavailable": "現在サブスクリプション情報を読み込めません。しばらくしてからもう一度お試しください。",
+    "restoreButton": "購入を復元",
+    "restoring": "復元中…",
+    "restoreSuccessTitle": "復元しました",
+    "restoreSuccessMessage": "プレミアムサブスクリプションが復元されました。",
+    "restoreNoneTitle": "見つかりませんでした",
+    "restoreNoneMessage": "このアカウントに有効なサブスクリプションが見つかりませんでした。",
+    "devKeyMissingNotice": "RevenueCatのAPIキーが設定されていません — これは開発用の通知です。"
   }
 }

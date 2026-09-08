@@ -24,6 +24,7 @@ import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
 import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
 import { updateWidgetSummary } from '../../src/services/widget';
+import { useIsPremium } from '../../src/services/subscription';
 import { Button } from '../../src/components/Button';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
@@ -36,6 +37,7 @@ export default function YeniTakipScreen() {
   const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
   const keyboardHeight = useKeyboardHeight();
+  const isPremium = useIsPremium();
 
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
@@ -86,7 +88,7 @@ export default function YeniTakipScreen() {
 
       await updateWidgetSummary(db);
 
-      if (dueAtMs) {
+      if (dueAtMs && isPremium) {
         const important = await isImportantFollowUp(db, { type, dueAt: dueAtMs, personId });
         if (important) {
           setPendingImportant({ id: followUp.id, title: title.trim(), dueAt: dueAtMs });

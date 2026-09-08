@@ -20,7 +20,8 @@
     "kisiProfili": "인물 프로필",
     "neyiBekliyorum": "내가 기다리는 것은?",
     "kimeSozVerdim": "누구에게 약속했나?",
-    "aiAsistan": "AI 어시스턴트"
+    "aiAsistan": "AI 어시스턴트",
+    "premium": "프리미엄으로 업그레이드"
   },
   "followUpType": {
     "promise_made": "내가 한 약속",
@@ -91,7 +92,9 @@
     "rowDueLabel": "기한 {{date}}",
     "personLabel": "사람: {{name}}",
     "detailsHint": "세부정보를 보려면 탭하세요",
-    "profileOpenA11y": "{{name}}님의 프로필 열기"
+    "profileOpenA11y": "{{name}}님의 프로필 열기",
+    "insightsTeaserText": "이 사람에 대한 패턴 요약이 준비되어 있지만, 프리미엄 기능이에요.",
+    "insightsTeaserCta": "프리미엄으로 업그레이드"
   },
   "onboarding": {
     "skip": "건너뛰기",
@@ -218,7 +221,13 @@
     "aiProvidersText": "텍스트/이미지 분석과 AI 어시스턴트에는 Anthropic(Claude)이, 음성 메모 변환에는 OpenAI(Whisper)가 사용됩니다.",
     "version": "Synvia AI — v0.1 (MVP)",
     "sectionLanguage": "언어",
-    "languageSystemDefault": "시스템 언어"
+    "languageSystemDefault": "시스템 언어",
+    "sectionSubscription": "구독",
+    "subscriptionPlan": "내 플랜",
+    "subscriptionFree": "무료",
+    "subscriptionTrial": "무료 체험",
+    "subscriptionActive": "프리미엄 (활성)",
+    "subscriptionExpired": "만료됨"
   },
   "bottomTabBar": {
     "add": "추가",
@@ -275,5 +284,38 @@
     "promiseMadeBase": "지금까지 이 사람에게 {{count}}번 약속했습니다{{topicPart}}.",
     "promiseMadeDelayed": " 보통 평균 {{days}}일 정도 늦게 약속을 지킵니다.",
     "promiseMadeOnTime": " 보통 제때 약속을 지킵니다."
+  },
+  "aiUsage": {
+    "limitReachedMessage": "이번 달 AI 추출 횟수를 모두 사용했어요 (월 {{limit}}회). 프리미엄으로 업그레이드하면 무제한으로 사용할 수 있어요.",
+    "goPremiumButton": "프리미엄으로 업그레이드",
+    "remainingHint": "이번 달 AI 추출을 {{used}}/{{limit}}회 사용했어요."
+  },
+  "premium": {
+    "title": "프리미엄으로 업그레이드",
+    "subtitle": "무료와 프리미엄의 차이를 명확하게 안내해 드려요.",
+    "alreadyActive": "이미 프리미엄을 이용 중이에요. 감사합니다! 🎉",
+    "freeColumn": "무료",
+    "premiumColumn": "프리미엄",
+    "feature": {
+      "manualTracking": "수동 팔로우업 생성",
+      "aiExtractionLimited": "월 AI 추출 횟수 제한",
+      "aiExtractionUnlimited": "무제한 AI 추출",
+      "smartReminders": "스마트 리마인더 제안",
+      "personInsights": "관계 인사이트 요약",
+      "widgetSiri": "위젯 및 Siri 단축어"
+    },
+    "priceSuffix": "{{price}} / 월",
+    "subscribeButton": "구독하기",
+    "purchasing": "처리 중…",
+    "purchaseError": "구매를 완료하지 못했어요. 다시 시도해 주세요.",
+    "disclosure": "구독은 자동으로 갱신돼요. App Store / Google Play 계정 설정에서 언제든지 해지할 수 있어요.",
+    "offeringUnavailable": "지금은 구독 정보를 불러올 수 없어요. 나중에 다시 시도해 주세요.",
+    "restoreButton": "구매 복원",
+    "restoring": "복원 중…",
+    "restoreSuccessTitle": "복원됨",
+    "restoreSuccessMessage": "프리미엄 구독이 복원되었어요.",
+    "restoreNoneTitle": "찾을 수 없음",
+    "restoreNoneMessage": "이 계정에 활성화된 구독이 없어요.",
+    "devKeyMissingNotice": "RevenueCat API 키가 설정되지 않았습니다 — 개발용 알림입니다."
   }
 }

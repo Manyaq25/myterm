@@ -13,6 +13,7 @@ import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
 import { Button } from '../../src/components/Button';
 import { buildReminderMessage } from '../../src/services/contact';
 import { buildPersonInsights, formatInsightText } from '../../src/services/personInsights';
+import { useIsPremium } from '../../src/services/subscription';
 import { CARD_MARGIN_BOTTOM, getCardSurface } from '../../src/constants/cardStyle';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 import {
@@ -91,6 +92,8 @@ export default function KisiProfiliScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
   const { t } = useTranslation();
+  const router = useRouter();
+  const isPremium = useIsPremium();
   const { id } = useLocalSearchParams<{ id: string }>();
   const db = useSQLiteContext();
   const [person, setPerson] = useState<Person | null>(null);
@@ -201,7 +204,7 @@ export default function KisiProfiliScreen() {
 
       {person.reminderLeadMinutes > 0 && <Text style={styles.leadBadge}>{t('kisiProfili.leadBadge')}</Text>}
 
-      {insights.length > 0 && (
+      {insights.length > 0 && isPremium && (
         <View style={styles.insightsCard}>
           <Text style={styles.insightsLabel}>{t('kisiProfili.insightsLabel')}</Text>
           {insights.map((insight) => (
@@ -211,6 +214,19 @@ export default function KisiProfiliScreen() {
           ))}
           <Text style={styles.insightsFootnote}>{t('kisiProfili.insightsFootnote')}</Text>
         </View>
+      )}
+
+      {insights.length > 0 && !isPremium && (
+        <Pressable
+          style={styles.insightsTeaser}
+          onPress={() => router.push('/premium')}
+          accessibilityRole="button"
+          accessibilityLabel={t('kisiProfili.insightsTeaserCta')}
+        >
+          <Text style={styles.insightsLabel}>{t('kisiProfili.insightsLabel')}</Text>
+          <Text style={styles.insightsTeaserText}>{t('kisiProfili.insightsTeaserText')}</Text>
+          <Text style={styles.insightsTeaserCta}>{t('kisiProfili.insightsTeaserCta')}</Text>
+        </Pressable>
       )}
 
       {suggestion && (
@@ -256,6 +272,17 @@ function getStyles(colors: ThemeColors) {
     insightsLabel: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.primary, marginBottom: 8 },
     insightsText: { fontSize: fontSize.base, color: colors.text, lineHeight: 20, marginBottom: 4, fontFamily: fontFamily.body },
     insightsFootnote: { fontSize: fontSize.caption, color: colors.textMuted, marginTop: 8, lineHeight: 15, fontFamily: fontFamily.body },
+    insightsTeaser: {
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 14,
+      padding: 16,
+      marginTop: 16,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderStyle: 'dashed',
+    },
+    insightsTeaserText: { fontSize: fontSize.small, color: colors.textMuted, lineHeight: 19, fontFamily: fontFamily.body },
+    insightsTeaserCta: { fontSize: fontSize.small, color: colors.primary, fontFamily: fontFamily.bodyBold, marginTop: 8 },
     empty: { fontSize: fontSize.base, color: colors.textMuted, marginTop: 24, textAlign: 'center', fontFamily: fontFamily.body },
 
     contactRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 16, flexWrap: 'wrap' },

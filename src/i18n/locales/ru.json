@@ -20,7 +20,8 @@
     "kisiProfili": "Профиль человека",
     "neyiBekliyorum": "Чего я жду?",
     "kimeSozVerdim": "Кому я обещал?",
-    "aiAsistan": "ИИ-ассистент"
+    "aiAsistan": "ИИ-ассистент",
+    "premium": "Перейти на Премиум"
   },
   "followUpType": {
     "promise_made": "Моё обещание",
@@ -91,7 +92,9 @@
     "rowDueLabel": "Срок {{date}}",
     "personLabel": "Человек: {{name}}",
     "detailsHint": "Нажмите, чтобы увидеть детали",
-    "profileOpenA11y": "Открыть профиль {{name}}"
+    "profileOpenA11y": "Открыть профиль {{name}}",
+    "insightsTeaserText": "Для этого человека готова сводка по шаблонам поведения, но это функция Премиум.",
+    "insightsTeaserCta": "Перейти на Премиум"
   },
   "onboarding": {
     "skip": "Пропустить",
@@ -218,7 +221,13 @@
     "aiProvidersText": "Anthropic (Claude) используется для анализа текста/изображений и ИИ-ассистента; OpenAI (Whisper) используется для расшифровки голосовых заметок.",
     "version": "Synvia AI — v0.1 (MVP)",
     "sectionLanguage": "Язык",
-    "languageSystemDefault": "Язык системы"
+    "languageSystemDefault": "Язык системы",
+    "sectionSubscription": "Подписка",
+    "subscriptionPlan": "Твой план",
+    "subscriptionFree": "Бесплатно",
+    "subscriptionTrial": "Пробный период",
+    "subscriptionActive": "Премиум (активна)",
+    "subscriptionExpired": "Истекла"
   },
   "bottomTabBar": {
     "add": "Добавить",
@@ -275,5 +284,38 @@
     "promiseMadeBase": "Вы уже давали этому человеку обещание {{count}} раз(а){{topicPart}}.",
     "promiseMadeDelayed": " Вы обычно выполняете обещания с опозданием в среднем на {{days}} дн.",
     "promiseMadeOnTime": " Вы обычно выполняете обещания вовремя."
+  },
+  "aiUsage": {
+    "limitReachedMessage": "Ты использовал(а) все AI-извлечения в этом месяце ({{limit}} в месяц). Перейди на Премиум для безлимитного использования.",
+    "goPremiumButton": "Перейти на Премиум",
+    "remainingHint": "В этом месяце использовано {{used}}/{{limit}} AI-извлечений."
+  },
+  "premium": {
+    "title": "Перейти на Премиум",
+    "subtitle": "Что бесплатно, а что премиум — всё прозрачно, без сюрпризов.",
+    "alreadyActive": "У тебя уже есть Премиум. Спасибо! 🎉",
+    "freeColumn": "Бесплатно",
+    "premiumColumn": "Премиум",
+    "feature": {
+      "manualTracking": "Ручное создание задач",
+      "aiExtractionLimited": "Ограниченное число AI-извлечений в месяц",
+      "aiExtractionUnlimited": "Безлимитные AI-извлечения",
+      "smartReminders": "Умные напоминания",
+      "personInsights": "Сводки по анализу отношений",
+      "widgetSiri": "Виджет и ярлыки Siri"
+    },
+    "priceSuffix": "{{price}} / мес.",
+    "subscribeButton": "Оформить подписку",
+    "purchasing": "Обработка…",
+    "purchaseError": "Не удалось завершить покупку. Попробуй ещё раз.",
+    "disclosure": "Подписка продлевается автоматически. Ты можешь отменить её в любое время в настройках аккаунта App Store / Google Play.",
+    "offeringUnavailable": "Не удалось загрузить информацию о подписке. Попробуй позже.",
+    "restoreButton": "Восстановить покупки",
+    "restoring": "Восстановление…",
+    "restoreSuccessTitle": "Восстановлено",
+    "restoreSuccessMessage": "Твоя подписка Премиум восстановлена.",
+    "restoreNoneTitle": "Ничего не найдено",
+    "restoreNoneMessage": "Для этого аккаунта не найдено активной подписки.",
+    "devKeyMissingNotice": "API-ключ RevenueCat не задан — это уведомление только для разработки."
   }
 }

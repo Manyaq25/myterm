@@ -20,7 +20,8 @@
     "kisiProfili": "联系人资料",
     "neyiBekliyorum": "我在等什么？",
     "kimeSozVerdim": "我答应了谁？",
-    "aiAsistan": "AI 助手"
+    "aiAsistan": "AI 助手",
+    "premium": "升级到高级版"
   },
   "followUpType": {
     "promise_made": "我作出的承诺",
@@ -91,7 +92,9 @@
     "rowDueLabel": "截止时间 {{date}}",
     "personLabel": "联系人：{{name}}",
     "detailsHint": "点击查看详情",
-    "profileOpenA11y": "打开 {{name}} 的资料"
+    "profileOpenA11y": "打开 {{name}} 的资料",
+    "insightsTeaserText": "已为这个人生成了模式摘要,但这是高级版功能。",
+    "insightsTeaserCta": "升级到高级版"
   },
   "onboarding": {
     "skip": "跳过",
@@ -218,7 +221,13 @@
     "aiProvidersText": "文本/图片分析和 AI 助手使用 Anthropic（Claude），语音备注转录使用 OpenAI（Whisper）。",
     "version": "Synvia AI — v0.1（MVP）",
     "sectionLanguage": "语言",
-    "languageSystemDefault": "系统语言"
+    "languageSystemDefault": "系统语言",
+    "sectionSubscription": "订阅",
+    "subscriptionPlan": "你的方案",
+    "subscriptionFree": "免费",
+    "subscriptionTrial": "免费试用",
+    "subscriptionActive": "高级版(已激活)",
+    "subscriptionExpired": "已过期"
   },
   "bottomTabBar": {
     "add": "添加",
@@ -275,5 +284,38 @@
     "promiseMadeBase": "到目前为止，你已经向这个人许下 {{count}} 次承诺{{topicPart}}。",
     "promiseMadeDelayed": " 你通常平均会晚 {{days}} 天兑现承诺。",
     "promiseMadeOnTime": " 你通常会按时兑现承诺。"
+  },
+  "aiUsage": {
+    "limitReachedMessage": "你本月的AI提取次数已用完(每月{{limit}}次)。升级到高级版即可无限使用。",
+    "goPremiumButton": "升级到高级版",
+    "remainingHint": "你本月已使用 {{used}}/{{limit}} 次AI提取。"
+  },
+  "premium": {
+    "title": "升级到高级版",
+    "subtitle": "免费版和高级版有什么不同,一目了然。",
+    "alreadyActive": "你已经是高级版用户了,谢谢支持!🎉",
+    "freeColumn": "免费",
+    "premiumColumn": "高级版",
+    "feature": {
+      "manualTracking": "手动创建跟进事项",
+      "aiExtractionLimited": "每月AI提取次数有限",
+      "aiExtractionUnlimited": "无限次AI提取",
+      "smartReminders": "智能提醒建议",
+      "personInsights": "关系洞察摘要",
+      "widgetSiri": "小组件和 Siri 快捷指令"
+    },
+    "priceSuffix": "{{price}} / 月",
+    "subscribeButton": "订阅",
+    "purchasing": "处理中…",
+    "purchaseError": "购买未能完成,请重试。",
+    "disclosure": "订阅将自动续订。你可以随时在 App Store / Google Play 账户设置中取消。",
+    "offeringUnavailable": "暂时无法加载订阅信息,请稍后重试。",
+    "restoreButton": "恢复购买",
+    "restoring": "恢复中…",
+    "restoreSuccessTitle": "已恢复",
+    "restoreSuccessMessage": "你的高级版订阅已恢复。",
+    "restoreNoneTitle": "未找到",
+    "restoreNoneMessage": "未找到与此账户关联的有效订阅。",
+    "devKeyMissingNotice": "未设置 RevenueCat API 密钥——这仅是开发提示。"
   }
 }

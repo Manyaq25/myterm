@@ -19,6 +19,7 @@ import { AppLockGate } from '../src/components/AppLockGate';
 import { AnimatedSplash } from '../src/components/AnimatedSplash';
 import { fontFamily } from '../src/theme/typography';
 import { languageReady } from '../src/i18n';
+import { configureRevenueCat, subscriptionReady } from '../src/services/subscription';
 import { useTranslation } from 'react-i18next';
 
 void SplashScreen.preventAutoHideAsync();
@@ -28,6 +29,7 @@ export default function RootLayout() {
   const { t } = useTranslation();
   const [showIntro, setShowIntro] = useState(true);
   const [i18nReady, setI18nReady] = useState(false);
+  const [subReady, setSubReady] = useState(false);
   const [fontsLoaded, fontError] = useFonts({
     Fraunces_500Medium,
     Fraunces_600SemiBold,
@@ -43,10 +45,15 @@ export default function RootLayout() {
   }, []);
 
   useEffect(() => {
-    if ((fontsLoaded || fontError) && i18nReady) {
+    void configureRevenueCat();
+    subscriptionReady.then(() => setSubReady(true));
+  }, []);
+
+  useEffect(() => {
+    if ((fontsLoaded || fontError) && i18nReady && subReady) {
       void SplashScreen.hideAsync();
     }
-  }, [fontsLoaded, fontError, i18nReady]);
+  }, [fontsLoaded, fontError, i18nReady, subReady]);
 
   useEffect(() => {
     void checkAndApplyUpdate();
@@ -61,7 +68,7 @@ export default function RootLayout() {
     return () => subscription.remove();
   }, [router]);
 
-  if ((!fontsLoaded && !fontError) || !i18nReady) {
+  if ((!fontsLoaded && !fontError) || !i18nReady || !subReady) {
     return null;
   }
 
@@ -88,6 +95,7 @@ export default function RootLayout() {
               <Stack.Screen name="gorunum/bekliyorum" options={{ title: t('stackTitles.neyiBekliyorum') }} />
               <Stack.Screen name="gorunum/soz-verdim" options={{ title: t('stackTitles.kimeSozVerdim') }} />
               <Stack.Screen name="asistan" options={{ presentation: 'modal', title: t('stackTitles.aiAsistan') }} />
+              <Stack.Screen name="premium" options={{ presentation: 'modal', title: t('stackTitles.premium') }} />
             </Stack>
           </AppLockGate>
         </DatabaseProvider>

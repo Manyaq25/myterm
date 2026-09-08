@@ -20,7 +20,8 @@
     "kisiProfili": "الملف الشخصي",
     "neyiBekliyorum": "ماذا أنتظر؟",
     "kimeSozVerdim": "لمن وعدت؟",
-    "aiAsistan": "المساعد الذكي"
+    "aiAsistan": "المساعد الذكي",
+    "premium": "الترقية إلى Premium"
   },
   "followUpType": {
     "promise_made": "وعد قطعته",
@@ -91,7 +92,9 @@
     "rowDueLabel": "الموعد النهائي {{date}}",
     "personLabel": "الشخص: {{name}}",
     "detailsHint": "اضغط لرؤية التفاصيل",
-    "profileOpenA11y": "فتح الملف الشخصي لـ {{name}}"
+    "profileOpenA11y": "فتح الملف الشخصي لـ {{name}}",
+    "insightsTeaserText": "ملخص الأنماط جاهز لهذا الشخص، لكنها ميزة Premium.",
+    "insightsTeaserCta": "الترقية إلى Premium"
   },
   "onboarding": {
     "skip": "تخطي",
@@ -218,7 +221,13 @@
     "aiProvidersText": "تُستخدم Anthropic (Claude) لتحليل النصوص/الصور والمساعد الذكي؛ وتُستخدم OpenAI (Whisper) لنسخ الملاحظات الصوتية.",
     "version": "Synvia AI — v0.1 (MVP)",
     "sectionLanguage": "اللغة",
-    "languageSystemDefault": "لغة النظام"
+    "languageSystemDefault": "لغة النظام",
+    "sectionSubscription": "الاشتراك",
+    "subscriptionPlan": "خطتك",
+    "subscriptionFree": "مجاني",
+    "subscriptionTrial": "فترة تجريبية",
+    "subscriptionActive": "Premium (نشط)",
+    "subscriptionExpired": "منتهي الصلاحية"
   },
   "bottomTabBar": {
     "add": "إضافة",
@@ -275,5 +284,38 @@
     "promiseMadeBase": "لقد قطعت وعدًا لهذا الشخص {{count}} مرة حتى الآن{{topicPart}}.",
     "promiseMadeDelayed": " عادةً ما تفي بوعودك بتأخير قدره {{days}} يوم في المتوسط.",
     "promiseMadeOnTime": " عادةً ما تفي بوعودك في الوقت المحدد."
+  },
+  "aiUsage": {
+    "limitReachedMessage": "لقد استخدمت كل عمليات استخراج الذكاء الاصطناعي لهذا الشهر ({{limit}} شهريًا). قم بالترقية إلى Premium للاستخدام غير المحدود.",
+    "goPremiumButton": "الترقية إلى Premium",
+    "remainingHint": "لقد استخدمت {{used}}/{{limit}} من عمليات استخراج الذكاء الاصطناعي هذا الشهر."
+  },
+  "premium": {
+    "title": "الترقية إلى Premium",
+    "subtitle": "ما هو مجاني وما هو Premium — كل شيء واضح، بدون مفاجآت.",
+    "alreadyActive": "لديك بالفعل Premium. شكرًا لك! 🎉",
+    "freeColumn": "مجاني",
+    "premiumColumn": "Premium",
+    "feature": {
+      "manualTracking": "إنشاء متابعات يدويًا",
+      "aiExtractionLimited": "عدد محدود من عمليات استخراج الذكاء الاصطناعي شهريًا",
+      "aiExtractionUnlimited": "عمليات استخراج غير محدودة بالذكاء الاصطناعي",
+      "smartReminders": "اقتراحات تذكير ذكية",
+      "personInsights": "ملخصات رؤى العلاقات",
+      "widgetSiri": "الودجت واختصارات Siri"
+    },
+    "priceSuffix": "{{price}} / شهريًا",
+    "subscribeButton": "اشترك",
+    "purchasing": "جارٍ المعالجة…",
+    "purchaseError": "تعذر إتمام عملية الشراء. يرجى المحاولة مرة أخرى.",
+    "disclosure": "يتجدد الاشتراك تلقائيًا. يمكنك إلغاؤه في أي وقت من إعدادات حساب App Store / Google Play الخاص بك.",
+    "offeringUnavailable": "تعذر تحميل معلومات الاشتراك الآن. يرجى المحاولة لاحقًا.",
+    "restoreButton": "استعادة المشتريات",
+    "restoring": "جارٍ الاستعادة…",
+    "restoreSuccessTitle": "تمت الاستعادة",
+    "restoreSuccessMessage": "تمت استعادة اشتراكك في Premium.",
+    "restoreNoneTitle": "لم يتم العثور على شيء",
+    "restoreNoneMessage": "لم يتم العثور على اشتراك نشط مرتبط بهذا الحساب.",
+    "devKeyMissingNotice": "مفتاح واجهة برمجة تطبيقات RevenueCat غير معين — هذا إشعار للتطوير فقط."
   }
 }

@@ -38,6 +38,8 @@ import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
 import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
 import { updateWidgetSummary } from '../../src/services/widget';
+import { AI_USAGE_FREE_LIMIT, getAiUsageCount, hasAiUsageRemaining, incrementAiUsageCount } from '../../src/services/aiUsage';
+import { useIsPremium } from '../../src/services/subscription';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
 interface Candidate extends ExtractedFollowUp {
@@ -93,6 +95,24 @@ export default function AiCikarScreen() {
   const [transcript, setTranscript] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [importantQueue, setImportantQueue] = useState<{ id: string; title: string; dueAt: number }[]>([]);
+  const isPremium = useIsPremium();
+  const [usageCount, setUsageCount] = useState(0);
+
+  useEffect(() => {
+    getAiUsageCount().then(setUsageCount);
+  }, []);
+
+  async function checkAiUsageGate(): Promise<boolean> {
+    if (isPremium) return true;
+    if (await hasAiUsageRemaining()) return true;
+    setError(t('aiUsage.limitReachedMessage', { limit: AI_USAGE_FREE_LIMIT }));
+    return false;
+  }
+
+  async function consumeAiUsage() {
+    if (isPremium) return;
+    setUsageCount(await incrementAiUsageCount());
+  }
 
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const recorderState = useAudioRecorderState(recorder, 200);
@@ -120,10 +140,12 @@ export default function AiCikarScreen() {
 
   async function handleExtractText() {
     if (!text.trim() || loading) return;
+    if (!(await checkAiUsageGate())) return;
     setLoading(true);
     setError(null);
     try {
       const results = await aiProvider.extractFollowUpsFromText(text.trim());
+      await consumeAiUsage();
       setCandidates(toCandidates(results));
       setCandidateSource('text');
       setTranscript(null);
@@ -156,10 +178,12 @@ export default function AiCikarScreen() {
 
   async function handleExtractVoice() {
     if (!recorder.uri || loading) return;
+    if (!(await checkAiUsageGate())) return;
     setLoading(true);
     setError(null);
     try {
       const result = await aiProvider.transcribeAndExtract(recorder.uri);
+      await consumeAiUsage();
       setTranscript(result.transcript);
       setCandidates(toCandidates(result.candidates));
       setCandidateSource('voice');
@@ -227,10 +251,12 @@ export default function AiCikarScreen() {
 
   async function handleExtractImage() {
     if (!imageBase64 || !imageMediaType || loading) return;
+    if (!(await checkAiUsageGate())) return;
     setLoading(true);
     setError(null);
     try {
       const results = await aiProvider.extractFollowUpsFromImage(imageBase64, imageMediaType);
+      await consumeAiUsage();
       setCandidates(toCandidates(results));
       setCandidateSource('screenshot');
       setTranscript(null);
@@ -270,10 +296,12 @@ export default function AiCikarScreen() {
 
   async function handleExtractPdf() {
     if (!pdfBase64 || loading) return;
+    if (!(await checkAiUsageGate())) return;
     setLoading(true);
     setError(null);
     try {
       const results = await aiProvider.extractFollowUpsFromPdf(pdfBase64);
+      await consumeAiUsage();
       setCandidates(toCandidates(results));
       setCandidateSource('pdf');
       setTranscript(null);
@@ -328,7 +356,7 @@ export default function AiCikarScreen() {
           await scheduleMainReminder(db, followUp.id, remindAt);
         }
 
-        if (dueAt) {
+        if (dueAt && isPremium) {
           const isImportant = await isImportantFollowUp(db, { type: candidate.type, dueAt, personId });
           if (isImportant) {
             important.push({ id: followUp.id, title: candidate.title, dueAt });
@@ -380,6 +408,24 @@ export default function AiCikarScreen() {
           <View style={styles.mockBanner}>
             <Text style={styles.mockBannerText}>{t('aiCikar.mockBanner')}</Text>
           </View>
+        )}
+
+        {!isPremium && usageCount >= AI_USAGE_FREE_LIMIT && (
+          <View style={styles.usageLimitBanner}>
+            <Text style={styles.usageLimitText}>{t('aiUsage.limitReachedMessage', { limit: AI_USAGE_FREE_LIMIT })}</Text>
+            <Pressable
+              onPress={() => router.push('/premium')}
+              accessibilityRole="button"
+              accessibilityLabel={t('aiUsage.goPremiumButton')}
+            >
+              <Text style={styles.usageLimitCta}>{t('aiUsage.goPremiumButton')}</Text>
+            </Pressable>
+          </View>
+        )}
+        {!isPremium && usageCount < AI_USAGE_FREE_LIMIT && (
+          <Text style={styles.usageHint}>
+            {t('aiUsage.remainingHint', { used: usageCount, limit: AI_USAGE_FREE_LIMIT })}
+          </Text>
         )}
 
         <View style={styles.modeRow} accessibilityRole="radiogroup">
@@ -700,6 +746,16 @@ function getStyles(colors: ThemeColors) {
       marginBottom: 16,
     },
     mockBannerText: { color: colors.gold, fontSize: fontSize.small, fontFamily: fontFamily.body },
+    usageLimitBanner: {
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 10,
+      padding: 14,
+      marginBottom: 16,
+      gap: 8,
+    },
+    usageLimitText: { color: colors.text, fontSize: fontSize.small, fontFamily: fontFamily.body, lineHeight: 19 },
+    usageLimitCta: { color: colors.primary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
+    usageHint: { color: colors.textMuted, fontSize: fontSize.caption, fontFamily: fontFamily.body, marginBottom: 12 },
     modeRow: { flexDirection: 'row', backgroundColor: colors.surfaceAlt, borderRadius: 10, padding: 4, marginBottom: 20 },
     modeTab: { flex: 1, paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
     modeTabActive: { backgroundColor: colors.surface },

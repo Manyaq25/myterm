@@ -4,6 +4,7 @@ import { ExtensionStorage } from '@bacons/apple-targets';
 import { listFollowUps } from '../db/queries';
 import { isOverdue } from '../utils/date';
 import { groupFollowUpsByPerson } from '../utils/grouping';
+import { isPremiumNow } from './subscription';
 import type { FollowUpWithPerson } from '../types';
 
 // app.json'daki ios.entitlements ve targets/widget/expo-target.config.js ile
@@ -39,14 +40,29 @@ function buildGroupedSummary(
   return introFor(groups.length) + lines.join(', ') + '.';
 }
 
+const PREMIUM_TEASER = 'Widget ve Siri kısayolları Premium özelliğidir. Ayarlar > Abonelik üzerinden aktifleştirebilirsin.';
+
 /**
  * iOS Home Screen widget'ının ve Siri App Intent'lerinin okuduğu özeti
  * App Group üzerinden paylaşılan depoya yazar. Expo Go'da veya native
  * modülün henüz derlenmediği bir build'de bu no-op olarak çalışır (hata
- * fırlatmaz).
+ * fırlatmaz). Premium olmayan kullanıcılar için gerçek veri yerine bir
+ * tanıtım metni yazılır — widget/Siri native tarafta koşulsuz her zaman
+ * etkin olduğundan, "premium'a kapatma" burada verinin kendisi üzerinden
+ * yapılıyor.
  */
 export async function updateWidgetSummary(db: SQLiteDatabase): Promise<void> {
   if (Platform.OS !== 'ios') return;
+
+  if (!isPremiumNow()) {
+    const storage = new ExtensionStorage(APP_GROUP);
+    storage.set('summary', { critical: 0, total: 0, waitingOn: 0 });
+    storage.set('siriTodaySummary', PREMIUM_TEASER);
+    storage.set('siriWaitingOnSummary', PREMIUM_TEASER);
+    storage.set('siriPromisedSummary', PREMIUM_TEASER);
+    ExtensionStorage.reloadWidget();
+    return;
+  }
 
   const items = await listFollowUps(db, ['open', 'snoozed']);
   const critical = items.filter((i) => isOverdue(i.dueAt)).length;

@@ -20,7 +20,8 @@
     "kisiProfili": "Personenprofil",
     "neyiBekliyorum": "Worauf warte ich?",
     "kimeSozVerdim": "Wem habe ich etwas versprochen?",
-    "aiAsistan": "KI-Assistent"
+    "aiAsistan": "KI-Assistent",
+    "premium": "Zu Premium wechseln"
   },
   "followUpType": {
     "promise_made": "Versprechen, das ich gegeben habe",
@@ -91,7 +92,9 @@
     "rowDueLabel": "Fällig am {{date}}",
     "personLabel": "Person: {{name}}",
     "detailsHint": "Zum Anzeigen der Details antippen",
-    "profileOpenA11y": "Profil von {{name}} öffnen"
+    "profileOpenA11y": "Profil von {{name}} öffnen",
+    "insightsTeaserText": "Für diese Person liegt eine Musterzusammenfassung bereit — das ist eine Premium-Funktion.",
+    "insightsTeaserCta": "Zu Premium wechseln"
   },
   "onboarding": {
     "skip": "Überspringen",
@@ -218,7 +221,13 @@
     "aiProvidersText": "Anthropic (Claude) wird für Text-/Bildanalyse und den KI-Assistenten verwendet; OpenAI (Whisper) wird zur Transkription von Sprachnotizen verwendet.",
     "version": "Synvia AI — v0.1 (MVP)",
     "sectionLanguage": "Sprache",
-    "languageSystemDefault": "Systemsprache"
+    "languageSystemDefault": "Systemsprache",
+    "sectionSubscription": "Abonnement",
+    "subscriptionPlan": "Dein Plan",
+    "subscriptionFree": "Kostenlos",
+    "subscriptionTrial": "Kostenlose Testphase",
+    "subscriptionActive": "Premium (Aktiv)",
+    "subscriptionExpired": "Abgelaufen"
   },
   "bottomTabBar": {
     "add": "Hinzufügen",
@@ -275,5 +284,38 @@
     "promiseMadeBase": "Du hast dieser Person bisher {{count}} Mal etwas versprochen{{topicPart}}.",
     "promiseMadeDelayed": " Du hältst deine Versprechen im Schnitt etwa {{days}} Tag(e) zu spät.",
     "promiseMadeOnTime": " Du hältst deine Versprechen normalerweise pünktlich."
+  },
+  "aiUsage": {
+    "limitReachedMessage": "Du hast diesen Monat alle KI-Extraktionen aufgebraucht ({{limit}} pro Monat). Wechsle zu Premium für unbegrenzte Nutzung.",
+    "goPremiumButton": "Zu Premium wechseln",
+    "remainingHint": "Du hast diesen Monat {{used}}/{{limit}} KI-Extraktionen genutzt."
+  },
+  "premium": {
+    "title": "Zu Premium wechseln",
+    "subtitle": "Was kostenlos ist und was Premium ist — alles klar und transparent.",
+    "alreadyActive": "Du hast bereits Premium. Danke! 🎉",
+    "freeColumn": "Kostenlos",
+    "premiumColumn": "Premium",
+    "feature": {
+      "manualTracking": "Manuelles Erstellen von Vorgängen",
+      "aiExtractionLimited": "Begrenzte KI-Extraktionen pro Monat",
+      "aiExtractionUnlimited": "Unbegrenzte KI-Extraktionen",
+      "smartReminders": "Intelligente Erinnerungsvorschläge",
+      "personInsights": "Zusammenfassungen zu Beziehungsmustern",
+      "widgetSiri": "Widget und Siri-Kurzbefehle"
+    },
+    "priceSuffix": "{{price}} / Monat",
+    "subscribeButton": "Abonnieren",
+    "purchasing": "Wird verarbeitet…",
+    "purchaseError": "Der Kauf konnte nicht abgeschlossen werden. Bitte versuche es erneut.",
+    "disclosure": "Das Abo verlängert sich automatisch. Du kannst es jederzeit in deinen App Store-/Google Play-Kontoeinstellungen kündigen.",
+    "offeringUnavailable": "Abo-Informationen konnten gerade nicht geladen werden. Bitte versuche es später erneut.",
+    "restoreButton": "Käufe wiederherstellen",
+    "restoring": "Wird wiederhergestellt…",
+    "restoreSuccessTitle": "Wiederhergestellt",
+    "restoreSuccessMessage": "Dein Premium-Abo wurde wiederhergestellt.",
+    "restoreNoneTitle": "Nichts gefunden",
+    "restoreNoneMessage": "Für dieses Konto wurde kein aktives Abo gefunden.",
+    "devKeyMissingNotice": "RevenueCat-API-Schlüssel ist nicht gesetzt — dies ist nur ein Entwicklungshinweis."
   }
 }

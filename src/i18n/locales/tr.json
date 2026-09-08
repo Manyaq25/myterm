@@ -20,7 +20,8 @@
     "kisiProfili": "Kişi Profili",
     "neyiBekliyorum": "Neyi Bekliyorum?",
     "kimeSozVerdim": "Kime Söz Verdim?",
-    "aiAsistan": "AI Asistan"
+    "aiAsistan": "AI Asistan",
+    "premium": "Premium'a Geç"
   },
   "followUpType": {
     "promise_made": "Verdiğim söz",
@@ -91,7 +92,9 @@
     "rowDueLabel": "Son tarih {{date}}",
     "personLabel": "Kişi: {{name}}",
     "detailsHint": "Detayları görmek için dokun",
-    "profileOpenA11y": "{{name}} profilini aç"
+    "profileOpenA11y": "{{name}} profilini aç",
+    "insightsTeaserText": "Bu kişi için örüntü özeti hazır ama bu bir Premium özelliği.",
+    "insightsTeaserCta": "Premium'a Geç"
   },
   "onboarding": {
     "skip": "Atla",
@@ -218,7 +221,13 @@
     "aiProvidersText": "Metin/görsel analizi ve AI Asistan için Anthropic (Claude), sesli not deşifresi için OpenAI (Whisper) kullanılıyor.",
     "version": "Synvia AI — v0.1 (MVP)",
     "sectionLanguage": "Dil",
-    "languageSystemDefault": "Sistem Dili"
+    "languageSystemDefault": "Sistem Dili",
+    "sectionSubscription": "Abonelik",
+    "subscriptionPlan": "Planın",
+    "subscriptionFree": "Ücretsiz",
+    "subscriptionTrial": "Deneme Sürümü",
+    "subscriptionActive": "Premium (Aktif)",
+    "subscriptionExpired": "Süresi Doldu"
   },
   "bottomTabBar": {
     "add": "Ekle",
@@ -275,5 +284,38 @@
     "promiseMadeBase": "Ona şimdiye kadar {{count}} kez söz verdin{{topicPart}}.",
     "promiseMadeDelayed": " Sözlerini ortalama {{days}} gün geç tutuyorsun.",
     "promiseMadeOnTime": " Sözlerini genelde zamanında tutuyorsun."
+  },
+  "aiUsage": {
+    "limitReachedMessage": "Bu ay AI çıkarım hakkın doldu (aylık {{limit}} çıkarım). Premium'a geçerek sınırsız kullanabilirsin.",
+    "goPremiumButton": "Premium'a Geç",
+    "remainingHint": "Bu ay {{used}}/{{limit}} AI çıkarımı kullandın."
+  },
+  "premium": {
+    "title": "Premium'a Geç",
+    "subtitle": "Ne ücretsiz ne premium — hepsi burada, net bir şekilde.",
+    "alreadyActive": "Premium'a zaten sahipsin. Teşekkürler! 🎉",
+    "freeColumn": "Ücretsiz",
+    "premiumColumn": "Premium",
+    "feature": {
+      "manualTracking": "Manuel takip oluşturma",
+      "aiExtractionLimited": "Ayda sınırlı AI çıkarımı",
+      "aiExtractionUnlimited": "Sınırsız AI çıkarımı",
+      "smartReminders": "Akıllı hatırlatma önerileri",
+      "personInsights": "İlişki içgörüsü özetleri",
+      "widgetSiri": "Widget ve Siri kısayolları"
+    },
+    "priceSuffix": "{{price}} / ay",
+    "subscribeButton": "Abone Ol",
+    "purchasing": "İşleniyor…",
+    "purchaseError": "Satın alma tamamlanamadı. Lütfen tekrar dene.",
+    "disclosure": "Abonelik otomatik olarak yenilenir. İstediğin zaman App Store / Google Play hesap ayarlarından iptal edebilirsin.",
+    "offeringUnavailable": "Abonelik bilgisi şu anda yüklenemedi. Lütfen daha sonra tekrar dene.",
+    "restoreButton": "Satın Alımları Geri Yükle",
+    "restoring": "Geri yükleniyor…",
+    "restoreSuccessTitle": "Geri Yüklendi",
+    "restoreSuccessMessage": "Premium aboneliğin geri yüklendi.",
+    "restoreNoneTitle": "Bulunamadı",
+    "restoreNoneMessage": "Bu hesapla ilişkili aktif bir abonelik bulunamadı.",
+    "devKeyMissingNotice": "RevenueCat API anahtarı tanımlı değil — bu bir geliştirme uyarısıdır."
   }
 }

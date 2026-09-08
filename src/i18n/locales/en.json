@@ -20,7 +20,8 @@
     "kisiProfili": "Person Profile",
     "neyiBekliyorum": "What Am I Waiting For?",
     "kimeSozVerdim": "Who Did I Promise?",
-    "aiAsistan": "AI Assistant"
+    "aiAsistan": "AI Assistant",
+    "premium": "Go Premium"
   },
   "followUpType": {
     "promise_made": "Promise I made",
@@ -91,7 +92,9 @@
     "rowDueLabel": "Due {{date}}",
     "personLabel": "Person: {{name}}",
     "detailsHint": "Tap to see details",
-    "profileOpenA11y": "Open {{name}}'s profile"
+    "profileOpenA11y": "Open {{name}}'s profile",
+    "insightsTeaserText": "A pattern summary is ready for this person, but it's a Premium feature.",
+    "insightsTeaserCta": "Go Premium"
   },
   "onboarding": {
     "skip": "Skip",
@@ -218,7 +221,13 @@
     "aiProvidersText": "Anthropic (Claude) is used for text/image analysis and the AI Assistant; OpenAI (Whisper) is used to transcribe voice notes.",
     "version": "Synvia AI — v0.1 (MVP)",
     "sectionLanguage": "Language",
-    "languageSystemDefault": "System Language"
+    "languageSystemDefault": "System Language",
+    "sectionSubscription": "Subscription",
+    "subscriptionPlan": "Your plan",
+    "subscriptionFree": "Free",
+    "subscriptionTrial": "Free Trial",
+    "subscriptionActive": "Premium (Active)",
+    "subscriptionExpired": "Expired"
   },
   "bottomTabBar": {
     "add": "Add",
@@ -275,5 +284,38 @@
     "promiseMadeBase": "You've made a promise to them {{count}} time(s) so far{{topicPart}}.",
     "promiseMadeDelayed": " You tend to keep your promises about {{days}} day(s) late on average.",
     "promiseMadeOnTime": " You usually keep your promises on time."
+  },
+  "aiUsage": {
+    "limitReachedMessage": "You've used all your AI extractions this month ({{limit}} per month). Go Premium for unlimited use.",
+    "goPremiumButton": "Go Premium",
+    "remainingHint": "You've used {{used}}/{{limit}} AI extractions this month."
+  },
+  "premium": {
+    "title": "Go Premium",
+    "subtitle": "What's free and what's premium — all laid out, clearly.",
+    "alreadyActive": "You already have Premium. Thank you! 🎉",
+    "freeColumn": "Free",
+    "premiumColumn": "Premium",
+    "feature": {
+      "manualTracking": "Manual follow-up creation",
+      "aiExtractionLimited": "Limited AI extractions per month",
+      "aiExtractionUnlimited": "Unlimited AI extractions",
+      "smartReminders": "Smart reminder suggestions",
+      "personInsights": "Relationship insight summaries",
+      "widgetSiri": "Widget and Siri shortcuts"
+    },
+    "priceSuffix": "{{price}} / month",
+    "subscribeButton": "Subscribe",
+    "purchasing": "Processing…",
+    "purchaseError": "The purchase couldn't be completed. Please try again.",
+    "disclosure": "Subscription renews automatically. You can cancel anytime from your App Store / Google Play account settings.",
+    "offeringUnavailable": "Subscription info couldn't be loaded right now. Please try again later.",
+    "restoreButton": "Restore Purchases",
+    "restoring": "Restoring…",
+    "restoreSuccessTitle": "Restored",
+    "restoreSuccessMessage": "Your Premium subscription has been restored.",
+    "restoreNoneTitle": "Nothing Found",
+    "restoreNoneMessage": "No active subscription was found for this account.",
+    "devKeyMissingNotice": "RevenueCat API key is not set — this is a development-only notice."
   }
 }
