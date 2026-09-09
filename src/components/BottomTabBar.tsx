@@ -55,17 +55,16 @@ export function BottomTabBar({ state, descriptors, navigation, insets }: BottomT
       {renderTabItem(homeRoute, 0)}
       {renderTabItem(takiplerRoute, 1)}
 
-      <Pressable
-        onPress={() => router.push('/takip/yeni')}
-        style={styles.item}
-        accessibilityRole="button"
-        accessibilityLabel={t('bottomTabBar.addA11y')}
-      >
-        <Plus color={colors.textMuted} size={24} strokeWidth={2} />
-        <Text style={[styles.label, { color: colors.textMuted }]} numberOfLines={1}>
-          {t('bottomTabBar.add')}
-        </Text>
-      </Pressable>
+      <View style={styles.item}>
+        <Pressable
+          onPress={() => router.push('/takip/yeni')}
+          style={({ pressed }) => [styles.fab, pressed && styles.fabPressed]}
+          accessibilityRole="button"
+          accessibilityLabel={t('bottomTabBar.addA11y')}
+        >
+          <Plus color={colors.onPrimary} size={26} strokeWidth={2.5} />
+        </Pressable>
+      </View>
 
       <Pressable
         onPress={() => router.push('/takip/ai-cikar')}
@@ -127,5 +126,20 @@ function getStyles(colors: ThemeColors) {
     },
     label: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyMedium },
     labelActive: { fontFamily: fontFamily.bodyBold },
+    fab: {
+      width: 52,
+      height: 52,
+      borderRadius: 26,
+      backgroundColor: colors.primary,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: -22,
+      shadowColor: colors.primary,
+      shadowOpacity: 0.35,
+      shadowRadius: 8,
+      shadowOffset: { width: 0, height: 4 },
+      elevation: 4,
+    },
+    fabPressed: { opacity: 0.85 },
   });
 }
