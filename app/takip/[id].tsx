@@ -5,12 +5,12 @@ import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { getFollowUp } from '../../src/db/queries';
 import type { FollowUpWithPerson } from '../../src/types';
-import { followUpTypeLabel } from '../../src/i18n/labels';
 import { formatDueDate, isOverdue } from '../../src/utils/date';
 import { completeFollowUp, removeFollowUp } from '../../src/services/followUpActions';
 import { Avatar } from '../../src/components/Avatar';
 import { Button } from '../../src/components/Button';
-import { useTheme, getTypeColor, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
+import { TypeBadge } from '../../src/components/TypeBadge';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
 export default function TakipDetayScreen() {
   const { colors } = useTheme();
@@ -67,9 +67,7 @@ export default function TakipDetayScreen() {
   return (
     <ScrollView contentContainerStyle={styles.content}>
       <View style={styles.card}>
-        <View style={[styles.badge, { backgroundColor: getTypeColor(item.type, colors) }]}>
-          <Text style={styles.badgeText}>{followUpTypeLabel(item.type, t)}</Text>
-        </View>
+        <TypeBadge type={item.type} style={styles.badge} />
         <Text style={styles.title}>{item.title}</Text>
 
         {item.personName && item.personId && (
@@ -115,8 +113,7 @@ function getStyles(colors: ThemeColors) {
       shadowOffset: { width: 0, height: 4 },
       elevation: 2,
     },
-    badge: { alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999, marginBottom: 10 },
-    badgeText: { color: colors.onPrimary, fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold },
+    badge: { marginBottom: 10 },
     title: { fontSize: fontSize.title, fontFamily: fontFamily.displaySemiBold, color: colors.text, lineHeight: 28 },
     personRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 14 },
     personText: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.text },

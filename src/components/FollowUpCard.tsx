@@ -6,8 +6,9 @@ import { Swipeable } from 'react-native-gesture-handler';
 import type { FollowUpWithPerson } from '../types';
 import { formatDueDate, isOverdue } from '../utils/date';
 import { CARD_MARGIN_BOTTOM, getCardSurface } from '../constants/cardStyle';
-import { useTheme, getTypeColor, fontFamily, fontSize, type ThemeColors } from '../theme';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
 import { followUpTypeLabel } from '../i18n/labels';
+import { TypeBadge } from './TypeBadge';
 
 interface Props {
   item: FollowUpWithPerson;
@@ -62,9 +63,7 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
   const cardBody = (
     <>
       <View style={styles.headerRow}>
-        <View style={[styles.badge, { backgroundColor: getTypeColor(item.type, colors) }]}>
-          <Text style={styles.badgeText}>{followUpTypeLabel(item.type, t)}</Text>
-        </View>
+        <TypeBadge type={item.type} />
         {item.dueAt !== null && (
           <Text style={[styles.due, overdue && styles.dueOverdue]}>{formatDueDate(item.dueAt)}</Text>
         )}
@@ -187,16 +186,6 @@ function getStyles(colors: ThemeColors) {
     },
     checkboxChecked: { backgroundColor: colors.primary, borderColor: colors.primary },
     checkboxMark: { color: colors.onPrimary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
-    badge: {
-      paddingHorizontal: 10,
-      paddingVertical: 4,
-      borderRadius: 999,
-    },
-    badgeText: {
-      color: colors.onPrimary,
-      fontSize: fontSize.caption,
-      fontFamily: fontFamily.bodyBold,
-    },
     due: {
       fontSize: fontSize.caption,
       color: colors.textMuted,

@@ -2,7 +2,7 @@ import { useColorScheme } from 'react-native';
 import { darkColors, lightColors, type ThemeColors } from './colors';
 import { fontFamily, fontSize } from './typography';
 
-export { getTypeColor, type ThemeColors } from './colors';
+export { getTypeColor, hexToRgba, type ThemeColors } from './colors';
 export { fontFamily, fontSize };
 
 export type Theme = {
