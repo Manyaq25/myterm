@@ -241,7 +241,8 @@
     "personLabel": "사람: {{name}}",
     "overdueLabel": "기한 초과, 기한은 {{date}}였습니다",
     "dueLabel": "기한 {{date}}",
-    "detailsHint": "세부정보를 보려면 탭하세요"
+    "detailsHint": "세부정보를 보려면 탭하세요",
+    "moreActionsA11y": "더보기"
   },
   "lateSuggestionCard": {
     "message": "{{name}}님으로부터 기다리는 일이 최근 {{count}}번 연속 늦어졌습니다. 더 일찍 알려드릴까요?",

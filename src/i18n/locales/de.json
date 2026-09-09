@@ -241,7 +241,8 @@
     "personLabel": "Person: {{name}}",
     "overdueLabel": "Überfällig, fällig am {{date}}",
     "dueLabel": "Fällig am {{date}}",
-    "detailsHint": "Zum Anzeigen der Details antippen"
+    "detailsHint": "Zum Anzeigen der Details antippen",
+    "moreActionsA11y": "Weitere Aktionen"
   },
   "lateSuggestionCard": {
     "message": "Was du von {{name}} erwartest, war die letzten {{count}} Male verspätet. Soll ich dich früher erinnern?",

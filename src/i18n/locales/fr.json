@@ -241,7 +241,8 @@
     "personLabel": "Personne : {{name}}",
     "overdueLabel": "En retard, échéance {{date}}",
     "dueLabel": "Échéance {{date}}",
-    "detailsHint": "Touchez pour voir les détails"
+    "detailsHint": "Touchez pour voir les détails",
+    "moreActionsA11y": "Plus d'actions"
   },
   "lateSuggestionCard": {
     "message": "Ce que vous attendez de {{name}} a été en retard les {{count}} dernières fois. Voulez-vous que je vous le rappelle plus tôt ?",

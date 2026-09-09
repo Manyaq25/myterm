@@ -241,7 +241,8 @@
     "personLabel": "الشخص: {{name}}",
     "overdueLabel": "متأخر، الموعد النهائي كان {{date}}",
     "dueLabel": "الموعد النهائي {{date}}",
-    "detailsHint": "اضغط لرؤية التفاصيل"
+    "detailsHint": "اضغط لرؤية التفاصيل",
+    "moreActionsA11y": "المزيد من الإجراءات"
   },
   "lateSuggestionCard": {
     "message": "ما تنتظره من {{name}} تأخر آخر {{count}} مرات. هل تريد أن أذكرك مبكرًا؟",

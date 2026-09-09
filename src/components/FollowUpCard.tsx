@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Swipeable } from 'react-native-gesture-handler';
@@ -60,16 +60,45 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
     if (event.nativeEvent.actionName === 'delete') onDelete?.();
   }
 
+  function handleMorePress() {
+    Alert.alert(item.title, undefined, [
+      ...(canComplete ? [{ text: t('followUpCard.completeA11y'), onPress: onComplete }] : []),
+      ...(onDelete ? [{ text: t('common.delete') as string, style: 'destructive' as const, onPress: onDelete }] : []),
+      { text: t('common.cancelShort'), style: 'cancel' as const },
+    ]);
+  }
+
   const cardBody = (
     <>
       <View style={styles.headerRow}>
-        <TypeBadge type={item.type} />
-        {item.dueAt !== null && (
-          <Text style={[styles.due, overdue && styles.dueOverdue]}>{formatDueDate(item.dueAt)}</Text>
+        <Text style={styles.title} numberOfLines={2}>
+          {item.title}
+        </Text>
+        {!selectionMode && (canComplete || onDelete) && (
+          <Pressable
+            onPress={handleMorePress}
+            hitSlop={10}
+            accessibilityRole="button"
+            accessibilityLabel={t('followUpCard.moreActionsA11y')}
+          >
+            <Text style={styles.moreDots}>⋯</Text>
+          </Pressable>
         )}
       </View>
-      <Text style={styles.title}>{item.title}</Text>
       {item.personName && <Text style={styles.person}>👤 {item.personName}</Text>}
+      {item.detail && (
+        <Text style={styles.detail} numberOfLines={2}>
+          {item.detail}
+        </Text>
+      )}
+      <View style={styles.footerRow}>
+        <View style={styles.footerLeft}>
+          {item.dueAt !== null && (
+            <Text style={[styles.due, overdue && styles.dueOverdue]}>⏰ {formatDueDate(item.dueAt)}</Text>
+          )}
+        </View>
+        <TypeBadge type={item.type} />
+      </View>
     </>
   );
 
@@ -166,9 +195,22 @@ function getStyles(colors: ThemeColors) {
     headerRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 8,
+      alignItems: 'flex-start',
+      gap: 8,
     },
+    moreDots: {
+      fontSize: 20,
+      lineHeight: 20,
+      color: colors.textMuted,
+      fontFamily: fontFamily.bodyBold,
+      paddingHorizontal: 2,
+    },
+    footerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 10,
+    },
+    footerLeft: { flex: 1 },
     selectableRow: {
       flexDirection: 'row',
       alignItems: 'flex-start',
@@ -196,6 +238,7 @@ function getStyles(colors: ThemeColors) {
       fontFamily: fontFamily.bodyBold,
     },
     title: {
+      flex: 1,
       fontSize: fontSize.subtitle,
       fontFamily: fontFamily.bodyBold,
       color: colors.text,
@@ -205,6 +248,13 @@ function getStyles(colors: ThemeColors) {
       fontSize: fontSize.small,
       color: colors.textMuted,
       marginTop: 6,
+      fontFamily: fontFamily.body,
+    },
+    detail: {
+      fontSize: fontSize.small,
+      color: colors.textMuted,
+      marginTop: 6,
+      lineHeight: 19,
       fontFamily: fontFamily.body,
     },
     actionContainer: {

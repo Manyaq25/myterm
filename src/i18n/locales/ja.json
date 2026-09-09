@@ -241,7 +241,8 @@
     "personLabel": "人物：{{name}}",
     "overdueLabel": "期限切れ、期限は{{date}}",
     "dueLabel": "期限：{{date}}",
-    "detailsHint": "タップして詳細を見る"
+    "detailsHint": "タップして詳細を見る",
+    "moreActionsA11y": "その他の操作"
   },
   "lateSuggestionCard": {
     "message": "{{name}}から待っていることが、直近{{count}}回連続で遅れています。もっと早くリマインドしましょうか？",

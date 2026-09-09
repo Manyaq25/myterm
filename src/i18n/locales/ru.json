@@ -241,7 +241,8 @@
     "personLabel": "Человек: {{name}}",
     "overdueLabel": "Просрочено, срок был {{date}}",
     "dueLabel": "Срок {{date}}",
-    "detailsHint": "Нажмите, чтобы увидеть детали"
+    "detailsHint": "Нажмите, чтобы увидеть детали",
+    "moreActionsA11y": "Другие действия"
   },
   "lateSuggestionCard": {
     "message": "То, чего вы ждёте от {{name}}, задерживается уже {{count}} раз подряд. Напоминать вам об этом раньше?",

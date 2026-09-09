@@ -241,7 +241,8 @@
     "personLabel": "联系人：{{name}}",
     "overdueLabel": "已逾期，截止时间为 {{date}}",
     "dueLabel": "截止时间 {{date}}",
-    "detailsHint": "点击查看详情"
+    "detailsHint": "点击查看详情",
+    "moreActionsA11y": "更多操作"
   },
   "lateSuggestionCard": {
     "message": "你在等 {{name}} 的事情已经连续 {{count}} 次延迟了。需要我提前提醒你吗？",

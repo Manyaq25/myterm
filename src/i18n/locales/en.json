@@ -241,7 +241,8 @@
     "personLabel": "Person: {{name}}",
     "overdueLabel": "Overdue, due {{date}}",
     "dueLabel": "Due {{date}}",
-    "detailsHint": "Tap to see details"
+    "detailsHint": "Tap to see details",
+    "moreActionsA11y": "More actions"
   },
   "lateSuggestionCard": {
     "message": "What you're waiting on from {{name}} has been late the last {{count}} times. Want me to remind you earlier?",

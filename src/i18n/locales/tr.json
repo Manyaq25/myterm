@@ -241,7 +241,8 @@
     "personLabel": "Kişi: {{name}}",
     "overdueLabel": "Gecikmiş, son tarih {{date}}",
     "dueLabel": "Son tarih {{date}}",
-    "detailsHint": "Detayları görmek için dokun"
+    "detailsHint": "Detayları görmek için dokun",
+    "moreActionsA11y": "Daha fazla işlem"
   },
   "lateSuggestionCard": {
     "message": "{{name}}'ten beklediğin işler son {{count}} seferdir gecikmiş. Daha erken hatırlatmamı ister misin?",
