@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ThemedSwitch } from '../../src/components/ThemedSwitch';
+import { Button } from '../../src/components/Button';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -179,54 +180,42 @@ export default function AyarlarScreen() {
           <Text style={styles.rowLabel}>{t('ayarlar.subscriptionPlan')}</Text>
           <Text style={styles.languageValue}>{subscriptionStatusLabel[subscriptionStatus]} ›</Text>
         </Pressable>
-        <Pressable
-          style={styles.dataButton}
-          onPress={handleRestore}
-          disabled={restoring}
-          accessibilityRole="button"
-          accessibilityLabel={t('premium.restoreButton')}
-          accessibilityState={{ disabled: restoring, busy: restoring }}
-        >
-          {restoring ? (
-            <ActivityIndicator color={colors.primary} />
-          ) : (
-            <Text style={styles.dataButtonText}>{t('premium.restoreButton')}</Text>
-          )}
-        </Pressable>
+        <View style={styles.dataButtonWrap}>
+          <Button
+            variant="secondary"
+            label={t('premium.restoreButton')}
+            onPress={handleRestore}
+            disabled={restoring}
+            loading={restoring}
+            accessibilityLabel={t('premium.restoreButton')}
+          />
+        </View>
       </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('ayarlar.sectionData')}</Text>
-        <Pressable
-          style={styles.dataButton}
-          onPress={handleExport}
-          disabled={exporting}
-          accessibilityRole="button"
-          accessibilityLabel={t('ayarlar.exportButton')}
-          accessibilityState={{ disabled: exporting, busy: exporting }}
-        >
-          {exporting ? (
-            <ActivityIndicator color={colors.primary} />
-          ) : (
-            <Text style={styles.dataButtonText}>{t('ayarlar.exportButton')}</Text>
-          )}
-        </Pressable>
+        <View style={styles.dataButtonWrap}>
+          <Button
+            variant="secondary"
+            label={t('ayarlar.exportButton')}
+            onPress={handleExport}
+            disabled={exporting}
+            loading={exporting}
+            accessibilityLabel={t('ayarlar.exportButton')}
+          />
+        </View>
         <Text style={styles.hint}>{t('ayarlar.exportHint')}</Text>
 
-        <Pressable
-          style={[styles.dataButton, styles.dangerButton]}
-          onPress={handleDeleteAll}
-          disabled={deleting}
-          accessibilityRole="button"
-          accessibilityLabel={t('ayarlar.deleteAllButton')}
-          accessibilityState={{ disabled: deleting, busy: deleting }}
-        >
-          {deleting ? (
-            <ActivityIndicator color={colors.danger} />
-          ) : (
-            <Text style={[styles.dataButtonText, styles.dangerButtonText]}>{t('ayarlar.deleteAllButton')}</Text>
-          )}
-        </Pressable>
+        <View style={styles.dataButtonWrap}>
+          <Button
+            variant="ghostDanger"
+            label={t('ayarlar.deleteAllButton')}
+            onPress={handleDeleteAll}
+            disabled={deleting}
+            loading={deleting}
+            accessibilityLabel={t('ayarlar.deleteAllButton')}
+          />
+        </View>
         <Text style={styles.hint}>{t('ayarlar.deleteAllHint')}</Text>
       </View>
 
@@ -332,16 +321,7 @@ function getStyles(colors: ThemeColors) {
     rowLabel: { fontSize: fontSize.base, fontFamily: fontFamily.body, color: colors.text },
     languageValue: { fontSize: fontSize.base, fontFamily: fontFamily.body, color: colors.textMuted },
     hint: { fontSize: fontSize.small, fontFamily: fontFamily.body, color: colors.textMuted, marginTop: 8, lineHeight: 18 },
-    dataButton: {
-      backgroundColor: colors.surfaceAlt,
-      borderRadius: 10,
-      paddingVertical: 12,
-      alignItems: 'center',
-      marginTop: 12,
-    },
-    dataButtonText: { color: colors.primary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
-    dangerButton: { backgroundColor: colors.surfaceAlt },
-    dangerButtonText: { color: colors.danger },
+    dataButtonWrap: { marginTop: 12 },
     aboutText: { fontSize: fontSize.small, fontFamily: fontFamily.body, color: colors.textMuted, lineHeight: 19, marginBottom: 12 },
     aboutLabel: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.text, marginBottom: 4 },
     aboutVersion: { fontSize: fontSize.caption, fontFamily: fontFamily.body, color: colors.textMuted, marginTop: 4 },

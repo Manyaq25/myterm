@@ -213,7 +213,7 @@ function getStyles(colors: ThemeColors) {
       marginRight: 8,
     },
     quickLinkText: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.text },
-    sectionTitle: { fontSize: fontSize.small, fontFamily: fontFamily.bodyBold, color: colors.danger, marginBottom: 8 },
+    sectionTitle: { fontSize: fontSize.small, fontFamily: fontFamily.displaySemiBold, color: colors.danger, marginBottom: 8 },
     scrollHintBadge: {
       position: 'absolute',
       right: 2,

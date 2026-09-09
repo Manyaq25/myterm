@@ -320,7 +320,7 @@ function getStyles(colors: ThemeColors) {
     rowHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
     rowType: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.primary, textTransform: 'uppercase' },
     rowStatus: { fontSize: fontSize.caption, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted },
-    rowTitle: { fontSize: fontSize.subtitle, fontFamily: fontFamily.bodyBold, color: colors.text },
+    rowTitle: { fontSize: fontSize.subtitle, fontFamily: fontFamily.displaySemiBold, color: colors.text },
     rowMeta: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 6, fontFamily: fontFamily.body },
     rowMetaOverdue: { color: colors.danger, fontFamily: fontFamily.bodyBold },
     contactShortcutRow: { flexDirection: 'row', gap: 8, marginTop: 10 },

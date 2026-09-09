@@ -41,6 +41,7 @@ import { updateWidgetSummary } from '../../src/services/widget';
 import { AI_USAGE_FREE_LIMIT, getAiUsageCount, hasAiUsageRemaining, incrementAiUsageCount } from '../../src/services/aiUsage';
 import { useIsPremium } from '../../src/services/subscription';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
+import { Button } from '../../src/components/Button';
 
 interface Candidate extends ExtractedFollowUp {
   selected: boolean;
@@ -487,20 +488,15 @@ export default function AiCikarScreen() {
               editable={!loading}
               accessibilityLabel={t('aiCikar.textLabel')}
             />
-            <Pressable
-              style={[styles.extractButton, (!text.trim() || loading) && styles.buttonDisabled]}
-              onPress={handleExtractText}
-              disabled={!text.trim() || loading}
-              accessibilityRole="button"
-              accessibilityLabel={t('aiCikar.extract')}
-              accessibilityState={{ disabled: !text.trim() || loading, busy: loading }}
-            >
-              {loading ? (
-                <ActivityIndicator color={colors.onPrimary} />
-              ) : (
-                <Text style={styles.extractButtonText}>{t('aiCikar.extract')}</Text>
-              )}
-            </Pressable>
+            <View style={styles.extractButtonWrap}>
+              <Button
+                label={t('aiCikar.extract')}
+                onPress={handleExtractText}
+                disabled={!text.trim() || loading}
+                loading={loading}
+                accessibilityLabel={t('aiCikar.extract')}
+              />
+            </View>
           </>
         )}
 
@@ -537,20 +533,15 @@ export default function AiCikarScreen() {
                 </Pressable>
               )}
             </View>
-            <Pressable
-              style={[styles.extractButton, (!hasRecording || loading) && styles.buttonDisabled]}
-              onPress={handleExtractVoice}
-              disabled={!hasRecording || loading}
-              accessibilityRole="button"
-              accessibilityLabel={t('aiCikar.extract')}
-              accessibilityState={{ disabled: !hasRecording || loading, busy: loading }}
-            >
-              {loading ? (
-                <ActivityIndicator color={colors.onPrimary} />
-              ) : (
-                <Text style={styles.extractButtonText}>{t('aiCikar.extract')}</Text>
-              )}
-            </Pressable>
+            <View style={styles.extractButtonWrap}>
+              <Button
+                label={t('aiCikar.extract')}
+                onPress={handleExtractVoice}
+                disabled={!hasRecording || loading}
+                loading={loading}
+                accessibilityLabel={t('aiCikar.extract')}
+              />
+            </View>
             {transcript !== null && (
               <View style={styles.transcriptBox}>
                 <Text style={styles.transcriptLabel}>{t('aiCikar.transcriptLabel')}</Text>
@@ -576,15 +567,15 @@ export default function AiCikarScreen() {
                   resizeMode="contain"
                   accessibilityLabel={t('aiCikar.imagePreviewA11y')}
                 />
-                <Pressable
-                  style={styles.secondaryButton}
-                  onPress={handlePickImage}
-                  disabled={loading}
-                  accessibilityRole="button"
-                  accessibilityLabel={t('aiCikar.pickAnotherImage')}
-                >
-                  <Text style={styles.secondaryButtonText}>{t('aiCikar.pickAnotherImage')}</Text>
-                </Pressable>
+                <View style={styles.secondaryButtonWrap}>
+                  <Button
+                    variant="secondary"
+                    label={t('aiCikar.pickAnotherImage')}
+                    onPress={handlePickImage}
+                    disabled={loading}
+                    accessibilityLabel={t('aiCikar.pickAnotherImage')}
+                  />
+                </View>
               </View>
             ) : (
               <Pressable
@@ -597,20 +588,15 @@ export default function AiCikarScreen() {
                 <Text style={styles.pickImageButtonText}>{t('aiCikar.pickImageGallery')}</Text>
               </Pressable>
             )}
-            <Pressable
-              style={[styles.extractButton, (!imageBase64 || loading) && styles.buttonDisabled]}
-              onPress={handleExtractImage}
-              disabled={!imageBase64 || loading}
-              accessibilityRole="button"
-              accessibilityLabel={t('aiCikar.extract')}
-              accessibilityState={{ disabled: !imageBase64 || loading, busy: loading }}
-            >
-              {loading ? (
-                <ActivityIndicator color={colors.onPrimary} />
-              ) : (
-                <Text style={styles.extractButtonText}>{t('aiCikar.extract')}</Text>
-              )}
-            </Pressable>
+            <View style={styles.extractButtonWrap}>
+              <Button
+                label={t('aiCikar.extract')}
+                onPress={handleExtractImage}
+                disabled={!imageBase64 || loading}
+                loading={loading}
+                accessibilityLabel={t('aiCikar.extract')}
+              />
+            </View>
           </>
         )}
 
@@ -625,15 +611,15 @@ export default function AiCikarScreen() {
             ) : pdfName ? (
               <View style={styles.imagePreviewBox}>
                 <Text style={styles.pdfNameText}>📄 {pdfName}</Text>
-                <Pressable
-                  style={styles.secondaryButton}
-                  onPress={handlePickPdf}
-                  disabled={loading}
-                  accessibilityRole="button"
-                  accessibilityLabel={t('aiCikar.pickAnotherPdf')}
-                >
-                  <Text style={styles.secondaryButtonText}>{t('aiCikar.pickAnotherPdf')}</Text>
-                </Pressable>
+                <View style={styles.secondaryButtonWrap}>
+                  <Button
+                    variant="secondary"
+                    label={t('aiCikar.pickAnotherPdf')}
+                    onPress={handlePickPdf}
+                    disabled={loading}
+                    accessibilityLabel={t('aiCikar.pickAnotherPdf')}
+                  />
+                </View>
               </View>
             ) : (
               <Pressable
@@ -646,20 +632,15 @@ export default function AiCikarScreen() {
                 <Text style={styles.pickImageButtonText}>{t('aiCikar.pickPdf')}</Text>
               </Pressable>
             )}
-            <Pressable
-              style={[styles.extractButton, (!pdfBase64 || loading) && styles.buttonDisabled]}
-              onPress={handleExtractPdf}
-              disabled={!pdfBase64 || loading}
-              accessibilityRole="button"
-              accessibilityLabel={t('aiCikar.extract')}
-              accessibilityState={{ disabled: !pdfBase64 || loading, busy: loading }}
-            >
-              {loading ? (
-                <ActivityIndicator color={colors.onPrimary} />
-              ) : (
-                <Text style={styles.extractButtonText}>{t('aiCikar.extract')}</Text>
-              )}
-            </Pressable>
+            <View style={styles.extractButtonWrap}>
+              <Button
+                label={t('aiCikar.extract')}
+                onPress={handleExtractPdf}
+                disabled={!pdfBase64 || loading}
+                loading={loading}
+                accessibilityLabel={t('aiCikar.extract')}
+              />
+            </View>
           </>
         )}
 
@@ -709,20 +690,20 @@ export default function AiCikarScreen() {
             })}
 
             {candidates.length > 0 && (
-              <Pressable
-                style={[styles.saveButton, saving && styles.buttonDisabled]}
-                onPress={handleSave}
-                disabled={saving}
-                accessibilityRole="button"
-                accessibilityLabel={t('aiCikar.saveSelected', { count: candidates.filter((c) => c.selected).length })}
-                accessibilityState={{ disabled: saving, busy: saving }}
-              >
-                <Text style={styles.saveButtonText}>
-                  {saving
-                    ? t('aiCikar.saving')
-                    : t('aiCikar.saveSelected', { count: candidates.filter((c) => c.selected).length })}
-                </Text>
-              </Pressable>
+              <View style={styles.saveButtonWrap}>
+                <Button
+                  variant="success"
+                  label={
+                    saving
+                      ? t('aiCikar.saving')
+                      : t('aiCikar.saveSelected', { count: candidates.filter((c) => c.selected).length })
+                  }
+                  onPress={handleSave}
+                  disabled={saving}
+                  loading={saving}
+                  accessibilityLabel={t('aiCikar.saveSelected', { count: candidates.filter((c) => c.selected).length })}
+                />
+              </View>
             )}
           </View>
         )}
@@ -774,15 +755,7 @@ function getStyles(colors: ThemeColors) {
       backgroundColor: colors.surface,
     },
     multiline: { minHeight: 120, textAlignVertical: 'top' },
-    extractButton: {
-      marginTop: 16,
-      backgroundColor: colors.primary,
-      borderRadius: 10,
-      paddingVertical: 14,
-      alignItems: 'center',
-    },
-    extractButtonText: { color: colors.onPrimary, fontSize: fontSize.button, fontFamily: fontFamily.bodyBold },
-    buttonDisabled: { opacity: 0.5 },
+    extractButtonWrap: { marginTop: 16 },
     error: { color: colors.danger, marginTop: 12, fontSize: fontSize.small, fontFamily: fontFamily.body },
     hint: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 12, fontFamily: fontFamily.body },
     pickImageButton: {
@@ -805,8 +778,7 @@ function getStyles(colors: ThemeColors) {
     },
     imagePreview: { width: '100%', height: 220, borderRadius: 8, backgroundColor: colors.surfaceAlt },
     pdfNameText: { fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold, color: colors.text, textAlign: 'center' },
-    secondaryButton: { marginTop: 12, paddingVertical: 8, paddingHorizontal: 16 },
-    secondaryButtonText: { color: colors.primary, fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold },
+    secondaryButtonWrap: { marginTop: 12 },
     recordBox: {
       backgroundColor: colors.surface,
       borderRadius: 12,
@@ -864,17 +836,10 @@ function getStyles(colors: ThemeColors) {
     checkboxChecked: { backgroundColor: colors.primary, borderColor: colors.primary },
     checkboxMark: { color: colors.onPrimary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
     candidateType: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.primary, marginBottom: 2 },
-    candidateTitle: { fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold, color: colors.text },
+    candidateTitle: { fontSize: fontSize.base, fontFamily: fontFamily.displaySemiBold, color: colors.text },
     candidateMeta: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 2, fontFamily: fontFamily.body },
     candidateLowConfidence: { fontSize: fontSize.caption, color: colors.gold, marginTop: 4, fontFamily: fontFamily.bodySemiBold },
     candidateNote: { fontSize: fontSize.caption, color: colors.textMuted, marginTop: 4, fontStyle: 'italic', fontFamily: fontFamily.body },
-    saveButton: {
-      marginTop: 8,
-      backgroundColor: colors.success,
-      borderRadius: 10,
-      paddingVertical: 14,
-      alignItems: 'center',
-    },
-    saveButtonText: { color: colors.onPrimary, fontSize: fontSize.button, fontFamily: fontFamily.bodyBold },
+    saveButtonWrap: { marginTop: 8 },
   });
 }

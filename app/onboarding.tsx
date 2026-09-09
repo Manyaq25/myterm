@@ -98,7 +98,7 @@ function getStyles(colors: ThemeColors) {
     slide: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 36 },
     icon: { fontSize: 48, marginBottom: 24 },
     title: { fontSize: fontSize.title, fontFamily: fontFamily.displaySemiBold, color: colors.text, marginBottom: 10, textAlign: 'center' },
-    text: { fontSize: fontSize.subtitle, fontFamily: fontFamily.bodySemiBold, color: colors.text, textAlign: 'center', lineHeight: 26 },
+    text: { fontSize: fontSize.subtitle, fontFamily: fontFamily.displaySemiBold, color: colors.text, textAlign: 'center', lineHeight: 26 },
     footer: { paddingHorizontal: 24, paddingBottom: 16, paddingTop: 8 },
     dotsRow: { flexDirection: 'row', justifyContent: 'center', gap: 8, marginBottom: 20 },
     dot: { width: 7, height: 7, borderRadius: 4, backgroundColor: colors.surfaceAlt },

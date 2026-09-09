@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import type { ExtraReminderChoice } from '../services/smartReminders';
-import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
+import { Button } from './Button';
+import { useTheme, fontFamily, type ThemeColors } from '../theme';
 
 interface Props {
   visible: boolean;
@@ -21,30 +22,30 @@ export function SmartReminderPrompt({ visible, title, onChoose }: Props) {
         <View style={styles.card}>
           <Text style={styles.title}>{t('smartReminderPrompt.title')}</Text>
           <Text style={styles.subtitle}>{t('smartReminderPrompt.subtitle', { title })}</Text>
-          <Pressable
-            style={styles.option}
-            onPress={() => onChoose('day_before')}
-            accessibilityRole="button"
-            accessibilityLabel={t('smartReminderPrompt.dayBefore')}
-          >
-            <Text style={styles.optionText}>{t('smartReminderPrompt.dayBefore')}</Text>
-          </Pressable>
-          <Pressable
-            style={styles.option}
-            onPress={() => onChoose('morning')}
-            accessibilityRole="button"
-            accessibilityLabel={t('smartReminderPrompt.morning')}
-          >
-            <Text style={styles.optionText}>{t('smartReminderPrompt.morning')}</Text>
-          </Pressable>
-          <Pressable
-            style={styles.option}
-            onPress={() => onChoose('both')}
-            accessibilityRole="button"
-            accessibilityLabel={t('smartReminderPrompt.both')}
-          >
-            <Text style={styles.optionText}>{t('smartReminderPrompt.both')}</Text>
-          </Pressable>
+          <View style={styles.option}>
+            <Button
+              variant="secondary"
+              label={t('smartReminderPrompt.dayBefore')}
+              onPress={() => onChoose('day_before')}
+              accessibilityLabel={t('smartReminderPrompt.dayBefore')}
+            />
+          </View>
+          <View style={styles.option}>
+            <Button
+              variant="secondary"
+              label={t('smartReminderPrompt.morning')}
+              onPress={() => onChoose('morning')}
+              accessibilityLabel={t('smartReminderPrompt.morning')}
+            />
+          </View>
+          <View style={styles.option}>
+            <Button
+              variant="secondary"
+              label={t('smartReminderPrompt.both')}
+              onPress={() => onChoose('both')}
+              accessibilityLabel={t('smartReminderPrompt.both')}
+            />
+          </View>
           <Pressable
             style={styles.decline}
             onPress={() => onChoose('none')}
@@ -76,14 +77,7 @@ function getStyles(colors: ThemeColors) {
     },
     title: { fontSize: 17, fontFamily: fontFamily.bodyBold, color: colors.text, marginBottom: 6 },
     subtitle: { fontSize: 14, fontFamily: fontFamily.body, color: colors.textMuted, marginBottom: 18, lineHeight: 20 },
-    option: {
-      backgroundColor: colors.surfaceAlt,
-      borderRadius: 10,
-      paddingVertical: 12,
-      alignItems: 'center',
-      marginBottom: 8,
-    },
-    optionText: { color: colors.primary, fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold },
+    option: { marginBottom: 8 },
     decline: { paddingVertical: 12, alignItems: 'center', marginTop: 4 },
     declineText: { color: colors.textMuted, fontSize: 14, fontFamily: fontFamily.bodySemiBold },
   });

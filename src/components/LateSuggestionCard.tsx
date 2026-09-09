@@ -60,7 +60,7 @@ function getStyles(colors: ThemeColors) {
     actions: { flexDirection: 'row', gap: 10, marginTop: 12 },
     acceptButton: {
       backgroundColor: colors.primary,
-      borderRadius: 8,
+      borderRadius: 14,
       paddingHorizontal: 12,
       paddingVertical: 8,
     },

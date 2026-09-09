@@ -85,7 +85,7 @@ function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
     group: { marginBottom: 22 },
     personHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
-    personName: { fontSize: fontSize.subtitle, fontFamily: fontFamily.bodyBold, color: colors.text },
+    personName: { fontSize: fontSize.subtitle, fontFamily: fontFamily.displaySemiBold, color: colors.text },
     row: {
       ...getCardSurface(colors),
       marginBottom: CARD_MARGIN_BOTTOM,
