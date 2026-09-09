@@ -1,14 +1,5 @@
 import { useMemo, useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -26,6 +17,7 @@ import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
 import { updateWidgetSummary } from '../../src/services/widget';
 import { useIsPremium } from '../../src/services/subscription';
 import { Button } from '../../src/components/Button';
+import { TextField } from '../../src/components/TextField';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
 export default function YeniTakipScreen() {
@@ -122,11 +114,8 @@ export default function YeniTakipScreen() {
           Platform.OS === 'android' && { paddingBottom: 60 + insets.bottom + keyboardHeight },
         ]}
       >
-        <Text style={styles.label} nativeID="label-title">
-          {t('yeni.labelTitle')}
-        </Text>
-        <TextInput
-          style={styles.input}
+        <TextField
+          label={t('yeni.labelTitle')}
           placeholder={t('yeni.titlePlaceholder')}
           value={title}
           onChangeText={setTitle}
@@ -154,18 +143,18 @@ export default function YeniTakipScreen() {
           ))}
         </View>
 
-        <Text style={styles.label}>{t('yeni.labelPerson')}</Text>
-        <TextInput
-          style={styles.input}
+        <TextField
+          containerStyle={styles.fieldSpacing}
+          label={t('yeni.labelPerson')}
           placeholder={t('yeni.personPlaceholder')}
           value={personName}
           onChangeText={setPersonName}
           accessibilityLabel={t('yeni.labelPerson')}
         />
 
-        <Text style={styles.label}>{t('yeni.labelNote')}</Text>
-        <TextInput
-          style={[styles.input, styles.multiline]}
+        <TextField
+          containerStyle={styles.fieldSpacing}
+          label={t('yeni.labelNote')}
           placeholder={t('yeni.notePlaceholder')}
           value={detail}
           onChangeText={setDetail}
@@ -175,7 +164,7 @@ export default function YeniTakipScreen() {
 
         <Text style={styles.label}>{t('yeni.labelDueAt')}</Text>
         <Pressable
-          style={styles.input}
+          style={styles.dateInputBox}
           onPress={() => (Platform.OS === 'android' ? setAndroidPickerStage('date') : setShowPicker(true))}
           accessibilityRole="button"
           accessibilityLabel={
@@ -252,18 +241,15 @@ function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
     content: { padding: 20, paddingBottom: 60 },
     label: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted, marginTop: 16, marginBottom: 6 },
-    input: {
+    fieldSpacing: { marginTop: 16 },
+    dateInputBox: {
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: 10,
+      borderRadius: 12,
       paddingHorizontal: 14,
       paddingVertical: 12,
-      fontSize: fontSize.base,
-      fontFamily: fontFamily.body,
-      color: colors.text,
       backgroundColor: colors.surface,
     },
-    multiline: { minHeight: 80, textAlignVertical: 'top' },
     typeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
     typeChip: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999, backgroundColor: colors.surfaceAlt },
     typeChipActive: { backgroundColor: colors.primary },

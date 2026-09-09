@@ -9,7 +9,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -42,6 +41,7 @@ import { AI_USAGE_FREE_LIMIT, getAiUsageCount, hasAiUsageRemaining, incrementAiU
 import { useIsPremium } from '../../src/services/subscription';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 import { Button } from '../../src/components/Button';
+import { TextField } from '../../src/components/TextField';
 import { getCardSurface } from '../../src/constants/cardStyle';
 
 interface Candidate extends ExtractedFollowUp {
@@ -479,9 +479,8 @@ export default function AiCikarScreen() {
 
         {mode === 'text' && (
           <>
-            <Text style={styles.label}>{t('aiCikar.textLabel')}</Text>
-            <TextInput
-              style={[styles.input, styles.multiline]}
+            <TextField
+              label={t('aiCikar.textLabel')}
               placeholder={t('aiCikar.textPlaceholder')}
               value={text}
               onChangeText={setText}
@@ -744,18 +743,6 @@ function getStyles(colors: ThemeColors) {
     modeTabText: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted },
     modeTabTextActive: { color: colors.text },
     label: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted, marginBottom: 6 },
-    input: {
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: 10,
-      paddingHorizontal: 14,
-      paddingVertical: 12,
-      fontSize: fontSize.base,
-      fontFamily: fontFamily.body,
-      color: colors.text,
-      backgroundColor: colors.surface,
-    },
-    multiline: { minHeight: 120, textAlignVertical: 'top' },
     extractButtonWrap: { marginTop: 16 },
     error: { color: colors.danger, marginTop: 12, fontSize: fontSize.small, fontFamily: fontFamily.body },
     hint: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 12, fontFamily: fontFamily.body },

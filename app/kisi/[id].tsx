@@ -294,7 +294,7 @@ function getStyles(colors: ThemeColors) {
       flex: 1,
       borderWidth: 1,
       borderColor: colors.border,
-      borderRadius: 10,
+      borderRadius: 12,
       paddingHorizontal: 12,
       paddingVertical: 8,
       fontSize: fontSize.base,
