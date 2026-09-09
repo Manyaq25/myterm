@@ -26,7 +26,7 @@ void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [showIntro, setShowIntro] = useState(true);
   const [i18nReady, setI18nReady] = useState(false);
   const [subReady, setSubReady] = useState(false);
@@ -78,6 +78,7 @@ export default function RootLayout() {
         <DatabaseProvider>
           <AppLockGate>
             <Stack
+              key={i18n.language}
               screenOptions={{
                 headerTitleStyle: { fontWeight: '600', fontFamily: fontFamily.displaySemiBold },
                 headerBackButtonDisplayMode: 'minimal',
