@@ -42,6 +42,7 @@ import { AI_USAGE_FREE_LIMIT, getAiUsageCount, hasAiUsageRemaining, incrementAiU
 import { useIsPremium } from '../../src/services/subscription';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 import { Button } from '../../src/components/Button';
+import { getCardSurface } from '../../src/constants/cardStyle';
 
 interface Candidate extends ExtractedFollowUp {
   selected: boolean;
@@ -813,15 +814,11 @@ function getStyles(colors: ThemeColors) {
     results: { marginTop: 24 },
     resultsTitle: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.text, marginBottom: 12 },
     candidateCard: {
+      ...getCardSurface(colors),
       flexDirection: 'row',
       alignItems: 'flex-start',
       gap: 12,
-      backgroundColor: colors.surface,
-      borderRadius: 12,
-      padding: 14,
       marginBottom: 10,
-      borderWidth: 1,
-      borderColor: colors.border,
     },
     checkbox: {
       width: 22,

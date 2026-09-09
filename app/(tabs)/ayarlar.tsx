@@ -22,6 +22,7 @@ import {
   type SupportedLanguage,
 } from '../../src/i18n';
 import { restorePurchases, useSubscription, type SubscriptionStatus } from '../../src/services/subscription';
+import { getCardSurface } from '../../src/constants/cardStyle';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
 export default function AyarlarScreen() {
@@ -299,15 +300,9 @@ function getStyles(colors: ThemeColors) {
     container: { flex: 1, backgroundColor: colors.background },
     scrollContent: { padding: 16, paddingBottom: 40 },
     section: {
-      backgroundColor: colors.surface,
-      borderRadius: 16,
+      ...getCardSurface(colors),
       padding: 18,
       marginBottom: 16,
-      shadowColor: colors.text,
-      shadowOpacity: 0.05,
-      shadowRadius: 8,
-      shadowOffset: { width: 0, height: 2 },
-      elevation: 1,
     },
     sectionTitle: {
       fontSize: fontSize.caption,

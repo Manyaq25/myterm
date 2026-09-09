@@ -264,9 +264,8 @@ function getStyles(colors: ThemeColors) {
     note: { fontSize: fontSize.base, color: colors.textMuted, marginTop: 4, fontFamily: fontFamily.body },
     leadBadge: { fontSize: fontSize.caption, color: colors.primary, fontFamily: fontFamily.bodySemiBold, marginTop: 14 },
     insightsCard: {
+      ...getCardSurface(colors),
       backgroundColor: colors.surfaceAlt,
-      borderRadius: 14,
-      padding: 16,
       marginTop: 16,
     },
     insightsLabel: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.primary, marginBottom: 8 },

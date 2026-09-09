@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import type { LatePersonSuggestion } from '../services/proactiveSuggestions';
+import { getCardSurface } from '../constants/cardStyle';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
 
 interface Props {
@@ -46,13 +47,10 @@ export function LateSuggestionCard({ suggestion, onAccept, onDismiss }: Props) {
 function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
     card: {
+      ...getCardSurface(colors),
+      backgroundColor: colors.surfaceAlt,
       flexDirection: 'row',
       gap: 10,
-      backgroundColor: colors.surfaceAlt,
-      borderRadius: 12,
-      borderWidth: 1,
-      borderColor: colors.border,
-      padding: 14,
       marginBottom: 14,
     },
     icon: { fontSize: 20 },

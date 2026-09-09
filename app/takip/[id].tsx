@@ -10,6 +10,7 @@ import { completeFollowUp, removeFollowUp } from '../../src/services/followUpAct
 import { Avatar } from '../../src/components/Avatar';
 import { Button } from '../../src/components/Button';
 import { TypeBadge } from '../../src/components/TypeBadge';
+import { getCardSurface } from '../../src/constants/cardStyle';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
 export default function TakipDetayScreen() {
@@ -104,14 +105,8 @@ function getStyles(colors: ThemeColors) {
     container: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background },
     content: { padding: 20, backgroundColor: colors.background, flexGrow: 1 },
     card: {
-      backgroundColor: colors.surface,
-      borderRadius: 18,
+      ...getCardSurface(colors),
       padding: 20,
-      shadowColor: colors.text,
-      shadowOpacity: 0.06,
-      shadowRadius: 12,
-      shadowOffset: { width: 0, height: 4 },
-      elevation: 2,
     },
     badge: { marginBottom: 10 },
     title: { fontSize: fontSize.title, fontFamily: fontFamily.displaySemiBold, color: colors.text, lineHeight: 28 },
