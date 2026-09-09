@@ -13,6 +13,8 @@ export type ThemeColors = {
   primary: string;
   primarySoft: string;
   onPrimary: string;
+  primaryContainer: string;
+  onPrimaryContainer: string;
   rose: string;
   coral: string;
   gold: string;
@@ -30,6 +32,8 @@ export const lightColors: ThemeColors = {
   primary: '#0E5C56', // Çini
   primarySoft: '#3E8C82', // Çini Açık
   onPrimary: '#FDFDFC',
+  primaryContainer: '#A8F0E7', // Stitch'in bu marka renginden ürettiği soluk teal tonu
+  onPrimaryContainer: '#004843',
   rose: '#E0246E', // Mercan Pembe — ikondaki canlı pembe halkayla eşleşiyor
   coral: '#E2794A', // Mercan
   gold: '#D19A1E', // Bakır Altın — ikondaki düğüm altınıyla eşleşiyor
@@ -47,6 +51,10 @@ export const darkColors: ThemeColors = {
   primary: '#57AB9F',
   primarySoft: '#2E5F58',
   onPrimary: '#0E1A18',
+  // Stitch tasarım sistemi sadece açık modda üretildi — karanlık modda
+  // "Tamamla" butonunun önceki (primarySoft + onPrimary) görünümünü koruyoruz.
+  primaryContainer: '#2E5F58',
+  onPrimaryContainer: '#0E1A18',
   rose: '#F0699B',
   coral: '#E59A71',
   gold: '#DCB245',

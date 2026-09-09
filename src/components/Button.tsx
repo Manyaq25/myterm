@@ -24,7 +24,7 @@ export function Button({ label, onPress, variant = 'primary', disabled, loading,
   const textColor: Record<ButtonVariant, string> = {
     primary: colors.onPrimary,
     secondary: colors.primary,
-    success: colors.onPrimary,
+    success: colors.onPrimaryContainer,
     ghostDanger: colors.danger,
   };
 
@@ -35,7 +35,7 @@ export function Button({ label, onPress, variant = 'primary', disabled, loading,
       style={({ pressed }) => [
         styles.base,
         variant === 'primary' && { backgroundColor: colors.primary },
-        variant === 'success' && { backgroundColor: colors.primarySoft },
+        variant === 'success' && { backgroundColor: colors.primaryContainer },
         variant === 'secondary' && {
           backgroundColor: 'transparent',
           borderWidth: 1.5,

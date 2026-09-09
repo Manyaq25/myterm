@@ -209,6 +209,9 @@ function getStyles(colors: ThemeColors) {
       flexDirection: 'row',
       alignItems: 'center',
       marginTop: 10,
+      paddingTop: 10,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
     },
     footerLeft: { flex: 1 },
     selectableRow: {
@@ -240,7 +243,7 @@ function getStyles(colors: ThemeColors) {
     title: {
       flex: 1,
       fontSize: fontSize.subtitle,
-      fontFamily: fontFamily.bodyBold,
+      fontFamily: fontFamily.displaySemiBold,
       color: colors.text,
       lineHeight: 22,
     },

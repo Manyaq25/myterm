@@ -5,32 +5,43 @@ import type { FollowUpType } from '../types';
 import { followUpTypeLabel } from '../i18n/labels';
 import { useTheme, getTypeColor, hexToRgba, fontFamily, fontSize } from '../theme';
 
-// Açık mod zemin tonları — Stitch'in bu marka rengi (#0E5C56) için ürettiği
-// gerçek Material "container" paletinden alındı (task=primary_container,
-// promise_made=secondary_container). waiting_on/promise_expected için
-// Stitch'in ürettiği eşdeğer bir 4. renk yok (Material üçlü sistemi
-// primary/secondary/tertiary ile sınırlı) — onlar aynı pastel karaktere
-// göre elle ayarlandı.
-const LIGHT_TINTS: Record<FollowUpType, string> = {
-  task: '#A8F0E7',
-  promise_made: '#FFD9E0',
-  waiting_on: '#FBE7B8',
-  promise_expected: '#FBDCC8',
+interface BadgePalette {
+  bg: string;
+  dot: string;
+  text: string;
+  border: string;
+}
+
+// Açık mod paleti — Stitch'in bu marka rengi için ürettiği "Components"
+// ekranının HTML/CSS kodundan (panoya kopyalanıp paylaşıldı) birebir alındı,
+// tahmini değil. Her tür 3 ayrı tonda: soluk zemin, orta-koyu nokta, koyu
+// yazı — örn. "Bekliyorum" zemini göründüğünden daha doygun çünkü Stitch
+// kendi altın tonumuzla aynı yazı rengini kullanınca kontrast düşük
+// kalıyordu, o yüzden daha koyu bir kahverengi yazı seçmiş.
+// promise_expected için markada 4. bir renk yok (Material üçlü sistemi
+// primary/secondary/tertiary ile sınırlı) — Stitch orada standart Tailwind
+// "orange" paletine düşmüş, aynı değerler kullanıldı.
+const LIGHT_PALETTE: Record<FollowUpType, BadgePalette> = {
+  task: { bg: '#A8F0E7', dot: '#1D6A63', text: '#004843', border: '#9AE1D9' },
+  waiting_on: { bg: '#F5BA3F', dot: '#7D5900', text: '#533A00', border: '#E6AC32' },
+  promise_made: { bg: '#FFD9E0', dot: '#BC0057', text: '#81003A', border: '#FFC5D1' },
+  promise_expected: { bg: '#FFEDD5', dot: '#EA580C', text: '#7C2D12', border: '#FED7AA' },
 };
 
 /**
- * Takip türü rozeti — Stitch'te tasarlanan "yumuşak ton + nokta" pill stiline
- * göre: dolgu renk yerine türün rengiyle hafif tonlanmış bir zemin, önünde
- * aynı renkte küçük bir nokta.
+ * Takip türü rozeti — Stitch'in "Components" ekranındaki üç katmanlı
+ * (soluk zemin + orta-koyu nokta + koyu yazı) pill stiline göre.
  */
 export function TypeBadge({ type, style }: { type: FollowUpType; style?: StyleProp<ViewStyle> }) {
   const { colors, isDark } = useTheme();
   const { t } = useTranslation();
-  const color = getTypeColor(type, colors);
+  const brandColor = getTypeColor(type, colors);
   // Karanlık modda Stitch'in açık-mod paleti geçerli değil — marka rengiyle
   // hesaplanan bir saydamlık hâlâ makul bir yaklaşım.
-  const tint = isDark ? hexToRgba(color, 0.3) : LIGHT_TINTS[type];
-  const styles = useMemo(() => getStyles(color, tint), [color, tint]);
+  const palette: BadgePalette = isDark
+    ? { bg: hexToRgba(brandColor, 0.3), dot: brandColor, text: brandColor, border: 'transparent' }
+    : LIGHT_PALETTE[type];
+  const styles = useMemo(() => getStyles(palette), [palette]);
 
   return (
     <View style={[styles.badge, style]}>
@@ -40,19 +51,21 @@ export function TypeBadge({ type, style }: { type: FollowUpType; style?: StylePr
   );
 }
 
-function getStyles(color: string, tint: string) {
+function getStyles(palette: BadgePalette) {
   return StyleSheet.create({
     badge: {
       flexDirection: 'row',
       alignItems: 'center',
       alignSelf: 'flex-start',
       gap: 6,
-      backgroundColor: tint,
+      backgroundColor: palette.bg,
+      borderWidth: 1,
+      borderColor: palette.border,
       paddingHorizontal: 10,
       paddingVertical: 5,
       borderRadius: 999,
     },
-    dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: color },
-    text: { color, fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold },
+    dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: palette.dot },
+    text: { color: palette.text, fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold },
   });
 }
