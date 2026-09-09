@@ -31,7 +31,7 @@ function getStyles(color: string) {
       alignItems: 'center',
       alignSelf: 'flex-start',
       gap: 6,
-      backgroundColor: hexToRgba(color, 0.16),
+      backgroundColor: hexToRgba(color, 0.35),
       paddingHorizontal: 10,
       paddingVertical: 5,
       borderRadius: 999,
