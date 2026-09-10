@@ -324,5 +324,8 @@
     "restoreNoneTitle": "見つかりませんでした",
     "restoreNoneMessage": "このアカウントに有効なサブスクリプションが見つかりませんでした。",
     "devKeyMissingNotice": "RevenueCatのAPIキーが設定されていません — これは開発用の通知です。"
+  },
+  "splash": {
+    "tagline": "大切なつながり、忘れられない約束"
   }
 }

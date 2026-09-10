@@ -324,5 +324,8 @@
     "restoreNoneTitle": "찾을 수 없음",
     "restoreNoneMessage": "이 계정에 활성화된 구독이 없어요.",
     "devKeyMissingNotice": "RevenueCat API 키가 설정되지 않았습니다 — 개발용 알림입니다."
+  },
+  "splash": {
+    "tagline": "소중한 인연, 잊히지 않는 약속"
   }
 }

@@ -324,5 +324,8 @@
     "restoreNoneTitle": "Nichts gefunden",
     "restoreNoneMessage": "Für dieses Konto wurde kein aktives Abo gefunden.",
     "devKeyMissingNotice": "RevenueCat-API-Schlüssel ist nicht gesetzt — dies ist nur ein Entwicklungshinweis."
+  },
+  "splash": {
+    "tagline": "Ihre wichtigen Verbindungen, Versprechen, die nicht vergessen werden"
   }
 }

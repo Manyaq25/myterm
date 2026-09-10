@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   Easing,
   runOnJS,
@@ -11,17 +13,21 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useTheme, fontFamily, fontSize } from '../theme';
 
-// Must match app.json's expo-splash-screen `backgroundColor` / `dark.backgroundColor` —
-// the native splash hides straight into this overlay, so the colors need to line up
-// exactly or the handoff will show a flash.
-const BG_LIGHT = '#00A896';
-const BG_DARK = '#0B1614';
+// Stitch'in açılış ekranı export'undan birebir örneklenen dikey gradyan
+// (nane yeşili → sıcak krem). Native splash (app.json'daki expo-splash-screen)
+// düz bir renk gösterebildiği için üst tonu (BG_LIGHT_TOP) kullanıyor —
+// bu JS katmanı devraldığında düz renkten gradyana yumuşak geçiş oluyor.
+const BG_LIGHT_TOP = '#C4EADF';
+const BG_LIGHT_BOTTOM = '#FCF8ED';
+const BG_DARK_TOP = '#0E1C1A';
+const BG_DARK_BOTTOM = '#0B1614';
 
 const ICON_LIGHT = require('../../assets/splash-icon.png');
 const ICON_DARK = require('../../assets/splash-icon-dark.png');
 
 export function AnimatedSplash({ onFinish }: { onFinish: () => void }) {
-  const { isDark } = useTheme();
+  const { isDark, colors } = useTheme();
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(true);
 
   const iconOpacity = useSharedValue(0);
@@ -70,12 +76,17 @@ export function AnimatedSplash({ onFinish }: { onFinish: () => void }) {
   if (!visible) return null;
 
   return (
-    <Animated.View
-      pointerEvents="none"
-      style={[styles.overlay, { backgroundColor: isDark ? BG_DARK : BG_LIGHT }, overlayStyle]}
-    >
+    <Animated.View pointerEvents="none" style={[styles.overlay, overlayStyle]}>
+      <LinearGradient
+        pointerEvents="none"
+        colors={isDark ? [BG_DARK_TOP, BG_DARK_BOTTOM] : [BG_LIGHT_TOP, BG_LIGHT_BOTTOM]}
+        style={StyleSheet.absoluteFillObject}
+      />
       <Animated.Image source={isDark ? ICON_DARK : ICON_LIGHT} style={[styles.icon, iconStyle]} resizeMode="contain" />
-      <Animated.Text style={[styles.wordmark, textStyle]}>Synvia AI</Animated.Text>
+      <Animated.View style={textStyle}>
+        <Animated.Text style={[styles.wordmark, { color: colors.text }]}>Synvia AI</Animated.Text>
+        <Animated.Text style={[styles.tagline, { color: colors.textMuted }]}>{t('splash.tagline')}</Animated.Text>
+      </Animated.View>
     </Animated.View>
   );
 }
@@ -93,9 +104,15 @@ const styles = StyleSheet.create({
   },
   wordmark: {
     marginTop: 18,
-    fontFamily: fontFamily.displayMedium,
+    fontFamily: fontFamily.bodyExtraBold,
     fontSize: fontSize.displaySmall,
-    letterSpacing: 0.5,
-    color: '#FDFDFC',
+    letterSpacing: -0.5,
+    textAlign: 'center',
+  },
+  tagline: {
+    marginTop: 6,
+    fontFamily: fontFamily.body,
+    fontSize: fontSize.small,
+    textAlign: 'center',
   },
 });

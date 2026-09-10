@@ -324,5 +324,8 @@
     "restoreNoneTitle": "Nessun risultato",
     "restoreNoneMessage": "Nessun abbonamento attivo trovato per questo account.",
     "devKeyMissingNotice": "La chiave API di RevenueCat non è impostata — questo è un avviso solo per lo sviluppo."
+  },
+  "splash": {
+    "tagline": "I tuoi legami importanti, promesse che non si dimenticano"
   }
 }

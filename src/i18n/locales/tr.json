@@ -324,5 +324,8 @@
     "restoreNoneTitle": "Bulunamadı",
     "restoreNoneMessage": "Bu hesapla ilişkili aktif bir abonelik bulunamadı.",
     "devKeyMissingNotice": "RevenueCat API anahtarı tanımlı değil — bu bir geliştirme uyarısıdır."
+  },
+  "splash": {
+    "tagline": "Önemli bağlarınız, unutulmayan sözler"
   }
 }

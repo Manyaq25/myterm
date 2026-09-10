@@ -324,5 +324,8 @@
     "restoreNoneTitle": "Rien trouvé",
     "restoreNoneMessage": "Aucun abonnement actif n'a été trouvé pour ce compte.",
     "devKeyMissingNotice": "La clé API RevenueCat n'est pas définie — ceci est un avis de développement uniquement."
+  },
+  "splash": {
+    "tagline": "Vos liens importants, des promesses qu'on n'oublie pas"
   }
 }

@@ -324,5 +324,8 @@
     "restoreNoneTitle": "Nada encontrado",
     "restoreNoneMessage": "Nenhuma assinatura ativa foi encontrada para esta conta.",
     "devKeyMissingNotice": "A chave de API do RevenueCat não está definida — este é um aviso apenas de desenvolvimento."
+  },
+  "splash": {
+    "tagline": "Suas conexões importantes, promessas que não se esquecem"
   }
 }

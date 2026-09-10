@@ -324,5 +324,8 @@
     "restoreNoneTitle": "未找到",
     "restoreNoneMessage": "未找到与此账户关联的有效订阅。",
     "devKeyMissingNotice": "未设置 RevenueCat API 密钥——这仅是开发提示。"
+  },
+  "splash": {
+    "tagline": "重要的联系，不会遗忘的承诺"
   }
 }

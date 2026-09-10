@@ -324,5 +324,8 @@
     "restoreNoneTitle": "Nothing Found",
     "restoreNoneMessage": "No active subscription was found for this account.",
     "devKeyMissingNotice": "RevenueCat API key is not set — this is a development-only notice."
+  },
+  "splash": {
+    "tagline": "Your important connections, promises that don't slip"
   }
 }
