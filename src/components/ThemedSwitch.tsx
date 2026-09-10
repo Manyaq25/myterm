@@ -57,8 +57,8 @@ export function ThemedSwitch({ value, onValueChange, disabled, accessibilityLabe
     >
       <Animated.View style={[styles.track, trackStyle]}>
         <Animated.View style={[styles.thumb, thumbStyle]}>
-          <Animated.View style={badgeStyle}>
-            <Check color={CHECK_MARK_COLOR} size={12} strokeWidth={3.5} />
+          <Animated.View style={[styles.checkCircle, badgeStyle]}>
+            <Check color="#FFFFFF" size={9} strokeWidth={3.5} />
           </Animated.View>
         </Animated.View>
       </Animated.View>
@@ -86,6 +86,14 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     shadowOffset: { width: 0, height: 1 },
     elevation: 1,
+  },
+  checkCircle: {
+    width: 15,
+    height: 15,
+    borderRadius: 7.5,
+    backgroundColor: CHECK_MARK_COLOR,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   disabled: { opacity: 0.5 },
 });
