@@ -5,7 +5,8 @@
     "delete": "حذف",
     "error": "خطأ",
     "loading": "جارٍ التحميل…",
-    "save": "حفظ"
+    "save": "حفظ",
+    "back": "رجوع"
   },
   "tabs": {
     "home": "الرئيسية",
@@ -44,7 +45,8 @@
     "quickLinkAsistanA11y": "فتح المساعد الذكي",
     "overdueSectionTitle": "متأخر ({{count}})",
     "emptyTitle": "لا يوجد شيء لمتابعته الآن",
-    "emptySubtitle": "ابدأ بإضافة وعد أو مهمة أو شيء تنتظره."
+    "emptySubtitle": "ابدأ بإضافة وعد أو مهمة أو شيء تنتظره.",
+    "notificationsA11y": "الإشعارات"
   },
   "takipler": {
     "filterOpen": "مفتوح",
@@ -136,7 +138,7 @@
     "modePdfA11y": "وضع المستند",
     "textLabel": "الصق أو اكتب ملاحظتك",
     "textPlaceholder": "مثال: سأرسل العرض إلى أحمد غدًا، وأنتظر منه تقرير الأسبوع الماضي.",
-    "extract": "استخراج",
+    "extract": "استخراج وتحليل",
     "textError": "فشل الاستخراج. حاول مرة أخرى من فضلك.",
     "voiceLabel": "سجّل ملاحظة صوتية",
     "recordStart": "● بدء التسجيل",
@@ -176,7 +178,11 @@
     "lowConfidenceText": "❓ غير متأكد — يرجى المراجعة",
     "saveSelected": "حفظ المحدد ({{count}})",
     "saving": "جارٍ الحفظ…",
-    "saveError": "حدث خطأ ما أثناء الحفظ."
+    "saveError": "حدث خطأ ما أثناء الحفظ.",
+    "engineBrand": "Synvia Natural NLP Engine",
+    "clearText": "مسح",
+    "quickVoice": "إدخال صوتي",
+    "quickScreenshot": "لقطة شاشة"
   },
   "asistan": {
     "mockBanner": "وضع الاختبار: خلفية الذكاء الاصطناعي الحقيقية غير متصلة بعد، ستكون الإجابات تجريبية.",

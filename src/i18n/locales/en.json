@@ -5,7 +5,8 @@
     "delete": "Delete",
     "error": "Error",
     "loading": "Loading…",
-    "save": "Save"
+    "save": "Save",
+    "back": "Back"
   },
   "tabs": {
     "home": "Home",
@@ -44,7 +45,8 @@
     "quickLinkAsistanA11y": "Open AI Assistant",
     "overdueSectionTitle": "Overdue ({{count}})",
     "emptyTitle": "Nothing to follow up on right now",
-    "emptySubtitle": "Start by adding a promise, a task, or something you're waiting on."
+    "emptySubtitle": "Start by adding a promise, a task, or something you're waiting on.",
+    "notificationsA11y": "Notifications"
   },
   "takipler": {
     "filterOpen": "Open",
@@ -136,7 +138,7 @@
     "modePdfA11y": "Document mode",
     "textLabel": "Paste or type your note",
     "textPlaceholder": "e.g. I'll send Alex the proposal tomorrow, and I'm waiting on last week's report from them.",
-    "extract": "Extract",
+    "extract": "Extract and Analyze",
     "textError": "Extraction failed. Please try again.",
     "voiceLabel": "Record a voice note",
     "recordStart": "● Start recording",
@@ -176,7 +178,11 @@
     "lowConfidenceText": "❓ Not sure — please review",
     "saveSelected": "Save selected ({{count}})",
     "saving": "Saving…",
-    "saveError": "Something went wrong while saving."
+    "saveError": "Something went wrong while saving.",
+    "engineBrand": "Synvia Natural NLP Engine",
+    "clearText": "Clear",
+    "quickVoice": "Voice input",
+    "quickScreenshot": "Screenshot"
   },
   "asistan": {
     "mockBanner": "Test mode: the real AI backend isn't connected yet, answers will be mocked.",

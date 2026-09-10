@@ -5,7 +5,8 @@
     "delete": "Löschen",
     "error": "Fehler",
     "loading": "Wird geladen…",
-    "save": "Speichern"
+    "save": "Speichern",
+    "back": "Zurück"
   },
   "tabs": {
     "home": "Start",
@@ -44,7 +45,8 @@
     "quickLinkAsistanA11y": "KI-Assistent öffnen",
     "overdueSectionTitle": "Überfällig ({{count}})",
     "emptyTitle": "Gerade nichts zu verfolgen",
-    "emptySubtitle": "Füge ein Versprechen, eine Aufgabe oder etwas, worauf du wartest, hinzu."
+    "emptySubtitle": "Füge ein Versprechen, eine Aufgabe oder etwas, worauf du wartest, hinzu.",
+    "notificationsA11y": "Benachrichtigungen"
   },
   "takipler": {
     "filterOpen": "Offen",
@@ -136,7 +138,7 @@
     "modePdfA11y": "Dokumentmodus",
     "textLabel": "Notiz einfügen oder eingeben",
     "textPlaceholder": "z. B. Ich schicke Anna morgen das Angebot und warte von ihr auf den Bericht der letzten Woche.",
-    "extract": "Extrahieren",
+    "extract": "Extrahieren und Analysieren",
     "textError": "Extraktion fehlgeschlagen. Bitte versuche es erneut.",
     "voiceLabel": "Eine Sprachnotiz aufnehmen",
     "recordStart": "● Aufnahme starten",
@@ -176,7 +178,11 @@
     "lowConfidenceText": "❓ Nicht sicher — bitte prüfen",
     "saveSelected": "Auswahl speichern ({{count}})",
     "saving": "Wird gespeichert…",
-    "saveError": "Beim Speichern ist etwas schiefgelaufen."
+    "saveError": "Beim Speichern ist etwas schiefgelaufen.",
+    "engineBrand": "Synvia Natural NLP Engine",
+    "clearText": "Leeren",
+    "quickVoice": "Spracheingabe",
+    "quickScreenshot": "Screenshot"
   },
   "asistan": {
     "mockBanner": "Testmodus: Das echte KI-Backend ist noch nicht verbunden, Antworten sind simuliert.",

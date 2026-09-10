@@ -5,7 +5,8 @@
     "delete": "Sil",
     "error": "Hata",
     "loading": "Yükleniyor…",
-    "save": "Kaydet"
+    "save": "Kaydet",
+    "back": "Geri"
   },
   "tabs": {
     "home": "Ana Sayfa",
@@ -44,7 +45,8 @@
     "quickLinkAsistanA11y": "AI Asistan'ı aç",
     "overdueSectionTitle": "Gecikenler ({{count}})",
     "emptyTitle": "Şu an takip edilecek bir şey yok",
-    "emptySubtitle": "Bir söz, bir görev veya beklediğin bir şey ekleyerek başla."
+    "emptySubtitle": "Bir söz, bir görev veya beklediğin bir şey ekleyerek başla.",
+    "notificationsA11y": "Bildirimler"
   },
   "takipler": {
     "filterOpen": "Açık",
@@ -136,7 +138,7 @@
     "modePdfA11y": "Belge modu",
     "textLabel": "Notunu yapıştır veya yaz",
     "textPlaceholder": "ör. Ahmete yarın teklifi göndereceğim, ondan da geçen haftaki raporu bekliyorum.",
-    "extract": "Çıkar",
+    "extract": "Çıkar ve Analiz Et",
     "textError": "Çıkarım başarısız oldu. Lütfen tekrar dene.",
     "voiceLabel": "Bir ses notu kaydet",
     "recordStart": "● Kaydı başlat",
@@ -176,7 +178,11 @@
     "lowConfidenceText": "❓ Emin değilim — gözden geçir",
     "saveSelected": "Seçilenleri kaydet ({{count}})",
     "saving": "Kaydediliyor…",
-    "saveError": "Kaydetme sırasında bir sorun oluştu."
+    "saveError": "Kaydetme sırasında bir sorun oluştu.",
+    "engineBrand": "Synvia Natural NLP Engine",
+    "clearText": "Temizle",
+    "quickVoice": "Sesle aktar",
+    "quickScreenshot": "Ekran görüntüsü"
   },
   "asistan": {
     "mockBanner": "Test modu: gerçek AI backend'i henüz bağlı değil, cevaplar sahte (mock) olacak.",

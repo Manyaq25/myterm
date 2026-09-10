@@ -5,7 +5,8 @@
     "delete": "Elimina",
     "error": "Errore",
     "loading": "Caricamento…",
-    "save": "Salva"
+    "save": "Salva",
+    "back": "Indietro"
   },
   "tabs": {
     "home": "Home",
@@ -44,7 +45,8 @@
     "quickLinkAsistanA11y": "Apri l'Assistente IA",
     "overdueSectionTitle": "In ritardo ({{count}})",
     "emptyTitle": "Al momento non c'è nulla da seguire",
-    "emptySubtitle": "Inizia aggiungendo una promessa, un compito o qualcosa che stai aspettando."
+    "emptySubtitle": "Inizia aggiungendo una promessa, un compito o qualcosa che stai aspettando.",
+    "notificationsA11y": "Notifiche"
   },
   "takipler": {
     "filterOpen": "Aperto",
@@ -136,7 +138,7 @@
     "modePdfA11y": "Modalità documento",
     "textLabel": "Incolla o scrivi la tua nota",
     "textPlaceholder": "es. Domani invierò la proposta a Marco, e sto aspettando da lui il rapporto della settimana scorsa.",
-    "extract": "Estrai",
+    "extract": "Estrai e Analizza",
     "textError": "Estrazione non riuscita. Riprova.",
     "voiceLabel": "Registra una nota vocale",
     "recordStart": "● Avvia registrazione",
@@ -176,7 +178,11 @@
     "lowConfidenceText": "❓ Non sono sicuro — controlla",
     "saveSelected": "Salva selezionati ({{count}})",
     "saving": "Salvataggio…",
-    "saveError": "Qualcosa è andato storto durante il salvataggio."
+    "saveError": "Qualcosa è andato storto durante il salvataggio.",
+    "engineBrand": "Synvia Natural NLP Engine",
+    "clearText": "Cancella",
+    "quickVoice": "Input vocale",
+    "quickScreenshot": "Screenshot"
   },
   "asistan": {
     "mockBanner": "Modalità test: il vero backend IA non è ancora connesso, le risposte saranno simulate.",

@@ -5,7 +5,8 @@
     "delete": "Supprimer",
     "error": "Erreur",
     "loading": "Chargement…",
-    "save": "Enregistrer"
+    "save": "Enregistrer",
+    "back": "Retour"
   },
   "tabs": {
     "home": "Accueil",
@@ -44,7 +45,8 @@
     "quickLinkAsistanA11y": "Ouvrir l'Assistant IA",
     "overdueSectionTitle": "En retard ({{count}})",
     "emptyTitle": "Rien à suivre pour le moment",
-    "emptySubtitle": "Commencez par ajouter une promesse, une tâche ou quelque chose que vous attendez."
+    "emptySubtitle": "Commencez par ajouter une promesse, une tâche ou quelque chose que vous attendez.",
+    "notificationsA11y": "Notifications"
   },
   "takipler": {
     "filterOpen": "Ouvert",
@@ -136,7 +138,7 @@
     "modePdfA11y": "Mode document",
     "textLabel": "Collez ou tapez votre note",
     "textPlaceholder": "ex. J'enverrai la proposition à Léa demain, et j'attends d'elle le rapport de la semaine dernière.",
-    "extract": "Extraire",
+    "extract": "Extraire et Analyser",
     "textError": "L'extraction a échoué. Veuillez réessayer.",
     "voiceLabel": "Enregistrer une note vocale",
     "recordStart": "● Démarrer l'enregistrement",
@@ -176,7 +178,11 @@
     "lowConfidenceText": "❓ Pas sûr — à vérifier",
     "saveSelected": "Enregistrer la sélection ({{count}})",
     "saving": "Enregistrement…",
-    "saveError": "Une erreur s'est produite lors de l'enregistrement."
+    "saveError": "Une erreur s'est produite lors de l'enregistrement.",
+    "engineBrand": "Synvia Natural NLP Engine",
+    "clearText": "Effacer",
+    "quickVoice": "Saisie vocale",
+    "quickScreenshot": "Capture d'écran"
   },
   "asistan": {
     "mockBanner": "Mode test : le vrai backend IA n'est pas encore connecté, les réponses seront simulées.",

@@ -90,8 +90,8 @@ export default function RootLayout() {
                 name="onboarding"
                 options={{ headerShown: false, presentation: 'fullScreenModal', gestureEnabled: false }}
               />
-              <Stack.Screen name="takip/yeni" options={{ presentation: 'modal', title: t('stackTitles.yeniTakip') }} />
-              <Stack.Screen name="takip/ai-cikar" options={{ presentation: 'modal', title: t('stackTitles.aiIleCikar') }} />
+              <Stack.Screen name="takip/yeni" options={{ presentation: 'modal', headerShown: false }} />
+              <Stack.Screen name="takip/ai-cikar" options={{ presentation: 'modal', headerShown: false }} />
               <Stack.Screen name="takip/[id]" options={{ title: t('stackTitles.takipDetay') }} />
               <Stack.Screen name="kisi/[id]" options={{ title: t('stackTitles.kisiProfili') }} />
               <Stack.Screen name="gorunum/bekliyorum" options={{ title: t('stackTitles.neyiBekliyorum') }} />

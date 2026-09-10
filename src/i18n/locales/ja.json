@@ -5,7 +5,8 @@
     "delete": "削除",
     "error": "エラー",
     "loading": "読み込み中…",
-    "save": "保存"
+    "save": "保存",
+    "back": "戻る"
   },
   "tabs": {
     "home": "ホーム",
@@ -44,7 +45,8 @@
     "quickLinkAsistanA11y": "AIアシスタントを開く",
     "overdueSectionTitle": "期限切れ（{{count}}）",
     "emptyTitle": "今のところフォローアップする項目はありません",
-    "emptySubtitle": "約束、タスク、または待っていることを追加してみましょう。"
+    "emptySubtitle": "約束、タスク、または待っていることを追加してみましょう。",
+    "notificationsA11y": "通知"
   },
   "takipler": {
     "filterOpen": "未完了",
@@ -136,7 +138,7 @@
     "modePdfA11y": "書類モード",
     "textLabel": "メモを貼り付けるか入力してください",
     "textPlaceholder": "例：明日田中さんに提案書を送ります。彼から先週のレポートを待っています。",
-    "extract": "抽出",
+    "extract": "抽出して分析",
     "textError": "抽出に失敗しました。もう一度お試しください。",
     "voiceLabel": "音声メモを録音",
     "recordStart": "● 録音を開始",
@@ -176,7 +178,11 @@
     "lowConfidenceText": "❓ 確信が持てません — 確認してください",
     "saveSelected": "選択項目を保存（{{count}}）",
     "saving": "保存中…",
-    "saveError": "保存中に問題が発生しました。"
+    "saveError": "保存中に問題が発生しました。",
+    "engineBrand": "Synvia Natural NLP Engine",
+    "clearText": "クリア",
+    "quickVoice": "音声入力",
+    "quickScreenshot": "スクリーンショット"
   },
   "asistan": {
     "mockBanner": "テストモード：実際のAIバックエンドはまだ接続されていません。回答は模擬的なものになります。",

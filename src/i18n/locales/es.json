@@ -5,7 +5,8 @@
     "delete": "Eliminar",
     "error": "Error",
     "loading": "Cargando…",
-    "save": "Guardar"
+    "save": "Guardar",
+    "back": "Atrás"
   },
   "tabs": {
     "home": "Inicio",
@@ -44,7 +45,8 @@
     "quickLinkAsistanA11y": "Abrir Asistente IA",
     "overdueSectionTitle": "Atrasados ({{count}})",
     "emptyTitle": "No tienes nada que seguir por ahora",
-    "emptySubtitle": "Empieza añadiendo una promesa, una tarea o algo que estés esperando."
+    "emptySubtitle": "Empieza añadiendo una promesa, una tarea o algo que estés esperando.",
+    "notificationsA11y": "Notificaciones"
   },
   "takipler": {
     "filterOpen": "Abierto",
@@ -136,7 +138,7 @@
     "modePdfA11y": "Modo documento",
     "textLabel": "Pega o escribe tu nota",
     "textPlaceholder": "ej. Mañana le enviaré la propuesta a Ana, y espero el informe de la semana pasada de su parte.",
-    "extract": "Extraer",
+    "extract": "Extraer y Analizar",
     "textError": "Falló la extracción. Inténtalo de nuevo.",
     "voiceLabel": "Graba una nota de voz",
     "recordStart": "● Empezar a grabar",
@@ -176,7 +178,11 @@
     "lowConfidenceText": "❓ No estoy seguro — revisa esto",
     "saveSelected": "Guardar seleccionados ({{count}})",
     "saving": "Guardando…",
-    "saveError": "Algo salió mal al guardar."
+    "saveError": "Algo salió mal al guardar.",
+    "engineBrand": "Synvia Natural NLP Engine",
+    "clearText": "Borrar",
+    "quickVoice": "Entrada de voz",
+    "quickScreenshot": "Captura de pantalla"
   },
   "asistan": {
     "mockBanner": "Modo de prueba: el backend de IA real aún no está conectado, las respuestas serán simuladas.",

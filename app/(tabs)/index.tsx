@@ -4,7 +4,8 @@ import { useFocusEffect, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ChevronRight } from 'lucide-react-native';
+import { Bell, ChevronRight } from 'lucide-react-native';
+import * as Notifications from 'expo-notifications';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from 'react-native-reanimated';
 import { hasAnyFollowUp, listFollowUps } from '../../src/db/queries';
 import type { FollowUpWithPerson } from '../../src/types';
@@ -33,6 +34,7 @@ export default function HomeScreen() {
   const [items, setItems] = useState<FollowUpWithPerson[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [suggestion, setSuggestion] = useState<LatePersonSuggestion | null>(null);
+  const [hasPendingNotification, setHasPendingNotification] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(false);
   const quickLinksContentWidth = useRef(0);
   const quickLinksContainerWidth = useRef(0);
@@ -68,7 +70,22 @@ export default function HomeScreen() {
     const suggestions = await detectLatePersonSuggestions(db);
     setSuggestion(suggestions[0] ?? null);
     await updateWidgetSummary(db);
+    try {
+      const presented = await Notifications.getPresentedNotificationsAsync();
+      setHasPendingNotification(presented.length > 0);
+    } catch {
+      // Android 6.0 altı ya da izin yok — zil sessizce boş kalır.
+    }
   }, [db]);
+
+  // Bildirim zili gerçek OS bildirim tepsisine bağlı: bekleyen (henüz
+  // kapatılmamış) bir hatırlatma bildirimi varsa noktayla işaretleniyor,
+  // dokununca hepsi kapatılıyor (görüldü sayılıyor).
+  async function handleBellPress() {
+    if (!hasPendingNotification) return;
+    await Notifications.dismissAllNotificationsAsync();
+    setHasPendingNotification(false);
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -97,11 +114,24 @@ export default function HomeScreen() {
     <GradientBackground>
       <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
         <View style={styles.header}>
-          <View style={styles.dateBadge}>
-            <View style={styles.dateBadgeDot} />
-            <Text style={styles.dateBadgeText}>{todayLabel}</Text>
+          <View style={styles.headerRow}>
+            <View style={styles.headerLeft}>
+              <View style={styles.dateBadge}>
+                <View style={styles.dateBadgeDot} />
+                <Text style={styles.dateBadgeText}>{todayLabel}</Text>
+              </View>
+              <Text style={styles.title}>{t('tabs.homeHeaderTitle')}</Text>
+            </View>
+            <Pressable
+              onPress={handleBellPress}
+              style={styles.bellButton}
+              accessibilityRole="button"
+              accessibilityLabel={t('home.notificationsA11y')}
+            >
+              <Bell color={colors.primaryText} size={19} strokeWidth={2} />
+              {hasPendingNotification && <View style={styles.bellDot} />}
+            </Pressable>
           </View>
-          <Text style={styles.title}>{t('tabs.homeHeaderTitle')}</Text>
         </View>
         <FlatList
         data={[...overdue, ...upcoming]}
@@ -212,6 +242,30 @@ function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
     container: { flex: 1, backgroundColor: 'transparent' },
     header: { paddingHorizontal: 20, paddingTop: 6, paddingBottom: 6 },
+    headerRow: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 },
+    headerLeft: { flex: 1 },
+    bellButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 16,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.glassBg,
+      borderWidth: 1,
+      borderColor: colors.glassBorder,
+      marginTop: 2,
+    },
+    bellDot: {
+      position: 'absolute',
+      top: 8,
+      right: 9,
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      backgroundColor: colors.secondary,
+      borderWidth: 1.5,
+      borderColor: colors.bgWashTop,
+    },
     dateBadge: {
       flexDirection: 'row',
       alignItems: 'center',

@@ -14,8 +14,8 @@ import {
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useHeaderHeight } from '@react-navigation/elements';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ArrowLeft, ImagePlus, Mic } from 'lucide-react-native';
 import { useKeyboardHeight } from '../../src/hooks/useKeyboardHeight';
 import {
   RecordingPresets,
@@ -39,7 +39,7 @@ import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
 import { updateWidgetSummary } from '../../src/services/widget';
 import { AI_USAGE_FREE_LIMIT, getAiUsageCount, hasAiUsageRemaining, incrementAiUsageCount } from '../../src/services/aiUsage';
 import { useIsPremium } from '../../src/services/subscription';
-import { useTheme, hexToRgba, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
+import { useTheme, hexToRgba, fontFamily, fontSize, letterSpacing, type ThemeColors } from '../../src/theme';
 import { Button } from '../../src/components/Button';
 import { TextField } from '../../src/components/TextField';
 import { GradientBackground } from '../../src/components/GradientBackground';
@@ -84,7 +84,6 @@ export default function AiCikarScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
   const { t, i18n } = useTranslation();
-  const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
   const keyboardHeight = useKeyboardHeight();
   const params = useLocalSearchParams<{ mode?: string; autoScreenshot?: string }>();
@@ -396,11 +395,40 @@ export default function AiCikarScreen() {
   }
 
   const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
-  const containerProps =
-    Platform.OS === 'ios' ? { behavior: 'padding' as const, keyboardVerticalOffset: headerHeight } : {};
+  const containerProps = Platform.OS === 'ios' ? { behavior: 'padding' as const, keyboardVerticalOffset: insets.top } : {};
+
+  const extractHandlers: Record<Mode, () => void> = {
+    text: handleExtractText,
+    voice: handleExtractVoice,
+    image: handleExtractImage,
+    pdf: handleExtractPdf,
+  };
+  const extractDisabled: Record<Mode, boolean> = {
+    text: !text.trim() || loading,
+    voice: !hasRecording || loading,
+    image: !imageBase64 || loading,
+    pdf: !pdfBase64 || loading,
+  };
 
   return (
     <GradientBackground>
+      <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+        <View style={styles.header}>
+          <Pressable
+            onPress={() => router.back()}
+            style={styles.backButton}
+            accessibilityRole="button"
+            accessibilityLabel={t('common.back')}
+            hitSlop={8}
+          >
+            <ArrowLeft color={colors.text} size={20} strokeWidth={2.2} />
+          </Pressable>
+          <View style={styles.headerTitleGroup}>
+            <Image source={require('../../assets/icons/tab-ai-sparkles.png')} style={styles.headerIcon} resizeMode="contain" />
+            <Text style={styles.headerTitle}>{t('stackTitles.aiIleCikar')}</Text>
+          </View>
+          <View style={styles.headerSpacer} />
+        </View>
       <Container style={{ flex: 1 }} {...containerProps}>
       <ScrollView
         contentContainerStyle={[
@@ -499,14 +527,47 @@ export default function AiCikarScreen() {
               editable={!loading}
               accessibilityLabel={t('aiCikar.textLabel')}
             />
-            <View style={styles.extractButtonWrap}>
-              <Button
-                label={t('aiCikar.extract')}
-                onPress={handleExtractText}
-                disabled={!text.trim() || loading}
-                loading={loading}
-                accessibilityLabel={t('aiCikar.extract')}
-              />
+            <View style={styles.textFooterBar}>
+              <View style={styles.textFooterBrand}>
+                <Image source={require('../../assets/icons/tab-ai-sparkles.png')} style={styles.textFooterIcon} resizeMode="contain" />
+                <Text style={styles.textFooterBrandText}>{t('aiCikar.engineBrand')}</Text>
+              </View>
+              {!!text && (
+                <Pressable
+                  onPress={() => setText('')}
+                  accessibilityRole="button"
+                  accessibilityLabel={t('aiCikar.clearText')}
+                >
+                  <Text style={styles.textFooterClear}>{t('aiCikar.clearText')}</Text>
+                </Pressable>
+              )}
+            </View>
+            <View style={styles.quickChipsRow}>
+              <Pressable
+                style={styles.quickChip}
+                onPress={() => setMode('voice')}
+                accessibilityRole="button"
+                accessibilityLabel={t('aiCikar.modeVoiceA11y')}
+              >
+                <View style={styles.quickChipIcon}>
+                  <Mic color={colors.primaryText} size={14} strokeWidth={2.2} />
+                </View>
+                <Text style={styles.quickChipText}>{t('aiCikar.quickVoice')}</Text>
+              </Pressable>
+              <Pressable
+                style={styles.quickChip}
+                onPress={() => {
+                  setMode('image');
+                  void handleLoadLastScreenshot();
+                }}
+                accessibilityRole="button"
+                accessibilityLabel={t('aiCikar.quickScreenshot')}
+              >
+                <View style={styles.quickChipIcon}>
+                  <ImagePlus color={colors.primaryText} size={14} strokeWidth={2.2} />
+                </View>
+                <Text style={styles.quickChipText}>{t('aiCikar.quickScreenshot')}</Text>
+              </Pressable>
             </View>
           </>
         )}
@@ -543,15 +604,6 @@ export default function AiCikarScreen() {
                   <Text style={styles.recordButtonText}>{t('aiCikar.recordStop')}</Text>
                 </Pressable>
               )}
-            </View>
-            <View style={styles.extractButtonWrap}>
-              <Button
-                label={t('aiCikar.extract')}
-                onPress={handleExtractVoice}
-                disabled={!hasRecording || loading}
-                loading={loading}
-                accessibilityLabel={t('aiCikar.extract')}
-              />
             </View>
             {transcript !== null && (
               <View style={styles.transcriptBox}>
@@ -599,15 +651,6 @@ export default function AiCikarScreen() {
                 <Text style={styles.pickImageButtonText}>{t('aiCikar.pickImageGallery')}</Text>
               </Pressable>
             )}
-            <View style={styles.extractButtonWrap}>
-              <Button
-                label={t('aiCikar.extract')}
-                onPress={handleExtractImage}
-                disabled={!imageBase64 || loading}
-                loading={loading}
-                accessibilityLabel={t('aiCikar.extract')}
-              />
-            </View>
           </>
         )}
 
@@ -643,15 +686,6 @@ export default function AiCikarScreen() {
                 <Text style={styles.pickImageButtonText}>{t('aiCikar.pickPdf')}</Text>
               </Pressable>
             )}
-            <View style={styles.extractButtonWrap}>
-              <Button
-                label={t('aiCikar.extract')}
-                onPress={handleExtractPdf}
-                disabled={!pdfBase64 || loading}
-                loading={loading}
-                accessibilityLabel={t('aiCikar.extract')}
-              />
-            </View>
           </>
         )}
 
@@ -719,19 +753,86 @@ export default function AiCikarScreen() {
           </View>
         )}
       </ScrollView>
+      <View style={styles.footer}>
+        <Button
+          label={t('aiCikar.extract')}
+          onPress={extractHandlers[mode]}
+          disabled={extractDisabled[mode]}
+          loading={loading}
+          icon={<Image source={require('../../assets/icons/tab-ai-sparkles.png')} style={styles.footerButtonIcon} resizeMode="contain" />}
+          accessibilityLabel={t('aiCikar.extract')}
+        />
+      </View>
       <SmartReminderPrompt
         visible={importantQueue.length > 0}
         title={importantQueue[0]?.title ?? ''}
         onChoose={handleReminderChoice}
       />
       </Container>
+      </SafeAreaView>
     </GradientBackground>
   );
 }
 
 function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
-    content: { padding: 20, paddingBottom: 60 },
+    safeArea: { flex: 1 },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.glassBorder,
+    },
+    backButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 16,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.glassBg,
+      borderWidth: 1,
+      borderColor: colors.glassBorder,
+    },
+    headerSpacer: { width: 40, height: 40 },
+    headerTitleGroup: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+    headerIcon: { width: 22, height: 22 },
+    headerTitle: {
+      fontSize: fontSize.title,
+      fontFamily: fontFamily.bodyBold,
+      color: colors.text,
+      letterSpacing: letterSpacing.title,
+    },
+    footer: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 12 },
+    footerButtonIcon: { width: 20, height: 20 },
+    content: { padding: 20, paddingBottom: 24 },
+    textFooterBar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginTop: 8,
+      paddingHorizontal: 2,
+    },
+    textFooterBrand: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+    textFooterIcon: { width: 14, height: 14 },
+    textFooterBrandText: { fontSize: fontSize.caption, fontFamily: fontFamily.bodySemiBold, color: colors.primaryText },
+    textFooterClear: { fontSize: fontSize.caption, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted },
+    quickChipsRow: { flexDirection: 'row', gap: 10, marginTop: 12 },
+    quickChip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      backgroundColor: colors.glassBg,
+      borderWidth: 1,
+      borderColor: colors.glassBorder,
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      borderRadius: 16,
+    },
+    quickChipIcon: { backgroundColor: hexToRgba(colors.primary, 0.1), borderRadius: 6, padding: 3 },
+    quickChipText: { fontSize: fontSize.caption, fontFamily: fontFamily.bodySemiBold, color: colors.text },
     mockBanner: {
       flexDirection: 'row',
       alignItems: 'flex-start',
@@ -780,7 +881,6 @@ function getStyles(colors: ThemeColors) {
     modeTabText: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted },
     modeTabTextActive: { color: colors.text },
     label: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted, marginBottom: 6 },
-    extractButtonWrap: { marginTop: 16 },
     error: { color: colors.danger, marginTop: 12, fontSize: fontSize.small, fontFamily: fontFamily.body },
     hint: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 12, fontFamily: fontFamily.body },
     pickImageButton: {

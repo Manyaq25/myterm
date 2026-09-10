@@ -3,8 +3,8 @@ import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useHeaderHeight } from '@react-navigation/elements';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ArrowLeft, Check } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useKeyboardHeight } from '../../src/hooks/useKeyboardHeight';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
@@ -28,7 +28,6 @@ export default function YeniTakipScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
   const { t, i18n } = useTranslation();
-  const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
   const keyboardHeight = useKeyboardHeight();
   const isPremium = useIsPremium();
@@ -105,11 +104,24 @@ export default function YeniTakipScreen() {
   }
 
   const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
-  const containerProps =
-    Platform.OS === 'ios' ? { behavior: 'padding' as const, keyboardVerticalOffset: headerHeight } : {};
+  const containerProps = Platform.OS === 'ios' ? { behavior: 'padding' as const, keyboardVerticalOffset: insets.top } : {};
 
   return (
     <GradientBackground>
+      <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+        <View style={styles.header}>
+          <Pressable
+            onPress={() => router.back()}
+            style={styles.backButton}
+            accessibilityRole="button"
+            accessibilityLabel={t('common.back')}
+            hitSlop={8}
+          >
+            <ArrowLeft color={colors.text} size={20} strokeWidth={2.2} />
+          </Pressable>
+          <Text style={styles.headerTitle}>{t('stackTitles.yeniTakip')}</Text>
+          <View style={styles.pulseDot} />
+        </View>
       <Container style={{ flex: 1 }} {...containerProps}>
       <ScrollView
         contentContainerStyle={[
@@ -239,6 +251,7 @@ export default function YeniTakipScreen() {
             onPress={handleSave}
             disabled={!title.trim()}
             loading={saving}
+            icon={<Check color={colors.onPrimary} size={18} strokeWidth={2.5} />}
             accessibilityLabel={t('common.save')}
           />
         </View>
@@ -249,12 +262,41 @@ export default function YeniTakipScreen() {
         onChoose={handleReminderChoice}
       />
       </Container>
+      </SafeAreaView>
     </GradientBackground>
   );
 }
 
 function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
+    safeArea: { flex: 1 },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 12,
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.glassBorder,
+    },
+    backButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 16,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.glassBg,
+      borderWidth: 1,
+      borderColor: colors.glassBorder,
+    },
+    headerTitle: {
+      flex: 1,
+      fontSize: fontSize.title,
+      fontFamily: fontFamily.bodyBold,
+      color: colors.text,
+      letterSpacing: letterSpacing.title,
+    },
+    pulseDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.success },
     content: { padding: 20, paddingBottom: 60 },
     label: {
       fontSize: fontSize.caption,

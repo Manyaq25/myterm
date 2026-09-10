@@ -5,7 +5,8 @@
     "delete": "삭제",
     "error": "오류",
     "loading": "불러오는 중…",
-    "save": "저장"
+    "save": "저장",
+    "back": "뒤로"
   },
   "tabs": {
     "home": "홈",
@@ -44,7 +45,8 @@
     "quickLinkAsistanA11y": "AI 어시스턴트 열기",
     "overdueSectionTitle": "기한 초과 ({{count}})",
     "emptyTitle": "지금 팔로우업할 항목이 없습니다",
-    "emptySubtitle": "약속, 할 일 또는 기다리고 있는 것을 추가해 시작해 보세요."
+    "emptySubtitle": "약속, 할 일 또는 기다리고 있는 것을 추가해 시작해 보세요.",
+    "notificationsA11y": "알림"
   },
   "takipler": {
     "filterOpen": "진행 중",
@@ -136,7 +138,7 @@
     "modePdfA11y": "문서 모드",
     "textLabel": "메모를 붙여넣거나 입력하세요",
     "textPlaceholder": "예: 내일 민수에게 제안서를 보낼 거고, 그로부터 지난주 보고서를 기다리고 있어요.",
-    "extract": "추출",
+    "extract": "추출 및 분석",
     "textError": "추출에 실패했습니다. 다시 시도해 주세요.",
     "voiceLabel": "음성 메모 녹음하기",
     "recordStart": "● 녹음 시작",
@@ -176,7 +178,11 @@
     "lowConfidenceText": "❓ 확실하지 않음 — 검토하세요",
     "saveSelected": "선택 항목 저장 ({{count}})",
     "saving": "저장 중…",
-    "saveError": "저장 중에 문제가 발생했습니다."
+    "saveError": "저장 중에 문제가 발생했습니다.",
+    "engineBrand": "Synvia Natural NLP Engine",
+    "clearText": "지우기",
+    "quickVoice": "음성 입력",
+    "quickScreenshot": "스크린샷"
   },
   "asistan": {
     "mockBanner": "테스트 모드: 실제 AI 백엔드가 아직 연결되지 않아 답변은 가짜 데이터로 표시됩니다.",

@@ -5,7 +5,8 @@
     "delete": "删除",
     "error": "错误",
     "loading": "加载中…",
-    "save": "保存"
+    "save": "保存",
+    "back": "返回"
   },
   "tabs": {
     "home": "首页",
@@ -44,7 +45,8 @@
     "quickLinkAsistanA11y": "打开 AI 助手",
     "overdueSectionTitle": "已逾期（{{count}}）",
     "emptyTitle": "目前没有需要跟进的事项",
-    "emptySubtitle": "添加一个承诺、任务或你正在等待的事情，开始使用吧。"
+    "emptySubtitle": "添加一个承诺、任务或你正在等待的事情，开始使用吧。",
+    "notificationsA11y": "通知"
   },
   "takipler": {
     "filterOpen": "进行中",
@@ -136,7 +138,7 @@
     "modePdfA11y": "文档模式",
     "textLabel": "粘贴或输入你的备注",
     "textPlaceholder": "例如：我明天会把提案发给小明，同时我在等他给我上周的报告。",
-    "extract": "提取",
+    "extract": "提取并分析",
     "textError": "提取失败，请重试。",
     "voiceLabel": "录制语音备注",
     "recordStart": "● 开始录音",
@@ -176,7 +178,11 @@
     "lowConfidenceText": "❓ 不太确定——请检查",
     "saveSelected": "保存已选（{{count}}）",
     "saving": "正在保存…",
-    "saveError": "保存时出了点问题。"
+    "saveError": "保存时出了点问题。",
+    "engineBrand": "Synvia Natural NLP Engine",
+    "clearText": "清除",
+    "quickVoice": "语音输入",
+    "quickScreenshot": "截图"
   },
   "asistan": {
     "mockBanner": "测试模式：真实的 AI 后端尚未连接，回答将是模拟数据。",

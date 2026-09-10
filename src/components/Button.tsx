@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View, type PressableProps } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../theme';
@@ -12,6 +12,7 @@ type ButtonProps = {
   variant?: ButtonVariant;
   disabled?: boolean;
   loading?: boolean;
+  icon?: ReactNode;
 } & Omit<PressableProps, 'onPress' | 'style' | 'children'>;
 
 /**
@@ -19,7 +20,7 @@ type ButtonProps = {
  * primary aksiyon dikey gradyan + üst spekular vurgu + teal parlama gölgesi
  * taşır, ikincil aksiyon donuk camsı (frosted glass) bir yüzey kullanır.
  */
-export function Button({ label, onPress, variant = 'primary', disabled, loading, onFocus, onBlur, ...rest }: ButtonProps) {
+export function Button({ label, onPress, variant = 'primary', disabled, loading, icon, onFocus, onBlur, ...rest }: ButtonProps) {
   const { colors } = useTheme();
   const [focused, setFocused] = useState(false);
   const isDisabled = disabled || loading;
@@ -82,7 +83,10 @@ export function Button({ label, onPress, variant = 'primary', disabled, loading,
       {loading ? (
         <ActivityIndicator color={textColor[variant]} />
       ) : (
-        <Text style={[styles.label, { color: textColor[variant] }]}>{label}</Text>
+        <View style={styles.labelRow}>
+          {icon}
+          <Text style={[styles.label, { color: textColor[variant] }]}>{label}</Text>
+        </View>
       )}
     </Pressable>
   );
@@ -127,6 +131,11 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 4,
     alignSelf: 'flex-start',
+  },
+  labelRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   label: {
     fontFamily: fontFamily.label,
