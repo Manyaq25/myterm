@@ -1,18 +1,24 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { Plus, Sparkles } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
 
+const ICON_3D = {
+  index: require('../../assets/icons/tab-home.png'),
+  takipler: require('../../assets/icons/tab-followups.png'),
+  ayarlar: require('../../assets/icons/tab-settings.png'),
+} as const;
+
 /**
  * "Kinetic Luster" spesifikasyonundaki "Floating Bottom Navigation" —
  * kenarlardan ayrık, camsı (frosted) bir ada; aktif sekmenin arkasında
- * renkli bir "jewel pill" beliriyor. Ekran içeriğiyle çakışma riskini
- * azaltmak için gerçek `position: absolute` yerine normal akışta kalan,
- * yuvarlatılmış kenarlı bir ada görünümü kullanılıyor.
+ * renkli bir "jewel pill" beliriyor. Spesifikasyonun "3D micro-icon"
+ * ifadesi sadece SEÇİLİ sekme için geçerli — Stitch'in ürettiği tam renkli
+ * 3D render'lar `color` prop'uyla boyanamadığından (statik görsel), pasif
+ * sekmeler hâlâ ince çizgi ikonunu (lucide, soluk gri) kullanıyor.
  */
 export function BottomTabBar({ state, descriptors, navigation, insets }: BottomTabBarProps) {
   const { colors, isDark } = useTheme();
@@ -27,7 +33,10 @@ export function BottomTabBar({ state, descriptors, navigation, insets }: BottomT
     const isFocused = state.index === index;
     const label = typeof options.title === 'string' ? options.title : route.name;
     const tintColor = isFocused ? colors.onPrimary : colors.textMuted;
-    const icon = options.tabBarIcon?.({ focused: isFocused, color: isFocused ? colors.onPrimary : colors.textMuted, size: 22 });
+    const icon3d = ICON_3D[route.name as keyof typeof ICON_3D];
+    const icon = isFocused
+      ? <Image source={icon3d} style={styles.icon3d} resizeMode="contain" />
+      : options.tabBarIcon?.({ focused: false, color: colors.textMuted, size: 22 });
 
     function onPress() {
       const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
@@ -85,13 +94,7 @@ export function BottomTabBar({ state, descriptors, navigation, insets }: BottomT
               accessibilityRole="button"
               accessibilityLabel={t('bottomTabBar.addA11y')}
             >
-              <LinearGradient
-                colors={[colors.primaryText, colors.primary]}
-                style={StyleSheet.absoluteFillObject}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 0, y: 1 }}
-              />
-              <Plus color={colors.onPrimary} size={26} strokeWidth={2.5} />
+              <Image source={require('../../assets/icons/fab-add.png')} style={styles.fabIcon} resizeMode="contain" />
             </Pressable>
           </View>
 
@@ -102,7 +105,7 @@ export function BottomTabBar({ state, descriptors, navigation, insets }: BottomT
             accessibilityLabel={t('bottomTabBar.smartAddA11y')}
           >
             <View style={styles.itemInner}>
-              <Sparkles color={colors.textMuted} size={22} strokeWidth={2} />
+              <Image source={require('../../assets/icons/tab-ai-sparkles.png')} style={styles.icon3d} resizeMode="contain" />
               <Text style={[styles.label, { color: colors.textMuted }]} numberOfLines={1}>
                 {t('bottomTabBar.smartAdd')}
               </Text>
@@ -162,22 +165,23 @@ function getStyles(colors: ThemeColors) {
       paddingHorizontal: 12,
       borderRadius: 18,
     },
+    icon3d: { width: 26, height: 26 },
     label: { fontSize: fontSize.caption, fontFamily: fontFamily.label },
     labelActive: { fontFamily: fontFamily.labelBold },
     fab: {
-      width: 52,
-      height: 52,
-      borderRadius: 26,
+      width: 56,
+      height: 56,
+      borderRadius: 28,
       alignItems: 'center',
       justifyContent: 'center',
-      marginTop: -22,
-      overflow: 'hidden',
+      marginTop: -24,
       shadowColor: colors.primary,
       shadowOpacity: 0.4,
       shadowRadius: 10,
       shadowOffset: { width: 0, height: 4 },
       elevation: 4,
     },
+    fabIcon: { width: 56, height: 56 },
     fabPressed: { opacity: 0.85 },
   });
 }
