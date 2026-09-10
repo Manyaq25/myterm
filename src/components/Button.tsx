@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../theme';
 import { fontFamily, fontSize, letterSpacing } from '../theme/typography';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'success' | 'ghostDanger';
+export type ButtonVariant = 'primary' | 'secondary' | 'success' | 'ghostDanger' | 'dangerTonal';
 
 type ButtonProps = {
   label: string;
@@ -30,6 +30,7 @@ export function Button({ label, onPress, variant = 'primary', disabled, loading,
     secondary: colors.primaryText,
     success: colors.onPrimaryContainer,
     ghostDanger: colors.danger,
+    dangerTonal: colors.danger,
   };
 
   return (
@@ -48,6 +49,7 @@ export function Button({ label, onPress, variant = 'primary', disabled, loading,
         styles.base,
         variant === 'primary' && [styles.glow, { shadowColor: colors.primary }],
         variant === 'success' && { backgroundColor: colors.primaryContainer },
+        variant === 'dangerTonal' && { backgroundColor: colors.dangerContainer },
         variant === 'secondary' && {
           backgroundColor: colors.glassBg,
           borderWidth: 1.5,

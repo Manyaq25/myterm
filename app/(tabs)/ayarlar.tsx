@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { ChevronRight } from 'lucide-react-native';
 import { ThemedSwitch } from '../../src/components/ThemedSwitch';
 import { Button } from '../../src/components/Button';
+import { GradientBackground } from '../../src/components/GradientBackground';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -23,7 +25,7 @@ import {
 } from '../../src/i18n';
 import { restorePurchases, useSubscription, type SubscriptionStatus } from '../../src/services/subscription';
 import { getCardSurface } from '../../src/constants/cardStyle';
-import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
+import { useTheme, fontFamily, fontSize, letterSpacing, type ThemeColors } from '../../src/theme';
 
 export default function AyarlarScreen() {
   const { colors } = useTheme();
@@ -114,7 +116,14 @@ export default function AyarlarScreen() {
   }, []);
 
   return (
-    <SafeAreaView style={styles.container} edges={[]}>
+    <GradientBackground>
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>{t('tabs.ayarlar')}</Text>
+          <View style={styles.headerIconBadge}>
+            <Image source={require('../../assets/icons/tab-settings.png')} style={styles.headerIcon} resizeMode="contain" />
+          </View>
+        </View>
       <ScrollView contentContainerStyle={styles.scrollContent}>
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('ayarlar.sectionNotifications')}</Text>
@@ -164,9 +173,12 @@ export default function AyarlarScreen() {
           accessibilityLabel={t('ayarlar.sectionLanguage')}
         >
           <Text style={styles.rowLabel}>{t('ayarlar.sectionLanguage')}</Text>
-          <Text style={styles.languageValue}>
-            {selectedLanguage ? LANGUAGE_NAMES[selectedLanguage] : t('ayarlar.languageSystemDefault')} ›
-          </Text>
+          <View style={styles.rowValueGroup}>
+            <Text style={styles.languageValue}>
+              {selectedLanguage ? LANGUAGE_NAMES[selectedLanguage] : t('ayarlar.languageSystemDefault')}
+            </Text>
+            <ChevronRight color={colors.textMuted} size={16} strokeWidth={2.2} />
+          </View>
         </Pressable>
       </View>
 
@@ -179,11 +191,14 @@ export default function AyarlarScreen() {
           accessibilityLabel={t('ayarlar.sectionSubscription')}
         >
           <Text style={styles.rowLabel}>{t('ayarlar.subscriptionPlan')}</Text>
-          <Text style={styles.languageValue}>{subscriptionStatusLabel[subscriptionStatus]} ›</Text>
+          <View style={styles.rowValueGroup}>
+            <Text style={styles.languageValue}>{subscriptionStatusLabel[subscriptionStatus]}</Text>
+            <ChevronRight color={colors.textMuted} size={16} strokeWidth={2.2} />
+          </View>
         </Pressable>
         <View style={styles.dataButtonWrap}>
           <Button
-            variant="secondary"
+            variant="success"
             label={t('premium.restoreButton')}
             onPress={handleRestore}
             disabled={restoring}
@@ -197,7 +212,7 @@ export default function AyarlarScreen() {
         <Text style={styles.sectionTitle}>{t('ayarlar.sectionData')}</Text>
         <View style={styles.dataButtonWrap}>
           <Button
-            variant="secondary"
+            variant="success"
             label={t('ayarlar.exportButton')}
             onPress={handleExport}
             disabled={exporting}
@@ -207,9 +222,10 @@ export default function AyarlarScreen() {
         </View>
         <Text style={styles.hint}>{t('ayarlar.exportHint')}</Text>
 
+        <View style={styles.deleteDivider} />
         <View style={styles.dataButtonWrap}>
           <Button
-            variant="ghostDanger"
+            variant="dangerTonal"
             label={t('ayarlar.deleteAllButton')}
             onPress={handleDeleteAll}
             disabled={deleting}
@@ -248,9 +264,11 @@ export default function AyarlarScreen() {
         <Text style={styles.sectionTitle}>{t('ayarlar.sectionAbout')}</Text>
         <Text style={styles.aboutText}>{t('ayarlar.aboutText')}</Text>
 
+        <View style={styles.aboutDivider} />
         <Text style={styles.aboutLabel}>{t('ayarlar.privacyLabel')}</Text>
         <Text style={styles.aboutText}>{t('ayarlar.privacyText')}</Text>
 
+        <View style={styles.aboutDivider} />
         <Text style={styles.aboutLabel}>{t('ayarlar.aiProvidersLabel')}</Text>
         <Text style={styles.aboutText}>{t('ayarlar.aiProvidersText')}</Text>
 
@@ -291,33 +309,63 @@ export default function AyarlarScreen() {
           </View>
         </Pressable>
       </Modal>
-    </SafeAreaView>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
 function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
-    container: { flex: 1, backgroundColor: colors.background },
+    container: { flex: 1, backgroundColor: 'transparent' },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: 20,
+      paddingTop: 6,
+      paddingBottom: 12,
+    },
+    headerTitle: {
+      fontSize: fontSize.display,
+      fontFamily: fontFamily.bodyExtraBold,
+      color: colors.text,
+      letterSpacing: letterSpacing.display,
+    },
+    headerIconBadge: {
+      width: 44,
+      height: 44,
+      borderRadius: 16,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.glassBg,
+      borderWidth: 1,
+      borderColor: colors.glassBorder,
+    },
+    headerIcon: { width: 32, height: 32 },
     scrollContent: { padding: 16, paddingBottom: 40 },
     section: {
       ...getCardSurface(colors),
+      borderRadius: 24,
       padding: 18,
       marginBottom: 16,
     },
     sectionTitle: {
       fontSize: fontSize.caption,
-      fontFamily: fontFamily.bodyBold,
-      color: colors.textMuted,
+      fontFamily: fontFamily.label,
+      color: colors.primaryText,
       marginBottom: 12,
       textTransform: 'uppercase',
-      letterSpacing: 0.4,
+      letterSpacing: letterSpacing.label,
     },
     row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-    rowLabel: { fontSize: fontSize.base, fontFamily: fontFamily.body, color: colors.text },
+    rowLabel: { fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold, color: colors.text },
+    rowValueGroup: { flexDirection: 'row', alignItems: 'center', gap: 4 },
     languageValue: { fontSize: fontSize.base, fontFamily: fontFamily.body, color: colors.textMuted },
     hint: { fontSize: fontSize.small, fontFamily: fontFamily.body, color: colors.textMuted, marginTop: 8, lineHeight: 18 },
     dataButtonWrap: { marginTop: 12 },
+    deleteDivider: { height: 1, backgroundColor: colors.border, marginTop: 16 },
     aboutText: { fontSize: fontSize.small, fontFamily: fontFamily.body, color: colors.textMuted, lineHeight: 19, marginBottom: 12 },
+    aboutDivider: { height: 1, backgroundColor: colors.border, marginBottom: 12 },
     aboutLabel: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.text, marginBottom: 4 },
     aboutVersion: { fontSize: fontSize.caption, fontFamily: fontFamily.body, color: colors.textMuted, marginTop: 4 },
     modalBackdrop: {

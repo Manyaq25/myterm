@@ -37,6 +37,7 @@ export default function TabsLayout() {
         name="ayarlar"
         options={{
           title: t('tabs.ayarlar'),
+          headerShown: false,
         }}
       />
     </Tabs>
