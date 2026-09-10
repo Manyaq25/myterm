@@ -39,9 +39,10 @@ import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
 import { updateWidgetSummary } from '../../src/services/widget';
 import { AI_USAGE_FREE_LIMIT, getAiUsageCount, hasAiUsageRemaining, incrementAiUsageCount } from '../../src/services/aiUsage';
 import { useIsPremium } from '../../src/services/subscription';
-import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
+import { useTheme, hexToRgba, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 import { Button } from '../../src/components/Button';
 import { TextField } from '../../src/components/TextField';
+import { GradientBackground } from '../../src/components/GradientBackground';
 import { getCardSurface } from '../../src/constants/cardStyle';
 
 interface Candidate extends ExtractedFollowUp {
@@ -399,7 +400,8 @@ export default function AiCikarScreen() {
     Platform.OS === 'ios' ? { behavior: 'padding' as const, keyboardVerticalOffset: headerHeight } : {};
 
   return (
-    <Container style={{ flex: 1 }} {...containerProps}>
+    <GradientBackground>
+      <Container style={{ flex: 1 }} {...containerProps}>
       <ScrollView
         contentContainerStyle={[
           styles.content,
@@ -408,6 +410,9 @@ export default function AiCikarScreen() {
       >
         {isUsingMockAI && (
           <View style={styles.mockBanner}>
+            <View style={styles.mockBannerIcon}>
+              <Text style={styles.mockBannerIconText}>⚠️</Text>
+            </View>
             <Text style={styles.mockBannerText}>{t('aiCikar.mockBanner')}</Text>
           </View>
         )}
@@ -425,9 +430,15 @@ export default function AiCikarScreen() {
           </View>
         )}
         {!isPremium && usageCount < AI_USAGE_FREE_LIMIT && (
-          <Text style={styles.usageHint}>
-            {t('aiUsage.remainingHint', { used: usageCount, limit: AI_USAGE_FREE_LIMIT })}
-          </Text>
+          <View style={styles.usageRow}>
+            <Text style={styles.usageHint}>
+              {t('aiUsage.remainingHint', { used: usageCount, limit: AI_USAGE_FREE_LIMIT })}
+            </Text>
+            <View style={styles.usagePlanBadge}>
+              <View style={styles.usagePlanDot} />
+              <Text style={styles.usagePlanBadgeText}>{t('premium.freeColumn')}</Text>
+            </View>
+          </View>
         )}
 
         <View style={styles.modeRow} accessibilityRole="radiogroup">
@@ -713,7 +724,8 @@ export default function AiCikarScreen() {
         title={importantQueue[0]?.title ?? ''}
         onChoose={handleReminderChoice}
       />
-    </Container>
+      </Container>
+    </GradientBackground>
   );
 }
 
@@ -721,24 +733,49 @@ function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
     content: { padding: 20, paddingBottom: 60 },
     mockBanner: {
-      backgroundColor: colors.surfaceAlt,
-      borderRadius: 10,
-      padding: 12,
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 10,
+      backgroundColor: hexToRgba(colors.tertiary, 0.1),
+      borderWidth: 1,
+      borderColor: hexToRgba(colors.tertiary, 0.25),
+      borderRadius: 16,
+      padding: 14,
       marginBottom: 16,
     },
-    mockBannerText: { color: colors.gold, fontSize: fontSize.small, fontFamily: fontFamily.body },
+    mockBannerIcon: {
+      backgroundColor: hexToRgba(colors.tertiary, 0.18),
+      borderRadius: 8,
+      padding: 4,
+    },
+    mockBannerIconText: { fontSize: fontSize.small },
+    mockBannerText: { flex: 1, color: colors.onTertiaryContainer, fontSize: fontSize.small, fontFamily: fontFamily.body, lineHeight: 18 },
     usageLimitBanner: {
       backgroundColor: colors.surfaceAlt,
-      borderRadius: 10,
+      borderRadius: 16,
       padding: 14,
       marginBottom: 16,
       gap: 8,
     },
     usageLimitText: { color: colors.text, fontSize: fontSize.small, fontFamily: fontFamily.body, lineHeight: 19 },
     usageLimitCta: { color: colors.primary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
-    usageHint: { color: colors.textMuted, fontSize: fontSize.caption, fontFamily: fontFamily.body, marginBottom: 12 },
-    modeRow: { flexDirection: 'row', backgroundColor: colors.surfaceAlt, borderRadius: 10, padding: 4, marginBottom: 20 },
-    modeTab: { flex: 1, paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
+    usageRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 16 },
+    usageHint: { flex: 1, color: colors.textMuted, fontSize: fontSize.caption, fontFamily: fontFamily.body },
+    usagePlanBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 5,
+      backgroundColor: hexToRgba(colors.primary, 0.1),
+      borderWidth: 1,
+      borderColor: hexToRgba(colors.primary, 0.2),
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: 999,
+    },
+    usagePlanDot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: colors.primaryText },
+    usagePlanBadgeText: { fontSize: fontSize.caption, fontFamily: fontFamily.label, color: colors.primaryText },
+    modeRow: { flexDirection: 'row', backgroundColor: hexToRgba(colors.surfaceAlt, 0.6), borderRadius: 16, padding: 5, marginBottom: 20 },
+    modeTab: { flex: 1, paddingVertical: 10, borderRadius: 12, alignItems: 'center' },
     modeTabActive: { backgroundColor: colors.surface },
     modeTabText: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted },
     modeTabTextActive: { color: colors.text },

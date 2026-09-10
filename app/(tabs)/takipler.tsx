@@ -5,13 +5,16 @@ import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Search } from 'lucide-react-native';
 import { listFollowUps } from '../../src/db/queries';
 import type { FollowUpStatus, FollowUpWithPerson } from '../../src/types';
 import { FollowUpCard } from '../../src/components/FollowUpCard';
 import { EmptyState } from '../../src/components/EmptyState';
+import { GradientBackground } from '../../src/components/GradientBackground';
 import { matchesQuery } from '../../src/utils/search';
 import { completeFollowUp, removeFollowUp, removeFollowUps } from '../../src/services/followUpActions';
-import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
+import { useTheme, fontFamily, fontSize, letterSpacing, hexToRgba, type ThemeColors } from '../../src/theme';
 
 function getFilters(t: TFunction): { key: FollowUpStatus[]; label: string }[] {
   return [
@@ -21,14 +24,16 @@ function getFilters(t: TFunction): { key: FollowUpStatus[]; label: string }[] {
   ];
 }
 
-function getFilterColor(idx: number, colors: ThemeColors): string {
+// Aktif olmayan pillerde durum başına tonal renk — "Tamamlanan" başarı yeşili,
+// "İptal" tehlike/gül tonu, "Açık" ise nötr camsı yüzey.
+function getInactivePillColors(idx: number, colors: ThemeColors) {
   switch (idx) {
     case 1:
-      return colors.success;
+      return { bg: hexToRgba(colors.success, 0.14), text: colors.success, border: hexToRgba(colors.success, 0.3) };
     case 2:
-      return colors.coral;
+      return { bg: hexToRgba(colors.rose, 0.12), text: colors.rose, border: hexToRgba(colors.rose, 0.28) };
     default:
-      return colors.primary;
+      return { bg: colors.glassBg, text: colors.text, border: colors.glassBorder };
   }
 }
 
@@ -102,18 +107,25 @@ export default function TakiplerScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['bottom']}>
+    <GradientBackground>
+      <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+      <View style={styles.header}>
+        <Text style={styles.title}>{t('tabs.takipler')}</Text>
+      </View>
       <View style={styles.searchRow}>
-        <TextInput
-          style={styles.searchInput}
-          placeholder={t('takipler.searchPlaceholder')}
-          placeholderTextColor={colors.textMuted}
-          value={query}
-          onChangeText={setQuery}
-          clearButtonMode="while-editing"
-          editable={!selectionMode}
-          accessibilityLabel={t('takipler.searchA11y')}
-        />
+        <View style={styles.searchInputWrap}>
+          <Search color={colors.primaryText} size={16} strokeWidth={2.2} style={styles.searchIcon} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder={t('takipler.searchPlaceholder')}
+            placeholderTextColor={colors.textMuted}
+            value={query}
+            onChangeText={setQuery}
+            clearButtonMode="while-editing"
+            editable={!selectionMode}
+            accessibilityLabel={t('takipler.searchA11y')}
+          />
+        </View>
         {filteredItems.length > 0 && (
           <Pressable
             style={styles.selectToggle}
@@ -154,24 +166,33 @@ export default function TakiplerScreen() {
         </View>
       )}
       <View style={styles.filterRow} accessibilityRole="radiogroup">
-        {filters.map((f, idx) => (
-          <Pressable
-            key={f.label}
-            onPress={() => {
-              setFilterIndex(idx);
-              exitSelectionMode();
-            }}
-            style={[
-              styles.filterChip,
-              idx === filterIndex && { backgroundColor: getFilterColor(idx, colors) },
-            ]}
-            accessibilityRole="radio"
-            accessibilityState={{ checked: idx === filterIndex }}
-            accessibilityLabel={f.label}
-          >
-            <Text style={[styles.filterText, idx === filterIndex && styles.filterTextActive]}>{f.label}</Text>
-          </Pressable>
-        ))}
+        {filters.map((f, idx) => {
+          const isActive = idx === filterIndex;
+          const inactive = getInactivePillColors(idx, colors);
+          return (
+            <Pressable
+              key={f.label}
+              onPress={() => {
+                setFilterIndex(idx);
+                exitSelectionMode();
+              }}
+              accessibilityRole="radio"
+              accessibilityState={{ checked: isActive }}
+              accessibilityLabel={f.label}
+            >
+              {isActive ? (
+                <LinearGradient colors={[colors.primary, colors.primaryText]} style={styles.filterChip}>
+                  <View style={styles.filterDotActive} />
+                  <Text style={[styles.filterText, styles.filterTextActive]}>{f.label}</Text>
+                </LinearGradient>
+              ) : (
+                <View style={[styles.filterChip, { backgroundColor: inactive.bg, borderWidth: 1, borderColor: inactive.border }]}>
+                  <Text style={[styles.filterText, { color: inactive.text }]}>{f.label}</Text>
+                </View>
+              )}
+            </Pressable>
+          );
+        })}
       </View>
       <FlatList
         data={filteredItems}
@@ -199,26 +220,41 @@ export default function TakiplerScreen() {
             }}
           />
         )}
-      />
-    </SafeAreaView>
+        />
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
 function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
-    container: { flex: 1, backgroundColor: colors.background },
+    container: { flex: 1, backgroundColor: 'transparent' },
+    header: { paddingHorizontal: 20, paddingTop: 6, paddingBottom: 2 },
+    title: {
+      fontSize: fontSize.display,
+      fontFamily: fontFamily.bodyExtraBold,
+      color: colors.text,
+      letterSpacing: letterSpacing.display,
+    },
     searchRow: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 16, paddingTop: 12 },
+    searchInputWrap: { flex: 1, position: 'relative', justifyContent: 'center' },
+    searchIcon: { position: 'absolute', left: 14, zIndex: 1 },
     searchInput: {
-      flex: 1,
       borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: 12,
+      borderColor: colors.glassBorder,
+      borderRadius: 16,
       paddingHorizontal: 14,
+      paddingLeft: 38,
       paddingVertical: 10,
       fontSize: fontSize.base,
       fontFamily: fontFamily.body,
       color: colors.text,
-      backgroundColor: colors.surface,
+      backgroundColor: colors.glassBg,
+      shadowColor: colors.primary,
+      shadowOpacity: 0.1,
+      shadowRadius: 10,
+      shadowOffset: { width: 0, height: 3 },
+      elevation: 1,
     },
     selectToggle: { paddingVertical: 8, paddingHorizontal: 4 },
     selectToggleText: { color: colors.primary, fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold },
@@ -241,12 +277,15 @@ function getStyles(colors: ThemeColors) {
     buttonDisabled: { opacity: 0.5 },
     filterRow: { flexDirection: 'row', gap: 8, paddingHorizontal: 16, paddingTop: 12, paddingBottom: 4 },
     filterChip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
       paddingHorizontal: 14,
-      paddingVertical: 6,
+      paddingVertical: 7,
       borderRadius: 999,
-      backgroundColor: colors.surfaceAlt,
     },
-    filterText: { fontSize: fontSize.small, color: colors.text, fontFamily: fontFamily.bodySemiBold },
+    filterDotActive: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: colors.onPrimary },
+    filterText: { fontSize: fontSize.caption, fontFamily: fontFamily.label },
     filterTextActive: { color: colors.onPrimary },
     listContent: { padding: 16, paddingBottom: 40, flexGrow: 1 },
   });

@@ -22,7 +22,7 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: t('tabs.home'),
-          headerTitle: t('tabs.homeHeaderTitle'),
+          headerShown: false,
           tabBarIcon: ({ color, size }) => <Home color={color} size={size} strokeWidth={2} />,
         }}
       />
@@ -30,6 +30,7 @@ export default function TabsLayout() {
         name="takipler"
         options={{
           title: t('tabs.takipler'),
+          headerShown: false,
           tabBarIcon: ({ color, size }) => <ListChecks color={color} size={size} strokeWidth={2} />,
         }}
       />

@@ -10,10 +10,11 @@ import { hasAnyFollowUp, listFollowUps } from '../../src/db/queries';
 import type { FollowUpWithPerson } from '../../src/types';
 import { FollowUpCard } from '../../src/components/FollowUpCard';
 import { EmptyState } from '../../src/components/EmptyState';
+import { GradientBackground } from '../../src/components/GradientBackground';
 import { isOverdue } from '../../src/utils/date';
 import { completeFollowUp, removeFollowUp } from '../../src/services/followUpActions';
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
-import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
+import { useTheme, fontFamily, fontSize, letterSpacing, type ThemeColors } from '../../src/theme';
 import { isOnboardingSeen, markOnboardingSeen } from '../../src/services/onboarding';
 import { updateWidgetSummary } from '../../src/services/widget';
 import {
@@ -28,7 +29,7 @@ export default function HomeScreen() {
   const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [items, setItems] = useState<FollowUpWithPerson[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [suggestion, setSuggestion] = useState<LatePersonSuggestion | null>(null);
@@ -90,10 +91,19 @@ export default function HomeScreen() {
 
   const overdue = items.filter((i) => isOverdue(i.dueAt));
   const upcoming = items.filter((i) => !isOverdue(i.dueAt));
+  const todayLabel = new Date().toLocaleDateString(i18n.language, { weekday: 'long', day: 'numeric', month: 'long' });
 
   return (
-    <SafeAreaView style={styles.container} edges={['bottom']}>
-      <FlatList
+    <GradientBackground>
+      <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+        <View style={styles.header}>
+          <View style={styles.dateBadge}>
+            <View style={styles.dateBadgeDot} />
+            <Text style={styles.dateBadgeText}>{todayLabel}</Text>
+          </View>
+          <Text style={styles.title}>{t('tabs.homeHeaderTitle')}</Text>
+        </View>
+        <FlatList
         data={[...overdue, ...upcoming]}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
@@ -192,27 +202,59 @@ export default function HomeScreen() {
             }}
           />
         )}
-      />
-    </SafeAreaView>
+        />
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
 function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
-    container: { flex: 1, backgroundColor: colors.background },
+    container: { flex: 1, backgroundColor: 'transparent' },
+    header: { paddingHorizontal: 20, paddingTop: 6, paddingBottom: 6 },
+    dateBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      alignSelf: 'flex-start',
+      gap: 6,
+      backgroundColor: colors.primaryContainer,
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: 999,
+      marginBottom: 6,
+    },
+    dateBadgeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.primaryText },
+    dateBadgeText: {
+      fontSize: fontSize.caption,
+      fontFamily: fontFamily.label,
+      color: colors.primaryText,
+      textTransform: 'uppercase',
+      letterSpacing: letterSpacing.label,
+    },
+    title: {
+      fontSize: fontSize.display,
+      fontFamily: fontFamily.bodyExtraBold,
+      color: colors.text,
+      letterSpacing: letterSpacing.display,
+    },
     listContent: { padding: 16, paddingBottom: 100, flexGrow: 1 },
     quickLinksWrap: { marginBottom: 16 },
     quickLinksRow: {},
     quickLink: {
-      backgroundColor: colors.surface,
+      backgroundColor: colors.glassBg,
       borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: 999,
+      borderColor: colors.glassBorder,
+      borderRadius: 14,
       paddingHorizontal: 14,
-      paddingVertical: 10,
+      paddingVertical: 9,
       marginRight: 8,
+      shadowColor: colors.text,
+      shadowOpacity: 0.05,
+      shadowRadius: 8,
+      shadowOffset: { width: 0, height: 3 },
+      elevation: 1,
     },
-    quickLinkText: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.text },
+    quickLinkText: { fontSize: fontSize.caption, fontFamily: fontFamily.label, color: colors.text },
     sectionTitle: { fontSize: fontSize.small, fontFamily: fontFamily.displaySemiBold, color: colors.danger, marginBottom: 8 },
     scrollHintBadge: {
       position: 'absolute',

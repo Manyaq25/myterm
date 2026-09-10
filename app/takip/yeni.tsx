@@ -16,9 +16,11 @@ import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice }
 import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
 import { updateWidgetSummary } from '../../src/services/widget';
 import { useIsPremium } from '../../src/services/subscription';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Button } from '../../src/components/Button';
 import { TextField } from '../../src/components/TextField';
-import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
+import { GradientBackground } from '../../src/components/GradientBackground';
+import { useTheme, hexToRgba, fontFamily, fontSize, letterSpacing, type ThemeColors } from '../../src/theme';
 
 export default function YeniTakipScreen() {
   const { colors } = useTheme();
@@ -107,7 +109,8 @@ export default function YeniTakipScreen() {
     Platform.OS === 'ios' ? { behavior: 'padding' as const, keyboardVerticalOffset: headerHeight } : {};
 
   return (
-    <Container style={{ flex: 1 }} {...containerProps}>
+    <GradientBackground>
+      <Container style={{ flex: 1 }} {...containerProps}>
       <ScrollView
         contentContainerStyle={[
           styles.content,
@@ -127,20 +130,32 @@ export default function YeniTakipScreen() {
           {t('yeni.labelType')}
         </Text>
         <View style={styles.typeRow} accessibilityRole="radiogroup" accessibilityLabelledBy="label-type">
-          {FOLLOW_UP_TYPES.map((typeOption) => (
-            <Pressable
-              key={typeOption}
-              onPress={() => setType(typeOption)}
-              style={[styles.typeChip, type === typeOption && styles.typeChipActive]}
-              accessibilityRole="radio"
-              accessibilityState={{ checked: type === typeOption }}
-              accessibilityLabel={followUpTypeLabel(typeOption, t)}
-            >
-              <Text style={[styles.typeChipText, type === typeOption && styles.typeChipTextActive]}>
-                {followUpTypeLabel(typeOption, t)}
-              </Text>
-            </Pressable>
-          ))}
+          {FOLLOW_UP_TYPES.map((typeOption) => {
+            const active = type === typeOption;
+            return (
+              <Pressable
+                key={typeOption}
+                onPress={() => setType(typeOption)}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: active }}
+                accessibilityLabel={followUpTypeLabel(typeOption, t)}
+              >
+                {active ? (
+                  <LinearGradient colors={[colors.primary, colors.primaryText]} style={styles.typeChip}>
+                    <View style={styles.typeChipDotActive} />
+                    <Text style={[styles.typeChipText, styles.typeChipTextActive]}>
+                      {followUpTypeLabel(typeOption, t)}
+                    </Text>
+                  </LinearGradient>
+                ) : (
+                  <View style={[styles.typeChip, styles.typeChipInactive]}>
+                    <View style={styles.typeChipDot} />
+                    <Text style={styles.typeChipText}>{followUpTypeLabel(typeOption, t)}</Text>
+                  </View>
+                )}
+              </Pressable>
+            );
+          })}
         </View>
 
         <TextField
@@ -233,27 +248,45 @@ export default function YeniTakipScreen() {
         title={pendingImportant?.title ?? ''}
         onChoose={handleReminderChoice}
       />
-    </Container>
+      </Container>
+    </GradientBackground>
   );
 }
 
 function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
     content: { padding: 20, paddingBottom: 60 },
-    label: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted, marginTop: 16, marginBottom: 6 },
+    label: {
+      fontSize: fontSize.caption,
+      fontFamily: fontFamily.label,
+      color: hexToRgba(colors.text, 0.7),
+      marginTop: 16,
+      marginBottom: 6,
+      textTransform: 'uppercase',
+      letterSpacing: letterSpacing.label,
+    },
     fieldSpacing: { marginTop: 16 },
     dateInputBox: {
-      borderWidth: 1,
+      borderWidth: 1.5,
       borderColor: colors.border,
-      borderRadius: 12,
+      backgroundColor: hexToRgba(colors.surface, 0.6),
+      borderRadius: 16,
       paddingHorizontal: 14,
       paddingVertical: 12,
-      backgroundColor: colors.surface,
     },
     typeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-    typeChip: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999, backgroundColor: colors.surfaceAlt },
-    typeChipActive: { backgroundColor: colors.primary },
-    typeChipText: { fontSize: fontSize.small, color: colors.text, fontFamily: fontFamily.bodySemiBold },
+    typeChip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      paddingHorizontal: 14,
+      paddingVertical: 9,
+      borderRadius: 16,
+    },
+    typeChipInactive: { backgroundColor: colors.glassBg, borderWidth: 1, borderColor: colors.glassBorder },
+    typeChipDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: hexToRgba(colors.primary, 0.4) },
+    typeChipDotActive: { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.onPrimary },
+    typeChipText: { fontSize: fontSize.small, color: colors.text, fontFamily: fontFamily.label },
     typeChipTextActive: { color: colors.onPrimary },
     saveButtonWrap: { marginTop: 28 },
   });

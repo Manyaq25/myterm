@@ -7,14 +7,14 @@ import type { ThemeColors } from '../theme/colors';
 export function getCardSurface(colors: ThemeColors) {
   return {
     backgroundColor: colors.glassBg,
-    borderRadius: 20,
-    padding: 20,
+    borderRadius: 16,
+    padding: 16,
     borderWidth: 1,
     borderColor: colors.glassBorder,
     shadowColor: colors.text,
-    shadowOpacity: 0.05,
-    shadowRadius: 20,
-    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 6 },
     elevation: 3,
   } as const;
 }

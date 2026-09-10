@@ -3,12 +3,14 @@ import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Swipeable } from 'react-native-gesture-handler';
+import { Clock } from 'lucide-react-native';
 import type { FollowUpWithPerson } from '../types';
 import { formatDueDate, isOverdue } from '../utils/date';
 import { CARD_MARGIN_BOTTOM, getCardSurface } from '../constants/cardStyle';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
 import { followUpTypeLabel } from '../i18n/labels';
 import { TypeBadge } from './TypeBadge';
+import { Avatar } from './Avatar';
 
 interface Props {
   item: FollowUpWithPerson;
@@ -85,7 +87,12 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
           </Pressable>
         )}
       </View>
-      {item.personName && <Text style={styles.person}>👤 {item.personName}</Text>}
+      {item.personName && (
+        <View style={styles.personRow}>
+          <Avatar name={item.personName} size={22} />
+          <Text style={styles.person}>{item.personName}</Text>
+        </View>
+      )}
       {item.detail && (
         <Text style={styles.detail} numberOfLines={2}>
           {item.detail}
@@ -94,7 +101,10 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
       <View style={styles.footerRow}>
         <View style={styles.footerLeft}>
           {item.dueAt !== null && (
-            <Text style={[styles.due, overdue && styles.dueOverdue]}>⏰ {formatDueDate(item.dueAt)}</Text>
+            <View style={styles.dueRow}>
+              <Clock color={overdue ? colors.danger : colors.textMuted} size={13} strokeWidth={2.2} />
+              <Text style={[styles.due, overdue && styles.dueOverdue]}>{formatDueDate(item.dueAt)}</Text>
+            </View>
           )}
         </View>
         <TypeBadge type={item.type} />
@@ -214,6 +224,8 @@ function getStyles(colors: ThemeColors) {
       borderTopColor: colors.border,
     },
     footerLeft: { flex: 1 },
+    dueRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+    personRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6 },
     selectableRow: {
       flexDirection: 'row',
       alignItems: 'flex-start',
@@ -249,9 +261,8 @@ function getStyles(colors: ThemeColors) {
     },
     person: {
       fontSize: fontSize.small,
-      color: colors.textMuted,
-      marginTop: 6,
-      fontFamily: fontFamily.body,
+      color: colors.text,
+      fontFamily: fontFamily.bodySemiBold,
     },
     detail: {
       fontSize: fontSize.small,

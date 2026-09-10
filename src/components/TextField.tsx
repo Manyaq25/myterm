@@ -70,7 +70,7 @@ function getStyles(colors: ThemeColors) {
     input: {
       borderWidth: 1.5,
       borderColor: colors.border,
-      borderRadius: 14,
+      borderRadius: 16,
       paddingHorizontal: 14,
       paddingVertical: 12,
       fontSize: fontSize.base,

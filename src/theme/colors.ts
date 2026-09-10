@@ -37,9 +37,16 @@ export type ThemeColors = {
   background: string;
   surface: string;
   surfaceAlt: string;
-  // Cam efekti (glassmorphism) — kart/buton/input ortak yüzeyi
-  glassBg: string; // Level 1 — kart, input
-  glassBgStrong: string; // Level 2 — yüzen sheet/floating nav
+  // Gerçek ekran export'larının arkaplanı — teal tonlu, üstten alta hafif
+  // koyulaşan bir "wash" (düz Pearl Cream değil). GradientBackground bunu
+  // kullanıyor.
+  bgWashTop: string;
+  bgWashBottom: string;
+  // Cam efekti (glassmorphism) — kart/buton/input ortak yüzeyi. Değerler
+  // stil kılavuzunun soyut Level 1/2 rakamları (0.72/0.88) yerine gerçek
+  // ekran export'larında ölçülen bg-white/90–95 değerlerine göre.
+  glassBg: string; // kart, input
+  glassBgStrong: string; // yüzen sheet/floating nav
   glassBorder: string;
   glassBorderStrong: string;
   // Metin / kenarlık
@@ -74,8 +81,10 @@ export const lightColors: ThemeColors = {
   background: '#F4F7F6', // Pearl Cream Base
   surface: '#FFFFFF',
   surfaceAlt: '#E6F6FF',
-  glassBg: 'rgba(255, 255, 255, 0.72)',
-  glassBgStrong: 'rgba(255, 255, 255, 0.88)',
+  bgWashTop: '#F0F9FA',
+  bgWashBottom: '#E8F5F5',
+  glassBg: 'rgba(255, 255, 255, 0.92)',
+  glassBgStrong: 'rgba(255, 255, 255, 0.9)',
   glassBorder: 'rgba(255, 255, 255, 0.8)',
   glassBorderStrong: 'rgba(255, 255, 255, 0.95)',
   text: '#132228', // Deep Abyssal Ink
@@ -108,6 +117,8 @@ export const darkColors: ThemeColors = {
   background: '#0B1614',
   surface: '#132228',
   surfaceAlt: '#1A2C31',
+  bgWashTop: '#0E1C1A',
+  bgWashBottom: '#0B1614',
   glassBg: 'rgba(255, 255, 255, 0.07)',
   glassBgStrong: 'rgba(255, 255, 255, 0.12)',
   glassBorder: 'rgba(255, 255, 255, 0.14)',
