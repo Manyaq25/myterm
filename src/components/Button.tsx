@@ -1,4 +1,5 @@
-import { ActivityIndicator, Pressable, StyleSheet, Text, type PressableProps } from 'react-native';
+import { useState } from 'react';
+import { ActivityIndicator, Pressable, StyleSheet, Text, View, type PressableProps } from 'react-native';
 import { useTheme } from '../theme';
 import { fontFamily, fontSize } from '../theme/typography';
 
@@ -17,8 +18,9 @@ type ButtonProps = {
  * ya da düz metin) aksiyonlar görsel olarak net ayrışsın diye tek yerden
  * yönetiliyor — ekranlar artık kendi buton stillerini tekrar tanımlamıyor.
  */
-export function Button({ label, onPress, variant = 'primary', disabled, loading, ...rest }: ButtonProps) {
+export function Button({ label, onPress, variant = 'primary', disabled, loading, onFocus, onBlur, ...rest }: ButtonProps) {
   const { colors } = useTheme();
+  const [focused, setFocused] = useState(false);
   const isDisabled = disabled || loading;
 
   const textColor: Record<ButtonVariant, string> = {
@@ -32,6 +34,14 @@ export function Button({ label, onPress, variant = 'primary', disabled, loading,
     <Pressable
       onPress={onPress}
       disabled={isDisabled}
+      onFocus={(e) => {
+        setFocused(true);
+        onFocus?.(e);
+      }}
+      onBlur={(e) => {
+        setFocused(false);
+        onBlur?.(e);
+      }}
       style={({ pressed }) => [
         styles.base,
         variant === 'primary' && { backgroundColor: colors.primary },
@@ -48,6 +58,13 @@ export function Button({ label, onPress, variant = 'primary', disabled, loading,
       ]}
       {...rest}
     >
+      {/* Klavye ile odaklanıldığında gösterilen halka — Stitch'in "Klavye Odak
+          Göstergeleri" spesifikasyonuna göre (2px halka, 2px boşluk, marka
+          teali). Dokunmatik dokunuşlarda değil, gerçek focus olayında (harici
+          klavye, TV kumandası, web'de Tab) tetiklenir. */}
+      {focused && !isDisabled && (
+        <View pointerEvents="none" style={[styles.focusRing, variant === 'ghostDanger' && styles.focusRingGhost, { borderColor: colors.primary }]} />
+      )}
       {loading ? (
         <ActivityIndicator color={textColor[variant]} />
       ) : (
@@ -80,5 +97,17 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.85,
+  },
+  focusRing: {
+    position: 'absolute',
+    top: -4,
+    left: -4,
+    right: -4,
+    bottom: -4,
+    borderRadius: 18,
+    borderWidth: 2,
+  },
+  focusRingGhost: {
+    borderRadius: 10,
   },
 });
