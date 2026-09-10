@@ -15,10 +15,10 @@ const ICON_3D = {
 /**
  * "Kinetic Luster" spesifikasyonundaki "Floating Bottom Navigation" —
  * kenarlardan ayrık, camsı (frosted) bir ada; aktif sekmenin arkasında
- * renkli bir "jewel pill" beliriyor. Spesifikasyonun "3D micro-icon"
- * ifadesi sadece SEÇİLİ sekme için geçerli — Stitch'in ürettiği tam renkli
- * 3D render'lar `color` prop'uyla boyanamadığından (statik görsel), pasif
- * sekmeler hâlâ ince çizgi ikonunu (lucide, soluk gri) kullanıyor.
+ * renkli bir "jewel pill" beliriyor. 3D render ikonlar hem aktif hem pasif
+ * durumda aynı şekilde gösteriliyor — aktif/pasif ayrımı ikonu değiştirerek
+ * değil (bu tutarsız görünüyordu), pill arkaplanı + kalın etiketle
+ * yapılıyor.
  */
 export function BottomTabBar({ state, descriptors, navigation, insets }: BottomTabBarProps) {
   const { colors, isDark } = useTheme();
@@ -34,9 +34,7 @@ export function BottomTabBar({ state, descriptors, navigation, insets }: BottomT
     const label = typeof options.title === 'string' ? options.title : route.name;
     const tintColor = isFocused ? colors.onPrimary : colors.textMuted;
     const icon3d = ICON_3D[route.name as keyof typeof ICON_3D];
-    const icon = isFocused
-      ? <Image source={icon3d} style={styles.icon3d} resizeMode="contain" />
-      : options.tabBarIcon?.({ focused: false, color: colors.textMuted, size: 22 });
+    const icon = <Image source={icon3d} style={styles.icon3d} resizeMode="contain" />;
 
     function onPress() {
       const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });

@@ -1,6 +1,5 @@
 import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { Home, ListChecks, Settings } from 'lucide-react-native';
 import { useTheme } from '../../src/theme';
 import { fontFamily } from '../../src/theme/typography';
 import { BottomTabBar } from '../../src/components/BottomTabBar';
@@ -23,7 +22,6 @@ export default function TabsLayout() {
         options={{
           title: t('tabs.home'),
           headerShown: false,
-          tabBarIcon: ({ color, size }) => <Home color={color} size={size} strokeWidth={2} />,
         }}
       />
       <Tabs.Screen
@@ -31,14 +29,12 @@ export default function TabsLayout() {
         options={{
           title: t('tabs.takipler'),
           headerShown: false,
-          tabBarIcon: ({ color, size }) => <ListChecks color={color} size={size} strokeWidth={2} />,
         }}
       />
       <Tabs.Screen
         name="ayarlar"
         options={{
           title: t('tabs.ayarlar'),
-          tabBarIcon: ({ color, size }) => <Settings color={color} size={size} strokeWidth={2} />,
         }}
       />
     </Tabs>
