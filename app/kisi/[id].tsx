@@ -285,7 +285,7 @@ function getStyles(colors: ThemeColors) {
     empty: { fontSize: fontSize.base, color: colors.textMuted, marginTop: 24, textAlign: 'center', fontFamily: fontFamily.body },
 
     contactRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 16, flexWrap: 'wrap' },
-    editPhoneIcon: { padding: 8 },
+    editPhoneIcon: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
     editPhoneIconText: { fontSize: fontSize.base },
     addPhoneButton: { marginTop: 16, alignSelf: 'flex-start' },
     addPhoneButtonText: { color: colors.primary, fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold },

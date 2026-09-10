@@ -9,6 +9,8 @@ export function ThemedSwitch(props: SwitchProps) {
   const onColor = Platform.OS === 'ios' ? IOS_ON : ANDROID_ON;
   return (
     <Switch
+      accessibilityRole="switch"
+      accessibilityState={{ checked: !!props.value }}
       {...props}
       trackColor={{ false: Platform.OS === 'ios' ? undefined : '#B0B7C3', true: onColor }}
       thumbColor={Platform.OS === 'android' ? '#FFFFFF' : undefined}
