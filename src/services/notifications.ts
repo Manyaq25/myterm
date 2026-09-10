@@ -34,7 +34,7 @@ export async function scheduleNotification(
   }
 
   return Notifications.scheduleNotificationAsync({
-    content: { title, body, data },
+    content: { title, body, data, sound: true },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DATE,
       date: triggerAt,
