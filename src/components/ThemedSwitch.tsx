@@ -1,4 +1,5 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Check } from 'lucide-react-native';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { useTheme, hexToRgba } from '../theme';
 
@@ -13,6 +14,9 @@ const TRACK_WIDTH = 48;
 const TRACK_HEIGHT = 26;
 const THUMB_SIZE = 22;
 const THUMB_INSET = 2;
+// Açıkken beyaz topuzun üzerinde beliren küçük tikli rozet — Stitch
+// mockup'ında marka tealinden ayrı, sabit bir mavi.
+const CHECK_BADGE_COLOR = '#3B82F6';
 
 /**
  * Native Switch yerine sıfırdan kurulmuş, platforma göre değişmeyen bir
@@ -36,6 +40,10 @@ export function ThemedSwitch({ value, onValueChange, disabled, accessibilityLabe
   const thumbStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: withTiming(value ? TRACK_WIDTH - THUMB_SIZE - THUMB_INSET : THUMB_INSET, { duration: 180 }) }],
   }));
+  const badgeStyle = useAnimatedStyle(() => ({
+    opacity: withTiming(value ? 1 : 0, { duration: 180 }),
+    transform: [{ scale: withTiming(value ? 1 : 0.5, { duration: 180 }) }],
+  }));
 
   return (
     <Pressable
@@ -48,7 +56,13 @@ export function ThemedSwitch({ value, onValueChange, disabled, accessibilityLabe
       style={disabled && styles.disabled}
     >
       <Animated.View style={[styles.track, trackStyle]}>
-        <Animated.View style={[styles.thumb, thumbStyle]} />
+        <Animated.View style={[styles.thumb, thumbStyle]}>
+          <Animated.View style={[styles.checkBadge, badgeStyle]}>
+            <View style={styles.checkBadgeInner}>
+              <Check color="#FFFFFF" size={8} strokeWidth={3.5} />
+            </View>
+          </Animated.View>
+        </Animated.View>
       </Animated.View>
     </Pressable>
   );
@@ -72,6 +86,21 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     shadowOffset: { width: 0, height: 1 },
     elevation: 1,
+  },
+  checkBadge: {
+    position: 'absolute',
+    bottom: -2,
+    right: -2,
+  },
+  checkBadgeInner: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: CHECK_BADGE_COLOR,
+    borderWidth: 1.5,
+    borderColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   disabled: { opacity: 0.5 },
 });
