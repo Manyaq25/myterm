@@ -39,9 +39,8 @@ export function AnimatedSplash({ onFinish }: { onFinish: () => void }) {
   useEffect(() => {
     // By the time this mounts, the (unanimatable) native splash has already
     // been on screen for however long fonts took to load — often 1s+ on a
-    // cold start on a real device. So this JS-driven sequence is kept short
-    // and the icon's motion deliberately large, or it reads as more dead
-    // time tacked onto an already-long wait rather than a distinct arrival.
+    // cold start on a real device. Even so, the new logo+tagline reveal needs
+    // enough hold time to actually be read, not just glimpsed.
     iconOpacity.value = withTiming(1, { duration: 320, easing: Easing.out(Easing.ease) });
     iconScale.value = withSequence(
       withTiming(1.08, { duration: 340, easing: Easing.out(Easing.cubic) }),
@@ -52,8 +51,8 @@ export function AnimatedSplash({ onFinish }: { onFinish: () => void }) {
     textTranslateY.value = withDelay(320, withTiming(0, { duration: 320, easing: Easing.out(Easing.cubic) }));
 
     overlayOpacity.value = withDelay(
-      780,
-      withTiming(0, { duration: 220, easing: Easing.in(Easing.ease) }, (finished) => {
+      1500,
+      withTiming(0, { duration: 260, easing: Easing.in(Easing.ease) }, (finished) => {
         if (finished) {
           runOnJS(setVisible)(false);
           runOnJS(onFinish)();
