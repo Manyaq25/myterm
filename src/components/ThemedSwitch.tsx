@@ -24,9 +24,14 @@ const THUMB_INSET = 2;
  */
 export function ThemedSwitch({ value, onValueChange, disabled, accessibilityLabel }: Props) {
   const { colors } = useTheme();
+  // hexToRgba düz bir JS fonksiyonu — worklet olarak işaretli değil, bu yüzden
+  // useAnimatedStyle'ın (UI thread'de çalışan) içinde değil, burada (JS
+  // thread'de) önceden hesaplanıp worklet'e sadece hazır bir renk dizesi
+  // veriliyor.
+  const offColor = hexToRgba(colors.text, 0.16);
 
   const trackStyle = useAnimatedStyle(() => ({
-    backgroundColor: withTiming(value ? colors.primary : hexToRgba(colors.text, 0.16), { duration: 180 }),
+    backgroundColor: withTiming(value ? colors.primary : offColor, { duration: 180 }),
   }));
   const thumbStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: withTiming(value ? TRACK_WIDTH - THUMB_SIZE - THUMB_INSET : THUMB_INSET, { duration: 180 }) }],
