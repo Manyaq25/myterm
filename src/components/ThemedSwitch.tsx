@@ -59,7 +59,7 @@ export function ThemedSwitch({ value, onValueChange, disabled, accessibilityLabe
         <Animated.View style={[styles.thumb, thumbStyle]}>
           <Animated.View style={[styles.checkBadge, badgeStyle]}>
             <View style={styles.checkBadgeInner}>
-              <Check color="#FFFFFF" size={8} strokeWidth={3.5} />
+              <Check color="#FFFFFF" size={6} strokeWidth={4} />
             </View>
           </Animated.View>
         </Animated.View>
@@ -89,15 +89,15 @@ const styles = StyleSheet.create({
   },
   checkBadge: {
     position: 'absolute',
-    bottom: -2,
-    right: -2,
+    bottom: 0,
+    right: 0,
   },
   checkBadgeInner: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
+    width: 9,
+    height: 9,
+    borderRadius: 4.5,
     backgroundColor: CHECK_BADGE_COLOR,
-    borderWidth: 1.5,
+    borderWidth: 1,
     borderColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
