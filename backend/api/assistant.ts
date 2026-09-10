@@ -1,5 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
+import { isRateLimited } from '../lib/rateLimit';
 
 const MAX_QUESTION_LENGTH = 500;
 const MAX_CONTEXT_LENGTH = 20000;
@@ -42,6 +43,12 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   if (appSecret && req.headers['x-app-secret'] !== appSecret) {
     res.statusCode = 401;
     res.end(JSON.stringify({ error: 'unauthorized' }));
+    return;
+  }
+
+  if (isRateLimited(req)) {
+    res.statusCode = 429;
+    res.end(JSON.stringify({ error: 'rate_limited' }));
     return;
   }
 

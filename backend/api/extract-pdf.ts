@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
 import { RefusalError, extractFollowUpsFromPdf } from '../lib/extract';
+import { isRateLimited } from '../lib/rateLimit';
 
 // ~5MB raw PDF, base64 adds ~37% overhead.
 const MAX_BASE64_LENGTH = 7 * 1024 * 1024;
@@ -33,6 +34,12 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   if (appSecret && req.headers['x-app-secret'] !== appSecret) {
     res.statusCode = 401;
     res.end(JSON.stringify({ error: 'unauthorized' }));
+    return;
+  }
+
+  if (isRateLimited(req)) {
+    res.statusCode = 429;
+    res.end(JSON.stringify({ error: 'rate_limited' }));
     return;
   }
 

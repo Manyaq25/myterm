@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
 import { MAX_TEXT_LENGTH, RefusalError, extractFollowUpsFromText } from '../lib/extract';
+import { isRateLimited } from '../lib/rateLimit';
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -30,6 +31,12 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   if (appSecret && req.headers['x-app-secret'] !== appSecret) {
     res.statusCode = 401;
     res.end(JSON.stringify({ error: 'unauthorized' }));
+    return;
+  }
+
+  if (isRateLimited(req)) {
+    res.statusCode = 429;
+    res.end(JSON.stringify({ error: 'rate_limited' }));
     return;
   }
 

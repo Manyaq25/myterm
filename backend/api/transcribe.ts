@@ -2,6 +2,7 @@ import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI, { toFile } from 'openai';
 import { RefusalError, extractFollowUpsFromText } from '../lib/extract';
+import { isRateLimited } from '../lib/rateLimit';
 
 const MAX_AUDIO_BYTES = 15 * 1024 * 1024; // 15 MB, generous for a few minutes of voice notes
 
@@ -37,6 +38,12 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   if (appSecret && req.headers['x-app-secret'] !== appSecret) {
     res.statusCode = 401;
     res.end(JSON.stringify({ error: 'unauthorized' }));
+    return;
+  }
+
+  if (isRateLimited(req)) {
+    res.statusCode = 429;
+    res.end(JSON.stringify({ error: 'rate_limited' }));
     return;
   }
 
