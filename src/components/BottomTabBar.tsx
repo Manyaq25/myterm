@@ -3,10 +3,19 @@ import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { Plus, Sparkles } from 'lucide-react-native';
+import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
 
+/**
+ * "Kinetic Luster" spesifikasyonundaki "Floating Bottom Navigation" —
+ * kenarlardan ayrık, camsı (frosted) bir ada; aktif sekmenin arkasında
+ * renkli bir "jewel pill" beliriyor. Ekran içeriğiyle çakışma riskini
+ * azaltmak için gerçek `position: absolute` yerine normal akışta kalan,
+ * yuvarlatılmış kenarlı bir ada görünümü kullanılıyor.
+ */
 export function BottomTabBar({ state, descriptors, navigation, insets }: BottomTabBarProps) {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const router = useRouter();
   const { t } = useTranslation();
   const styles = getStyles(colors);
@@ -17,8 +26,8 @@ export function BottomTabBar({ state, descriptors, navigation, insets }: BottomT
     const { options } = descriptors[route.key];
     const isFocused = state.index === index;
     const label = typeof options.title === 'string' ? options.title : route.name;
-    const tintColor = isFocused ? colors.primary : colors.textMuted;
-    const icon = options.tabBarIcon?.({ focused: isFocused, color: tintColor, size: 24 });
+    const tintColor = isFocused ? colors.onPrimary : colors.textMuted;
+    const icon = options.tabBarIcon?.({ focused: isFocused, color: isFocused ? colors.onPrimary : colors.textMuted, size: 22 });
 
     function onPress() {
       const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
@@ -36,107 +45,136 @@ export function BottomTabBar({ state, descriptors, navigation, insets }: BottomT
         accessibilityState={isFocused ? { selected: true } : {}}
         accessibilityLabel={label}
       >
-        {isFocused && (
-          <View style={styles.activeGlowWrap} pointerEvents="none">
-            <View style={styles.activeGlowOuter} />
-            <View style={styles.activeGlowInner} />
+        {isFocused ? (
+          <LinearGradient
+            colors={[colors.primary, colors.primaryText]}
+            style={styles.jewelPill}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          >
+            {icon}
+            <Text style={[styles.label, styles.labelActive, { color: tintColor }]} numberOfLines={1}>
+              {label}
+            </Text>
+          </LinearGradient>
+        ) : (
+          <View style={styles.itemInner}>
+            {icon}
+            <Text style={[styles.label, { color: tintColor }]} numberOfLines={1}>
+              {label}
+            </Text>
           </View>
         )}
-        {icon}
-        <Text style={[styles.label, { color: tintColor }, isFocused && styles.labelActive]} numberOfLines={1}>
-          {label}
-        </Text>
       </Pressable>
     );
   }
 
   return (
-    <View style={[styles.bar, { paddingBottom: Math.max(insets.bottom, 10) }]}>
-      {renderTabItem(homeRoute, 0)}
-      {renderTabItem(takiplerRoute, 1)}
+    <View style={[styles.wrap, { paddingBottom: Math.max(insets.bottom, 12) }]}>
+      <View style={styles.island}>
+        <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={StyleSheet.absoluteFillObject} />
+        <View style={[StyleSheet.absoluteFillObject, styles.islandTint]} pointerEvents="none" />
+        <View style={styles.row}>
+          {renderTabItem(homeRoute, 0)}
+          {renderTabItem(takiplerRoute, 1)}
 
-      <View style={styles.item}>
-        <Pressable
-          onPress={() => router.push('/takip/yeni')}
-          style={({ pressed }) => [styles.fab, pressed && styles.fabPressed]}
-          accessibilityRole="button"
-          accessibilityLabel={t('bottomTabBar.addA11y')}
-        >
-          <Plus color={colors.onPrimary} size={26} strokeWidth={2.5} />
-        </Pressable>
+          <View style={styles.item}>
+            <Pressable
+              onPress={() => router.push('/takip/yeni')}
+              style={({ pressed }) => [styles.fab, pressed && styles.fabPressed]}
+              accessibilityRole="button"
+              accessibilityLabel={t('bottomTabBar.addA11y')}
+            >
+              <LinearGradient
+                colors={[colors.primaryText, colors.primary]}
+                style={StyleSheet.absoluteFillObject}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
+              />
+              <Plus color={colors.onPrimary} size={26} strokeWidth={2.5} />
+            </Pressable>
+          </View>
+
+          <Pressable
+            onPress={() => router.push('/takip/ai-cikar')}
+            style={styles.item}
+            accessibilityRole="button"
+            accessibilityLabel={t('bottomTabBar.smartAddA11y')}
+          >
+            <View style={styles.itemInner}>
+              <Sparkles color={colors.textMuted} size={22} strokeWidth={2} />
+              <Text style={[styles.label, { color: colors.textMuted }]} numberOfLines={1}>
+                {t('bottomTabBar.smartAdd')}
+              </Text>
+            </View>
+          </Pressable>
+
+          {renderTabItem(ayarlarRoute, 2)}
+        </View>
       </View>
-
-      <Pressable
-        onPress={() => router.push('/takip/ai-cikar')}
-        style={styles.item}
-        accessibilityRole="button"
-        accessibilityLabel={t('bottomTabBar.smartAddA11y')}
-      >
-        <Sparkles color={colors.textMuted} size={24} strokeWidth={2} />
-        <Text style={[styles.label, { color: colors.textMuted }]} numberOfLines={1}>
-          {t('bottomTabBar.smartAdd')}
-        </Text>
-      </Pressable>
-
-      {renderTabItem(ayarlarRoute, 2)}
     </View>
   );
 }
 
 function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
-    bar: {
-      flexDirection: 'row',
-      backgroundColor: colors.surface,
-      borderTopWidth: 1,
-      borderTopColor: colors.border,
+    wrap: {
+      paddingHorizontal: 16,
       paddingTop: 10,
+      backgroundColor: 'transparent',
+    },
+    island: {
+      borderRadius: 28,
+      overflow: 'hidden',
+      borderWidth: 1,
+      borderColor: colors.glassBorderStrong,
+      shadowColor: colors.text,
+      shadowOpacity: 0.1,
+      shadowRadius: 20,
+      shadowOffset: { width: 0, height: 8 },
+      elevation: 6,
+    },
+    islandTint: {
+      backgroundColor: colors.glassBgStrong,
+    },
+    row: {
+      flexDirection: 'row',
+      paddingVertical: 8,
+      paddingHorizontal: 6,
     },
     item: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      gap: 3,
-      paddingVertical: 2,
     },
-    // Layered flat-color rounded rects instead of shadow/elevation — RN's
-    // Android elevation shadow ignores borderRadius cleanly in some cases
-    // and was leaving a visible rectangular halo behind the rounded glow.
-    activeGlowWrap: {
-      position: 'absolute',
-      top: -8,
-      width: 64,
-      height: 44,
+    itemInner: {
       alignItems: 'center',
       justifyContent: 'center',
+      gap: 3,
+      paddingVertical: 6,
+      paddingHorizontal: 8,
     },
-    activeGlowOuter: {
-      position: 'absolute',
-      width: 64,
-      height: 44,
-      borderRadius: 22,
-      backgroundColor: `${colors.gold}17`,
+    jewelPill: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 3,
+      paddingVertical: 6,
+      paddingHorizontal: 12,
+      borderRadius: 18,
     },
-    activeGlowInner: {
-      position: 'absolute',
-      width: 46,
-      height: 34,
-      borderRadius: 17,
-      backgroundColor: `${colors.gold}2E`,
-    },
-    label: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyMedium },
-    labelActive: { fontFamily: fontFamily.bodyBold },
+    label: { fontSize: fontSize.caption, fontFamily: fontFamily.label },
+    labelActive: { fontFamily: fontFamily.labelBold },
     fab: {
       width: 52,
       height: 52,
       borderRadius: 26,
-      backgroundColor: colors.primary,
       alignItems: 'center',
       justifyContent: 'center',
       marginTop: -22,
+      overflow: 'hidden',
       shadowColor: colors.primary,
-      shadowOpacity: 0.35,
-      shadowRadius: 8,
+      shadowOpacity: 0.4,
+      shadowRadius: 10,
       shadowOffset: { width: 0, height: 4 },
       elevation: 4,
     },

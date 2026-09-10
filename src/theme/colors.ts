@@ -1,70 +1,124 @@
-// "Düğüm Kimlik Sistemi" — onaylanan renk paleti. Sistem mavisi yerine çini
-// esintili bir teal ana renk (marka/arka plan — ikon ve splash varlıklarına
-// gömülü olduğu için sabit tutuluyor), uygulama ikonundaki halkalardan
-// örneklenen canlı pembe ve altın vurgular kullanıyor. rose/coral/gold sadece
-// "takip tipi" rozetlerinde değil, aktif durum göstergeleri gibi arayüz
-// vurgularında da bilinçli kullanılmalı — aksi halde her şey primary teal'e
-// kayıyor. Her iki mod da burada tanımlı; ekranlar doğrudan hex yazmak
-// yerine useTheme() üzerinden bu tokenlara erişmeli.
+// "Kinetic Luster" renk paleti — Stitch tasarım sistemi asseti
+// (assets/8b310ec7048d427f923476a908866d87) MCP JSON yanıtından ve
+// styleGuidelines metninden birebir alındı, tahmin edilmedi. Marka üç
+// canlı tonu birleştiriyor: Hyper Teal (primary), Vibrant Coral (secondary),
+// Radiant Amber (tertiary) — Deep Abyssal Ink (#132228) zemin/metin nötrü,
+// Pearl Cream Base (#F4F7F6) yüzey kanvası. Cam efekti (glassBg/glassBorder)
+// buton, kart ve input bileşenlerinin ortak frosted-glass yüzeyi için.
+// Karanlık mod Stitch'te üretilmedi — burada aynı canlı tonlar korunarak,
+// camın koyu zemin üzerinde açık-üstüne-koyu yerine soluk-beyaz-üstüne-koyu
+// olacak şekilde elle türetildi.
 
 import type { FollowUpType } from '../types';
 
 export type ThemeColors = {
-  primary: string;
-  primarySoft: string;
+  // Marka — Hyper Teal
+  primary: string; // CTA gradyanının temel tonu (#00A896)
+  primaryText: string; // Açık zeminde metin/ikon için M3-güvenli koyu teal
   onPrimary: string;
-  primaryContainer: string;
+  primaryContainer: string; // primary-fixed — soluk tonal dolgu
   onPrimaryContainer: string;
+  // Vurgu — Vibrant Coral
+  secondary: string;
+  onSecondary: string;
+  secondaryContainer: string;
+  onSecondaryContainer: string;
+  // Vurgu — Radiant Amber
+  tertiary: string;
+  onTertiary: string;
+  tertiaryContainer: string;
+  onTertiaryContainer: string;
+  // Dördüncü rozet tonu — Kinetic Luster'da yok, marka sürekliliği için korunan pembe
   rose: string;
+  // Geriye dönük takma adlar (mevcut kod tabanında coral/gold olarak kullanılıyordu)
   coral: string;
   gold: string;
+  // Zemin / yüzeyler
   background: string;
   surface: string;
   surfaceAlt: string;
+  // Cam efekti (glassmorphism) — kart/buton/input ortak yüzeyi
+  glassBg: string; // Level 1 — kart, input
+  glassBgStrong: string; // Level 2 — yüzen sheet/floating nav
+  glassBorder: string;
+  glassBorderStrong: string;
+  // Metin / kenarlık
   text: string;
   textMuted: string;
   border: string;
+  outline: string;
+  // Durum
   danger: string;
+  onDanger: string;
+  dangerContainer: string;
   success: string;
 };
 
 export const lightColors: ThemeColors = {
-  primary: '#0E5C56', // Çini
-  primarySoft: '#3E8C82', // Çini Açık
-  onPrimary: '#FDFDFC',
-  primaryContainer: '#A8F0E7', // Stitch'in bu marka renginden ürettiği soluk teal tonu
-  onPrimaryContainer: '#004843',
-  rose: '#E0246E', // Mercan Pembe — ikondaki canlı pembe halkayla eşleşiyor
-  coral: '#E2794A', // Mercan
-  gold: '#D19A1E', // Bakır Altın — ikondaki düğüm altınıyla eşleşiyor
-  background: '#FAF7F2', // Kâğıt — sıcak krem, tüm arayüzün teal'e kaymasını önlemek için gri-teal tondan çıkarıldı
+  primary: '#00A896',
+  primaryText: '#006B5F',
+  onPrimary: '#FFFFFF',
+  primaryContainer: '#79F7E3',
+  onPrimaryContainer: '#00201C',
+  secondary: '#FF6B4A',
+  onSecondary: '#FFFFFF',
+  secondaryContainer: '#FFDAD2',
+  onSecondaryContainer: '#3D0600',
+  tertiary: '#FFB800',
+  onTertiary: '#3F2B00',
+  tertiaryContainer: '#FFDEA8',
+  onTertiaryContainer: '#3F2B00',
+  rose: '#E0246E',
+  coral: '#FF6B4A',
+  gold: '#FFB800',
+  background: '#F4F7F6', // Pearl Cream Base
   surface: '#FFFFFF',
-  surfaceAlt: '#E3E9E6',
-  text: '#122421', // Mürekkep
-  textMuted: 'rgba(18, 36, 33, 0.62)',
-  border: 'rgba(18, 36, 33, 0.13)',
-  danger: '#DC2626',
+  surfaceAlt: '#E6F6FF',
+  glassBg: 'rgba(255, 255, 255, 0.72)',
+  glassBgStrong: 'rgba(255, 255, 255, 0.88)',
+  glassBorder: 'rgba(255, 255, 255, 0.8)',
+  glassBorderStrong: 'rgba(255, 255, 255, 0.95)',
+  text: '#132228', // Deep Abyssal Ink
+  textMuted: 'rgba(19, 34, 40, 0.62)',
+  border: 'rgba(19, 34, 40, 0.08)',
+  outline: '#6C7A76',
+  danger: '#BA1A1A',
+  onDanger: '#FFFFFF',
+  dangerContainer: '#FFDAD6',
   success: '#16A34A',
 };
 
 export const darkColors: ThemeColors = {
-  primary: '#57AB9F',
-  primarySoft: '#2E5F58',
-  onPrimary: '#0E1A18',
-  // Stitch tasarım sistemi sadece açık modda üretildi — karanlık modda
-  // "Tamamla" butonunun önceki (primarySoft + onPrimary) görünümünü koruyoruz.
-  primaryContainer: '#2E5F58',
-  onPrimaryContainer: '#0E1A18',
+  primary: '#59DBC7',
+  primaryText: '#79F7E3',
+  onPrimary: '#00201C',
+  primaryContainer: '#005047',
+  onPrimaryContainer: '#79F7E3',
+  secondary: '#FFB4A3',
+  onSecondary: '#640F00',
+  secondaryContainer: '#8C1900',
+  onSecondaryContainer: '#FFDAD2',
+  tertiary: '#FFBA20',
+  onTertiary: '#3F2B00',
+  tertiaryContainer: '#5E4200',
+  onTertiaryContainer: '#FFDEA8',
   rose: '#F0699B',
-  coral: '#E59A71',
-  gold: '#DCB245',
-  background: '#0E1A18',
-  surface: '#15302B',
-  surfaceAlt: '#1C3B35',
-  text: '#F2F5F3',
-  textMuted: 'rgba(242, 245, 243, 0.64)',
-  border: 'rgba(242, 245, 243, 0.14)',
-  danger: '#F87171',
+  coral: '#FFB4A3',
+  gold: '#FFBA20',
+  background: '#0B1614',
+  surface: '#132228',
+  surfaceAlt: '#1A2C31',
+  glassBg: 'rgba(255, 255, 255, 0.07)',
+  glassBgStrong: 'rgba(255, 255, 255, 0.12)',
+  glassBorder: 'rgba(255, 255, 255, 0.14)',
+  glassBorderStrong: 'rgba(255, 255, 255, 0.22)',
+  text: '#E3F3FC',
+  textMuted: 'rgba(227, 243, 252, 0.64)',
+  border: 'rgba(227, 243, 252, 0.14)',
+  outline: '#8A9A97',
+  danger: '#FFB4AB',
+  onDanger: '#690005',
+  dangerContainer: '#93000A',
   success: '#4ADE80',
 };
 
@@ -81,10 +135,10 @@ export function getTypeColor(type: FollowUpType, colors: ThemeColors): string {
     case 'promise_made':
       return colors.rose;
     case 'promise_expected':
-      return colors.coral;
+      return colors.secondary;
     case 'task':
       return colors.primary;
     case 'waiting_on':
-      return colors.gold;
+      return colors.tertiary;
   }
 }

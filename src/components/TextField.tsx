@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { StyleSheet, Text, TextInput, View, type StyleProp, type TextInputProps, type ViewStyle } from 'react-native';
-import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
+import { useTheme, hexToRgba, fontFamily, fontSize, type ThemeColors } from '../theme';
 
 interface Props extends Omit<TextInputProps, 'style'> {
   label?: string;
@@ -10,10 +10,10 @@ interface Props extends Omit<TextInputProps, 'style'> {
 }
 
 /**
- * Stitch'in "Metin Giriş Alanı" referansına göre: üstte etiket, yuvarlak
- * kenarlıklı kutu, altında opsiyonel yardımcı metin + karakter sayacı.
- * Odaklanıldığında kenarlık, "Klavye Odak Göstergeleri" spesifikasyonundaki
- * marka tealine ve 2px kalınlığa geçer.
+ * "Kinetic Luster" input alanı spesifikasyonuna göre: donuk camsı zemin
+ * (rgba beyaz %60), üstte etiket, altında opsiyonel yardımcı metin +
+ * karakter sayacı. Odaklanıldığında zemin opak beyaza döner, kenarlık marka
+ * tealine geçer ve etrafında yumuşak bir "ring bloom" parlaması belirir.
  */
 export function TextField({
   label,
@@ -66,24 +66,26 @@ export function TextField({
 
 function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
-    label: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted, marginBottom: 6 },
+    label: { fontSize: fontSize.caption, fontFamily: fontFamily.label, color: hexToRgba(colors.text, 0.7), marginBottom: 6 },
     input: {
-      borderWidth: 1,
+      borderWidth: 1.5,
       borderColor: colors.border,
-      borderRadius: 12,
+      borderRadius: 14,
       paddingHorizontal: 14,
       paddingVertical: 12,
       fontSize: fontSize.base,
       fontFamily: fontFamily.body,
       color: colors.text,
-      backgroundColor: colors.surface,
+      backgroundColor: hexToRgba(colors.surface, 0.6),
     },
     inputFocused: {
-      borderWidth: 2,
       borderColor: colors.primary,
-      // Kalınlaşan kenarlık iç dolguyu 1px kaydırmasın diye telafi.
-      paddingHorizontal: 13,
-      paddingVertical: 11,
+      backgroundColor: colors.surface,
+      shadowColor: colors.primary,
+      shadowOpacity: 0.2,
+      shadowRadius: 8,
+      shadowOffset: { width: 0, height: 0 },
+      elevation: 2,
     },
     multiline: { minHeight: 100, textAlignVertical: 'top' },
     footer: {

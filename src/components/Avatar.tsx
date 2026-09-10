@@ -19,7 +19,7 @@ export function Avatar({ name, size = 40 }: { name: string; size?: number }) {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
   const palette = useMemo(
-    () => [colors.primary, colors.rose, colors.coral, colors.gold, colors.primarySoft, colors.danger, colors.success],
+    () => [colors.primary, colors.rose, colors.secondary, colors.tertiary, colors.primaryText, colors.danger, colors.success],
     [colors]
   );
 

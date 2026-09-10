@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View, type PressableProps } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../theme';
-import { fontFamily, fontSize } from '../theme/typography';
+import { fontFamily, fontSize, letterSpacing } from '../theme/typography';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'success' | 'ghostDanger';
 
@@ -14,9 +15,9 @@ type ButtonProps = {
 } & Omit<PressableProps, 'onPress' | 'style' | 'children'>;
 
 /**
- * Paylaşılan buton bileşeni. Birincil (dolu) ve ikincil/tehlikeli (çerçeveli
- * ya da düz metin) aksiyonlar görsel olarak net ayrışsın diye tek yerden
- * yönetiliyor — ekranlar artık kendi buton stillerini tekrar tanımlamıyor.
+ * Paylaşılan buton bileşeni — Stitch "Kinetic Luster" spesifikasyonuna göre:
+ * primary aksiyon dikey gradyan + üst spekular vurgu + teal parlama gölgesi
+ * taşır, ikincil aksiyon donuk camsı (frosted glass) bir yüzey kullanır.
  */
 export function Button({ label, onPress, variant = 'primary', disabled, loading, onFocus, onBlur, ...rest }: ButtonProps) {
   const { colors } = useTheme();
@@ -25,7 +26,7 @@ export function Button({ label, onPress, variant = 'primary', disabled, loading,
 
   const textColor: Record<ButtonVariant, string> = {
     primary: colors.onPrimary,
-    secondary: colors.primary,
+    secondary: colors.primaryText,
     success: colors.onPrimaryContainer,
     ghostDanger: colors.danger,
   };
@@ -44,13 +45,12 @@ export function Button({ label, onPress, variant = 'primary', disabled, loading,
       }}
       style={({ pressed }) => [
         styles.base,
-        variant === 'primary' && { backgroundColor: colors.primary },
+        variant === 'primary' && [styles.glow, { shadowColor: colors.primary }],
         variant === 'success' && { backgroundColor: colors.primaryContainer },
         variant === 'secondary' && {
-          backgroundColor: 'transparent',
+          backgroundColor: colors.glassBg,
           borderWidth: 1.5,
-          borderColor: colors.primarySoft,
-          paddingVertical: 13.5,
+          borderColor: colors.glassBorder,
         },
         variant === 'ghostDanger' && styles.ghost,
         isDisabled && styles.disabled,
@@ -58,10 +58,24 @@ export function Button({ label, onPress, variant = 'primary', disabled, loading,
       ]}
       {...rest}
     >
-      {/* Klavye ile odaklanıldığında gösterilen halka — Stitch'in "Klavye Odak
-          Göstergeleri" spesifikasyonuna göre (2px halka, 2px boşluk, marka
-          teali). Dokunmatik dokunuşlarda değil, gerçek focus olayında (harici
-          klavye, TV kumandası, web'de Tab) tetiklenir. */}
+      {variant === 'primary' && (
+        <LinearGradient
+          pointerEvents="none"
+          colors={[lighten(colors.primary), colors.primary]}
+          style={[StyleSheet.absoluteFillObject, styles.roundedFill]}
+        />
+      )}
+      {variant === 'primary' && (
+        // Üst spekular vurgu — camsı/tactile butonun "top inset highlight" hissi
+        <LinearGradient
+          pointerEvents="none"
+          colors={['rgba(255,255,255,0.45)', 'rgba(255,255,255,0)']}
+          style={styles.specular}
+        />
+      )}
+      {/* Klavye ile odaklanıldığında gösterilen halka — dokunmatik dokunuşlarda
+          değil, gerçek focus olayında (harici klavye, TV kumandası, web'de Tab)
+          tetiklenir. */}
       {focused && !isDisabled && (
         <View pointerEvents="none" style={[styles.focusRing, variant === 'ghostDanger' && styles.focusRingGhost, { borderColor: colors.primary }]} />
       )}
@@ -74,13 +88,39 @@ export function Button({ label, onPress, variant = 'primary', disabled, loading,
   );
 }
 
+function lighten(hex: string): string {
+  const clean = hex.replace('#', '');
+  const r = Math.min(255, parseInt(clean.substring(0, 2), 16) + 24);
+  const g = Math.min(255, parseInt(clean.substring(2, 4), 16) + 24);
+  const b = Math.min(255, parseInt(clean.substring(4, 6), 16) + 24);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
 const styles = StyleSheet.create({
   base: {
-    borderRadius: 14,
+    borderRadius: 16,
     paddingVertical: 15,
     paddingHorizontal: 24,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  glow: {
+    shadowOpacity: 0.38,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 6,
+  },
+  roundedFill: {
+    borderRadius: 16,
+  },
+  specular: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '55%',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
   },
   ghost: {
     backgroundColor: 'transparent',
@@ -89,14 +129,16 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   label: {
-    fontFamily: fontFamily.bodyBold,
+    fontFamily: fontFamily.label,
     fontSize: fontSize.button,
+    letterSpacing: letterSpacing.label,
   },
   disabled: {
     opacity: 0.5,
   },
   pressed: {
-    opacity: 0.85,
+    transform: [{ scale: 0.97 }],
+    opacity: 0.94,
   },
   focusRing: {
     position: 'absolute',
@@ -104,7 +146,7 @@ const styles = StyleSheet.create({
     left: -4,
     right: -4,
     bottom: -4,
-    borderRadius: 18,
+    borderRadius: 20,
     borderWidth: 2,
   },
   focusRingGhost: {

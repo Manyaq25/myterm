@@ -14,8 +14,8 @@ import { useTheme, fontFamily, fontSize } from '../theme';
 // Must match app.json's expo-splash-screen `backgroundColor` / `dark.backgroundColor` —
 // the native splash hides straight into this overlay, so the colors need to line up
 // exactly or the handoff will show a flash.
-const BG_LIGHT = '#0E5C56';
-const BG_DARK = '#0E1A18';
+const BG_LIGHT = '#00A896';
+const BG_DARK = '#0B1614';
 
 const ICON_LIGHT = require('../../assets/splash-icon.png');
 const ICON_DARK = require('../../assets/splash-icon-dark.png');
