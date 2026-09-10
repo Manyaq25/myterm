@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { Check } from 'lucide-react-native';
 import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { useTheme, hexToRgba } from '../theme';
@@ -14,9 +14,9 @@ const TRACK_WIDTH = 48;
 const TRACK_HEIGHT = 26;
 const THUMB_SIZE = 22;
 const THUMB_INSET = 2;
-// Açıkken beyaz topuzun üzerinde beliren küçük tikli rozet — Stitch
+// Açıkken beyaz topuzun tam ortasında beliren tik işareti — Stitch
 // mockup'ında marka tealinden ayrı, sabit bir mavi.
-const CHECK_BADGE_COLOR = '#3B82F6';
+const CHECK_MARK_COLOR = '#3B82F6';
 
 /**
  * Native Switch yerine sıfırdan kurulmuş, platforma göre değişmeyen bir
@@ -57,10 +57,8 @@ export function ThemedSwitch({ value, onValueChange, disabled, accessibilityLabe
     >
       <Animated.View style={[styles.track, trackStyle]}>
         <Animated.View style={[styles.thumb, thumbStyle]}>
-          <Animated.View style={[styles.checkBadge, badgeStyle]}>
-            <View style={styles.checkBadgeInner}>
-              <Check color="#FFFFFF" size={6} strokeWidth={4} />
-            </View>
+          <Animated.View style={badgeStyle}>
+            <Check color={CHECK_MARK_COLOR} size={12} strokeWidth={3.5} />
           </Animated.View>
         </Animated.View>
       </Animated.View>
@@ -81,26 +79,13 @@ const styles = StyleSheet.create({
     height: THUMB_SIZE,
     borderRadius: THUMB_SIZE / 2,
     backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOpacity: 0.15,
     shadowRadius: 2,
     shadowOffset: { width: 0, height: 1 },
     elevation: 1,
-  },
-  checkBadge: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-  },
-  checkBadgeInner: {
-    width: 9,
-    height: 9,
-    borderRadius: 4.5,
-    backgroundColor: CHECK_BADGE_COLOR,
-    borderWidth: 1,
-    borderColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   disabled: { opacity: 0.5 },
 });
