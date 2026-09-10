@@ -412,7 +412,7 @@ export default function AiCikarScreen() {
 
   return (
     <GradientBackground>
-      <SafeAreaView style={styles.safeArea} edges={['top', 'bottom']}>
+      <SafeAreaView style={styles.safeArea} edges={['top']}>
         <View style={styles.header}>
           <Pressable
             onPress={() => router.back()}

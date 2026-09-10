@@ -108,7 +108,7 @@ export default function TakiplerScreen() {
 
   return (
     <GradientBackground>
-      <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+      <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
         <Text style={styles.title}>{t('tabs.takipler')}</Text>
       </View>

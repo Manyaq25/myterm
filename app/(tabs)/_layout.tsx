@@ -2,7 +2,6 @@ import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../src/theme';
 import { fontFamily } from '../../src/theme/typography';
-import { BottomTabBar } from '../../src/components/BottomTabBar';
 
 export default function TabsLayout() {
   const { colors } = useTheme();
@@ -10,7 +9,10 @@ export default function TabsLayout() {
 
   return (
     <Tabs
-      tabBar={(props) => <BottomTabBar {...props} />}
+      // Alt navigasyon artık kök layout'ta global (BottomTabBar) render
+      // ediliyor — Yeni Takip / AI ile Çıkar gibi push ekranlarında da
+      // kaybolmasın diye. Bu yerleşik tab bar bastırılıyor.
+      tabBar={() => null}
       screenOptions={{
         headerStyle: { backgroundColor: colors.surface },
         headerTitleStyle: { fontFamily: fontFamily.displaySemiBold, color: colors.text },

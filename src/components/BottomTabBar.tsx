@@ -1,80 +1,110 @@
+import type { ImageSourcePropType } from 'react-native';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
-import type { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { useRouter } from 'expo-router';
+import { usePathname, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
 
-const ICON_3D = {
-  index: require('../../assets/icons/tab-home.png'),
-  takipler: require('../../assets/icons/tab-followups.png'),
-  ayarlar: require('../../assets/icons/tab-settings.png'),
-} as const;
+const ICON_HOME = require('../../assets/icons/tab-home.png');
+const ICON_TAKIPLER = require('../../assets/icons/tab-followups.png');
+const ICON_AYARLAR = require('../../assets/icons/tab-settings.png');
+const ICON_SPARKLE = require('../../assets/icons/tab-ai-sparkles.png');
+const ICON_ADD = require('../../assets/icons/fab-add.png');
 
 /**
- * "Kinetic Luster" spesifikasyonundaki "Floating Bottom Navigation" —
- * kenarlardan ayrık, camsı (frosted) bir ada; aktif sekmenin arkasında
- * renkli bir "jewel pill" beliriyor. 3D render ikonlar hem aktif hem pasif
- * durumda aynı şekilde gösteriliyor — aktif/pasif ayrımı ikonu değiştirerek
- * değil (bu tutarsız görünüyordu), pill arkaplanı + kalın etiketle
- * yapılıyor.
+ * Basılınca hafif büyüyen (spring) ölçek animasyonu — tüm menü öğeleri ve
+ * FAB için ortak. Dokunmatik basılı tutulduğunda 1 → 1.12, bırakılınca
+ * geri 1'e döner.
  */
-export function BottomTabBar({ state, descriptors, navigation, insets }: BottomTabBarProps) {
-  const { colors, isDark } = useTheme();
-  const router = useRouter();
-  const { t } = useTranslation();
-  const styles = getStyles(colors);
+function usePressScale() {
+  const scale = useSharedValue(1);
+  const animatedStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
+  const onPressIn = () => {
+    scale.value = withSpring(1.12, { damping: 10, stiffness: 300 });
+  };
+  const onPressOut = () => {
+    scale.value = withSpring(1, { damping: 10, stiffness: 300 });
+  };
+  return { animatedStyle, onPressIn, onPressOut };
+}
 
-  const [homeRoute, takiplerRoute, ayarlarRoute] = state.routes;
+function TabItem({
+  active,
+  icon,
+  label,
+  onPress,
+  colors,
+  styles,
+}: {
+  active: boolean;
+  icon: ImageSourcePropType;
+  label: string;
+  onPress: () => void;
+  colors: ThemeColors;
+  styles: ReturnType<typeof getStyles>;
+}) {
+  const { animatedStyle, onPressIn, onPressOut } = usePressScale();
+  const tintColor = active ? colors.onPrimary : colors.textMuted;
 
-  function renderTabItem(route: (typeof state.routes)[number], index: number) {
-    const { options } = descriptors[route.key];
-    const isFocused = state.index === index;
-    const label = typeof options.title === 'string' ? options.title : route.name;
-    const tintColor = isFocused ? colors.onPrimary : colors.textMuted;
-    const icon3d = ICON_3D[route.name as keyof typeof ICON_3D];
-    const icon = <Image source={icon3d} style={styles.icon3d} resizeMode="contain" />;
-
-    function onPress() {
-      const event = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
-      if (!isFocused && !event.defaultPrevented) {
-        navigation.navigate(route.name);
-      }
-    }
-
-    return (
-      <Pressable
-        key={route.key}
-        onPress={onPress}
-        style={styles.item}
-        accessibilityRole="button"
-        accessibilityState={isFocused ? { selected: true } : {}}
-        accessibilityLabel={label}
-      >
-        {isFocused ? (
-          <LinearGradient
-            colors={[colors.primary, colors.primaryText]}
-            style={styles.jewelPill}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-          >
-            {icon}
+  return (
+    <Pressable
+      onPress={onPress}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      style={styles.item}
+      accessibilityRole="button"
+      accessibilityState={active ? { selected: true } : {}}
+      accessibilityLabel={label}
+    >
+      <Animated.View style={animatedStyle}>
+        {active ? (
+          <LinearGradient colors={[colors.primary, colors.primaryText]} style={styles.jewelPill} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+            <Image source={icon} style={styles.icon3d} resizeMode="contain" />
             <Text style={[styles.label, styles.labelActive, { color: tintColor }]} numberOfLines={1}>
               {label}
             </Text>
           </LinearGradient>
         ) : (
           <View style={styles.itemInner}>
-            {icon}
+            <Image source={icon} style={styles.icon3d} resizeMode="contain" />
             <Text style={[styles.label, { color: tintColor }]} numberOfLines={1}>
               {label}
             </Text>
           </View>
         )}
-      </Pressable>
-    );
-  }
+      </Animated.View>
+    </Pressable>
+  );
+}
+
+function FabButton({ onPress, accessibilityLabel, styles }: { onPress: () => void; accessibilityLabel: string; styles: ReturnType<typeof getStyles> }) {
+  const { animatedStyle, onPressIn, onPressOut } = usePressScale();
+  return (
+    <Pressable onPress={onPress} onPressIn={onPressIn} onPressOut={onPressOut} accessibilityRole="button" accessibilityLabel={accessibilityLabel}>
+      <Animated.View style={[styles.fab, animatedStyle]}>
+        <Image source={ICON_ADD} style={styles.fabIcon} resizeMode="contain" />
+      </Animated.View>
+    </Pressable>
+  );
+}
+
+/**
+ * Global, kalıcı alt navigasyon — React Navigation'ın Tabs.Navigator'ına
+ * bağlı değil, kök layout'ta (app/_layout.tsx) her ekranın altında sabit
+ * render ediliyor. Aktif sekme React Navigation state'i yerine geçerli
+ * pathname'e göre belirleniyor — böylece "Yeni Takip" / "Akıllı Ekle" gibi
+ * doğrudan menüden açılan push ekranlarına girildiğinde de kaybolmuyor.
+ */
+export function BottomTabBar() {
+  const { colors, isDark } = useTheme();
+  const insets = useSafeAreaInsets();
+  const router = useRouter();
+  const pathname = usePathname();
+  const { t } = useTranslation();
+  const styles = getStyles(colors);
 
   return (
     <View style={[styles.wrap, { paddingBottom: Math.max(insets.bottom, 12) }]}>
@@ -82,35 +112,44 @@ export function BottomTabBar({ state, descriptors, navigation, insets }: BottomT
         <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={StyleSheet.absoluteFillObject} />
         <View style={[StyleSheet.absoluteFillObject, styles.islandTint]} pointerEvents="none" />
         <View style={styles.row}>
-          {renderTabItem(homeRoute, 0)}
-          {renderTabItem(takiplerRoute, 1)}
+          <TabItem
+            active={pathname === '/'}
+            icon={ICON_HOME}
+            label={t('tabs.home')}
+            onPress={() => router.navigate('/')}
+            colors={colors}
+            styles={styles}
+          />
+          <TabItem
+            active={pathname === '/takipler'}
+            icon={ICON_TAKIPLER}
+            label={t('tabs.takipler')}
+            onPress={() => router.navigate('/takipler')}
+            colors={colors}
+            styles={styles}
+          />
 
           <View style={styles.item}>
-            <Pressable
-              onPress={() => router.push('/takip/yeni')}
-              style={({ pressed }) => [styles.fab, pressed && styles.fabPressed]}
-              accessibilityRole="button"
-              accessibilityLabel={t('bottomTabBar.addA11y')}
-            >
-              <Image source={require('../../assets/icons/fab-add.png')} style={styles.fabIcon} resizeMode="contain" />
-            </Pressable>
+            <FabButton onPress={() => router.push('/takip/yeni')} accessibilityLabel={t('bottomTabBar.addA11y')} styles={styles} />
           </View>
 
-          <Pressable
+          <TabItem
+            active={pathname === '/takip/ai-cikar'}
+            icon={ICON_SPARKLE}
+            label={t('bottomTabBar.smartAdd')}
             onPress={() => router.push('/takip/ai-cikar')}
-            style={styles.item}
-            accessibilityRole="button"
-            accessibilityLabel={t('bottomTabBar.smartAddA11y')}
-          >
-            <View style={styles.itemInner}>
-              <Image source={require('../../assets/icons/tab-ai-sparkles.png')} style={styles.icon3d} resizeMode="contain" />
-              <Text style={[styles.label, { color: colors.textMuted }]} numberOfLines={1}>
-                {t('bottomTabBar.smartAdd')}
-              </Text>
-            </View>
-          </Pressable>
+            colors={colors}
+            styles={styles}
+          />
 
-          {renderTabItem(ayarlarRoute, 2)}
+          <TabItem
+            active={pathname === '/ayarlar'}
+            icon={ICON_AYARLAR}
+            label={t('tabs.ayarlar')}
+            onPress={() => router.navigate('/ayarlar')}
+            colors={colors}
+            styles={styles}
+          />
         </View>
       </View>
     </View>
@@ -180,6 +219,5 @@ function getStyles(colors: ThemeColors) {
       elevation: 4,
     },
     fabIcon: { width: 56, height: 56 },
-    fabPressed: { opacity: 0.85 },
   });
 }

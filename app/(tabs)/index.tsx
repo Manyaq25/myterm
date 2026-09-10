@@ -112,7 +112,7 @@ export default function HomeScreen() {
 
   return (
     <GradientBackground>
-      <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+      <SafeAreaView style={styles.container} edges={['top']}>
         <View style={styles.header}>
           <View style={styles.headerRow}>
             <View style={styles.headerLeft}>
