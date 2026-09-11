@@ -124,7 +124,8 @@
     "labelDueAt": "リマインダー時刻（任意）",
     "dueAtPlaceholder": "日付と時刻を選択",
     "dueAtSetA11y": "リマインダー時刻：{{date}}",
-    "dueAtUnsetA11y": "リマインダー時刻を選択"
+    "dueAtUnsetA11y": "リマインダー時刻を選択",
+    "datePickerDone": "完了"
   },
   "aiCikar": {
     "mockBanner": "テストモード：実際のAIバックエンドはまだ接続されていません。結果は模擬的なものになります。",

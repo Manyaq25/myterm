@@ -134,6 +134,16 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
         // kalıyor — ekran görüntüsü kamerayla çekilmediği için. modificationTime
         // (dosyanın diske yazıldığı an) her iki platformda da güvenilir.
         sortBy: [['modificationTime', false]],
+        // iOS'ta mediaSubtypes filtresi olmadan bu sorgu sadece "arka plana
+        // geçtikten sonra galeriye eklenen en yeni fotoğraf" arıyordu — bu da
+        // o sırada WhatsApp/Mesajlar'dan kaydedilen ya da kamerayla çekilen
+        // alakasız bir fotoğrafı (ör. bir kişinin resmini) ekran görüntüsü
+        // sanıp yanlış öneri bildirimi göndermesine yol açıyordu. iOS gerçek
+        // ekran görüntülerini PHAsset mediaSubtypes'ta 'screenshot' olarak
+        // işaretliyor — bunu sorguya filtre olarak veriyoruz ki yanlış pozitif
+        // hiç mümkün olmasın. Android'de bu alan yok, mevcut zamanlama
+        // sezgisiyle devam ediyor.
+        ...(Platform.OS === 'ios' ? { mediaSubtypes: 'screenshot' as const } : {}),
       });
       const asset = page.assets[0];
       if (!asset || asset.id === lastNotifiedAssetId) continue;

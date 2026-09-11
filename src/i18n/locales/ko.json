@@ -124,7 +124,8 @@
     "labelDueAt": "알림 시간 (선택 사항)",
     "dueAtPlaceholder": "날짜와 시간 선택",
     "dueAtSetA11y": "알림 시간: {{date}}",
-    "dueAtUnsetA11y": "알림 시간 선택"
+    "dueAtUnsetA11y": "알림 시간 선택",
+    "datePickerDone": "완료"
   },
   "aiCikar": {
     "mockBanner": "테스트 모드: 실제 AI 백엔드가 아직 연결되지 않아 결과는 가짜 데이터로 표시됩니다.",

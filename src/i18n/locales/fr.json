@@ -124,7 +124,8 @@
     "labelDueAt": "Heure du rappel (facultatif)",
     "dueAtPlaceholder": "Choisir la date et l'heure",
     "dueAtSetA11y": "Heure du rappel : {{date}}",
-    "dueAtUnsetA11y": "Choisir l'heure du rappel"
+    "dueAtUnsetA11y": "Choisir l'heure du rappel",
+    "datePickerDone": "Terminé"
   },
   "aiCikar": {
     "mockBanner": "Mode test : le vrai backend IA n'est pas encore connecté, les résultats seront simulés.",

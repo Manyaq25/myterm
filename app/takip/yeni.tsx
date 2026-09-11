@@ -205,14 +205,23 @@ export default function YeniTakipScreen() {
           </Text>
         </Pressable>
         {Platform.OS === 'ios' && showPicker && (
-          <DateTimePicker
-            value={dueAt ?? new Date()}
-            mode="datetime"
-            onChange={(_, selected) => {
-              setShowPicker(false);
-              if (selected) setDueAt(selected);
-            }}
-          />
+          <View>
+            <DateTimePicker
+              value={dueAt ?? new Date()}
+              mode="datetime"
+              display="spinner"
+              onChange={(_, selected) => {
+                if (selected) setDueAt(selected);
+              }}
+            />
+            <Pressable
+              style={styles.datePickerDoneButton}
+              onPress={() => setShowPicker(false)}
+              accessibilityRole="button"
+            >
+              <Text style={styles.datePickerDoneButtonText}>{t('yeni.datePickerDone')}</Text>
+            </Pressable>
+          </View>
         )}
         {Platform.OS === 'android' && androidPickerStage === 'date' && (
           <DateTimePicker
@@ -315,6 +324,17 @@ function getStyles(colors: ThemeColors) {
       borderRadius: 16,
       paddingHorizontal: 14,
       paddingVertical: 12,
+    },
+    datePickerDoneButton: {
+      alignSelf: 'flex-end',
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      marginTop: 4,
+    },
+    datePickerDoneButtonText: {
+      color: colors.primary,
+      fontFamily: fontFamily.bodyBold,
+      fontSize: fontSize.button,
     },
     typeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
     typeChip: {

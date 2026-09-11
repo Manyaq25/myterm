@@ -124,7 +124,8 @@
     "labelDueAt": "Hora del recordatorio (opcional)",
     "dueAtPlaceholder": "Elegir fecha y hora",
     "dueAtSetA11y": "Hora del recordatorio: {{date}}",
-    "dueAtUnsetA11y": "Elegir hora del recordatorio"
+    "dueAtUnsetA11y": "Elegir hora del recordatorio",
+    "datePickerDone": "Listo"
   },
   "aiCikar": {
     "mockBanner": "Modo de prueba: el backend de IA real aún no está conectado, los resultados serán simulados.",

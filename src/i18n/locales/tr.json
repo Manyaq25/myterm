@@ -124,7 +124,8 @@
     "labelDueAt": "Hatırlatma zamanı (opsiyonel)",
     "dueAtPlaceholder": "Tarih ve saat seç",
     "dueAtSetA11y": "Hatırlatma zamanı: {{date}}",
-    "dueAtUnsetA11y": "Hatırlatma zamanı seç"
+    "dueAtUnsetA11y": "Hatırlatma zamanı seç",
+    "datePickerDone": "Tamam"
   },
   "aiCikar": {
     "mockBanner": "Test modu: gerçek AI backend'i henüz bağlı değil, sonuçlar sahte (mock) olacak.",

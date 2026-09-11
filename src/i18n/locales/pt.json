@@ -124,7 +124,8 @@
     "labelDueAt": "Hora do lembrete (opcional)",
     "dueAtPlaceholder": "Escolher data e hora",
     "dueAtSetA11y": "Hora do lembrete: {{date}}",
-    "dueAtUnsetA11y": "Escolher hora do lembrete"
+    "dueAtUnsetA11y": "Escolher hora do lembrete",
+    "datePickerDone": "Concluído"
   },
   "aiCikar": {
     "mockBanner": "Modo de teste: o backend de IA real ainda não está conectado, os resultados serão simulados.",

@@ -124,7 +124,8 @@
     "labelDueAt": "Orario del promemoria (opzionale)",
     "dueAtPlaceholder": "Scegli data e ora",
     "dueAtSetA11y": "Orario del promemoria: {{date}}",
-    "dueAtUnsetA11y": "Scegli l'orario del promemoria"
+    "dueAtUnsetA11y": "Scegli l'orario del promemoria",
+    "datePickerDone": "Fatto"
   },
   "aiCikar": {
     "mockBanner": "Modalità test: il vero backend IA non è ancora connesso, i risultati saranno simulati.",

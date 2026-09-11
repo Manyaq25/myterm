@@ -124,7 +124,8 @@
     "labelDueAt": "Reminder time (optional)",
     "dueAtPlaceholder": "Pick date and time",
     "dueAtSetA11y": "Reminder time: {{date}}",
-    "dueAtUnsetA11y": "Pick reminder time"
+    "dueAtUnsetA11y": "Pick reminder time",
+    "datePickerDone": "Done"
   },
   "aiCikar": {
     "mockBanner": "Test mode: the real AI backend isn't connected yet, results will be mocked.",

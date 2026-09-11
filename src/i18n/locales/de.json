@@ -124,7 +124,8 @@
     "labelDueAt": "Erinnerungszeit (optional)",
     "dueAtPlaceholder": "Datum und Uhrzeit wählen",
     "dueAtSetA11y": "Erinnerungszeit: {{date}}",
-    "dueAtUnsetA11y": "Erinnerungszeit wählen"
+    "dueAtUnsetA11y": "Erinnerungszeit wählen",
+    "datePickerDone": "Fertig"
   },
   "aiCikar": {
     "mockBanner": "Testmodus: Das echte KI-Backend ist noch nicht verbunden, Ergebnisse sind simuliert.",
