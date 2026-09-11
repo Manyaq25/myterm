@@ -210,6 +210,7 @@ export default function YeniTakipScreen() {
               value={dueAt ?? new Date()}
               mode="datetime"
               display="spinner"
+              locale={i18n.language}
               onChange={(_, selected) => {
                 if (selected) setDueAt(selected);
               }}
