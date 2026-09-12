@@ -11,7 +11,13 @@ interface Props {
   compact?: boolean;
 }
 
+// Bu bileşenin açtığı tek şeyler iletişim URI'leri — beklenmeyen bir şema
+// (ör. veri bozulması/gelecekteki bir refactor sonucu) sessizce başka bir
+// uygulamayı tetiklemesin diye son bir izin listesi kontrolü.
+const ALLOWED_URI_PREFIXES = ['tel:', 'sms:', 'https://wa.me/', 'whatsapp://', 'tg://'];
+
 async function openOrAlert(url: string, failureMessage: string, errorTitle: string) {
+  if (!ALLOWED_URI_PREFIXES.some((prefix) => url.startsWith(prefix))) return;
   try {
     await Linking.openURL(url);
   } catch {

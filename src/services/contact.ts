@@ -13,13 +13,23 @@ export function buildReminderMessage(followUpTitle: string): string {
   return `Merhaba, ${followUpTitle} konusunda...`;
 }
 
+// tel:/sms: URI'lerine yalnızca rakam ve öndeki "+" işaretinin geçmesini
+// sağlıyor — phone alanı AI ile görsel/PDF'ten çıkarılmış olabileceğinden
+// (kullanıcının kendi elle girdiği veri değil), boşluk dışında hiçbir
+// karakteri filtrelemeden URI'ye gömmek ekstra parametre/segment
+// enjeksiyonuna açık kapı bırakıyordu.
+function sanitizePhoneForUri(phone: string): string {
+  return phone.replace(/[^\d+]/g, '');
+}
+
 export function buildContactLinks(phone: string, message?: string) {
+  const sanitizedPhone = sanitizePhoneForUri(phone);
   const intlDigits = toInternationalDigits(phone);
   const encodedMessage = message ? encodeURIComponent(message) : '';
   return {
-    tel: `tel:${phone.replace(/\s+/g, '')}`,
+    tel: `tel:${sanitizedPhone}`,
     // iOS "sms:<numara>&body=", Android "sms:<numara>?body=" bekliyor.
-    sms: `sms:${phone.replace(/\s+/g, '')}${message ? `${Platform.OS === 'ios' ? '&' : '?'}body=${encodedMessage}` : ''}`,
+    sms: `sms:${sanitizedPhone}${message ? `${Platform.OS === 'ios' ? '&' : '?'}body=${encodedMessage}` : ''}`,
     whatsapp: `https://wa.me/${intlDigits}${message ? `?text=${encodedMessage}` : ''}`,
     telegramProbe: 'tg://resolve',
     telegram: `tg://resolve?phone=${intlDigits}`,
