@@ -9,7 +9,8 @@
       "distribution": "internal",
       "channel": "development",
       "env": {
-        "EXPO_PUBLIC_BACKEND_URL": "https://backend-five-dun-77.vercel.app"
+        "EXPO_PUBLIC_BACKEND_URL": "https://backend-five-dun-77.vercel.app",
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_aqXBldWXQJYLIrxOGoUwcmBCgPE"
       }
     },
     "preview": {
@@ -19,14 +20,16 @@
         "simulator": false
       },
       "env": {
-        "EXPO_PUBLIC_BACKEND_URL": "https://backend-five-dun-77.vercel.app"
+        "EXPO_PUBLIC_BACKEND_URL": "https://backend-five-dun-77.vercel.app",
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_aqXBldWXQJYLIrxOGoUwcmBCgPE"
       }
     },
     "production": {
       "channel": "production",
       "autoIncrement": true,
       "env": {
-        "EXPO_PUBLIC_BACKEND_URL": "https://backend-five-dun-77.vercel.app"
+        "EXPO_PUBLIC_BACKEND_URL": "https://backend-five-dun-77.vercel.app",
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_aqXBldWXQJYLIrxOGoUwcmBCgPE"
       }
     }
   },
