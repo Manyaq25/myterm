@@ -72,6 +72,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.manyaq25.benimyerimetakipet",
+      "appleTeamId": "G2T885G2XY",
       "entitlements": {
         "com.apple.security.application-groups": ["group.com.manyaq25.benimyerimetakipet"]
       },
