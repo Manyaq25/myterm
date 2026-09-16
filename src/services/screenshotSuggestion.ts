@@ -26,7 +26,10 @@ let lastNotifiedAssetId: string | null = null;
 // set etmeden önce birbirini "görmüyor". Tüm yolların aktığı tek nokta olan
 // notifySuggestion'da zaman bazlı bir debounce ile kesin çözüyoruz.
 let lastNotifiedAt = 0;
-const NOTIFICATION_DEBOUNCE_MS = 4000;
+// Gerçek cihaz testinde aynı ekran görüntüsü için ikinci tetikleme ilk
+// bildirimden ~7-8 saniye sonra geldi (muhtemelen iOS'un ekran görüntüsü
+// önizleme balonunun kapanma geçişiyle ilgili) — payını bol tutuyoruz.
+const NOTIFICATION_DEBOUNCE_MS = 12000;
 let backgroundCheckInProgress = false;
 const LAST_ACTIVE_AT_KEY = 'screenshotSuggestionsLastActiveAt';
 
