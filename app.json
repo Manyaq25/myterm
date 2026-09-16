@@ -11,6 +11,9 @@
     "runtimeVersion": {
       "policy": "sdkVersion"
     },
+    "updates": {
+      "url": "https://u.expo.dev/db715a1a-2a9d-4096-888e-7f9c672e1b40"
+    },
     "plugins": [
       "expo-router",
       "expo-sqlite",
