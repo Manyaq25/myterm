@@ -95,12 +95,21 @@ export function isPremiumNow(): boolean {
   return snapshot.isPremium;
 }
 
+let lastOfferingError: string | null = null;
+export function getLastOfferingError(): string | null {
+  return lastOfferingError;
+}
+
 export async function getCurrentOffering(): Promise<PurchasesOffering | null> {
   if (!isRevenueCatConfigured) return null;
   try {
     const offerings = await Purchases.getOfferings();
+    lastOfferingError = offerings.current
+      ? null
+      : `no current offering (all: ${Object.keys(offerings.all).join(', ') || 'none'})`;
     return offerings.current;
-  } catch {
+  } catch (e) {
+    lastOfferingError = (e as { message?: string })?.message ?? String(e);
     return null;
   }
 }
