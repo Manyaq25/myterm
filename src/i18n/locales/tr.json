@@ -312,7 +312,11 @@
       "personInsights": "İlişki içgörüsü özetleri",
       "widgetSiri": "Widget ve Siri kısayolları"
     },
-    "priceSuffix": "{{price}} / ay",
+    "planMonthly": "Aylık",
+    "planYearly": "Yıllık",
+    "yearlySavings": "%{{percent}} tasarruf",
+    "priceSuffixMonthly": "{{price}} / ay",
+    "priceSuffixYearly": "{{price}} / yıl",
     "subscribeButton": "Abone Ol",
     "purchasing": "İşleniyor…",
     "purchaseError": "Satın alma tamamlanamadı. Lütfen tekrar dene.",

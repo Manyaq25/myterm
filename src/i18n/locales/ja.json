@@ -312,7 +312,11 @@
       "personInsights": "関係性インサイトの要約",
       "widgetSiri": "ウィジェットとSiriショートカット"
     },
-    "priceSuffix": "{{price}} / 月",
+    "planMonthly": "月額",
+    "planYearly": "年額",
+    "yearlySavings": "{{percent}}%お得",
+    "priceSuffixMonthly": "{{price}} / 月",
+    "priceSuffixYearly": "{{price}} / 年",
     "subscribeButton": "登録する",
     "purchasing": "処理中…",
     "purchaseError": "購入を完了できませんでした。もう一度お試しください。",

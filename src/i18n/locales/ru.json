@@ -312,7 +312,11 @@
       "personInsights": "Сводки по анализу отношений",
       "widgetSiri": "Виджет и ярлыки Siri"
     },
-    "priceSuffix": "{{price}} / мес.",
+    "planMonthly": "Ежемесячно",
+    "planYearly": "Ежегодно",
+    "yearlySavings": "Экономия {{percent}}%",
+    "priceSuffixMonthly": "{{price}} / мес.",
+    "priceSuffixYearly": "{{price}} / год",
     "subscribeButton": "Оформить подписку",
     "purchasing": "Обработка…",
     "purchaseError": "Не удалось завершить покупку. Попробуй ещё раз.",

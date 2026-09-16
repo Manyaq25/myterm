@@ -312,7 +312,11 @@
       "personInsights": "Zusammenfassungen zu Beziehungsmustern",
       "widgetSiri": "Widget und Siri-Kurzbefehle"
     },
-    "priceSuffix": "{{price}} / Monat",
+    "planMonthly": "Monatlich",
+    "planYearly": "Jährlich",
+    "yearlySavings": "{{percent}}% sparen",
+    "priceSuffixMonthly": "{{price}} / Monat",
+    "priceSuffixYearly": "{{price}} / Jahr",
     "subscribeButton": "Abonnieren",
     "purchasing": "Wird verarbeitet…",
     "purchaseError": "Der Kauf konnte nicht abgeschlossen werden. Bitte versuche es erneut.",

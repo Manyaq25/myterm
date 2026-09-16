@@ -312,7 +312,11 @@
       "personInsights": "Relationship insight summaries",
       "widgetSiri": "Widget and Siri shortcuts"
     },
-    "priceSuffix": "{{price}} / month",
+    "planMonthly": "Monthly",
+    "planYearly": "Yearly",
+    "yearlySavings": "Save {{percent}}%",
+    "priceSuffixMonthly": "{{price}} / month",
+    "priceSuffixYearly": "{{price}} / year",
     "subscribeButton": "Subscribe",
     "purchasing": "Processing…",
     "purchaseError": "The purchase couldn't be completed. Please try again.",

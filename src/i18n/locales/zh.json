@@ -312,7 +312,11 @@
       "personInsights": "关系洞察摘要",
       "widgetSiri": "小组件和 Siri 快捷指令"
     },
-    "priceSuffix": "{{price}} / 月",
+    "planMonthly": "月付",
+    "planYearly": "年付",
+    "yearlySavings": "节省{{percent}}%",
+    "priceSuffixMonthly": "{{price}} / 月",
+    "priceSuffixYearly": "{{price}} / 年",
     "subscribeButton": "订阅",
     "purchasing": "处理中…",
     "purchaseError": "购买未能完成,请重试。",

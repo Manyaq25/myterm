@@ -312,7 +312,11 @@
       "personInsights": "관계 인사이트 요약",
       "widgetSiri": "위젯 및 Siri 단축어"
     },
-    "priceSuffix": "{{price}} / 월",
+    "planMonthly": "월간",
+    "planYearly": "연간",
+    "yearlySavings": "{{percent}}% 절약",
+    "priceSuffixMonthly": "{{price}} / 월",
+    "priceSuffixYearly": "{{price}} / 년",
     "subscribeButton": "구독하기",
     "purchasing": "처리 중…",
     "purchaseError": "구매를 완료하지 못했어요. 다시 시도해 주세요.",

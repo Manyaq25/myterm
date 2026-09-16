@@ -312,7 +312,11 @@
       "personInsights": "ملخصات رؤى العلاقات",
       "widgetSiri": "الودجت واختصارات Siri"
     },
-    "priceSuffix": "{{price}} / شهريًا",
+    "planMonthly": "شهري",
+    "planYearly": "سنوي",
+    "yearlySavings": "وفّر {{percent}}%",
+    "priceSuffixMonthly": "{{price}} / شهريًا",
+    "priceSuffixYearly": "{{price}} / سنويًا",
     "subscribeButton": "اشترك",
     "purchasing": "جارٍ المعالجة…",
     "purchaseError": "تعذر إتمام عملية الشراء. يرجى المحاولة مرة أخرى.",

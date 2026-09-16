@@ -312,7 +312,11 @@
       "personInsights": "Resumos de insights de relacionamento",
       "widgetSiri": "Widget e atalhos da Siri"
     },
-    "priceSuffix": "{{price}} / mês",
+    "planMonthly": "Mensal",
+    "planYearly": "Anual",
+    "yearlySavings": "Economize {{percent}}%",
+    "priceSuffixMonthly": "{{price}} / mês",
+    "priceSuffixYearly": "{{price}} / ano",
     "subscribeButton": "Assinar",
     "purchasing": "Processando…",
     "purchaseError": "Não foi possível concluir a compra. Tente novamente.",

@@ -312,7 +312,11 @@
       "personInsights": "Riepiloghi sugli schemi relazionali",
       "widgetSiri": "Widget e scorciatoie Siri"
     },
-    "priceSuffix": "{{price}} / mese",
+    "planMonthly": "Mensile",
+    "planYearly": "Annuale",
+    "yearlySavings": "Risparmia il {{percent}}%",
+    "priceSuffixMonthly": "{{price}} / mese",
+    "priceSuffixYearly": "{{price}} / anno",
     "subscribeButton": "Abbonati",
     "purchasing": "Elaborazione…",
     "purchaseError": "Impossibile completare l'acquisto. Riprova.",

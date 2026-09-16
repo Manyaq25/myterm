@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import type { PurchasesPackage } from 'react-native-purchases';
@@ -11,7 +11,7 @@ import {
   restorePurchases,
   useIsPremium,
 } from '../src/services/subscription';
-import { useTheme, fontFamily, fontSize, type ThemeColors } from '../src/theme';
+import { useTheme, hexToRgba, fontFamily, fontSize, type ThemeColors } from '../src/theme';
 
 interface ComparisonRow {
   key: string;
@@ -36,7 +36,10 @@ export default function PremiumScreen() {
   const isPremium = useIsPremium();
 
   const [loadingOffering, setLoadingOffering] = useState(true);
-  const [pkg, setPkg] = useState<PurchasesPackage | null>(null);
+  const [monthlyPkg, setMonthlyPkg] = useState<PurchasesPackage | null>(null);
+  const [yearlyPkg, setYearlyPkg] = useState<PurchasesPackage | null>(null);
+  const [fallbackPkg, setFallbackPkg] = useState<PurchasesPackage | null>(null);
+  const [selectedPeriod, setSelectedPeriod] = useState<'monthly' | 'yearly'>('monthly');
   const [purchasing, setPurchasing] = useState(false);
   const [restoring, setRestoring] = useState(false);
 
@@ -44,13 +47,25 @@ export default function PremiumScreen() {
     let cancelled = false;
     getCurrentOffering().then((offering) => {
       if (cancelled) return;
-      setPkg(offering?.monthly ?? offering?.availablePackages[0] ?? null);
+      setMonthlyPkg(offering?.monthly ?? null);
+      setYearlyPkg(offering?.annual ?? null);
+      setFallbackPkg(offering?.monthly ?? offering?.availablePackages[0] ?? null);
       setLoadingOffering(false);
     });
     return () => {
       cancelled = true;
     };
   }, []);
+
+  const pkg = (selectedPeriod === 'yearly' ? yearlyPkg : monthlyPkg) ?? fallbackPkg;
+
+  const yearlySavingsPercent = useMemo(() => {
+    if (!monthlyPkg || !yearlyPkg) return null;
+    const monthlyCost = monthlyPkg.product.price * 12;
+    const yearlyCost = yearlyPkg.product.price;
+    if (monthlyCost <= 0 || yearlyCost >= monthlyCost) return null;
+    return Math.round((1 - yearlyCost / monthlyCost) * 100);
+  }, [monthlyPkg, yearlyPkg]);
 
   async function handlePurchase() {
     if (!pkg || purchasing) return;
@@ -114,7 +129,38 @@ export default function PremiumScreen() {
               <ActivityIndicator color={colors.primary} />
             ) : pkg ? (
               <>
-                <Text style={styles.price}>{t('premium.priceSuffix', { price: pkg.product.priceString })}</Text>
+                {monthlyPkg && yearlyPkg && (
+                  <View style={styles.periodToggle}>
+                    <Pressable
+                      style={[styles.periodOption, selectedPeriod === 'monthly' && styles.periodOptionActive]}
+                      onPress={() => setSelectedPeriod('monthly')}
+                    >
+                      <Text style={[styles.periodLabel, selectedPeriod === 'monthly' && styles.periodLabelActive]}>
+                        {t('premium.planMonthly')}
+                      </Text>
+                    </Pressable>
+                    <Pressable
+                      style={[styles.periodOption, selectedPeriod === 'yearly' && styles.periodOptionActive]}
+                      onPress={() => setSelectedPeriod('yearly')}
+                    >
+                      <Text style={[styles.periodLabel, selectedPeriod === 'yearly' && styles.periodLabelActive]}>
+                        {t('premium.planYearly')}
+                      </Text>
+                      {yearlySavingsPercent != null && yearlySavingsPercent > 0 && (
+                        <View style={styles.savingsBadge}>
+                          <Text style={styles.savingsBadgeText}>
+                            {t('premium.yearlySavings', { percent: yearlySavingsPercent })}
+                          </Text>
+                        </View>
+                      )}
+                    </Pressable>
+                  </View>
+                )}
+                <Text style={styles.price}>
+                  {t(selectedPeriod === 'yearly' ? 'premium.priceSuffixYearly' : 'premium.priceSuffixMonthly', {
+                    price: pkg.product.priceString,
+                  })}
+                </Text>
                 <Button
                   label={purchasing ? t('premium.purchasing') : t('premium.subscribeButton')}
                   onPress={handlePurchase}
@@ -201,6 +247,32 @@ function getStyles(colors: ThemeColors) {
     tableFeature: { fontSize: fontSize.small, fontFamily: fontFamily.body, color: colors.text },
     tableCell: { flex: 1, fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold, color: colors.text, textAlign: 'center' },
     purchaseBox: { width: '100%', alignItems: 'center', marginBottom: 16, gap: 12 },
+    periodToggle: {
+      flexDirection: 'row',
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 14,
+      padding: 4,
+      width: '100%',
+      gap: 4,
+    },
+    periodOption: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 10,
+      borderRadius: 10,
+    },
+    periodOptionActive: { backgroundColor: colors.surface },
+    periodLabel: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted },
+    periodLabelActive: { color: colors.text },
+    savingsBadge: {
+      backgroundColor: hexToRgba(colors.success, 0.15),
+      borderRadius: 8,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+      marginTop: 4,
+    },
+    savingsBadgeText: { fontSize: fontSize.caption, fontFamily: fontFamily.bodySemiBold, color: colors.success },
     price: { fontSize: fontSize.title, fontFamily: fontFamily.displaySemiBold, color: colors.text },
     disclosure: { fontSize: fontSize.caption, fontFamily: fontFamily.body, color: colors.textMuted, textAlign: 'center', lineHeight: 17 },
     hint: { fontSize: fontSize.small, fontFamily: fontFamily.body, color: colors.textMuted, textAlign: 'center' },
