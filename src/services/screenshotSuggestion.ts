@@ -16,6 +16,19 @@ let appStateSubscription: { remove: () => void } | null = null;
 // dönüşte galeriyi kontrol ederek yakalıyoruz.
 let backgroundedAt: number | null = null;
 let lastNotifiedAssetId: string | null = null;
+// Bir ekran görüntüsü, canlı dinleyici (ön plandayken) ile arka plandan dönüş
+// taraması tarafından AYNI ANDA yakalanabiliyor — özellikle ekran görüntüsü
+// alma anındaki küçük önizleme balonu iOS'ta uygulamayı kısa süreliğine
+// inactive/active arasında birkaç kez flicker'a sokabiliyor, bu da
+// checkForBackgroundScreenshot'ın eşzamanlı birden fazla kez tetiklenmesine
+// yol açıyor. lastNotifiedAssetId tek başına bunu önlemiyor çünkü (a) canlı
+// dinleyici path'inin asset ID'si yok ve (b) eşzamanlı çağrılar id'yi
+// set etmeden önce birbirini "görmüyor". Tüm yolların aktığı tek nokta olan
+// notifySuggestion'da zaman bazlı bir debounce ile kesin çözüyoruz.
+let lastNotifiedAt = 0;
+const NOTIFICATION_DEBOUNCE_MS = 4000;
+let backgroundCheckInProgress = false;
+const LAST_ACTIVE_AT_KEY = 'screenshotSuggestionsLastActiveAt';
 
 export async function isScreenshotSuggestionEnabled(): Promise<boolean> {
   const value = await SecureStore.getItemAsync(SETTING_KEY);
@@ -57,7 +70,17 @@ export async function setScreenshotSuggestionEnabled(enabled: boolean): Promise<
 
 export async function initScreenshotSuggestions(): Promise<void> {
   const enabled = await isScreenshotSuggestionEnabled();
-  if (enabled) startListening();
+  if (!enabled) return;
+  startListening();
+  // Uygulama tamamen kapatılmışken (force-quit) alınan bir ekran görüntüsü,
+  // backgroundedAt bu JS oturumunda hiç set edilmediği için normal dönüş
+  // kontrolünü tetiklemez — son bilinen aktif zamanı SecureStore'dan okuyup
+  // soğuk başlangıçta da aynı taramayı bir kez çalıştırıyoruz.
+  const storedLastActiveAt = await SecureStore.getItemAsync(LAST_ACTIVE_AT_KEY);
+  const since = storedLastActiveAt ? Number(storedLastActiveAt) : null;
+  if (since && Number.isFinite(since)) {
+    void checkForBackgroundScreenshot(since);
+  }
 }
 
 async function promptFullAccessIfLimited(): Promise<void> {
@@ -96,7 +119,13 @@ function handleAppStateChange(nextState: AppStateStatus): void {
     }
     return;
   }
-  if (backgroundedAt === null) backgroundedAt = Date.now();
+  // Ekran görüntüsü alma anındaki sistem önizlemesi, uygulamayı inactive/
+  // active arasında birkaç kez art arda flicker'a sokabiliyor — bu ilk
+  // backgroundedAt'i koruyoruz ki her flicker ayrı bir tarama başlatmasın.
+  if (backgroundedAt === null) {
+    backgroundedAt = Date.now();
+    void SecureStore.setItemAsync(LAST_ACTIVE_AT_KEY, String(backgroundedAt));
+  }
 }
 
 function sleep(ms: number): Promise<void> {
@@ -119,6 +148,12 @@ const RETRY_DELAYS_MS = [0, 400, 900, 1500];
 const TIMESTAMP_ROUNDING_BUFFER_MS = 1500;
 
 async function checkForBackgroundScreenshot(since: number): Promise<void> {
+  // Aynı flicker patlamasında handleAppStateChange birden fazla kez 'active'
+  // tetikleyebiliyor — eşzamanlı taramalar aynı asset'i lastNotifiedAssetId
+  // set edilmeden önce görüp ikisi de bildirim gönderebiliyordu. Tek seferde
+  // bir tarama olmasını garanti ediyoruz.
+  if (backgroundCheckInProgress) return;
+  backgroundCheckInProgress = true;
   try {
     const permission = await MediaLibrary.getPermissionsAsync();
     if (!permission.granted) return;
@@ -156,10 +191,15 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
     // Bu, en iyi çaba ile çalışan arka plan taraması — izin durumu tutarsız
     // olsa veya galeri erişimi anlık olarak başarısız olsa bile kullanıcıyı
     // hiçbir şekilde rahatsız etmemeli (kırmızı hata ekranı dahil).
+  } finally {
+    backgroundCheckInProgress = false;
   }
 }
 
 async function notifySuggestion(): Promise<void> {
+  const now = Date.now();
+  if (now - lastNotifiedAt < NOTIFICATION_DEBOUNCE_MS) return;
+  lastNotifiedAt = now;
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('screenshot-suggestions', {
       name: 'Ekran görüntüsü önerileri',
