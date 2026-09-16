@@ -65,6 +65,7 @@
           ]
         }
       ],
+      "@bacons/apple-targets",
       "./plugins/withAdjustNothingKeyboard"
     ],
     "ios": {
