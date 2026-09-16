@@ -6,7 +6,6 @@ import type { PurchasesPackage } from 'react-native-purchases';
 import { Button } from '../src/components/Button';
 import {
   getCurrentOffering,
-  getLastOfferingError,
   isRevenueCatConfigured,
   purchasePackage,
   restorePurchases,
@@ -171,10 +170,7 @@ export default function PremiumScreen() {
                 <Text style={styles.disclosure}>{t('premium.disclosure')}</Text>
               </>
             ) : (
-              <>
-                <Text style={styles.hint}>{t('premium.offeringUnavailable')}</Text>
-                <Text style={styles.devNotice}>debug: {getLastOfferingError() ?? 'no error captured'}</Text>
-              </>
+              <Text style={styles.hint}>{t('premium.offeringUnavailable')}</Text>
             )}
           </View>
 
