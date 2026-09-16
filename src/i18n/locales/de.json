@@ -46,7 +46,8 @@
     "overdueSectionTitle": "Überfällig ({{count}})",
     "emptyTitle": "Gerade nichts zu verfolgen",
     "emptySubtitle": "Füge ein Versprechen, eine Aufgabe oder etwas, worauf du wartest, hinzu.",
-    "notificationsA11y": "Benachrichtigungen"
+    "notificationsA11y": "Benachrichtigungen",
+    "proBadge": "PRO"
   },
   "takipler": {
     "filterOpen": "Offen",

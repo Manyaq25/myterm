@@ -46,7 +46,8 @@
     "overdueSectionTitle": "已逾期（{{count}}）",
     "emptyTitle": "目前没有需要跟进的事项",
     "emptySubtitle": "添加一个承诺、任务或你正在等待的事情，开始使用吧。",
-    "notificationsA11y": "通知"
+    "notificationsA11y": "通知",
+    "proBadge": "PRO"
   },
   "takipler": {
     "filterOpen": "进行中",

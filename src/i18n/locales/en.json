@@ -46,7 +46,8 @@
     "overdueSectionTitle": "Overdue ({{count}})",
     "emptyTitle": "Nothing to follow up on right now",
     "emptySubtitle": "Start by adding a promise, a task, or something you're waiting on.",
-    "notificationsA11y": "Notifications"
+    "notificationsA11y": "Notifications",
+    "proBadge": "PRO"
   },
   "takipler": {
     "filterOpen": "Open",

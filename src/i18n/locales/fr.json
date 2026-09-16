@@ -46,7 +46,8 @@
     "overdueSectionTitle": "En retard ({{count}})",
     "emptyTitle": "Rien à suivre pour le moment",
     "emptySubtitle": "Commencez par ajouter une promesse, une tâche ou quelque chose que vous attendez.",
-    "notificationsA11y": "Notifications"
+    "notificationsA11y": "Notifications",
+    "proBadge": "PRO"
   },
   "takipler": {
     "filterOpen": "Ouvert",

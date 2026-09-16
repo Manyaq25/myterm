@@ -46,7 +46,8 @@
     "overdueSectionTitle": "متأخر ({{count}})",
     "emptyTitle": "لا يوجد شيء لمتابعته الآن",
     "emptySubtitle": "ابدأ بإضافة وعد أو مهمة أو شيء تنتظره.",
-    "notificationsA11y": "الإشعارات"
+    "notificationsA11y": "الإشعارات",
+    "proBadge": "PRO"
   },
   "takipler": {
     "filterOpen": "مفتوح",

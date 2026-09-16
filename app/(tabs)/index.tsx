@@ -17,6 +17,7 @@ import { completeFollowUp, removeFollowUp } from '../../src/services/followUpAct
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
 import { useTheme, fontFamily, fontSize, letterSpacing, type ThemeColors } from '../../src/theme';
 import { isOnboardingSeen, markOnboardingSeen } from '../../src/services/onboarding';
+import { useIsPremium } from '../../src/services/subscription';
 import { updateWidgetSummary } from '../../src/services/widget';
 import {
   acceptLateSuggestion,
@@ -31,6 +32,7 @@ export default function HomeScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
   const { t, i18n } = useTranslation();
+  const isPremium = useIsPremium();
   const [items, setItems] = useState<FollowUpWithPerson[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [suggestion, setSuggestion] = useState<LatePersonSuggestion | null>(null);
@@ -116,9 +118,16 @@ export default function HomeScreen() {
         <View style={styles.header}>
           <View style={styles.headerRow}>
             <View style={styles.headerLeft}>
-              <View style={styles.dateBadge}>
-                <View style={styles.dateBadgeDot} />
-                <Text style={styles.dateBadgeText}>{todayLabel}</Text>
+              <View style={styles.badgeRow}>
+                <View style={styles.dateBadge}>
+                  <View style={styles.dateBadgeDot} />
+                  <Text style={styles.dateBadgeText}>{todayLabel}</Text>
+                </View>
+                {isPremium && (
+                  <View style={styles.proBadge}>
+                    <Text style={styles.proBadgeText}>{t('home.proBadge')}</Text>
+                  </View>
+                )}
               </View>
               <Text style={styles.title}>{t('tabs.homeHeaderTitle')}</Text>
             </View>
@@ -266,6 +275,7 @@ function getStyles(colors: ThemeColors) {
       borderWidth: 1.5,
       borderColor: colors.bgWashTop,
     },
+    badgeRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginBottom: 6 },
     dateBadge: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -275,9 +285,20 @@ function getStyles(colors: ThemeColors) {
       paddingHorizontal: 10,
       paddingVertical: 4,
       borderRadius: 999,
-      marginBottom: 6,
     },
     dateBadgeDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.primaryText },
+    proBadge: {
+      backgroundColor: colors.gold,
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+      borderRadius: 999,
+    },
+    proBadgeText: {
+      fontSize: fontSize.caption,
+      fontFamily: fontFamily.bodyBold,
+      color: '#132228',
+      letterSpacing: letterSpacing.label,
+    },
     dateBadgeText: {
       fontSize: fontSize.caption,
       fontFamily: fontFamily.label,

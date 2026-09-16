@@ -46,7 +46,8 @@
     "overdueSectionTitle": "期限切れ（{{count}}）",
     "emptyTitle": "今のところフォローアップする項目はありません",
     "emptySubtitle": "約束、タスク、または待っていることを追加してみましょう。",
-    "notificationsA11y": "通知"
+    "notificationsA11y": "通知",
+    "proBadge": "PRO"
   },
   "takipler": {
     "filterOpen": "未完了",

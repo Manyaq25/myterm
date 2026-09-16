@@ -46,7 +46,8 @@
     "overdueSectionTitle": "Gecikenler ({{count}})",
     "emptyTitle": "Şu an takip edilecek bir şey yok",
     "emptySubtitle": "Bir söz, bir görev veya beklediğin bir şey ekleyerek başla.",
-    "notificationsA11y": "Bildirimler"
+    "notificationsA11y": "Bildirimler",
+    "proBadge": "PRO"
   },
   "takipler": {
     "filterOpen": "Açık",

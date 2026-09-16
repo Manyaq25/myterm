@@ -46,7 +46,8 @@
     "overdueSectionTitle": "Просрочено ({{count}})",
     "emptyTitle": "Пока нечего отслеживать",
     "emptySubtitle": "Начните с добавления обещания, задачи или того, чего вы ждёте.",
-    "notificationsA11y": "Уведомления"
+    "notificationsA11y": "Уведомления",
+    "proBadge": "PRO"
   },
   "takipler": {
     "filterOpen": "Открыто",
