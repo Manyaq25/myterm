@@ -60,10 +60,11 @@
           "photosPermission": "Ekran görüntünü bulup takip maddesine çevirmek için galerine erişim gerekiyor.",
           "savePhotosPermission": "Bu uygulama galerine fotoğraf kaydetmiyor.",
           "isAccessMediaLocationEnabled": false,
-          "granularPermissions": ["photo"]
+          "granularPermissions": [
+            "photo"
+          ]
         }
       ],
-      "@bacons/apple-targets",
       "./plugins/withAdjustNothingKeyboard"
     ],
     "ios": {
@@ -71,10 +72,16 @@
       "bundleIdentifier": "com.manyaq25.benimyerimetakipet",
       "appleTeamId": "G2T885G2XY",
       "entitlements": {
-        "com.apple.security.application-groups": ["group.com.manyaq25.benimyerimetakipet"]
+        "com.apple.security.application-groups": [
+          "group.com.manyaq25.benimyerimetakipet"
+        ]
       },
       "infoPlist": {
-        "LSApplicationQueriesSchemes": ["whatsapp", "tg"]
+        "LSApplicationQueriesSchemes": [
+          "whatsapp",
+          "tg"
+        ],
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -88,14 +95,50 @@
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "android.permission.USE_BIOMETRIC",
-        "android.permission.USE_FINGERPRINT"
+        "android.permission.USE_FINGERPRINT",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+        "android.permission.READ_MEDIA_IMAGES"
       ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "router": {}
-    }
+      "router": {},
+      "eas": {
+        "build": {
+          "experimental": {
+            "ios": {
+              "appExtensions": [
+                {
+                  "bundleIdentifier": "com.manyaq25.benimyerimetakipet.widget",
+                  "targetName": "TakipWidget",
+                  "entitlements": {
+                    "com.apple.security.application-groups": [
+                      "group.com.manyaq25.benimyerimetakipet"
+                    ]
+                  }
+                },
+                {
+                  "bundleIdentifier": "com.manyaq25.benimyerimetakipet.app-intent",
+                  "targetName": "TakipSiri",
+                  "entitlements": {
+                    "com.apple.security.application-groups": [
+                      "group.com.manyaq25.benimyerimetakipet"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "projectId": "db715a1a-2a9d-4096-888e-7f9c672e1b40"
+      }
+    },
+    "owner": "aydinapp"
   }
 }
