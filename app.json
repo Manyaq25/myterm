@@ -68,7 +68,6 @@
           ]
         }
       ],
-      "@bacons/apple-targets",
       "./plugins/withAdjustNothingKeyboard"
     ],
     "ios": {
@@ -114,32 +113,6 @@
     "extra": {
       "router": {},
       "eas": {
-        "build": {
-          "experimental": {
-            "ios": {
-              "appExtensions": [
-                {
-                  "bundleIdentifier": "com.manyaq25.benimyerimetakipet.widget",
-                  "targetName": "TakipWidget",
-                  "entitlements": {
-                    "com.apple.security.application-groups": [
-                      "group.com.manyaq25.benimyerimetakipet"
-                    ]
-                  }
-                },
-                {
-                  "bundleIdentifier": "com.manyaq25.benimyerimetakipet.app-intent",
-                  "targetName": "TakipSiri",
-                  "entitlements": {
-                    "com.apple.security.application-groups": [
-                      "group.com.manyaq25.benimyerimetakipet"
-                    ]
-                  }
-                }
-              ]
-            }
-          }
-        },
         "projectId": "db715a1a-2a9d-4096-888e-7f9c672e1b40"
       }
     },
