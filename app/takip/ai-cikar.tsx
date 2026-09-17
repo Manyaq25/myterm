@@ -314,6 +314,49 @@ export default function AiCikarScreen() {
     }
   }
 
+  async function handlePickPdf() {
+    setError(null);
+    const result = await DocumentPicker.getDocumentAsync({
+      type: 'application/pdf',
+      copyToCacheDirectory: true,
+    });
+    if (result.canceled || !result.assets[0]) return;
+    const asset = result.assets[0];
+    setPdfLoading(true);
+    setCandidates(null);
+    try {
+      const base64 = await FileSystem.readAsStringAsync(asset.uri, { encoding: 'base64' });
+      if (base64.length > MAX_PDF_BASE64_LENGTH) {
+        setError('Belge çok büyük. Daha küçük bir PDF dener misin?');
+        setPdfName(null);
+        setPdfBase64(null);
+        return;
+      }
+      setPdfName(asset.name);
+      setPdfBase64(base64);
+    } catch (e) {
+      setError('Belge okunamadı.');
+    } finally {
+      setPdfLoading(false);
+    }
+  }
+
+  async function handleExtractPdf() {
+    if (!pdfBase64 || loading) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const results = await aiProvider.extractFollowUpsFromPdf(pdfBase64);
+      setCandidates(toCandidates(results));
+      setCandidateSource('pdf');
+      setTranscript(null);
+    } catch (e) {
+      setError('Belge analizi başarısız oldu. Lütfen tekrar dene.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   function toggleCandidate(index: number) {
     setCandidates((prev) =>
       prev ? prev.map((c, i) => (i === index ? { ...c, selected: !c.selected } : c)) : prev
@@ -514,6 +557,12 @@ export default function AiCikarScreen() {
               {t('aiCikar.modePdf')}
             </Text>
           </Pressable>
+          <Pressable
+            style={[styles.modeTab, mode === 'pdf' && styles.modeTabActive]}
+            onPress={() => setMode('pdf')}
+          >
+            <Text style={[styles.modeTabText, mode === 'pdf' && styles.modeTabTextActive]}>Belge</Text>
+          </Pressable>
         </View>
 
         {mode === 'text' && (
@@ -686,6 +735,36 @@ export default function AiCikarScreen() {
                 <Text style={styles.pickImageButtonText}>{t('aiCikar.pickPdf')}</Text>
               </Pressable>
             )}
+          </>
+        )}
+
+        {mode === 'pdf' && (
+          <>
+            <Text style={styles.label}>Bir PDF belgesi seç</Text>
+            {pdfLoading ? (
+              <View style={styles.recordBox}>
+                <ActivityIndicator />
+                <Text style={styles.hint}>Belge yükleniyor…</Text>
+              </View>
+            ) : pdfName ? (
+              <View style={styles.imagePreviewBox}>
+                <Text style={styles.pdfNameText}>📄 {pdfName}</Text>
+                <Pressable style={styles.secondaryButton} onPress={handlePickPdf} disabled={loading}>
+                  <Text style={styles.secondaryButtonText}>Başka bir belge seç</Text>
+                </Pressable>
+              </View>
+            ) : (
+              <Pressable style={styles.pickImageButton} onPress={handlePickPdf} disabled={loading}>
+                <Text style={styles.pickImageButtonText}>📄 PDF seç</Text>
+              </Pressable>
+            )}
+            <Pressable
+              style={[styles.extractButton, (!pdfBase64 || loading) && styles.buttonDisabled]}
+              onPress={handleExtractPdf}
+              disabled={!pdfBase64 || loading}
+            >
+              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
+            </Pressable>
           </>
         )}
 

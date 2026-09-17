@@ -157,6 +157,34 @@ export async function extractFollowUpsFromPdf(
   return extractToolResult(response);
 }
 
+export async function extractFollowUpsFromPdf(
+  client: Anthropic,
+  model: string,
+  base64Pdf: string
+): Promise<ExtractedCandidate[]> {
+  const nowISO = new Date().toISOString();
+
+  const response = await client.messages.create({
+    model,
+    max_tokens: 2048,
+    output_config: { effort: 'high' },
+    system: buildSystemPrompt(nowISO, PDF_NOTE),
+    tools: [EXTRACT_TOOL],
+    tool_choice: { type: 'tool', name: 'record_follow_ups' },
+    messages: [
+      {
+        role: 'user',
+        content: [
+          { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64Pdf } },
+          { type: 'text', text: 'Bu belgedeki takip edilmesi gereken maddeleri çıkar.' },
+        ],
+      },
+    ],
+  });
+
+  return extractToolResult(response);
+}
+
 export type ImageMediaType = 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif';
 
 export async function extractFollowUpsFromImage(
