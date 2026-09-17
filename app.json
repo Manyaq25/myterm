@@ -72,7 +72,7 @@
       "./plugins/withAdjustNothingKeyboard"
     ],
     "ios": {
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.manyaq25.benimyerimetakipet",
       "appleTeamId": "G2T885G2XY",
       "entitlements": {
