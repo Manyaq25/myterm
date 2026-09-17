@@ -99,7 +99,17 @@ Yanıt: `{ "answer": "..." }`.
 ## Ortam değişkenleri
 
 `.env.example` dosyasına bak. `ANTHROPIC_API_KEY` zorunlu. `OPENAI_API_KEY`
-yalnızca `/api/transcribe` için gerekli.
+yalnızca `/api/transcribe` için gerekli. `APP_SHARED_SECRET`'i üretimde
+mutlaka ayarla — bkz. `.env.example`'daki uyarı.
+
+## Kötüye kullanım koruması
+
+Her uç nokta, IP başına dakikada ~20 isteği aşan istemcileri `429` ile
+reddeden basit, bellek-içi bir hız sınırlayıcı kullanıyor (`lib/rateLimit.ts`).
+Bu best-effort bir koruma: serverless fonksiyon birden fazla instance'a
+ölçeklenirse her biri kendi sayacına sahip olur ve cold start'ta sıfırlanır.
+Kalıcı/dağıtık bir sınırlama gerekiyorsa (ör. Upstash Redis ile) bu dosya
+değiştirilerek eklenebilir.
 
 ## Yerel test
 

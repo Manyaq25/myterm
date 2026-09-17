@@ -1,6 +1,8 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 import { listFollowUps } from '../db/queries';
-import { FOLLOW_UP_STATUS_LABELS, FOLLOW_UP_TYPE_LABELS, type FollowUpWithPerson } from '../types';
+import type { FollowUpWithPerson } from '../types';
+import { followUpStatusLabel, followUpTypeLabel } from '../i18n/labels';
+import i18n from '../i18n';
 
 const ALL_STATUSES = ['open', 'snoozed', 'done', 'cancelled'] as const;
 // Asistana gönderilen bağlamı makul boyutta tutmak için üst sınır.
@@ -8,9 +10,9 @@ const MAX_ITEMS = 300;
 
 function formatLine(item: FollowUpWithPerson): string {
   const parts = [
-    `[${FOLLOW_UP_TYPE_LABELS[item.type]}] ${item.title}`,
+    `[${followUpTypeLabel(item.type, i18n.t)}] ${item.title}`,
     `Kişi: ${item.personName ?? 'yok'}`,
-    `Durum: ${FOLLOW_UP_STATUS_LABELS[item.status]}`,
+    `Durum: ${followUpStatusLabel(item.status, i18n.t)}`,
     `Son tarih: ${item.dueAt !== null ? new Date(item.dueAt).toISOString() : 'yok'}`,
   ];
   if (item.status === 'done' && item.completedAt !== null) {

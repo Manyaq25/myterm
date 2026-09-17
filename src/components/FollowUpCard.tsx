@@ -1,12 +1,16 @@
-import { useRef, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useMemo, useRef, useState } from 'react';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { Swipeable } from 'react-native-gesture-handler';
+import { Clock } from 'lucide-react-native';
 import type { FollowUpWithPerson } from '../types';
-import { FOLLOW_UP_TYPE_LABELS } from '../types';
 import { formatDueDate, isOverdue } from '../utils/date';
-import { TYPE_COLORS } from '../constants/typeColors';
-import { CARD_MARGIN_BOTTOM, CARD_SURFACE } from '../constants/cardStyle';
+import { CARD_MARGIN_BOTTOM, getCardSurface } from '../constants/cardStyle';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
+import { followUpTypeLabel } from '../i18n/labels';
+import { TypeBadge } from './TypeBadge';
+import { Avatar } from './Avatar';
 
 interface Props {
   item: FollowUpWithPerson;
@@ -18,7 +22,10 @@ interface Props {
 }
 
 export function FollowUpCard({ item, onComplete, onDelete, selectionMode, selected, onToggleSelect }: Props) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const router = useRouter();
+  const { t } = useTranslation();
   const swipeableRef = useRef<Swipeable>(null);
   // react-native-gesture-handler'ın Swipeable'ı, satırın yüksekliğini bir kez
   // ölçüp önbelleğe alıyor; çok satırlı başlıklarda metin sarmalanması geç
@@ -29,18 +36,79 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
   const overdue = isOverdue(item.dueAt) && item.status === 'open';
   const canComplete = onComplete && (item.status === 'open' || item.status === 'snoozed');
 
+  const accessibilityLabel = [
+    followUpTypeLabel(item.type, t),
+    item.title,
+    item.personName ? t('followUpCard.personLabel', { name: item.personName }) : null,
+    item.dueAt !== null
+      ? overdue
+        ? t('followUpCard.overdueLabel', { date: formatDueDate(item.dueAt) })
+        : t('followUpCard.dueLabel', { date: formatDueDate(item.dueAt) })
+      : null,
+  ]
+    .filter(Boolean)
+    .join('. ');
+
+  // VoiceOver kullanıcıları Swipeable'ın kaydırma jestini kolayca
+  // keşfedemeyebilir/gerçekleştiremeyebilir — aynı aksiyonları özel
+  // erişilebilirlik eylemleri (rotor) olarak da sunuyoruz.
+  const accessibilityActions = [
+    ...(canComplete ? [{ name: 'complete', label: t('followUpCard.completeA11y') }] : []),
+    ...(onDelete ? [{ name: 'delete', label: t('common.delete') }] : []),
+  ];
+
+  function handleAccessibilityAction(event: { nativeEvent: { actionName: string } }) {
+    if (event.nativeEvent.actionName === 'complete') onComplete?.();
+    if (event.nativeEvent.actionName === 'delete') onDelete?.();
+  }
+
+  function handleMorePress() {
+    Alert.alert(item.title, undefined, [
+      ...(canComplete ? [{ text: t('followUpCard.completeA11y'), onPress: onComplete }] : []),
+      ...(onDelete ? [{ text: t('common.delete') as string, style: 'destructive' as const, onPress: onDelete }] : []),
+      { text: t('common.cancelShort'), style: 'cancel' as const },
+    ]);
+  }
+
   const cardBody = (
     <>
       <View style={styles.headerRow}>
-        <View style={[styles.badge, { backgroundColor: TYPE_COLORS[item.type] ?? '#666' }]}>
-          <Text style={styles.badgeText}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
-        </View>
-        {item.dueAt !== null && (
-          <Text style={[styles.due, overdue && styles.dueOverdue]}>{formatDueDate(item.dueAt)}</Text>
+        <Text style={styles.title} numberOfLines={2}>
+          {item.title}
+        </Text>
+        {!selectionMode && (canComplete || onDelete) && (
+          <Pressable
+            onPress={handleMorePress}
+            hitSlop={10}
+            accessibilityRole="button"
+            accessibilityLabel={t('followUpCard.moreActionsA11y')}
+          >
+            <Text style={styles.moreDots}>⋯</Text>
+          </Pressable>
         )}
       </View>
-      <Text style={styles.title}>{item.title}</Text>
-      {item.personName && <Text style={styles.person}>👤 {item.personName}</Text>}
+      {item.personName && (
+        <View style={styles.personRow}>
+          <Avatar name={item.personName} size={22} />
+          <Text style={styles.person}>{item.personName}</Text>
+        </View>
+      )}
+      {item.detail && (
+        <Text style={styles.detail} numberOfLines={2}>
+          {item.detail}
+        </Text>
+      )}
+      <View style={styles.footerRow}>
+        <View style={styles.footerLeft}>
+          {item.dueAt !== null && (
+            <View style={styles.dueRow}>
+              <Clock color={overdue ? colors.danger : colors.textMuted} size={13} strokeWidth={2.2} />
+              <Text style={[styles.due, overdue && styles.dueOverdue]}>{formatDueDate(item.dueAt)}</Text>
+            </View>
+          )}
+        </View>
+        <TypeBadge type={item.type} />
+      </View>
     </>
   );
 
@@ -49,6 +117,12 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
       style={[styles.card, overdue && styles.cardOverdue]}
       onLayout={(e) => setCardHeight(e.nativeEvent.layout.height)}
       onPress={() => (selectionMode ? onToggleSelect?.() : router.push(`/takip/${item.id}`))}
+      accessibilityRole={selectionMode ? 'checkbox' : 'button'}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint={selectionMode ? undefined : t('followUpCard.detailsHint')}
+      accessibilityState={selectionMode ? { checked: !!selected } : undefined}
+      accessibilityActions={selectionMode ? undefined : accessibilityActions}
+      onAccessibilityAction={selectionMode ? undefined : handleAccessibilityAction}
     >
       {selectionMode ? (
         <View style={styles.selectableRow}>
@@ -83,8 +157,10 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
                       swipeableRef.current?.close();
                       onComplete?.();
                     }}
+                    accessibilityRole="button"
+                    accessibilityLabel={t('followUpCard.completeA11y')}
                   >
-                    <Text style={styles.actionText}>✓ Tamamlandı</Text>
+                    <Text style={styles.actionText}>{t('followUpCard.completeSwipe')}</Text>
                   </Pressable>
                 </View>
               )
@@ -100,8 +176,10 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
                       swipeableRef.current?.close();
                       onDelete?.();
                     }}
+                    accessibilityRole="button"
+                    accessibilityLabel={t('common.delete')}
                   >
-                    <Text style={styles.actionText}>Sil</Text>
+                    <Text style={styles.actionText}>{t('common.delete')}</Text>
                   </Pressable>
                 </View>
               )
@@ -114,79 +192,97 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
   );
 }
 
-const styles = StyleSheet.create({
-  wrapper: { marginBottom: CARD_MARGIN_BOTTOM },
-  card: {
-    ...CARD_SURFACE,
-  },
-  cardOverdue: {
-    borderWidth: 1.5,
-    borderColor: '#fca5a5',
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  selectableRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
-  },
-  checkbox: {
-    width: 22,
-    height: 22,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#d1d5db',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 2,
-  },
-  checkboxChecked: { backgroundColor: '#2563eb', borderColor: '#2563eb' },
-  checkboxMark: { color: '#fff', fontSize: 14, fontWeight: '700' },
-  badge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 999,
-  },
-  badgeText: {
-    color: '#fff',
-    fontSize: 11,
-    fontWeight: '700',
-  },
-  due: {
-    fontSize: 12,
-    color: '#9ca3af',
-    fontWeight: '600',
-  },
-  dueOverdue: {
-    color: '#dc2626',
-    fontWeight: '700',
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#111827',
-    lineHeight: 22,
-  },
-  person: {
-    fontSize: 13,
-    color: '#6b7280',
-    marginTop: 6,
-  },
-  actionContainer: {
-    width: 96,
-    overflow: 'hidden',
-  },
-  action: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 16,
-  },
-  completeAction: { backgroundColor: '#16a34a', marginRight: 10 },
-  deleteAction: { backgroundColor: '#dc2626', marginLeft: 10 },
-  actionText: { color: '#fff', fontSize: 13, fontWeight: '700' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    wrapper: { marginBottom: CARD_MARGIN_BOTTOM },
+    card: {
+      ...getCardSurface(colors),
+    },
+    cardOverdue: {
+      borderWidth: 1.5,
+      borderColor: colors.danger,
+    },
+    headerRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      gap: 8,
+    },
+    moreDots: {
+      fontSize: 20,
+      lineHeight: 20,
+      color: colors.textMuted,
+      fontFamily: fontFamily.bodyBold,
+      paddingHorizontal: 2,
+    },
+    footerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 10,
+      paddingTop: 10,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+    },
+    footerLeft: { flex: 1 },
+    dueRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+    personRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6 },
+    selectableRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 12,
+    },
+    checkbox: {
+      width: 22,
+      height: 22,
+      borderRadius: 6,
+      borderWidth: 2,
+      borderColor: colors.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 2,
+    },
+    checkboxChecked: { backgroundColor: colors.primary, borderColor: colors.primary },
+    checkboxMark: { color: colors.onPrimary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
+    due: {
+      fontSize: fontSize.caption,
+      color: colors.textMuted,
+      fontFamily: fontFamily.bodySemiBold,
+    },
+    dueOverdue: {
+      color: colors.danger,
+      fontFamily: fontFamily.bodyBold,
+    },
+    title: {
+      flex: 1,
+      fontSize: fontSize.subtitle,
+      fontFamily: fontFamily.displaySemiBold,
+      color: colors.text,
+      lineHeight: 22,
+    },
+    person: {
+      fontSize: fontSize.small,
+      color: colors.text,
+      fontFamily: fontFamily.bodySemiBold,
+    },
+    detail: {
+      fontSize: fontSize.small,
+      color: colors.textMuted,
+      marginTop: 6,
+      lineHeight: 19,
+      fontFamily: fontFamily.body,
+    },
+    actionContainer: {
+      width: 96,
+      overflow: 'hidden',
+    },
+    action: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 16,
+    },
+    completeAction: { backgroundColor: colors.success, marginRight: 10 },
+    deleteAction: { backgroundColor: colors.danger, marginLeft: 10 },
+    actionText: { color: colors.onPrimary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
+  });
+}

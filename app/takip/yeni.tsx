@@ -1,30 +1,36 @@
-import { useState } from 'react';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { useMemo, useState } from 'react';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ArrowLeft, Check } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useKeyboardHeight } from '../../src/hooks/useKeyboardHeight';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
-import { FOLLOW_UP_TYPE_LABELS, type FollowUpType } from '../../src/types';
+import { FOLLOW_UP_TYPES, type FollowUpType } from '../../src/types';
+import { followUpTypeLabel } from '../../src/i18n/labels';
 import { applyReminderLead } from '../../src/utils/date';
 import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
 import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
 import { updateWidgetSummary } from '../../src/services/widget';
-
-const TYPES = Object.keys(FOLLOW_UP_TYPE_LABELS) as FollowUpType[];
+import { useIsPremium } from '../../src/services/subscription';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Button } from '../../src/components/Button';
+import { TextField } from '../../src/components/TextField';
+import { GradientBackground } from '../../src/components/GradientBackground';
+import { useTheme, hexToRgba, fontFamily, fontSize, letterSpacing, type ThemeColors } from '../../src/theme';
 
 export default function YeniTakipScreen() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const router = useRouter();
+  const { t, i18n } = useTranslation();
+  const insets = useSafeAreaInsets();
+  const keyboardHeight = useKeyboardHeight();
+  const isPremium = useIsPremium();
 
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
@@ -32,6 +38,7 @@ export default function YeniTakipScreen() {
   const [personName, setPersonName] = useState('');
   const [dueAt, setDueAt] = useState<Date | null>(null);
   const [showPicker, setShowPicker] = useState(false);
+  const [androidPickerStage, setAndroidPickerStage] = useState<'date' | 'time' | null>(null);
   const [saving, setSaving] = useState(false);
   const [pendingImportant, setPendingImportant] = useState<{ id: string; title: string; dueAt: number } | null>(
     null
@@ -74,7 +81,7 @@ export default function YeniTakipScreen() {
 
       await updateWidgetSummary(db);
 
-      if (dueAtMs) {
+      if (dueAtMs && isPremium) {
         const important = await isImportantFollowUp(db, { type, dueAt: dueAtMs, personId });
         if (important) {
           setPendingImportant({ id: followUp.id, title: title.trim(), dueAt: dueAtMs });
@@ -96,107 +103,254 @@ export default function YeniTakipScreen() {
     router.back();
   }
 
+  const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
+  const containerProps = Platform.OS === 'ios' ? { behavior: 'padding' as const } : {};
+
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.label}>Ne takip ediyorsun?</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="ör. Ahmet'e teklifi gönder"
+    <GradientBackground>
+      <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <Container style={{ flex: 1 }} {...containerProps}>
+        <View style={styles.header}>
+          <Pressable
+            onPress={() => router.back()}
+            style={styles.backButton}
+            accessibilityRole="button"
+            accessibilityLabel={t('common.back')}
+            hitSlop={8}
+          >
+            <ArrowLeft color={colors.text} size={20} strokeWidth={2.2} />
+          </Pressable>
+          <Text style={styles.headerTitle}>{t('stackTitles.yeniTakip')}</Text>
+          <View style={styles.pulseDot} />
+        </View>
+      <ScrollView
+        contentContainerStyle={[
+          styles.content,
+          Platform.OS === 'android' && { paddingBottom: 60 + insets.bottom + keyboardHeight },
+        ]}
+      >
+        <TextField
+          label={t('yeni.labelTitle')}
+          placeholder={t('yeni.titlePlaceholder')}
           value={title}
           onChangeText={setTitle}
           autoFocus
+          accessibilityLabel={t('yeni.labelTitle')}
         />
 
-        <Text style={styles.label}>Tür</Text>
-        <View style={styles.typeRow}>
-          {TYPES.map((t) => (
-            <Pressable
-              key={t}
-              onPress={() => setType(t)}
-              style={[styles.typeChip, type === t && styles.typeChipActive]}
-            >
-              <Text style={[styles.typeChipText, type === t && styles.typeChipTextActive]}>
-                {FOLLOW_UP_TYPE_LABELS[t]}
-              </Text>
-            </Pressable>
-          ))}
+        <Text style={styles.label} nativeID="label-type">
+          {t('yeni.labelType')}
+        </Text>
+        <View style={styles.typeRow} accessibilityRole="radiogroup" accessibilityLabelledBy="label-type">
+          {FOLLOW_UP_TYPES.map((typeOption) => {
+            const active = type === typeOption;
+            return (
+              <Pressable
+                key={typeOption}
+                onPress={() => setType(typeOption)}
+                accessibilityRole="radio"
+                accessibilityState={{ checked: active }}
+                accessibilityLabel={followUpTypeLabel(typeOption, t)}
+              >
+                {active ? (
+                  <LinearGradient colors={[colors.primary, colors.primaryText]} style={styles.typeChip}>
+                    <View style={styles.typeChipDotActive} />
+                    <Text style={[styles.typeChipText, styles.typeChipTextActive]}>
+                      {followUpTypeLabel(typeOption, t)}
+                    </Text>
+                  </LinearGradient>
+                ) : (
+                  <View style={[styles.typeChip, styles.typeChipInactive]}>
+                    <View style={styles.typeChipDot} />
+                    <Text style={styles.typeChipText}>{followUpTypeLabel(typeOption, t)}</Text>
+                  </View>
+                )}
+              </Pressable>
+            );
+          })}
         </View>
 
-        <Text style={styles.label}>Kiminle ilgili? (opsiyonel)</Text>
-        <TextInput style={styles.input} placeholder="ör. Ahmet" value={personName} onChangeText={setPersonName} />
+        <TextField
+          containerStyle={styles.fieldSpacing}
+          label={t('yeni.labelPerson')}
+          placeholder={t('yeni.personPlaceholder')}
+          value={personName}
+          onChangeText={setPersonName}
+          accessibilityLabel={t('yeni.labelPerson')}
+        />
 
-        <Text style={styles.label}>Not (opsiyonel)</Text>
-        <TextInput
-          style={[styles.input, styles.multiline]}
-          placeholder="Ek detay..."
+        <TextField
+          containerStyle={styles.fieldSpacing}
+          label={t('yeni.labelNote')}
+          placeholder={t('yeni.notePlaceholder')}
           value={detail}
           onChangeText={setDetail}
           multiline
+          accessibilityLabel={t('yeni.labelNote')}
         />
 
-        <Text style={styles.label}>Hatırlatma zamanı (opsiyonel)</Text>
-        <Pressable style={styles.input} onPress={() => setShowPicker(true)}>
-          <Text style={{ color: dueAt ? '#111827' : '#9ca3af' }}>
-            {dueAt ? dueAt.toLocaleString('tr-TR') : 'Tarih ve saat seç'}
+        <Text style={styles.label}>{t('yeni.labelDueAt')}</Text>
+        <Pressable
+          style={styles.dateInputBox}
+          onPress={() => (Platform.OS === 'android' ? setAndroidPickerStage('date') : setShowPicker(true))}
+          accessibilityRole="button"
+          accessibilityLabel={
+            dueAt
+              ? t('yeni.dueAtSetA11y', { date: dueAt.toLocaleString(i18n.language) })
+              : t('yeni.dueAtUnsetA11y')
+          }
+        >
+          <Text style={{ color: dueAt ? colors.text : colors.textMuted }}>
+            {dueAt ? dueAt.toLocaleString(i18n.language) : t('yeni.dueAtPlaceholder')}
           </Text>
         </Pressable>
-        {showPicker && (
+        {Platform.OS === 'ios' && showPicker && (
+          <View>
+            <DateTimePicker
+              value={dueAt ?? new Date()}
+              mode="datetime"
+              display="spinner"
+              locale={i18n.language}
+              onChange={(_, selected) => {
+                if (selected) setDueAt(selected);
+              }}
+            />
+            <Pressable
+              style={styles.datePickerDoneButton}
+              onPress={() => setShowPicker(false)}
+              accessibilityRole="button"
+            >
+              <Text style={styles.datePickerDoneButtonText}>{t('yeni.datePickerDone')}</Text>
+            </Pressable>
+          </View>
+        )}
+        {Platform.OS === 'android' && androidPickerStage === 'date' && (
           <DateTimePicker
             value={dueAt ?? new Date()}
-            mode="datetime"
-            onChange={(_, selected) => {
-              setShowPicker(Platform.OS === 'ios');
-              if (selected) setDueAt(selected);
+            mode="date"
+            onChange={(event, selected) => {
+              setAndroidPickerStage(null);
+              if (event.type !== 'set' || !selected) return;
+              const base = dueAt ?? new Date();
+              const combined = new Date(selected);
+              combined.setHours(base.getHours(), base.getMinutes(), 0, 0);
+              setDueAt(combined);
+              setAndroidPickerStage('time');
+            }}
+          />
+        )}
+        {Platform.OS === 'android' && androidPickerStage === 'time' && (
+          <DateTimePicker
+            value={dueAt ?? new Date()}
+            mode="time"
+            onChange={(event, selected) => {
+              setAndroidPickerStage(null);
+              if (event.type !== 'set' || !selected) return;
+              setDueAt((prev) => {
+                const combined = new Date(prev ?? new Date());
+                combined.setHours(selected.getHours(), selected.getMinutes(), 0, 0);
+                return combined;
+              });
             }}
           />
         )}
 
-        <Pressable
-          style={[styles.saveButton, (!title.trim() || saving) && styles.saveButtonDisabled]}
-          onPress={handleSave}
-          disabled={!title.trim() || saving}
-        >
-          <Text style={styles.saveButtonText}>{saving ? 'Kaydediliyor…' : 'Kaydet'}</Text>
-        </Pressable>
+        <View style={styles.saveButtonWrap}>
+          <Button
+            label={t('common.save')}
+            onPress={handleSave}
+            disabled={!title.trim()}
+            loading={saving}
+            icon={<Check color={colors.onPrimary} size={18} strokeWidth={2.5} />}
+            accessibilityLabel={t('common.save')}
+          />
+        </View>
       </ScrollView>
       <SmartReminderPrompt
         visible={!!pendingImportant}
         title={pendingImportant?.title ?? ''}
         onChoose={handleReminderChoice}
       />
-    </KeyboardAvoidingView>
+      </Container>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
-const styles = StyleSheet.create({
-  content: { padding: 20, paddingBottom: 60 },
-  label: { fontSize: 13, fontWeight: '600', color: '#6b7280', marginTop: 16, marginBottom: 6 },
-  input: {
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 15,
-    backgroundColor: '#fff',
-  },
-  multiline: { minHeight: 80, textAlignVertical: 'top' },
-  typeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  typeChip: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999, backgroundColor: '#e5e7eb' },
-  typeChipActive: { backgroundColor: '#2563eb' },
-  typeChipText: { fontSize: 13, color: '#374151', fontWeight: '600' },
-  typeChipTextActive: { color: '#fff' },
-  saveButton: {
-    marginTop: 28,
-    backgroundColor: '#2563eb',
-    borderRadius: 10,
-    paddingVertical: 14,
-    alignItems: 'center',
-  },
-  saveButtonDisabled: { backgroundColor: '#93c5fd' },
-  saveButtonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    safeArea: { flex: 1 },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 12,
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.glassBorder,
+    },
+    backButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 16,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.glassBg,
+      borderWidth: 1,
+      borderColor: colors.glassBorder,
+    },
+    headerTitle: {
+      flex: 1,
+      fontSize: fontSize.title,
+      fontFamily: fontFamily.bodyBold,
+      color: colors.text,
+      letterSpacing: letterSpacing.title,
+    },
+    pulseDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.success },
+    content: { padding: 20, paddingBottom: 60 },
+    label: {
+      fontSize: fontSize.caption,
+      fontFamily: fontFamily.label,
+      color: hexToRgba(colors.text, 0.7),
+      marginTop: 16,
+      marginBottom: 6,
+      textTransform: 'uppercase',
+      letterSpacing: letterSpacing.label,
+    },
+    fieldSpacing: { marginTop: 16 },
+    dateInputBox: {
+      borderWidth: 1.5,
+      borderColor: colors.border,
+      backgroundColor: hexToRgba(colors.surface, 0.6),
+      borderRadius: 16,
+      paddingHorizontal: 14,
+      paddingVertical: 12,
+    },
+    datePickerDoneButton: {
+      alignSelf: 'flex-end',
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      marginTop: 4,
+    },
+    datePickerDoneButtonText: {
+      color: colors.primary,
+      fontFamily: fontFamily.bodyBold,
+      fontSize: fontSize.button,
+    },
+    typeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+    typeChip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      paddingHorizontal: 14,
+      paddingVertical: 9,
+      borderRadius: 16,
+    },
+    typeChipInactive: { backgroundColor: colors.glassBg, borderWidth: 1, borderColor: colors.glassBorder },
+    typeChipDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: hexToRgba(colors.primary, 0.4) },
+    typeChipDotActive: { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.onPrimary },
+    typeChipText: { fontSize: fontSize.small, color: colors.text, fontFamily: fontFamily.label },
+    typeChipTextActive: { color: colors.onPrimary },
+    saveButtonWrap: { marginTop: 28 },
+  });
+}

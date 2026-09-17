@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Alert, Linking, Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { buildContactLinks } from '../services/contact';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
 
 interface Props {
   phone: string;
@@ -9,15 +11,24 @@ interface Props {
   compact?: boolean;
 }
 
-async function openOrAlert(url: string, failureMessage: string) {
+// Bu bileşenin açtığı tek şeyler iletişim URI'leri — beklenmeyen bir şema
+// (ör. veri bozulması/gelecekteki bir refactor sonucu) sessizce başka bir
+// uygulamayı tetiklemesin diye son bir izin listesi kontrolü.
+const ALLOWED_URI_PREFIXES = ['tel:', 'sms:', 'https://wa.me/', 'whatsapp://', 'tg://'];
+
+async function openOrAlert(url: string, failureMessage: string, errorTitle: string) {
+  if (!ALLOWED_URI_PREFIXES.some((prefix) => url.startsWith(prefix))) return;
   try {
     await Linking.openURL(url);
   } catch {
-    Alert.alert('Hata', failureMessage);
+    Alert.alert(errorTitle, failureMessage);
   }
 }
 
 export function ContactOptions({ phone, message, compact }: Props) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
+  const { t } = useTranslation();
   const [whatsappAvailable, setWhatsappAvailable] = useState(false);
   const [telegramAvailable, setTelegramAvailable] = useState(false);
   const links = buildContactLinks(phone, message);
@@ -42,23 +53,30 @@ export function ContactOptions({ phone, message, compact }: Props) {
     <View style={[styles.row, compact && styles.rowCompact]}>
       <Pressable
         style={[styles.button, compact && styles.buttonCompact]}
-        onPress={() => openOrAlert(links.tel, 'Arama başlatılamadı.')}
+        onPress={() => openOrAlert(links.tel, t('contactOptions.callError'), t('common.error'))}
+        accessibilityRole="button"
+        accessibilityLabel={t('contactOptions.call')}
       >
-        <Ionicons name="call" size={size} color="#2563eb" />
-        {!compact && <Text style={styles.buttonText}>Ara</Text>}
+        <Ionicons name="call" size={size} color={colors.primary} />
+        {!compact && <Text style={styles.buttonText}>{t('contactOptions.call')}</Text>}
       </Pressable>
       <Pressable
         style={[styles.button, compact && styles.buttonCompact]}
-        onPress={() => openOrAlert(links.sms, 'Mesaj uygulaması açılamadı.')}
+        onPress={() => openOrAlert(links.sms, t('contactOptions.messageError'), t('common.error'))}
+        accessibilityRole="button"
+        accessibilityLabel={t('contactOptions.message')}
       >
-        <Ionicons name="chatbubble-ellipses" size={size} color="#2563eb" />
-        {!compact && <Text style={styles.buttonText}>Mesaj</Text>}
+        <Ionicons name="chatbubble-ellipses" size={size} color={colors.primary} />
+        {!compact && <Text style={styles.buttonText}>{t('contactOptions.message')}</Text>}
       </Pressable>
       {whatsappAvailable && (
         <Pressable
           style={[styles.button, styles.whatsappButton, compact && styles.buttonCompact]}
-          onPress={() => openOrAlert(links.whatsapp, 'WhatsApp açılamadı.')}
+          onPress={() => openOrAlert(links.whatsapp, t('contactOptions.whatsappError'), t('common.error'))}
+          accessibilityRole="button"
+          accessibilityLabel={t('contactOptions.whatsappA11y')}
         >
+          {/* WhatsApp brand green — official brand color, left untheme'd on purpose */}
           <FontAwesome5 name="whatsapp" size={size} color="#25D366" />
           {!compact && <Text style={[styles.buttonText, styles.whatsappText]}>WhatsApp</Text>}
         </Pressable>
@@ -66,8 +84,11 @@ export function ContactOptions({ phone, message, compact }: Props) {
       {telegramAvailable && (
         <Pressable
           style={[styles.button, styles.telegramButton, compact && styles.buttonCompact]}
-          onPress={() => openOrAlert(links.telegram, 'Telegram açılamadı.')}
+          onPress={() => openOrAlert(links.telegram, t('contactOptions.telegramError'), t('common.error'))}
+          accessibilityRole="button"
+          accessibilityLabel={t('contactOptions.telegramA11y')}
         >
+          {/* Telegram brand blue — official brand color, left untheme'd on purpose */}
           <FontAwesome5 name="telegram" size={size} color="#229ED9" />
           {!compact && <Text style={[styles.buttonText, styles.telegramText]}>Telegram</Text>}
         </Pressable>
@@ -76,22 +97,24 @@ export function ContactOptions({ phone, message, compact }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  row: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 10 },
-  rowCompact: { gap: 8 },
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: '#eff6ff',
-    borderRadius: 999,
-    paddingHorizontal: 14,
-    paddingVertical: 9,
-  },
-  buttonCompact: { paddingHorizontal: 10, paddingVertical: 6 },
-  buttonText: { color: '#2563eb', fontSize: 13, fontWeight: '700' },
-  whatsappButton: { backgroundColor: '#e8faf0' },
-  whatsappText: { color: '#1a9e52' },
-  telegramButton: { backgroundColor: '#e8f6fd' },
-  telegramText: { color: '#1a86b8' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    row: { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', gap: 10 },
+    rowCompact: { gap: 8 },
+    button: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 999,
+      paddingHorizontal: 14,
+      paddingVertical: 9,
+    },
+    buttonCompact: { paddingHorizontal: 10, paddingVertical: 6 },
+    buttonText: { color: colors.primary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
+    whatsappButton: { backgroundColor: colors.surfaceAlt },
+    whatsappText: { color: colors.success },
+    telegramButton: { backgroundColor: colors.surfaceAlt },
+    telegramText: { color: colors.primary },
+  });
+}

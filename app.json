@@ -1,18 +1,18 @@
 {
   "expo": {
-    "name": "Benim Yerime Takip Et",
+    "name": "Synvia AI",
     "slug": "benim-yerime-takip-et",
     "scheme": "benim-yerime-takip-et",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "runtimeVersion": {
       "policy": "sdkVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/e9b0959d-b211-4b85-8b32-c0f4a2d929e2"
+      "url": "https://u.expo.dev/db715a1a-2a9d-4096-888e-7f9c672e1b40"
     },
     "plugins": [
       "expo-router",
@@ -21,8 +21,21 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/icon.png",
-          "color": "#ffffff"
+          "icon": "./assets/android-icon-monochrome.png",
+          "color": "#00A896"
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 220,
+          "resizeMode": "contain",
+          "backgroundColor": "#C4EADF",
+          "dark": {
+            "image": "./assets/splash-icon-dark.png",
+            "backgroundColor": "#0E1C1A"
+          }
         }
       ],
       [
@@ -50,25 +63,35 @@
           "photosPermission": "Ekran görüntünü bulup takip maddesine çevirmek için galerine erişim gerekiyor.",
           "savePhotosPermission": "Bu uygulama galerine fotoğraf kaydetmiyor.",
           "isAccessMediaLocationEnabled": false,
-          "granularPermissions": ["photo"]
+          "granularPermissions": [
+            "photo"
+          ]
         }
       ],
-      "@bacons/apple-targets"
+      "@bacons/apple-targets",
+      "./plugins/withAdjustNothingKeyboard"
     ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.manyaq25.benimyerimetakipet",
+      "appleTeamId": "G2T885G2XY",
       "entitlements": {
-        "com.apple.security.application-groups": ["group.com.manyaq25.benimyerimetakipet"]
+        "com.apple.security.application-groups": [
+          "group.com.manyaq25.benimyerimetakipet"
+        ]
       },
       "infoPlist": {
-        "LSApplicationQueriesSchemes": ["whatsapp", "tg"]
+        "LSApplicationQueriesSchemes": [
+          "whatsapp",
+          "tg"
+        ],
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
       "package": "com.manyaq25.benimyerimetakipet",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#FFFFFF",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -76,7 +99,13 @@
       "predictiveBackGestureEnabled": false,
       "permissions": [
         "android.permission.USE_BIOMETRIC",
-        "android.permission.USE_FINGERPRINT"
+        "android.permission.USE_FINGERPRINT",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+        "android.permission.READ_MEDIA_IMAGES"
       ]
     },
     "web": {
@@ -85,9 +114,35 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "e9b0959d-b211-4b85-8b32-c0f4a2d929e2"
+        "build": {
+          "experimental": {
+            "ios": {
+              "appExtensions": [
+                {
+                  "bundleIdentifier": "com.manyaq25.benimyerimetakipet.widget",
+                  "targetName": "TakipWidget",
+                  "entitlements": {
+                    "com.apple.security.application-groups": [
+                      "group.com.manyaq25.benimyerimetakipet"
+                    ]
+                  }
+                },
+                {
+                  "bundleIdentifier": "com.manyaq25.benimyerimetakipet.app-intent",
+                  "targetName": "TakipSiri",
+                  "entitlements": {
+                    "com.apple.security.application-groups": [
+                      "group.com.manyaq25.benimyerimetakipet"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "projectId": "db715a1a-2a9d-4096-888e-7f9c672e1b40"
       }
     },
-    "owner": "manyaq-app"
+    "owner": "aydinapp"
   }
 }

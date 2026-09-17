@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -9,11 +9,14 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ArrowLeft, ImagePlus, Mic } from 'lucide-react-native';
+import { useKeyboardHeight } from '../../src/hooks/useKeyboardHeight';
 import {
   RecordingPresets,
   requestRecordingPermissionsAsync,
@@ -26,13 +29,21 @@ import * as MediaLibrary from 'expo-media-library';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
-import { FOLLOW_UP_TYPE_LABELS, type FollowUpSource } from '../../src/types';
+import type { FollowUpSource } from '../../src/types';
+import { followUpTypeLabel } from '../../src/i18n/labels';
 import { aiProvider, isUsingMockAI, type ExtractedFollowUp, type ImageMediaType } from '../../src/ai';
 import { applyReminderLead } from '../../src/utils/date';
 import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
 import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
 import { updateWidgetSummary } from '../../src/services/widget';
+import { AI_USAGE_FREE_LIMIT, getAiUsageCount, hasAiUsageRemaining, incrementAiUsageCount } from '../../src/services/aiUsage';
+import { useIsPremium } from '../../src/services/subscription';
+import { useTheme, hexToRgba, fontFamily, fontSize, letterSpacing, type ThemeColors } from '../../src/theme';
+import { Button } from '../../src/components/Button';
+import { TextField } from '../../src/components/TextField';
+import { GradientBackground } from '../../src/components/GradientBackground';
+import { getCardSurface } from '../../src/constants/cardStyle';
 
 interface Candidate extends ExtractedFollowUp {
   selected: boolean;
@@ -68,8 +79,13 @@ function guessMediaType(filename: string | null | undefined): ImageMediaType {
 }
 
 export default function AiCikarScreen() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
   const router = useRouter();
+  const { t, i18n } = useTranslation();
+  const insets = useSafeAreaInsets();
+  const keyboardHeight = useKeyboardHeight();
   const params = useLocalSearchParams<{ mode?: string; autoScreenshot?: string }>();
 
   const [mode, setMode] = useState<Mode>('text');
@@ -81,6 +97,24 @@ export default function AiCikarScreen() {
   const [transcript, setTranscript] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [importantQueue, setImportantQueue] = useState<{ id: string; title: string; dueAt: number }[]>([]);
+  const isPremium = useIsPremium();
+  const [usageCount, setUsageCount] = useState(0);
+
+  useEffect(() => {
+    getAiUsageCount().then(setUsageCount);
+  }, []);
+
+  async function checkAiUsageGate(): Promise<boolean> {
+    if (isPremium) return true;
+    if (await hasAiUsageRemaining()) return true;
+    setError(t('aiUsage.limitReachedMessage', { limit: AI_USAGE_FREE_LIMIT }));
+    return false;
+  }
+
+  async function consumeAiUsage() {
+    if (isPremium) return;
+    setUsageCount(await incrementAiUsageCount());
+  }
 
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
   const recorderState = useAudioRecorderState(recorder, 200);
@@ -108,15 +142,17 @@ export default function AiCikarScreen() {
 
   async function handleExtractText() {
     if (!text.trim() || loading) return;
+    if (!(await checkAiUsageGate())) return;
     setLoading(true);
     setError(null);
     try {
       const results = await aiProvider.extractFollowUpsFromText(text.trim());
+      await consumeAiUsage();
       setCandidates(toCandidates(results));
       setCandidateSource('text');
       setTranscript(null);
     } catch (e) {
-      setError('Çıkarım başarısız oldu. Lütfen tekrar dene.');
+      setError(t('aiCikar.textError'));
     } finally {
       setLoading(false);
     }
@@ -126,7 +162,7 @@ export default function AiCikarScreen() {
     setError(null);
     const permission = await requestRecordingPermissionsAsync();
     if (!permission.granted) {
-      setError('Kayıt yapmak için mikrofon izni gerekiyor.');
+      setError(t('aiCikar.micPermissionError'));
       return;
     }
     await setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
@@ -144,15 +180,17 @@ export default function AiCikarScreen() {
 
   async function handleExtractVoice() {
     if (!recorder.uri || loading) return;
+    if (!(await checkAiUsageGate())) return;
     setLoading(true);
     setError(null);
     try {
       const result = await aiProvider.transcribeAndExtract(recorder.uri);
+      await consumeAiUsage();
       setTranscript(result.transcript);
       setCandidates(toCandidates(result.candidates));
       setCandidateSource('voice');
     } catch (e) {
-      setError('Deşifre/çıkarım başarısız oldu. Lütfen tekrar dene.');
+      setError(t('aiCikar.voiceError'));
     } finally {
       setLoading(false);
     }
@@ -162,7 +200,7 @@ export default function AiCikarScreen() {
     setError(null);
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permission.granted) {
-      setError('Görsel seçmek için galeri izni gerekiyor.');
+      setError(t('aiCikar.galleryPermissionError'));
       return;
     }
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -184,17 +222,19 @@ export default function AiCikarScreen() {
     try {
       const permission = await MediaLibrary.requestPermissionsAsync();
       if (!permission.granted) {
-        setError('Son ekran görüntünü bulmak için galeri izni gerekiyor.');
+        setError(t('aiCikar.screenshotPermissionError'));
         return;
       }
       const page = await MediaLibrary.getAssetsAsync({
         first: 1,
         mediaType: 'photo',
-        sortBy: [['creationTime', false]],
+        // Android'de ekran görüntülerinin creationTime'ı (kameranın EXIF
+        // tarihine dayanır) genelde boş kalıyor; modificationTime güvenilir.
+        sortBy: [['modificationTime', false]],
       });
       const asset = page.assets[0];
       if (!asset) {
-        setError('Son bir ekran görüntüsü bulunamadı.');
+        setError(t('aiCikar.screenshotNotFound'));
         return;
       }
       const info = await MediaLibrary.getAssetInfoAsync(asset);
@@ -205,7 +245,7 @@ export default function AiCikarScreen() {
       setImageMediaType(guessMediaType(asset.filename));
       setCandidates(null);
     } catch (e) {
-      setError('Ekran görüntüsü yüklenemedi.');
+      setError(t('aiCikar.screenshotLoadError'));
     } finally {
       setImageLoading(false);
     }
@@ -213,15 +253,17 @@ export default function AiCikarScreen() {
 
   async function handleExtractImage() {
     if (!imageBase64 || !imageMediaType || loading) return;
+    if (!(await checkAiUsageGate())) return;
     setLoading(true);
     setError(null);
     try {
       const results = await aiProvider.extractFollowUpsFromImage(imageBase64, imageMediaType);
+      await consumeAiUsage();
       setCandidates(toCandidates(results));
       setCandidateSource('screenshot');
       setTranscript(null);
     } catch (e) {
-      setError('Görsel analizi başarısız oldu. Lütfen tekrar dene.');
+      setError(t('aiCikar.imageError'));
     } finally {
       setLoading(false);
     }
@@ -240,7 +282,7 @@ export default function AiCikarScreen() {
     try {
       const base64 = await FileSystem.readAsStringAsync(asset.uri, { encoding: 'base64' });
       if (base64.length > MAX_PDF_BASE64_LENGTH) {
-        setError('Belge çok büyük. Daha küçük bir PDF dener misin?');
+        setError(t('aiCikar.pdfTooLarge'));
         setPdfName(null);
         setPdfBase64(null);
         return;
@@ -248,7 +290,7 @@ export default function AiCikarScreen() {
       setPdfName(asset.name);
       setPdfBase64(base64);
     } catch (e) {
-      setError('Belge okunamadı.');
+      setError(t('aiCikar.pdfReadError'));
     } finally {
       setPdfLoading(false);
     }
@@ -256,15 +298,17 @@ export default function AiCikarScreen() {
 
   async function handleExtractPdf() {
     if (!pdfBase64 || loading) return;
+    if (!(await checkAiUsageGate())) return;
     setLoading(true);
     setError(null);
     try {
       const results = await aiProvider.extractFollowUpsFromPdf(pdfBase64);
+      await consumeAiUsage();
       setCandidates(toCandidates(results));
       setCandidateSource('pdf');
       setTranscript(null);
     } catch (e) {
-      setError('Belge analizi başarısız oldu. Lütfen tekrar dene.');
+      setError(t('aiCikar.pdfError'));
     } finally {
       setLoading(false);
     }
@@ -314,7 +358,7 @@ export default function AiCikarScreen() {
           await scheduleMainReminder(db, followUp.id, remindAt);
         }
 
-        if (dueAt) {
+        if (dueAt && isPremium) {
           const isImportant = await isImportantFollowUp(db, { type: candidate.type, dueAt, personId });
           if (isImportant) {
             important.push({ id: followUp.id, title: candidate.title, dueAt });
@@ -331,7 +375,7 @@ export default function AiCikarScreen() {
 
       router.back();
     } catch (e) {
-      Alert.alert('Hata', 'Kaydetme sırasında bir sorun oluştu.');
+      Alert.alert(t('common.error'), t('aiCikar.saveError'));
     } finally {
       setSaving(false);
     }
@@ -350,35 +394,125 @@ export default function AiCikarScreen() {
     }
   }
 
+  const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
+  const containerProps = Platform.OS === 'ios' ? { behavior: 'padding' as const } : {};
+
+  const extractHandlers: Record<Mode, () => void> = {
+    text: handleExtractText,
+    voice: handleExtractVoice,
+    image: handleExtractImage,
+    pdf: handleExtractPdf,
+  };
+  const extractDisabled: Record<Mode, boolean> = {
+    text: !text.trim() || loading,
+    voice: !hasRecording || loading,
+    image: !imageBase64 || loading,
+    pdf: !pdfBase64 || loading,
+  };
+
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={styles.content}>
+    <GradientBackground>
+      <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <Container style={{ flex: 1 }} {...containerProps}>
+        <View style={styles.header}>
+          <Pressable
+            onPress={() => router.back()}
+            style={styles.backButton}
+            accessibilityRole="button"
+            accessibilityLabel={t('common.back')}
+            hitSlop={8}
+          >
+            <ArrowLeft color={colors.text} size={20} strokeWidth={2.2} />
+          </Pressable>
+          <View style={styles.headerTitleGroup}>
+            <Image source={require('../../assets/icons/tab-ai-sparkles.png')} style={styles.headerIcon} resizeMode="contain" />
+            <Text style={styles.headerTitle}>{t('stackTitles.aiIleCikar')}</Text>
+          </View>
+          <View style={styles.headerSpacer} />
+        </View>
+      <ScrollView
+        contentContainerStyle={[
+          styles.content,
+          Platform.OS === 'android' && { paddingBottom: 60 + insets.bottom + keyboardHeight },
+        ]}
+      >
         {isUsingMockAI && (
           <View style={styles.mockBanner}>
-            <Text style={styles.mockBannerText}>
-              Test modu: gerçek AI backend'i henüz bağlı değil, sonuçlar sahte (mock) olacak.
-            </Text>
+            <View style={styles.mockBannerIcon}>
+              <Text style={styles.mockBannerIconText}>⚠️</Text>
+            </View>
+            <Text style={styles.mockBannerText}>{t('aiCikar.mockBanner')}</Text>
           </View>
         )}
 
-        <View style={styles.modeRow}>
+        {!isPremium && usageCount >= AI_USAGE_FREE_LIMIT && (
+          <View style={styles.usageLimitBanner}>
+            <Text style={styles.usageLimitText}>{t('aiUsage.limitReachedMessage', { limit: AI_USAGE_FREE_LIMIT })}</Text>
+            <Pressable
+              onPress={() => router.push('/premium')}
+              accessibilityRole="button"
+              accessibilityLabel={t('aiUsage.goPremiumButton')}
+            >
+              <Text style={styles.usageLimitCta}>{t('aiUsage.goPremiumButton')}</Text>
+            </Pressable>
+          </View>
+        )}
+        {!isPremium && usageCount < AI_USAGE_FREE_LIMIT && (
+          <View style={styles.usageRow}>
+            <Text style={styles.usageHint}>
+              {t('aiUsage.remainingHint', { used: usageCount, limit: AI_USAGE_FREE_LIMIT })}
+            </Text>
+            <View style={styles.usagePlanBadge}>
+              <View style={styles.usagePlanDot} />
+              <Text style={styles.usagePlanBadgeText}>{t('premium.freeColumn')}</Text>
+            </View>
+          </View>
+        )}
+
+        <View style={styles.modeRow} accessibilityRole="radiogroup">
           <Pressable
             style={[styles.modeTab, mode === 'text' && styles.modeTabActive]}
             onPress={() => setMode('text')}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: mode === 'text' }}
+            accessibilityLabel={t('aiCikar.modeTextA11y')}
           >
-            <Text style={[styles.modeTabText, mode === 'text' && styles.modeTabTextActive]}>Metin</Text>
+            <Text style={[styles.modeTabText, mode === 'text' && styles.modeTabTextActive]}>
+              {t('aiCikar.modeText')}
+            </Text>
           </Pressable>
           <Pressable
             style={[styles.modeTab, mode === 'voice' && styles.modeTabActive]}
             onPress={() => setMode('voice')}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: mode === 'voice' }}
+            accessibilityLabel={t('aiCikar.modeVoiceA11y')}
           >
-            <Text style={[styles.modeTabText, mode === 'voice' && styles.modeTabTextActive]}>Sesli</Text>
+            <Text style={[styles.modeTabText, mode === 'voice' && styles.modeTabTextActive]}>
+              {t('aiCikar.modeVoice')}
+            </Text>
           </Pressable>
           <Pressable
             style={[styles.modeTab, mode === 'image' && styles.modeTabActive]}
             onPress={() => setMode('image')}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: mode === 'image' }}
+            accessibilityLabel={t('aiCikar.modeImageA11y')}
           >
-            <Text style={[styles.modeTabText, mode === 'image' && styles.modeTabTextActive]}>Görsel</Text>
+            <Text style={[styles.modeTabText, mode === 'image' && styles.modeTabTextActive]}>
+              {t('aiCikar.modeImage')}
+            </Text>
+          </Pressable>
+          <Pressable
+            style={[styles.modeTab, mode === 'pdf' && styles.modeTabActive]}
+            onPress={() => setMode('pdf')}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: mode === 'pdf' }}
+            accessibilityLabel={t('aiCikar.modePdfA11y')}
+          >
+            <Text style={[styles.modeTabText, mode === 'pdf' && styles.modeTabTextActive]}>
+              {t('aiCikar.modePdf')}
+            </Text>
           </Pressable>
           <Pressable
             style={[styles.modeTab, mode === 'pdf' && styles.modeTabActive]}
@@ -390,51 +524,97 @@ export default function AiCikarScreen() {
 
         {mode === 'text' && (
           <>
-            <Text style={styles.label}>Notunu yapıştır veya yaz</Text>
-            <TextInput
-              style={[styles.input, styles.multiline]}
-              placeholder="ör. Ahmete yarın teklifi göndereceğim, ondan da geçen haftaki raporu bekliyorum."
+            <TextField
+              label={t('aiCikar.textLabel')}
+              placeholder={t('aiCikar.textPlaceholder')}
               value={text}
               onChangeText={setText}
               multiline
               editable={!loading}
+              accessibilityLabel={t('aiCikar.textLabel')}
             />
-            <Pressable
-              style={[styles.extractButton, (!text.trim() || loading) && styles.buttonDisabled]}
-              onPress={handleExtractText}
-              disabled={!text.trim() || loading}
-            >
-              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
-            </Pressable>
+            <View style={styles.textFooterBar}>
+              <View style={styles.textFooterBrand}>
+                <Image source={require('../../assets/icons/tab-ai-sparkles.png')} style={styles.textFooterIcon} resizeMode="contain" />
+                <Text style={styles.textFooterBrandText}>{t('aiCikar.engineBrand')}</Text>
+              </View>
+              {!!text && (
+                <Pressable
+                  onPress={() => setText('')}
+                  accessibilityRole="button"
+                  accessibilityLabel={t('aiCikar.clearText')}
+                >
+                  <Text style={styles.textFooterClear}>{t('aiCikar.clearText')}</Text>
+                </Pressable>
+              )}
+            </View>
+            <View style={styles.quickChipsRow}>
+              <Pressable
+                style={styles.quickChip}
+                onPress={() => setMode('voice')}
+                accessibilityRole="button"
+                accessibilityLabel={t('aiCikar.modeVoiceA11y')}
+              >
+                <View style={styles.quickChipIcon}>
+                  <Mic color={colors.primaryText} size={14} strokeWidth={2.2} />
+                </View>
+                <Text style={styles.quickChipText}>{t('aiCikar.quickVoice')}</Text>
+              </Pressable>
+              <Pressable
+                style={styles.quickChip}
+                onPress={() => {
+                  setMode('image');
+                  void handleLoadLastScreenshot();
+                }}
+                accessibilityRole="button"
+                accessibilityLabel={t('aiCikar.quickScreenshot')}
+              >
+                <View style={styles.quickChipIcon}>
+                  <ImagePlus color={colors.primaryText} size={14} strokeWidth={2.2} />
+                </View>
+                <Text style={styles.quickChipText}>{t('aiCikar.quickScreenshot')}</Text>
+              </Pressable>
+            </View>
           </>
         )}
 
         {mode === 'voice' && (
           <>
-            <Text style={styles.label}>Bir ses notu kaydet</Text>
+            <Text style={styles.label}>{t('aiCikar.voiceLabel')}</Text>
             <View style={styles.recordBox}>
-              <Text style={styles.recordTimer}>{formatDuration(recorderState.durationMillis)}</Text>
+              <Text
+                style={styles.recordTimer}
+                accessibilityLabel={t('aiCikar.recordTimerA11y', { duration: formatDuration(recorderState.durationMillis) })}
+              >
+                {formatDuration(recorderState.durationMillis)}
+              </Text>
               {!recorderState.isRecording ? (
-                <Pressable style={styles.recordButton} onPress={handleStartRecording} disabled={loading}>
-                  <Text style={styles.recordButtonText}>{hasRecording ? '● Tekrar kaydet' : '● Kaydı başlat'}</Text>
+                <Pressable
+                  style={styles.recordButton}
+                  onPress={handleStartRecording}
+                  disabled={loading}
+                  accessibilityRole="button"
+                  accessibilityLabel={hasRecording ? t('aiCikar.recordAgainA11y') : t('aiCikar.recordStartA11y')}
+                >
+                  <Text style={styles.recordButtonText}>
+                    {hasRecording ? t('aiCikar.recordAgain') : t('aiCikar.recordStart')}
+                  </Text>
                 </Pressable>
               ) : (
-                <Pressable style={[styles.recordButton, styles.recordButtonStop]} onPress={handleStopRecording}>
-                  <Text style={styles.recordButtonText}>■ Kaydı durdur</Text>
+                <Pressable
+                  style={[styles.recordButton, styles.recordButtonStop]}
+                  onPress={handleStopRecording}
+                  accessibilityRole="button"
+                  accessibilityLabel={t('aiCikar.recordStopA11y')}
+                >
+                  <Text style={styles.recordButtonText}>{t('aiCikar.recordStop')}</Text>
                 </Pressable>
               )}
             </View>
-            <Pressable
-              style={[styles.extractButton, (!hasRecording || loading) && styles.buttonDisabled]}
-              onPress={handleExtractVoice}
-              disabled={!hasRecording || loading}
-            >
-              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
-            </Pressable>
             {transcript !== null && (
               <View style={styles.transcriptBox}>
-                <Text style={styles.transcriptLabel}>Duyulan:</Text>
-                <Text style={styles.transcriptText}>{transcript || '(anlaşılamadı)'}</Text>
+                <Text style={styles.transcriptLabel}>{t('aiCikar.transcriptLabel')}</Text>
+                <Text style={styles.transcriptText}>{transcript || t('aiCikar.transcriptEmpty')}</Text>
               </View>
             )}
           </>
@@ -442,61 +622,76 @@ export default function AiCikarScreen() {
 
         {mode === 'image' && (
           <>
-            <Text style={styles.label}>Bir görsel seç (ekran görüntüsü, fotoğraf)</Text>
+            <Text style={styles.label}>{t('aiCikar.imageLabel')}</Text>
             {imageLoading ? (
               <View style={styles.recordBox}>
                 <ActivityIndicator />
-                <Text style={styles.hint}>Son ekran görüntün yükleniyor…</Text>
+                <Text style={styles.hint}>{t('aiCikar.imageLoadingScreenshot')}</Text>
               </View>
             ) : imagePreviewUri ? (
               <View style={styles.imagePreviewBox}>
-                <Image source={{ uri: imagePreviewUri }} style={styles.imagePreview} resizeMode="contain" />
-                <Pressable style={styles.secondaryButton} onPress={handlePickImage} disabled={loading}>
-                  <Text style={styles.secondaryButtonText}>Başka bir görsel seç</Text>
-                </Pressable>
+                <Image
+                  source={{ uri: imagePreviewUri }}
+                  style={styles.imagePreview}
+                  resizeMode="contain"
+                  accessibilityLabel={t('aiCikar.imagePreviewA11y')}
+                />
+                <View style={styles.secondaryButtonWrap}>
+                  <Button
+                    variant="secondary"
+                    label={t('aiCikar.pickAnotherImage')}
+                    onPress={handlePickImage}
+                    disabled={loading}
+                    accessibilityLabel={t('aiCikar.pickAnotherImage')}
+                  />
+                </View>
               </View>
             ) : (
-              <Pressable style={styles.pickImageButton} onPress={handlePickImage} disabled={loading}>
-                <Text style={styles.pickImageButtonText}>🖼️ Galeriden seç</Text>
+              <Pressable
+                style={styles.pickImageButton}
+                onPress={handlePickImage}
+                disabled={loading}
+                accessibilityRole="button"
+                accessibilityLabel={t('aiCikar.pickImageGalleryA11y')}
+              >
+                <Text style={styles.pickImageButtonText}>{t('aiCikar.pickImageGallery')}</Text>
               </Pressable>
             )}
-            <Pressable
-              style={[styles.extractButton, (!imageBase64 || loading) && styles.buttonDisabled]}
-              onPress={handleExtractImage}
-              disabled={!imageBase64 || loading}
-            >
-              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
-            </Pressable>
           </>
         )}
 
         {mode === 'pdf' && (
           <>
-            <Text style={styles.label}>Bir PDF belgesi seç</Text>
+            <Text style={styles.label}>{t('aiCikar.pdfLabel')}</Text>
             {pdfLoading ? (
               <View style={styles.recordBox}>
                 <ActivityIndicator />
-                <Text style={styles.hint}>Belge yükleniyor…</Text>
+                <Text style={styles.hint}>{t('aiCikar.pdfLoadingText')}</Text>
               </View>
             ) : pdfName ? (
               <View style={styles.imagePreviewBox}>
                 <Text style={styles.pdfNameText}>📄 {pdfName}</Text>
-                <Pressable style={styles.secondaryButton} onPress={handlePickPdf} disabled={loading}>
-                  <Text style={styles.secondaryButtonText}>Başka bir belge seç</Text>
-                </Pressable>
+                <View style={styles.secondaryButtonWrap}>
+                  <Button
+                    variant="secondary"
+                    label={t('aiCikar.pickAnotherPdf')}
+                    onPress={handlePickPdf}
+                    disabled={loading}
+                    accessibilityLabel={t('aiCikar.pickAnotherPdf')}
+                  />
+                </View>
               </View>
             ) : (
-              <Pressable style={styles.pickImageButton} onPress={handlePickPdf} disabled={loading}>
-                <Text style={styles.pickImageButtonText}>📄 PDF seç</Text>
+              <Pressable
+                style={styles.pickImageButton}
+                onPress={handlePickPdf}
+                disabled={loading}
+                accessibilityRole="button"
+                accessibilityLabel={t('aiCikar.pickPdf')}
+              >
+                <Text style={styles.pickImageButtonText}>{t('aiCikar.pickPdf')}</Text>
               </Pressable>
             )}
-            <Pressable
-              style={[styles.extractButton, (!pdfBase64 || loading) && styles.buttonDisabled]}
-              onPress={handleExtractPdf}
-              disabled={!pdfBase64 || loading}
-            >
-              {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.extractButtonText}>Çıkar</Text>}
-            </Pressable>
           </>
         )}
 
@@ -505,172 +700,273 @@ export default function AiCikarScreen() {
         {candidates && (
           <View style={styles.results}>
             <Text style={styles.resultsTitle}>
-              {candidates.length === 0 ? 'Herhangi bir takip maddesi bulunamadı.' : 'Bulunanlar — kaydetmeden önce gözden geçir'}
+              {candidates.length === 0 ? t('aiCikar.resultsEmpty') : t('aiCikar.resultsTitle')}
             </Text>
-            {candidates.map((c, i) => (
-              <Pressable key={i} style={styles.candidateCard} onPress={() => toggleCandidate(i)}>
+            {candidates.map((c, i) => {
+              const candidateLabel = [
+                followUpTypeLabel(c.type, t),
+                c.title,
+                c.personName ? t('aiCikar.personLabel', { name: c.personName }) : null,
+                c.dueAtISO ? t('aiCikar.dateLabel', { date: new Date(c.dueAtISO).toLocaleString(i18n.language) }) : null,
+                c.confidence < LOW_CONFIDENCE_THRESHOLD ? t('aiCikar.lowConfidenceA11y') : null,
+              ]
+                .filter(Boolean)
+                .join('. ');
+              return (
+              <Pressable
+                key={i}
+                style={styles.candidateCard}
+                onPress={() => toggleCandidate(i)}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: c.selected }}
+                accessibilityLabel={candidateLabel}
+              >
                 <View style={[styles.checkbox, c.selected && styles.checkboxChecked]}>
                   {c.selected && <Text style={styles.checkboxMark}>✓</Text>}
                 </View>
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.candidateType}>{FOLLOW_UP_TYPE_LABELS[c.type]}</Text>
+                  <Text style={styles.candidateType}>{followUpTypeLabel(c.type, t)}</Text>
                   <Text style={styles.candidateTitle}>{c.title}</Text>
                   {c.personName && <Text style={styles.candidateMeta}>👤 {c.personName}</Text>}
                   {c.dueAtISO && (
-                    <Text style={styles.candidateMeta}>
-                      ⏰ {new Date(c.dueAtISO).toLocaleString('tr-TR')}
-                    </Text>
+                    <Text style={styles.candidateMeta}>⏰ {new Date(c.dueAtISO).toLocaleString(i18n.language)}</Text>
                   )}
                   {c.confidence < LOW_CONFIDENCE_THRESHOLD && (
-                    <Text style={styles.candidateLowConfidence}>❓ Emin değilim — gözden geçir</Text>
+                    <Text style={styles.candidateLowConfidence}>{t('aiCikar.lowConfidenceText')}</Text>
                   )}
                   {c.note && <Text style={styles.candidateNote}>💬 {c.note}</Text>}
                 </View>
               </Pressable>
-            ))}
+              );
+            })}
 
             {candidates.length > 0 && (
-              <Pressable
-                style={[styles.saveButton, saving && styles.buttonDisabled]}
-                onPress={handleSave}
-                disabled={saving}
-              >
-                <Text style={styles.saveButtonText}>
-                  {saving ? 'Kaydediliyor…' : `Seçilenleri kaydet (${candidates.filter((c) => c.selected).length})`}
-                </Text>
-              </Pressable>
+              <View style={styles.saveButtonWrap}>
+                <Button
+                  variant="success"
+                  label={
+                    saving
+                      ? t('aiCikar.saving')
+                      : t('aiCikar.saveSelected', { count: candidates.filter((c) => c.selected).length })
+                  }
+                  onPress={handleSave}
+                  disabled={saving}
+                  loading={saving}
+                  accessibilityLabel={t('aiCikar.saveSelected', { count: candidates.filter((c) => c.selected).length })}
+                />
+              </View>
             )}
           </View>
         )}
       </ScrollView>
+      <View style={styles.footer}>
+        <Button
+          label={t('aiCikar.extract')}
+          onPress={extractHandlers[mode]}
+          disabled={extractDisabled[mode]}
+          loading={loading}
+          icon={<Image source={require('../../assets/icons/tab-ai-sparkles.png')} style={styles.footerButtonIcon} resizeMode="contain" />}
+          accessibilityLabel={t('aiCikar.extract')}
+        />
+      </View>
       <SmartReminderPrompt
         visible={importantQueue.length > 0}
         title={importantQueue[0]?.title ?? ''}
         onChoose={handleReminderChoice}
       />
-    </KeyboardAvoidingView>
+      </Container>
+      </SafeAreaView>
+    </GradientBackground>
   );
 }
 
-const styles = StyleSheet.create({
-  content: { padding: 20, paddingBottom: 60 },
-  mockBanner: {
-    backgroundColor: '#fef3c7',
-    borderRadius: 10,
-    padding: 12,
-    marginBottom: 16,
-  },
-  mockBannerText: { color: '#92400e', fontSize: 13 },
-  modeRow: { flexDirection: 'row', backgroundColor: '#e5e7eb', borderRadius: 10, padding: 4, marginBottom: 20 },
-  modeTab: { flex: 1, paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
-  modeTabActive: { backgroundColor: '#fff' },
-  modeTabText: { fontSize: 14, fontWeight: '600', color: '#6b7280' },
-  modeTabTextActive: { color: '#111827' },
-  label: { fontSize: 13, fontWeight: '600', color: '#6b7280', marginBottom: 6 },
-  input: {
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 15,
-    backgroundColor: '#fff',
-  },
-  multiline: { minHeight: 120, textAlignVertical: 'top' },
-  extractButton: {
-    marginTop: 16,
-    backgroundColor: '#2563eb',
-    borderRadius: 10,
-    paddingVertical: 14,
-    alignItems: 'center',
-  },
-  extractButtonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
-  buttonDisabled: { opacity: 0.5 },
-  error: { color: '#dc2626', marginTop: 12, fontSize: 14 },
-  hint: { fontSize: 13, color: '#9ca3af', marginTop: 12 },
-  pickImageButton: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderStyle: 'dashed',
-    paddingVertical: 32,
-    alignItems: 'center',
-  },
-  pickImageButtonText: { fontSize: 16, fontWeight: '600', color: '#374151' },
-  imagePreviewBox: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    padding: 12,
-    alignItems: 'center',
-  },
-  imagePreview: { width: '100%', height: 220, borderRadius: 8, backgroundColor: '#f3f4f6' },
-  pdfNameText: { fontSize: 15, fontWeight: '600', color: '#111827', textAlign: 'center' },
-  secondaryButton: { marginTop: 12, paddingVertical: 8, paddingHorizontal: 16 },
-  secondaryButtonText: { color: '#2563eb', fontSize: 14, fontWeight: '600' },
-  recordBox: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    padding: 24,
-    alignItems: 'center',
-  },
-  recordTimer: { fontSize: 32, fontWeight: '700', color: '#111827', marginBottom: 16, fontVariant: ['tabular-nums'] },
-  recordButton: {
-    backgroundColor: '#7c3aed',
-    borderRadius: 999,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-  },
-  recordButtonStop: { backgroundColor: '#dc2626' },
-  recordButtonText: { color: '#fff', fontSize: 15, fontWeight: '700' },
-  transcriptBox: {
-    marginTop: 16,
-    backgroundColor: '#f3f4f6',
-    borderRadius: 10,
-    padding: 14,
-  },
-  transcriptLabel: { fontSize: 12, fontWeight: '700', color: '#6b7280', marginBottom: 4 },
-  transcriptText: { fontSize: 14, color: '#374151', lineHeight: 20 },
-  results: { marginTop: 24 },
-  resultsTitle: { fontSize: 14, fontWeight: '600', color: '#374151', marginBottom: 12 },
-  candidateCard: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-  },
-  checkbox: {
-    width: 22,
-    height: 22,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#d1d5db',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 2,
-  },
-  checkboxChecked: { backgroundColor: '#2563eb', borderColor: '#2563eb' },
-  checkboxMark: { color: '#fff', fontSize: 14, fontWeight: '700' },
-  candidateType: { fontSize: 12, fontWeight: '700', color: '#2563eb', marginBottom: 2 },
-  candidateTitle: { fontSize: 15, fontWeight: '600', color: '#111827' },
-  candidateMeta: { fontSize: 13, color: '#6b7280', marginTop: 2 },
-  candidateLowConfidence: { fontSize: 12, color: '#b45309', marginTop: 4, fontWeight: '600' },
-  candidateNote: { fontSize: 12, color: '#9ca3af', marginTop: 4, fontStyle: 'italic' },
-  saveButton: {
-    marginTop: 8,
-    backgroundColor: '#16a34a',
-    borderRadius: 10,
-    paddingVertical: 14,
-    alignItems: 'center',
-  },
-  saveButtonText: { color: '#fff', fontSize: 16, fontWeight: '700' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    safeArea: { flex: 1 },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.glassBorder,
+    },
+    backButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 16,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.glassBg,
+      borderWidth: 1,
+      borderColor: colors.glassBorder,
+    },
+    headerSpacer: { width: 40, height: 40 },
+    headerTitleGroup: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+    headerIcon: { width: 22, height: 22 },
+    headerTitle: {
+      fontSize: fontSize.title,
+      fontFamily: fontFamily.bodyBold,
+      color: colors.text,
+      letterSpacing: letterSpacing.title,
+    },
+    footer: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 12 },
+    footerButtonIcon: { width: 20, height: 20 },
+    content: { padding: 20, paddingBottom: 24 },
+    textFooterBar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginTop: 8,
+      paddingHorizontal: 2,
+    },
+    textFooterBrand: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+    textFooterIcon: { width: 14, height: 14 },
+    textFooterBrandText: { fontSize: fontSize.caption, fontFamily: fontFamily.bodySemiBold, color: colors.primaryText },
+    textFooterClear: { fontSize: fontSize.caption, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted },
+    quickChipsRow: { flexDirection: 'row', gap: 10, marginTop: 12 },
+    quickChip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      backgroundColor: colors.glassBg,
+      borderWidth: 1,
+      borderColor: colors.glassBorder,
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      borderRadius: 16,
+    },
+    quickChipIcon: { backgroundColor: hexToRgba(colors.primary, 0.1), borderRadius: 6, padding: 3 },
+    quickChipText: { fontSize: fontSize.caption, fontFamily: fontFamily.bodySemiBold, color: colors.text },
+    mockBanner: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 10,
+      backgroundColor: hexToRgba(colors.tertiary, 0.1),
+      borderWidth: 1,
+      borderColor: hexToRgba(colors.tertiary, 0.25),
+      borderRadius: 16,
+      padding: 14,
+      marginBottom: 16,
+    },
+    mockBannerIcon: {
+      backgroundColor: hexToRgba(colors.tertiary, 0.18),
+      borderRadius: 8,
+      padding: 4,
+    },
+    mockBannerIconText: { fontSize: fontSize.small },
+    mockBannerText: { flex: 1, color: colors.onTertiaryContainer, fontSize: fontSize.small, fontFamily: fontFamily.body, lineHeight: 18 },
+    usageLimitBanner: {
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 16,
+      padding: 14,
+      marginBottom: 16,
+      gap: 8,
+    },
+    usageLimitText: { color: colors.text, fontSize: fontSize.small, fontFamily: fontFamily.body, lineHeight: 19 },
+    usageLimitCta: { color: colors.primary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
+    usageRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8, marginBottom: 16 },
+    usageHint: { flex: 1, color: colors.textMuted, fontSize: fontSize.caption, fontFamily: fontFamily.body },
+    usagePlanBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 5,
+      backgroundColor: hexToRgba(colors.primary, 0.1),
+      borderWidth: 1,
+      borderColor: hexToRgba(colors.primary, 0.2),
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: 999,
+    },
+    usagePlanDot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: colors.primaryText },
+    usagePlanBadgeText: { fontSize: fontSize.caption, fontFamily: fontFamily.label, color: colors.primaryText },
+    modeRow: { flexDirection: 'row', backgroundColor: hexToRgba(colors.surfaceAlt, 0.6), borderRadius: 16, padding: 5, marginBottom: 20 },
+    modeTab: { flex: 1, paddingVertical: 10, borderRadius: 12, alignItems: 'center' },
+    modeTabActive: { backgroundColor: colors.surface },
+    modeTabText: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted },
+    modeTabTextActive: { color: colors.text },
+    label: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted, marginBottom: 6 },
+    error: { color: colors.danger, marginTop: 12, fontSize: fontSize.small, fontFamily: fontFamily.body },
+    hint: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 12, fontFamily: fontFamily.body },
+    pickImageButton: {
+      backgroundColor: colors.surface,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderStyle: 'dashed',
+      paddingVertical: 32,
+      alignItems: 'center',
+    },
+    pickImageButtonText: { fontSize: fontSize.button, fontFamily: fontFamily.bodySemiBold, color: colors.text },
+    imagePreviewBox: {
+      backgroundColor: colors.surface,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: 12,
+      alignItems: 'center',
+    },
+    imagePreview: { width: '100%', height: 220, borderRadius: 8, backgroundColor: colors.surfaceAlt },
+    pdfNameText: { fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold, color: colors.text, textAlign: 'center' },
+    secondaryButtonWrap: { marginTop: 12 },
+    recordBox: {
+      backgroundColor: colors.surface,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: 24,
+      alignItems: 'center',
+    },
+    recordTimer: {
+      fontSize: fontSize.display,
+      fontFamily: fontFamily.bodyBold,
+      color: colors.text,
+      marginBottom: 16,
+      fontVariant: ['tabular-nums'],
+    },
+    recordButton: {
+      backgroundColor: colors.rose,
+      borderRadius: 999,
+      paddingHorizontal: 24,
+      paddingVertical: 12,
+    },
+    recordButtonStop: { backgroundColor: colors.danger },
+    recordButtonText: { color: colors.onPrimary, fontSize: fontSize.base, fontFamily: fontFamily.bodyBold },
+    transcriptBox: {
+      marginTop: 16,
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 10,
+      padding: 14,
+    },
+    transcriptLabel: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.textMuted, marginBottom: 4 },
+    transcriptText: { fontSize: fontSize.small, color: colors.text, lineHeight: 20, fontFamily: fontFamily.body },
+    results: { marginTop: 24 },
+    resultsTitle: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.text, marginBottom: 12 },
+    candidateCard: {
+      ...getCardSurface(colors),
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 12,
+      marginBottom: 10,
+    },
+    checkbox: {
+      width: 22,
+      height: 22,
+      borderRadius: 6,
+      borderWidth: 2,
+      borderColor: colors.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: 2,
+    },
+    checkboxChecked: { backgroundColor: colors.primary, borderColor: colors.primary },
+    checkboxMark: { color: colors.onPrimary, fontSize: fontSize.small, fontFamily: fontFamily.bodyBold },
+    candidateType: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.primary, marginBottom: 2 },
+    candidateTitle: { fontSize: fontSize.base, fontFamily: fontFamily.displaySemiBold, color: colors.text },
+    candidateMeta: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 2, fontFamily: fontFamily.body },
+    candidateLowConfidence: { fontSize: fontSize.caption, color: colors.gold, marginTop: 4, fontFamily: fontFamily.bodySemiBold },
+    candidateNote: { fontSize: fontSize.caption, color: colors.textMuted, marginTop: 4, fontStyle: 'italic', fontFamily: fontFamily.body },
+    saveButtonWrap: { marginTop: 8 },
+  });
+}

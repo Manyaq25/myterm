@@ -16,6 +16,22 @@ let appStateSubscription: { remove: () => void } | null = null;
 // dönüşte galeriyi kontrol ederek yakalıyoruz.
 let backgroundedAt: number | null = null;
 let lastNotifiedAssetId: string | null = null;
+// Bir ekran görüntüsü, canlı dinleyici (ön plandayken) ile arka plandan dönüş
+// taraması tarafından AYNI ANDA yakalanabiliyor — özellikle ekran görüntüsü
+// alma anındaki küçük önizleme balonu iOS'ta uygulamayı kısa süreliğine
+// inactive/active arasında birkaç kez flicker'a sokabiliyor, bu da
+// checkForBackgroundScreenshot'ın eşzamanlı birden fazla kez tetiklenmesine
+// yol açıyor. lastNotifiedAssetId tek başına bunu önlemiyor çünkü (a) canlı
+// dinleyici path'inin asset ID'si yok ve (b) eşzamanlı çağrılar id'yi
+// set etmeden önce birbirini "görmüyor". Tüm yolların aktığı tek nokta olan
+// notifySuggestion'da zaman bazlı bir debounce ile kesin çözüyoruz.
+let lastNotifiedAt = 0;
+// Gerçek cihaz testinde aynı ekran görüntüsü için ikinci tetikleme ilk
+// bildirimden ~7-8 saniye sonra geldi (muhtemelen iOS'un ekran görüntüsü
+// önizleme balonunun kapanma geçişiyle ilgili) — payını bol tutuyoruz.
+const NOTIFICATION_DEBOUNCE_MS = 12000;
+let backgroundCheckInProgress = false;
+const LAST_ACTIVE_AT_KEY = 'screenshotSuggestionsLastActiveAt';
 
 export async function isScreenshotSuggestionEnabled(): Promise<boolean> {
   const value = await SecureStore.getItemAsync(SETTING_KEY);
@@ -38,6 +54,12 @@ export async function setScreenshotSuggestionEnabled(enabled: boolean): Promise<
     // erişimi gerektiriyor — native listener sadece ön plandayken çalışıyor.
     const mediaPermission = await MediaLibrary.requestPermissionsAsync();
     if (!mediaPermission.granted) return false;
+    // Android 14+ / iOS 14+ kullanıcı "sadece seçili fotoğraflar" (limited)
+    // erişimi verebiliyor — bu durumda YENİ çekilen bir ekran görüntüsü hiçbir
+    // zaman seçili küme içinde olmadığı için getAssetsAsync onu asla görmez ve
+    // arka plan tespiti sessizce çalışmaz gibi görünür. Kullanıcıyı hemen "tümüne
+    // izin ver" seçeneğine yönlendirmeyi deniyoruz.
+    await promptFullAccessIfLimited();
   }
 
   await SecureStore.setItemAsync(SETTING_KEY, enabled ? 'true' : 'false');
@@ -51,7 +73,28 @@ export async function setScreenshotSuggestionEnabled(enabled: boolean): Promise<
 
 export async function initScreenshotSuggestions(): Promise<void> {
   const enabled = await isScreenshotSuggestionEnabled();
-  if (enabled) startListening();
+  if (!enabled) return;
+  startListening();
+  // Uygulama tamamen kapatılmışken (force-quit) alınan bir ekran görüntüsü,
+  // backgroundedAt bu JS oturumunda hiç set edilmediği için normal dönüş
+  // kontrolünü tetiklemez — son bilinen aktif zamanı SecureStore'dan okuyup
+  // soğuk başlangıçta da aynı taramayı bir kez çalıştırıyoruz.
+  const storedLastActiveAt = await SecureStore.getItemAsync(LAST_ACTIVE_AT_KEY);
+  const since = storedLastActiveAt ? Number(storedLastActiveAt) : null;
+  if (since && Number.isFinite(since)) {
+    void checkForBackgroundScreenshot(since);
+  }
+}
+
+async function promptFullAccessIfLimited(): Promise<void> {
+  try {
+    const permission = await MediaLibrary.getPermissionsAsync();
+    if (permission.granted && permission.accessPrivileges === 'limited') {
+      await MediaLibrary.presentPermissionsPickerAsync(['photo']);
+    }
+  } catch {
+    // Seçici bu platformda/sürümde yoksa sessizce geç.
+  }
 }
 
 function startListening(): void {
@@ -79,24 +122,87 @@ function handleAppStateChange(nextState: AppStateStatus): void {
     }
     return;
   }
-  if (backgroundedAt === null) backgroundedAt = Date.now();
+  // Ekran görüntüsü alma anındaki sistem önizlemesi, uygulamayı inactive/
+  // active arasında birkaç kez art arda flicker'a sokabiliyor — bu ilk
+  // backgroundedAt'i koruyoruz ki her flicker ayrı bir tarama başlatmasın.
+  if (backgroundedAt === null) {
+    backgroundedAt = Date.now();
+    void SecureStore.setItemAsync(LAST_ACTIVE_AT_KEY, String(backgroundedAt));
+  }
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Uygulama ön plana döndüğü anda Android'in ekran görüntüsünü MediaStore'a
+// işlemesi henüz tamamlanmamış olabilir (birkaç yüz ms'lik bir gecikme) —
+// tek seferlik kontrol bunu kaçırabiliyordu. Kısa aralıklarla birkaç kez
+// deniyoruz.
+const RETRY_DELAYS_MS = [0, 400, 900, 1500];
+
+// Android'de MediaStore'un DATE_MODIFIED kolonu saniye hassasiyetinde
+// (alt saniye bilgisi atılıyor) — yani bir asset'in modificationTime'ı
+// gerçek yazılma anından ~999ms öncesine kadar "yuvarlanmış" görünebilir.
+// Uygulama arka plana geçip aynı saniye içinde ekran görüntüsü alınırsa
+// (çok olası — hızlı bir uygulama değişimi) bu yuvarlama, taze görüntüyü
+// "since'den eski" gibi gösterip kaçırmamıza neden oluyordu. Karşılaştırmayı
+// bu kadarlık bir tolerans payıyla yapıyoruz.
+const TIMESTAMP_ROUNDING_BUFFER_MS = 1500;
+
 async function checkForBackgroundScreenshot(since: number): Promise<void> {
-  const permission = await MediaLibrary.getPermissionsAsync();
-  if (!permission.granted) return;
-  const page = await MediaLibrary.getAssetsAsync({
-    first: 1,
-    mediaType: 'photo',
-    sortBy: [['creationTime', false]],
-  });
-  const asset = page.assets[0];
-  if (!asset || asset.creationTime < since || asset.id === lastNotifiedAssetId) return;
-  lastNotifiedAssetId = asset.id;
-  await notifySuggestion();
+  // Aynı flicker patlamasında handleAppStateChange birden fazla kez 'active'
+  // tetikleyebiliyor — eşzamanlı taramalar aynı asset'i lastNotifiedAssetId
+  // set edilmeden önce görüp ikisi de bildirim gönderebiliyordu. Tek seferde
+  // bir tarama olmasını garanti ediyoruz.
+  if (backgroundCheckInProgress) return;
+  backgroundCheckInProgress = true;
+  try {
+    const permission = await MediaLibrary.getPermissionsAsync();
+    if (!permission.granted) return;
+
+    const threshold = since - TIMESTAMP_ROUNDING_BUFFER_MS;
+    for (const delay of RETRY_DELAYS_MS) {
+      if (delay > 0) await sleep(delay);
+      const page = await MediaLibrary.getAssetsAsync({
+        first: 1,
+        mediaType: 'photo',
+        // Android'de ekran görüntülerinin creationTime'ı (MediaStore DATE_TAKEN,
+        // kameranın EXIF "çekilme tarihi"ne dayanır) genelde hiç dolmuyor/0
+        // kalıyor — ekran görüntüsü kamerayla çekilmediği için. modificationTime
+        // (dosyanın diske yazıldığı an) her iki platformda da güvenilir.
+        sortBy: [['modificationTime', false]],
+        // iOS'ta mediaSubtypes filtresi olmadan bu sorgu sadece "arka plana
+        // geçtikten sonra galeriye eklenen en yeni fotoğraf" arıyordu — bu da
+        // o sırada WhatsApp/Mesajlar'dan kaydedilen ya da kamerayla çekilen
+        // alakasız bir fotoğrafı (ör. bir kişinin resmini) ekran görüntüsü
+        // sanıp yanlış öneri bildirimi göndermesine yol açıyordu. iOS gerçek
+        // ekran görüntülerini PHAsset mediaSubtypes'ta 'screenshot' olarak
+        // işaretliyor — bunu sorguya filtre olarak veriyoruz ki yanlış pozitif
+        // hiç mümkün olmasın. Android'de bu alan yok, mevcut zamanlama
+        // sezgisiyle devam ediyor.
+        ...(Platform.OS === 'ios' ? { mediaSubtypes: 'screenshot' as const } : {}),
+      });
+      const asset = page.assets[0];
+      if (!asset || asset.id === lastNotifiedAssetId) continue;
+      if (asset.modificationTime < threshold) continue;
+      lastNotifiedAssetId = asset.id;
+      await notifySuggestion();
+      return;
+    }
+  } catch {
+    // Bu, en iyi çaba ile çalışan arka plan taraması — izin durumu tutarsız
+    // olsa veya galeri erişimi anlık olarak başarısız olsa bile kullanıcıyı
+    // hiçbir şekilde rahatsız etmemeli (kırmızı hata ekranı dahil).
+  } finally {
+    backgroundCheckInProgress = false;
+  }
 }
 
 async function notifySuggestion(): Promise<void> {
+  const now = Date.now();
+  if (now - lastNotifiedAt < NOTIFICATION_DEBOUNCE_MS) return;
+  lastNotifiedAt = now;
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('screenshot-suggestions', {
       name: 'Ekran görüntüsü önerileri',

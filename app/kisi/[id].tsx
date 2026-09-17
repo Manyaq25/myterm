@@ -1,15 +1,21 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { getPerson, listFollowUpsByPerson, updatePersonPhone } from '../../src/db/queries';
-import { FOLLOW_UP_TYPE_LABELS, FOLLOW_UP_STATUS_LABELS, type FollowUp, type Person } from '../../src/types';
+import type { FollowUp, Person } from '../../src/types';
+import { followUpStatusLabel, followUpTypeLabel } from '../../src/i18n/labels';
 import { formatDueDate, isOverdue } from '../../src/utils/date';
 import { Avatar } from '../../src/components/Avatar';
 import { ContactOptions } from '../../src/components/ContactOptions';
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
+import { Button } from '../../src/components/Button';
 import { buildReminderMessage } from '../../src/services/contact';
-import { CARD_MARGIN_BOTTOM, CARD_SURFACE, SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
+import { buildPersonInsights, formatInsightText } from '../../src/services/personInsights';
+import { useIsPremium } from '../../src/services/subscription';
+import { CARD_MARGIN_BOTTOM, getCardSurface } from '../../src/constants/cardStyle';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 import {
   acceptLateSuggestion,
   detectLatePersonSuggestions,
@@ -22,18 +28,36 @@ function isOpenOverdue(item: FollowUp): boolean {
 }
 
 function FollowUpRow({ item, phone }: { item: FollowUp; phone?: string | null }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const router = useRouter();
+  const { t } = useTranslation();
   const overdue = isOpenOverdue(item);
   const showContactShortcut = overdue && item.type === 'waiting_on' && !!phone;
+  const accessibilityLabel = [
+    followUpTypeLabel(item.type, t),
+    item.title,
+    item.status === 'done' || item.status === 'cancelled' ? followUpStatusLabel(item.status, t) : null,
+    item.dueAt !== null
+      ? overdue
+        ? t('kisiProfili.rowOverdueLabel', { date: formatDueDate(item.dueAt) })
+        : t('kisiProfili.rowDueLabel', { date: formatDueDate(item.dueAt) })
+      : null,
+  ]
+    .filter(Boolean)
+    .join('. ');
   return (
     <Pressable
       style={[styles.row, overdue && styles.rowOverdue]}
       onPress={() => router.push(`/takip/${item.id}`)}
+      accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint={t('kisiProfili.detailsHint')}
     >
       <View style={styles.rowHeader}>
-        <Text style={styles.rowType}>{FOLLOW_UP_TYPE_LABELS[item.type]}</Text>
+        <Text style={styles.rowType}>{followUpTypeLabel(item.type, t)}</Text>
         {(item.status === 'done' || item.status === 'cancelled') && (
-          <Text style={styles.rowStatus}>{FOLLOW_UP_STATUS_LABELS[item.status]}</Text>
+          <Text style={styles.rowStatus}>{followUpStatusLabel(item.status, t)}</Text>
         )}
       </View>
       <Text style={styles.rowTitle}>{item.title}</Text>
@@ -50,12 +74,13 @@ function FollowUpRow({ item, phone }: { item: FollowUp; phone?: string | null })
 }
 
 function Section({ title, items, phone }: { title: string; items: FollowUp[]; phone?: string | null }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
+  const { t } = useTranslation();
   if (items.length === 0) return null;
   return (
     <View style={styles.section}>
-      <Text style={styles.sectionTitle}>
-        {title} ({items.length})
-      </Text>
+      <Text style={styles.sectionTitle}>{t('kisiProfili.sectionCountTitle', { title, count: items.length })}</Text>
       {items.map((item) => (
         <FollowUpRow key={item.id} item={item} phone={phone} />
       ))}
@@ -64,6 +89,11 @@ function Section({ title, items, phone }: { title: string; items: FollowUp[]; ph
 }
 
 export default function KisiProfiliScreen() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
+  const { t } = useTranslation();
+  const router = useRouter();
+  const isPremium = useIsPremium();
   const { id } = useLocalSearchParams<{ id: string }>();
   const db = useSQLiteContext();
   const [person, setPerson] = useState<Person | null>(null);
@@ -93,7 +123,7 @@ export default function KisiProfiliScreen() {
   if (!person) {
     return (
       <View style={styles.centered}>
-        <Text>Yükleniyor…</Text>
+        <Text style={styles.rowMeta}>{t('common.loading')}</Text>
       </View>
     );
   }
@@ -116,6 +146,7 @@ export default function KisiProfiliScreen() {
   const history = followUps
     .filter((i) => i.status === 'done' || i.status === 'cancelled')
     .sort((a, b) => (b.completedAt ?? b.updatedAt) - (a.completedAt ?? a.updatedAt));
+  const insights = buildPersonInsights(followUps);
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
@@ -131,18 +162,16 @@ export default function KisiProfiliScreen() {
         <View style={styles.phoneEditRow}>
           <TextInput
             style={styles.phoneInput}
-            placeholder="ör. 05XX XXX XX XX"
+            placeholder={t('kisiProfili.phonePlaceholder')}
+            placeholderTextColor={colors.textMuted}
             value={phoneInput}
             onChangeText={setPhoneInput}
             keyboardType="phone-pad"
             autoFocus
+            accessibilityLabel={t('kisiProfili.phoneA11y')}
           />
-          <Pressable style={styles.phoneSaveButton} onPress={savePhone}>
-            <Text style={styles.phoneSaveButtonText}>Kaydet</Text>
-          </Pressable>
-          <Pressable style={styles.phoneCancelButton} onPress={() => setEditingPhone(false)}>
-            <Text style={styles.phoneCancelButtonText}>İptal</Text>
-          </Pressable>
+          <Button label={t('common.save')} onPress={savePhone} />
+          <Button label={t('common.cancelShort')} variant="ghostDanger" onPress={() => setEditingPhone(false)} />
         </View>
       ) : person.phone ? (
         <View style={styles.contactRow}>
@@ -153,6 +182,8 @@ export default function KisiProfiliScreen() {
               setPhoneInput(person.phone ?? '');
               setEditingPhone(true);
             }}
+            accessibilityRole="button"
+            accessibilityLabel={t('kisiProfili.editPhoneA11y')}
           >
             <Text style={styles.editPhoneIconText}>✏️</Text>
           </Pressable>
@@ -164,13 +195,38 @@ export default function KisiProfiliScreen() {
             setPhoneInput('');
             setEditingPhone(true);
           }}
+          accessibilityRole="button"
+          accessibilityLabel={t('kisiProfili.addPhoneA11y')}
         >
-          <Text style={styles.addPhoneButtonText}>+ Telefon numarası ekle</Text>
+          <Text style={styles.addPhoneButtonText}>{t('kisiProfili.addPhoneButton')}</Text>
         </Pressable>
       )}
 
-      {person.reminderLeadMinutes > 0 && (
-        <Text style={styles.leadBadge}>⏱️ Hatırlatmalar bu kişi için daha erken gönderiliyor</Text>
+      {person.reminderLeadMinutes > 0 && <Text style={styles.leadBadge}>{t('kisiProfili.leadBadge')}</Text>}
+
+      {insights.length > 0 && isPremium && (
+        <View style={styles.insightsCard}>
+          <Text style={styles.insightsLabel}>{t('kisiProfili.insightsLabel')}</Text>
+          {insights.map((insight) => (
+            <Text key={insight.type} style={styles.insightsText}>
+              {formatInsightText(insight, t)}
+            </Text>
+          ))}
+          <Text style={styles.insightsFootnote}>{t('kisiProfili.insightsFootnote')}</Text>
+        </View>
+      )}
+
+      {insights.length > 0 && !isPremium && (
+        <Pressable
+          style={styles.insightsTeaser}
+          onPress={() => router.push('/premium')}
+          accessibilityRole="button"
+          accessibilityLabel={t('kisiProfili.insightsTeaserCta')}
+        >
+          <Text style={styles.insightsLabel}>{t('kisiProfili.insightsLabel')}</Text>
+          <Text style={styles.insightsTeaserText}>{t('kisiProfili.insightsTeaserText')}</Text>
+          <Text style={styles.insightsTeaserCta}>{t('kisiProfili.insightsTeaserCta')}</Text>
+        </Pressable>
       )}
 
       {suggestion && (
@@ -187,60 +243,85 @@ export default function KisiProfiliScreen() {
         />
       )}
 
-      <Section title="Gecikenler" items={overdue} phone={person.phone} />
-      <Section title="Ondan beklediklerim" items={waitingOn} />
-      <Section title="Ona verdiklerim" items={given} />
-      <Section title="Geçmiş" items={history} />
+      <Section title={t('kisiProfili.sectionOverdue')} items={overdue} phone={person.phone} />
+      <Section title={t('kisiProfili.sectionWaitingOn')} items={waitingOn} />
+      <Section title={t('kisiProfili.sectionGiven')} items={given} />
+      <Section title={t('kisiProfili.sectionHistory')} items={history} />
 
-      {followUps.length === 0 && <Text style={styles.empty}>Bu kişiyle ilgili henüz bir takip yok.</Text>}
+      {followUps.length === 0 && <Text style={styles.empty}>{t('kisiProfili.emptyFollowUps')}</Text>}
     </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  centered: { flex: 1, alignItems: 'center', justifyContent: 'center' },
-  screen: { backgroundColor: SCREEN_BACKGROUND },
-  content: { padding: 20, paddingBottom: 60 },
-  header: { flexDirection: 'row', alignItems: 'center', gap: 14 },
-  headerText: { flex: 1 },
-  name: { fontSize: 24, fontWeight: '700', color: '#111827' },
-  note: { fontSize: 14, color: '#6b7280', marginTop: 4 },
-  leadBadge: { fontSize: 12, color: '#2563eb', fontWeight: '600', marginTop: 14 },
-  empty: { fontSize: 14, color: '#9ca3af', marginTop: 24, textAlign: 'center' },
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background },
+    screen: { backgroundColor: colors.background },
+    content: { padding: 20, paddingBottom: 60 },
+    header: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+    headerText: { flex: 1 },
+    name: { fontSize: fontSize.displaySmall, fontFamily: fontFamily.displaySemiBold, color: colors.text },
+    note: { fontSize: fontSize.base, color: colors.textMuted, marginTop: 4, fontFamily: fontFamily.body },
+    leadBadge: { fontSize: fontSize.caption, color: colors.primary, fontFamily: fontFamily.bodySemiBold, marginTop: 14 },
+    insightsCard: {
+      ...getCardSurface(colors),
+      backgroundColor: colors.surfaceAlt,
+      marginTop: 16,
+    },
+    insightsLabel: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.primary, marginBottom: 8 },
+    insightsText: { fontSize: fontSize.base, color: colors.text, lineHeight: 20, marginBottom: 4, fontFamily: fontFamily.body },
+    insightsFootnote: { fontSize: fontSize.caption, color: colors.textMuted, marginTop: 8, lineHeight: 15, fontFamily: fontFamily.body },
+    insightsTeaser: {
+      backgroundColor: colors.surfaceAlt,
+      borderRadius: 14,
+      padding: 16,
+      marginTop: 16,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderStyle: 'dashed',
+    },
+    insightsTeaserText: { fontSize: fontSize.small, color: colors.textMuted, lineHeight: 19, fontFamily: fontFamily.body },
+    insightsTeaserCta: { fontSize: fontSize.small, color: colors.primary, fontFamily: fontFamily.bodyBold, marginTop: 8 },
+    empty: { fontSize: fontSize.base, color: colors.textMuted, marginTop: 24, textAlign: 'center', fontFamily: fontFamily.body },
 
-  contactRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 16, flexWrap: 'wrap' },
-  editPhoneIcon: { padding: 8 },
-  editPhoneIconText: { fontSize: 15 },
-  addPhoneButton: { marginTop: 16, alignSelf: 'flex-start' },
-  addPhoneButtonText: { color: '#2563eb', fontSize: 13, fontWeight: '600' },
-  phoneEditRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 16 },
-  phoneInput: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    fontSize: 14,
-    backgroundColor: '#fff',
-  },
-  phoneSaveButton: { backgroundColor: '#2563eb', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 9 },
-  phoneSaveButtonText: { color: '#fff', fontSize: 13, fontWeight: '700' },
-  phoneCancelButton: { paddingHorizontal: 6, paddingVertical: 9 },
-  phoneCancelButtonText: { color: '#6b7280', fontSize: 13, fontWeight: '600' },
+    contactRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 16, flexWrap: 'wrap' },
+    editPhoneIcon: { minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' },
+    editPhoneIconText: { fontSize: fontSize.base },
+    addPhoneButton: { marginTop: 16, alignSelf: 'flex-start' },
+    addPhoneButtonText: { color: colors.primary, fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold },
+    phoneEditRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 16 },
+    phoneInput: {
+      flex: 1,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 12,
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      fontSize: fontSize.base,
+      fontFamily: fontFamily.body,
+      color: colors.text,
+      backgroundColor: colors.surface,
+    },
 
-  section: { marginTop: 22 },
-  sectionTitle: { fontSize: 13, fontWeight: '700', color: '#6b7280', marginBottom: 10, textTransform: 'uppercase' },
-  row: {
-    ...CARD_SURFACE,
-    marginBottom: CARD_MARGIN_BOTTOM,
-  },
-  rowOverdue: { borderWidth: 1.5, borderColor: '#fca5a5' },
-  rowHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-  rowType: { fontSize: 11, fontWeight: '700', color: '#2563eb', textTransform: 'uppercase' },
-  rowStatus: { fontSize: 11, fontWeight: '600', color: '#9ca3af' },
-  rowTitle: { fontSize: 16, fontWeight: '700', color: '#111827' },
-  rowMeta: { fontSize: 13, color: '#6b7280', marginTop: 6 },
-  rowMetaOverdue: { color: '#dc2626', fontWeight: '700' },
-  contactShortcutRow: { flexDirection: 'row', gap: 8, marginTop: 10 },
-});
+    section: { marginTop: 22 },
+    sectionTitle: {
+      fontSize: fontSize.small,
+      fontFamily: fontFamily.bodyBold,
+      color: colors.textMuted,
+      marginBottom: 10,
+      textTransform: 'uppercase',
+    },
+    row: {
+      ...getCardSurface(colors),
+      marginBottom: CARD_MARGIN_BOTTOM,
+    },
+    rowOverdue: { borderWidth: 1.5, borderColor: colors.danger },
+    rowHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
+    rowType: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.primary, textTransform: 'uppercase' },
+    rowStatus: { fontSize: fontSize.caption, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted },
+    rowTitle: { fontSize: fontSize.subtitle, fontFamily: fontFamily.displaySemiBold, color: colors.text },
+    rowMeta: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 6, fontFamily: fontFamily.body },
+    rowMetaOverdue: { color: colors.danger, fontFamily: fontFamily.bodyBold },
+    contactShortcutRow: { flexDirection: 'row', gap: 8, marginTop: 10 },
+  });
+}

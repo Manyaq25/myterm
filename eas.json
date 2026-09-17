@@ -7,18 +7,33 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "channel": "development"
+      "channel": "development",
+      "env": {
+        "EXPO_PUBLIC_BACKEND_URL": "https://backend-five-dun-77.vercel.app",
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_aqXBldWXQJYLIrxOGoUwcmBCgPE",
+        "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_dCMHonKjqhrmyBjUFIUptAmVIuH"
+      }
     },
     "preview": {
       "distribution": "internal",
       "channel": "preview",
       "ios": {
         "simulator": false
+      },
+      "env": {
+        "EXPO_PUBLIC_BACKEND_URL": "https://backend-five-dun-77.vercel.app",
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_aqXBldWXQJYLIrxOGoUwcmBCgPE",
+        "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_dCMHonKjqhrmyBjUFIUptAmVIuH"
       }
     },
     "production": {
       "channel": "production",
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_BACKEND_URL": "https://backend-five-dun-77.vercel.app",
+        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_aqXBldWXQJYLIrxOGoUwcmBCgPE",
+        "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_dCMHonKjqhrmyBjUFIUptAmVIuH"
+      }
     }
   },
   "submit": {

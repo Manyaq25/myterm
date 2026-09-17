@@ -1,14 +1,20 @@
+import { useMemo } from 'react';
 import { useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import type { FollowUpWithPerson } from '../types';
 import { EmptyState } from './EmptyState';
 import { Avatar } from './Avatar';
 import type { PersonGroup } from '../utils/grouping';
 import { daysLate, formatDueDate } from '../utils/date';
-import { CARD_MARGIN_BOTTOM, CARD_SURFACE } from '../constants/cardStyle';
+import { CARD_MARGIN_BOTTOM, getCardSurface } from '../constants/cardStyle';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
 
 function FollowUpRow({ item }: { item: FollowUpWithPerson }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const router = useRouter();
+  const { t } = useTranslation();
   const late = daysLate(item.dueAt);
   return (
     <Pressable
@@ -17,11 +23,13 @@ function FollowUpRow({ item }: { item: FollowUpWithPerson }) {
     >
       <Text style={styles.rowTitle}>{item.title}</Text>
       {late !== null ? (
-        <Text style={styles.rowLate}>⚠️ {late === 0 ? 'Bugün gecikti' : `${late} gündür gecikti`}</Text>
+        <Text style={styles.rowLate}>
+          ⚠️ {late === 0 ? t('personGroupedList.lateToday') : t('personGroupedList.lateDays', { count: late })}
+        </Text>
       ) : item.dueAt !== null ? (
         <Text style={styles.rowMeta}>⏰ {formatDueDate(item.dueAt)}</Text>
       ) : (
-        <Text style={styles.rowMeta}>Tarih yok</Text>
+        <Text style={styles.rowMeta}>{t('personGroupedList.noDate')}</Text>
       )}
     </Pressable>
   );
@@ -36,6 +44,8 @@ export function PersonGroupedList({
   emptyTitle: string;
   emptySubtitle?: string;
 }) {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const router = useRouter();
 
   if (groups.length === 0) {
@@ -71,16 +81,18 @@ export function PersonGroupedList({
   );
 }
 
-const styles = StyleSheet.create({
-  group: { marginBottom: 22 },
-  personHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
-  personName: { fontSize: 16, fontWeight: '700', color: '#111827' },
-  row: {
-    ...CARD_SURFACE,
-    marginBottom: CARD_MARGIN_BOTTOM,
-  },
-  rowLateBorder: { borderWidth: 1.5, borderColor: '#fca5a5' },
-  rowTitle: { fontSize: 15, fontWeight: '600', color: '#111827' },
-  rowMeta: { fontSize: 13, color: '#6b7280', marginTop: 4 },
-  rowLate: { fontSize: 13, color: '#dc2626', fontWeight: '700', marginTop: 4 },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    group: { marginBottom: 22 },
+    personHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
+    personName: { fontSize: fontSize.subtitle, fontFamily: fontFamily.displaySemiBold, color: colors.text },
+    row: {
+      ...getCardSurface(colors),
+      marginBottom: CARD_MARGIN_BOTTOM,
+    },
+    rowLateBorder: { borderWidth: 1.5, borderColor: colors.danger },
+    rowTitle: { fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold, color: colors.text },
+    rowMeta: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 4, fontFamily: fontFamily.body },
+    rowLate: { fontSize: fontSize.small, color: colors.danger, fontFamily: fontFamily.bodyBold, marginTop: 4 },
+  });
+}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -11,18 +11,28 @@ import {
   View,
 } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
+import { useHeaderHeight } from '@react-navigation/elements';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 import { aiProvider, isUsingMockAI } from '../src/ai';
 import { buildAssistantContext } from '../src/services/assistantContext';
+import { useKeyboardHeight } from '../src/hooks/useKeyboardHeight';
+import { useTheme, fontFamily, fontSize, type ThemeColors } from '../src/theme';
 
 interface Exchange {
   question: string;
   answer: string;
 }
 
-const SUGGESTIONS = ['Bugün ne yapacağım?', 'Kimlerden bir şey bekliyorum?', 'Bu hafta kaç aktif takibim var?'];
-
 export default function AsistanScreen() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
+  const { t } = useTranslation();
+  const SUGGESTIONS = [t('asistan.suggestion1'), t('asistan.suggestion2'), t('asistan.suggestion3')];
+  const headerHeight = useHeaderHeight();
+  const insets = useSafeAreaInsets();
+  const keyboardHeight = useKeyboardHeight();
   const [question, setQuestion] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,26 +49,28 @@ export default function AsistanScreen() {
       setHistory((prev) => [...prev, { question: finalQuestion, answer }]);
       setQuestion('');
     } catch (e) {
-      setError('Cevap alınamadı. Lütfen tekrar dene.');
+      setError(t('asistan.errorText'));
     } finally {
       setLoading(false);
     }
   }
 
+  const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
+  const containerProps =
+    Platform.OS === 'ios' ? { behavior: 'padding' as const, keyboardVerticalOffset: headerHeight } : {};
+
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+    <Container style={{ flex: 1 }} {...containerProps}>
       {isUsingMockAI && (
         <View style={styles.mockBanner}>
-          <Text style={styles.mockBannerText}>
-            Test modu: gerçek AI backend'i henüz bağlı değil, cevaplar sahte (mock) olacak.
-          </Text>
+          <Text style={styles.mockBannerText}>{t('asistan.mockBanner')}</Text>
         </View>
       )}
 
       <ScrollView contentContainerStyle={styles.content}>
         {history.length === 0 && !loading && (
           <View style={styles.suggestions}>
-            <Text style={styles.suggestionsTitle}>Sorabileceklerin:</Text>
+            <Text style={styles.suggestionsTitle}>{t('asistan.suggestionsTitle')}</Text>
             {SUGGESTIONS.map((s) => (
               <Pressable key={s} style={styles.suggestionChip} onPress={() => handleAsk(s)}>
                 <Text style={styles.suggestionChipText}>{s}</Text>
@@ -81,17 +93,22 @@ export default function AsistanScreen() {
         {loading && (
           <View style={styles.loadingRow}>
             <ActivityIndicator />
-            <Text style={styles.loadingText}>Takip listen taranıyor…</Text>
+            <Text style={styles.loadingText}>{t('asistan.loadingText')}</Text>
           </View>
         )}
 
         {error && <Text style={styles.error}>{error}</Text>}
       </ScrollView>
 
-      <View style={styles.inputRow}>
+      <View
+        style={[
+          styles.inputRow,
+          Platform.OS === 'android' && { paddingBottom: 16 + insets.bottom + keyboardHeight },
+        ]}
+      >
         <TextInput
           style={styles.input}
-          placeholder="Bir şey sor…"
+          placeholder={t('asistan.inputPlaceholder')}
           value={question}
           onChangeText={setQuestion}
           editable={!loading}
@@ -103,79 +120,83 @@ export default function AsistanScreen() {
           onPress={() => handleAsk()}
           disabled={!question.trim() || loading}
         >
-          <Text style={styles.sendButtonText}>Sor</Text>
+          <Text style={styles.sendButtonText}>{t('asistan.send')}</Text>
         </Pressable>
       </View>
-    </KeyboardAvoidingView>
+    </Container>
   );
 }
 
-const styles = StyleSheet.create({
-  mockBanner: { backgroundColor: '#fef3c7', padding: 12 },
-  mockBannerText: { color: '#92400e', fontSize: 13 },
-  content: { padding: 20, paddingBottom: 20, flexGrow: 1 },
-  suggestions: { marginTop: 8 },
-  suggestionsTitle: { fontSize: 13, fontWeight: '600', color: '#6b7280', marginBottom: 10 },
-  suggestionChip: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    marginBottom: 8,
-  },
-  suggestionChipText: { fontSize: 14, color: '#2563eb', fontWeight: '600' },
-  exchange: { marginBottom: 18 },
-  questionBubble: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#2563eb',
-    borderRadius: 14,
-    borderBottomRightRadius: 4,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    marginBottom: 8,
-    maxWidth: '85%',
-  },
-  questionText: { color: '#fff', fontSize: 15 },
-  answerBubble: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#e5e7eb',
-    borderRadius: 14,
-    borderBottomLeftRadius: 4,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    maxWidth: '90%',
-  },
-  answerText: { color: '#111827', fontSize: 15, lineHeight: 21 },
-  loadingRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 4 },
-  loadingText: { color: '#6b7280', fontSize: 13 },
-  error: { color: '#dc2626', marginTop: 12, fontSize: 14 },
-  inputRow: {
-    flexDirection: 'row',
-    gap: 10,
-    padding: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#e5e7eb',
-    backgroundColor: '#fff',
-  },
-  input: {
-    flex: 1,
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    fontSize: 15,
-  },
-  sendButton: {
-    backgroundColor: '#2563eb',
-    borderRadius: 10,
-    paddingHorizontal: 18,
-    justifyContent: 'center',
-  },
-  sendButtonDisabled: { opacity: 0.5 },
-  sendButtonText: { color: '#fff', fontSize: 15, fontWeight: '700' },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    mockBanner: { backgroundColor: colors.surfaceAlt, padding: 12 },
+    mockBannerText: { color: colors.gold, fontSize: fontSize.small, fontFamily: fontFamily.body },
+    content: { padding: 20, paddingBottom: 20, flexGrow: 1 },
+    suggestions: { marginTop: 8 },
+    suggestionsTitle: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.textMuted, marginBottom: 10 },
+    suggestionChip: {
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 10,
+      paddingHorizontal: 14,
+      paddingVertical: 12,
+      marginBottom: 8,
+    },
+    suggestionChipText: { fontSize: fontSize.base, color: colors.primary, fontFamily: fontFamily.bodySemiBold },
+    exchange: { marginBottom: 18 },
+    questionBubble: {
+      alignSelf: 'flex-end',
+      backgroundColor: colors.primary,
+      borderRadius: 14,
+      borderBottomRightRadius: 4,
+      paddingHorizontal: 14,
+      paddingVertical: 10,
+      marginBottom: 8,
+      maxWidth: '85%',
+    },
+    questionText: { color: colors.onPrimary, fontSize: fontSize.base, fontFamily: fontFamily.body },
+    answerBubble: {
+      alignSelf: 'flex-start',
+      backgroundColor: colors.surface,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 14,
+      borderBottomLeftRadius: 4,
+      paddingHorizontal: 14,
+      paddingVertical: 10,
+      maxWidth: '90%',
+    },
+    answerText: { color: colors.text, fontSize: fontSize.base, lineHeight: 21, fontFamily: fontFamily.body },
+    loadingRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 4 },
+    loadingText: { color: colors.textMuted, fontSize: fontSize.small, fontFamily: fontFamily.body },
+    error: { color: colors.danger, marginTop: 12, fontSize: fontSize.base, fontFamily: fontFamily.body },
+    inputRow: {
+      flexDirection: 'row',
+      gap: 10,
+      padding: 16,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      backgroundColor: colors.surface,
+    },
+    input: {
+      flex: 1,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 12,
+      paddingHorizontal: 14,
+      paddingVertical: 10,
+      fontSize: fontSize.base,
+      fontFamily: fontFamily.body,
+      color: colors.text,
+    },
+    sendButton: {
+      backgroundColor: colors.primary,
+      borderRadius: 10,
+      paddingHorizontal: 18,
+      justifyContent: 'center',
+    },
+    sendButtonDisabled: { opacity: 0.5 },
+    sendButtonText: { color: colors.onPrimary, fontSize: fontSize.base, fontFamily: fontFamily.bodyBold },
+  });
+}

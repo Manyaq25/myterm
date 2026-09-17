@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
 import { RefusalError, extractFollowUpsFromImage, type ImageMediaType } from '../lib/extract';
+import { isRateLimited } from '../lib/rateLimit';
 
 const ALLOWED_MEDIA_TYPES: ImageMediaType[] = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 // ~5MB raw image, base64 adds ~37% overhead.
@@ -34,6 +35,12 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   if (appSecret && req.headers['x-app-secret'] !== appSecret) {
     res.statusCode = 401;
     res.end(JSON.stringify({ error: 'unauthorized' }));
+    return;
+  }
+
+  if (isRateLimited(req)) {
+    res.statusCode = 429;
+    res.end(JSON.stringify({ error: 'rate_limited' }));
     return;
   }
 

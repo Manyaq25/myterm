@@ -1,14 +1,18 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useFocusEffect } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { listFollowUpsByType } from '../../src/db/queries';
 import { PersonGroupedList } from '../../src/components/PersonGroupedList';
 import { groupFollowUpsByPerson, type PersonGroup } from '../../src/utils/grouping';
-import { SCREEN_BACKGROUND } from '../../src/constants/cardStyle';
+import { useTheme, type ThemeColors } from '../../src/theme';
 
 export default function KimeSozVerdimScreen() {
+  const { colors } = useTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
   const db = useSQLiteContext();
+  const { t } = useTranslation();
   const [groups, setGroups] = useState<PersonGroup[]>([]);
 
   useFocusEffect(
@@ -21,14 +25,16 @@ export default function KimeSozVerdimScreen() {
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <PersonGroupedList
         groups={groups}
-        emptyTitle="Kimseye açık bir sözün yok"
-        emptySubtitle="Birine verdiğin bir söz olduğunda burada kişi bazlı görünecek."
+        emptyTitle={t('sozVerdim.emptyTitle')}
+        emptySubtitle={t('sozVerdim.emptySubtitle')}
       />
     </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  screen: { backgroundColor: SCREEN_BACKGROUND },
-  content: { padding: 20, paddingBottom: 60, flexGrow: 1 },
-});
+function getStyles(colors: ThemeColors) {
+  return StyleSheet.create({
+    screen: { backgroundColor: colors.background },
+    content: { padding: 20, paddingBottom: 60, flexGrow: 1 },
+  });
+}
