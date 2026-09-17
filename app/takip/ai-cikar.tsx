@@ -395,7 +395,7 @@ export default function AiCikarScreen() {
   }
 
   const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
-  const containerProps = Platform.OS === 'ios' ? { behavior: 'padding' as const, keyboardVerticalOffset: insets.top } : {};
+  const containerProps = Platform.OS === 'ios' ? { behavior: 'padding' as const } : {};
 
   const extractHandlers: Record<Mode, () => void> = {
     text: handleExtractText,
@@ -413,6 +413,7 @@ export default function AiCikarScreen() {
   return (
     <GradientBackground>
       <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <Container style={{ flex: 1 }} {...containerProps}>
         <View style={styles.header}>
           <Pressable
             onPress={() => router.back()}
@@ -429,7 +430,6 @@ export default function AiCikarScreen() {
           </View>
           <View style={styles.headerSpacer} />
         </View>
-      <Container style={{ flex: 1 }} {...containerProps}>
       <ScrollView
         contentContainerStyle={[
           styles.content,

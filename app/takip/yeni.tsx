@@ -104,11 +104,12 @@ export default function YeniTakipScreen() {
   }
 
   const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
-  const containerProps = Platform.OS === 'ios' ? { behavior: 'padding' as const, keyboardVerticalOffset: insets.top } : {};
+  const containerProps = Platform.OS === 'ios' ? { behavior: 'padding' as const } : {};
 
   return (
     <GradientBackground>
       <SafeAreaView style={styles.safeArea} edges={['top']}>
+      <Container style={{ flex: 1 }} {...containerProps}>
         <View style={styles.header}>
           <Pressable
             onPress={() => router.back()}
@@ -122,7 +123,6 @@ export default function YeniTakipScreen() {
           <Text style={styles.headerTitle}>{t('stackTitles.yeniTakip')}</Text>
           <View style={styles.pulseDot} />
         </View>
-      <Container style={{ flex: 1 }} {...containerProps}>
       <ScrollView
         contentContainerStyle={[
           styles.content,
