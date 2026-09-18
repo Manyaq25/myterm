@@ -68,7 +68,8 @@
           ]
         }
       ],
-      "./plugins/withAdjustNothingKeyboard"
+      "./plugins/withAdjustNothingKeyboard",
+      "./plugins/withoutMediaPlaybackForegroundService"
     ],
     "ios": {
       "supportsTablet": false,
