@@ -1,0 +1,84 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Synvia AI Gizlilik Politikası</title>
+<style>
+  :root {
+    --primary: #00A896; --primary-text: #006B5F; --bg: #F4F7F6; --surface: #FFFFFF;
+    --text: #132228; --text-muted: rgba(19, 34, 40, 0.64); --border: rgba(19, 34, 40, 0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --primary: #59DBC7; --primary-text: #79F7E3; --bg: #0B1614; --surface: #132228;
+      --text: #E3F3FC; --text-muted: rgba(227, 243, 252, 0.66); --border: rgba(227, 243, 252, 0.14); }
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 40px 20px 80px; line-height: 1.7; margin: 0; }
+  .page { max-width: 720px; margin-inline: auto; display: flex; flex-direction: column; gap: 28px; }
+  .brand { font-weight: 800; font-size: 17px; }
+  h1 { font-size: clamp(24px, 5vw, 32px); line-height: 1.15; margin: 0; }
+  .updated { color: var(--text-muted); font-size: 14px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 24px 26px; display: flex; flex-direction: column; gap: 12px; }
+  h2 { font-size: 18px; margin: 0; }
+  p { margin: 0; }
+  ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+  a { color: var(--primary-text); }
+  footer { border-top: 1px solid var(--border); padding-top: 20px; font-size: 13px; color: var(--text-muted); }
+</style></head>
+<body>
+<div class="page">
+  <div class="brand">Synvia AI</div>
+  <h1>Gizlilik Politikası</h1>
+  <p class="updated">Son güncelleme: 18 Eylül 2026</p>
+
+  <div class="card">
+    <h2>Genel Bakış</h2>
+    <p>Synvia AI ("uygulama"), kişisel hatırlatma ve takip yönetimi sağlayan, İbrahim AYDIN tarafından geliştirilen bir mobil uygulamadır. Bu politika, uygulamayı kullanırken hangi verilerin toplandığını, nasıl işlendiğini ve nasıl korunduğunu açıklar.</p>
+  </div>
+
+  <div class="card">
+    <h2>Hesap Sistemi</h2>
+    <p>Synvia AI'da bir kullanıcı hesabı/giriş sistemi bulunmaz. Kişi ve takip kayıtların yalnızca kendi cihazında, yerel olarak (SQLite veritabanı) saklanır. Bu veriler bizim sunucularımıza otomatik olarak gönderilmez veya yedeklenmez.</p>
+  </div>
+
+  <div class="card">
+    <h2>Yapay Zeka ile İşlenen Veriler</h2>
+    <p>Uygulama, aşağıdaki içerik türlerinden takip maddesi (kişi, tarih, görev) çıkarmak için üçüncü taraf yapay zeka sağlayıcılarını kullanır:</p>
+    <ul>
+      <li><strong>Metin, ekran görüntüsü ve PDF belgeleri</strong> — Anthropic (Claude) API'sine işlenmek üzere gönderilir.</li>
+      <li><strong>Sesli notlar</strong> — önce metne çevrilmek üzere OpenAI (Whisper) API'sine, ardından madde çıkarımı için Anthropic API'sine gönderilir.</li>
+    </ul>
+    <p>Bu içerikler yalnızca istenen çıkarımı yapmak amacıyla anlık olarak işlenir; sunucularımızda kalıcı olarak saklanmaz. Anthropic ve OpenAI'nin kendi veri işleme politikaları için ilgili sağlayıcıların gizlilik politikalarına bakabilirsin.</p>
+  </div>
+
+  <div class="card">
+    <h2>Abonelik ve Satın Alma Bilgileri</h2>
+    <p>Premium abonelik yönetimi için RevenueCat altyapısını kullanıyoruz. Bu kapsamda, App Store/Google Play tarafından atanan anonim bir kullanıcı kimliği ve satın alma geçmişi RevenueCat ile paylaşılır. Bu bilgiler, abonelik durumunu doğrulamak ve premium özellikleri etkinleştirmek için kullanılır.</p>
+  </div>
+
+  <div class="card">
+    <h2>Reklam ve Üçüncü Taraf Takip</h2>
+    <p>Uygulamada reklam bulunmaz ve pazarlama amaçlı üçüncü taraf takip/analitik SDK'ları kullanılmaz.</p>
+  </div>
+
+  <div class="card">
+    <h2>Verilerini Silme</h2>
+    <p>Uygulama içinde Ayarlar → Veri → "Hesabımı ve Tüm Verilerimi Sil" seçeneğiyle tüm yerel verilerini kalıcı olarak silebilirsin. Detaylı bilgi için <a href="/delete-data.html">veri silme sayfamıza</a> bakabilirsin.</p>
+  </div>
+
+  <div class="card">
+    <h2>Çocukların Gizliliği</h2>
+    <p>Synvia AI, 13 yaşından küçük çocuklara yönelik olarak tasarlanmamıştır ve bu kullanıcı grubundan bilerek veri toplamaz.</p>
+  </div>
+
+  <div class="card">
+    <h2>Politika Değişiklikleri</h2>
+    <p>Bu politika zaman zaman güncellenebilir. Önemli değişiklikler bu sayfada yayınlanacaktır.</p>
+  </div>
+
+  <div class="card">
+    <h2>İletişim</h2>
+    <p>Gizlilikle ilgili sorular için: <a href="mailto:aydinibrahim25@gmail.com">aydinibrahim25@gmail.com</a></p>
+  </div>
+
+  <footer>© 2026 Synvia AI · İbrahim AYDIN · <a href="/support.html" style="color:inherit">Destek</a></footer>
+</div>
+</body></html>

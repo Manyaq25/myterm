@@ -1,0 +1,81 @@
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Synvia AI Destek</title>
+<style>
+  :root {
+    --primary: #00A896;
+    --primary-text: #006B5F;
+    --secondary: #FF6B4A;
+    --bg: #F4F7F6;
+    --surface: #FFFFFF;
+    --text: #132228;
+    --text-muted: rgba(19, 34, 40, 0.64);
+    --border: rgba(19, 34, 40, 0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --primary: #59DBC7;
+      --primary-text: #79F7E3;
+      --secondary: #FFB4A3;
+      --bg: #0B1614;
+      --surface: #132228;
+      --text: #E3F3FC;
+      --text-muted: rgba(227, 243, 252, 0.66);
+      --border: rgba(227, 243, 252, 0.14);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 40px 20px 80px; line-height: 1.65; margin: 0;
+  }
+  .page { max-width: 640px; margin-inline: auto; display: flex; flex-direction: column; gap: 32px; }
+  .brand { font-weight: 800; font-size: 17px; }
+  h1 { font-size: clamp(26px, 5vw, 34px); line-height: 1.15; margin: 0; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 24px 26px; display: flex; flex-direction: column; gap: 12px; }
+  h2 { font-size: 17px; margin: 0; }
+  p { margin: 0; }
+  p.muted { color: var(--text-muted); font-size: 14px; }
+  a.contact { color: var(--primary-text); font-weight: 700; text-decoration: none; font-size: 16px; }
+  a.contact:hover { text-decoration: underline; }
+  ul.faq { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px; }
+  ul.faq li { display: flex; flex-direction: column; gap: 6px; }
+  ul.faq strong { font-size: 15px; }
+  footer { border-top: 1px solid var(--border); padding-top: 20px; font-size: 13px; color: var(--text-muted); }
+</style></head>
+<body>
+<div class="page">
+  <div class="brand">Synvia AI</div>
+  <h1>Destek &amp; Sıkça Sorulan Sorular</h1>
+
+  <div class="card">
+    <h2>Bize ulaş</h2>
+    <p>Bir sorunla mı karşılaştın, bir öneri mi var? Doğrudan yaz, elden geldiğince hızlı dönüş yapıyoruz.</p>
+    <a class="contact" href="mailto:aydinibrahim25@gmail.com">aydinibrahim25@gmail.com</a>
+  </div>
+
+  <div class="card">
+    <h2>Sıkça sorulanlar</h2>
+    <ul class="faq">
+      <li>
+        <strong>Verilerim nerede saklanıyor?</strong>
+        <p class="muted">Tüm kişi ve takip kayıtların yalnızca telefonunda, yerel olarak saklanır. Bir bulut sunucusuna otomatik gönderilmez.</p>
+      </li>
+      <li>
+        <strong>Aboneliğimi nasıl iptal ederim?</strong>
+        <p class="muted">App Store / Google Play hesap ayarlarındaki "Abonelikler" bölümünden istediğin zaman iptal edebilirsin.</p>
+      </li>
+      <li>
+        <strong>Verilerimi nasıl silerim?</strong>
+        <p class="muted">Uygulama içinde Ayarlar → Veri → "Hesabımı ve Tüm Verilerimi Sil" ile tüm yerel verilerini kalıcı olarak silebilirsin. Detaylı bilgi için <a href="/delete-data.html">veri silme sayfamıza</a> bakabilirsin.</p>
+      </li>
+      <li>
+        <strong>AI özellikleri nasıl çalışıyor?</strong>
+        <p class="muted">Sesli not, ekran görüntüsü veya metin girdiğinde, bu içerik yalnızca takip maddesi çıkarmak için işlenir, kalıcı olarak saklanmaz.</p>
+      </li>
+    </ul>
+  </div>
+
+  <footer>© 2026 Synvia AI · <a href="/privacy-policy.html" style="color:inherit">Gizlilik Politikası</a></footer>
+</div>
+</body></html>
