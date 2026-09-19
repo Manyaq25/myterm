@@ -514,12 +514,6 @@ export default function AiCikarScreen() {
               {t('aiCikar.modePdf')}
             </Text>
           </Pressable>
-          <Pressable
-            style={[styles.modeTab, mode === 'pdf' && styles.modeTabActive]}
-            onPress={() => setMode('pdf')}
-          >
-            <Text style={[styles.modeTabText, mode === 'pdf' && styles.modeTabTextActive]}>Belge</Text>
-          </Pressable>
         </View>
 
         {mode === 'text' && (
