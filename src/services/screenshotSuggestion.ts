@@ -32,6 +32,13 @@ let lastNotifiedAt = 0;
 const NOTIFICATION_DEBOUNCE_MS = 12000;
 let backgroundCheckInProgress = false;
 const LAST_ACTIVE_AT_KEY = 'screenshotSuggestionsLastActiveAt';
+// lastNotifiedAssetId sadece hafızada tutulduğu için uygulama force-quit
+// edilip yeniden açıldığında sıfırlanıyordu — bu da galeride duran ESKİ bir
+// ekran görüntüsü (son kapanış zamanından yeni sayılan) için daha önce zaten
+// bildirim gönderilmiş olsa bile tekrar bildirim atılmasına yol açıyordu.
+// Diske de yazıp soğuk başlangıçta geri okuyoruz ki aynı asset iki kez
+// bildirilmesin.
+const LAST_NOTIFIED_ASSET_ID_KEY = 'screenshotSuggestionsLastNotifiedAssetId';
 
 export async function isScreenshotSuggestionEnabled(): Promise<boolean> {
   const value = await SecureStore.getItemAsync(SETTING_KEY);
@@ -79,6 +86,9 @@ export async function initScreenshotSuggestions(): Promise<void> {
   // backgroundedAt bu JS oturumunda hiç set edilmediği için normal dönüş
   // kontrolünü tetiklemez — son bilinen aktif zamanı SecureStore'dan okuyup
   // soğuk başlangıçta da aynı taramayı bir kez çalıştırıyoruz.
+  const storedLastNotifiedAssetId = await SecureStore.getItemAsync(LAST_NOTIFIED_ASSET_ID_KEY);
+  if (storedLastNotifiedAssetId) lastNotifiedAssetId = storedLastNotifiedAssetId;
+
   const storedLastActiveAt = await SecureStore.getItemAsync(LAST_ACTIVE_AT_KEY);
   const since = storedLastActiveAt ? Number(storedLastActiveAt) : null;
   if (since && Number.isFinite(since)) {
@@ -187,6 +197,7 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
       if (!asset || asset.id === lastNotifiedAssetId) continue;
       if (asset.modificationTime < threshold) continue;
       lastNotifiedAssetId = asset.id;
+      void SecureStore.setItemAsync(LAST_NOTIFIED_ASSET_ID_KEY, asset.id);
       await notifySuggestion();
       return;
     }
