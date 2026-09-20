@@ -167,7 +167,12 @@ function getStyles(colors: ThemeColors) {
     wrap: {
       paddingHorizontal: 16,
       paddingTop: 10,
-      backgroundColor: 'transparent',
+      // Bu alan Stack ekranlarının kendi GradientBackground'ının DIŞINDA,
+      // ayrı bir flex alanı — 'transparent' bırakınca Android'in varsayılan
+      // (açık gri) pencere arka planı sızıp yuvarlak island'ın arkasında
+      // dikdörtgen bir leke gibi görünüyordu. Uygulamanın gerçek koyu/açık
+      // arka plan rengiyle dolduruyoruz.
+      backgroundColor: colors.background,
     },
     island: {
       borderRadius: 28,
