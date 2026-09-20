@@ -1,5 +1,5 @@
 import type { ImageSourcePropType } from 'react-native';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { usePathname, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -168,11 +168,18 @@ function getStyles(colors: ThemeColors) {
       overflow: 'hidden',
       borderWidth: 1,
       borderColor: colors.glassBorderStrong,
-      shadowColor: colors.text,
-      shadowOpacity: 0.1,
-      shadowRadius: 20,
-      shadowOffset: { width: 0, height: 8 },
-      elevation: 6,
+      ...Platform.select({
+        ios: {
+          shadowColor: colors.text,
+          shadowOpacity: 0.1,
+          shadowRadius: 20,
+          shadowOffset: { width: 0, height: 8 },
+        },
+        // Android: elevation combined with overflow:'hidden' on a rounded
+        // View renders as a hard rectangular box instead of following the
+        // pill's corners — exactly the glow seen bleeding above the tab bar.
+        default: { elevation: 0 },
+      }),
     },
     islandTint: {
       backgroundColor: colors.glassBgStrong,
