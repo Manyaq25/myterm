@@ -109,8 +109,11 @@ export function BottomTabBar() {
   return (
     <View style={[styles.wrap, { paddingBottom: Math.max(insets.bottom, 12) }]}>
       <View style={styles.island}>
-        <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={StyleSheet.absoluteFillObject} />
-        <View style={[StyleSheet.absoluteFillObject, styles.islandTint]} pointerEvents="none" />
+        {/* Android'de expo-blur'ün BlurView'ı, üst View'ın overflow:'hidden'
+            ile yuvarlattığı köşelere uymuyor — kendi köşesini de yuvarlamak
+            için borderRadius'u burada ayrıca belirtmemiz gerekiyor. */}
+        <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={[StyleSheet.absoluteFillObject, styles.islandRadius]} />
+        <View style={[StyleSheet.absoluteFillObject, styles.islandTint, styles.islandRadius]} pointerEvents="none" />
         <View style={styles.row}>
           <TabItem
             active={pathname === '/'}
@@ -184,6 +187,7 @@ function getStyles(colors: ThemeColors) {
     islandTint: {
       backgroundColor: colors.glassBgStrong,
     },
+    islandRadius: { borderRadius: 28 },
     row: {
       flexDirection: 'row',
       paddingVertical: 8,
