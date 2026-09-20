@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, NativeScrollEvent, NativeSyntheticEvent, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -323,11 +323,15 @@ function getStyles(colors: ThemeColors) {
       paddingHorizontal: 14,
       paddingVertical: 9,
       marginRight: 8,
-      shadowColor: colors.text,
-      shadowOpacity: 0.05,
-      shadowRadius: 8,
-      shadowOffset: { width: 0, height: 3 },
-      elevation: 1,
+      ...Platform.select({
+        ios: {
+          shadowColor: colors.text,
+          shadowOpacity: 0.05,
+          shadowRadius: 8,
+          shadowOffset: { width: 0, height: 3 },
+        },
+        default: { elevation: 0 },
+      }),
     },
     quickLinkText: { fontSize: fontSize.caption, fontFamily: fontFamily.label, color: colors.text },
     sectionTitle: { fontSize: fontSize.small, fontFamily: fontFamily.displaySemiBold, color: colors.danger, marginBottom: 8 },
@@ -341,11 +345,15 @@ function getStyles(colors: ThemeColors) {
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: colors.surface,
-      shadowColor: colors.text,
-      shadowOpacity: 0.12,
-      shadowRadius: 6,
-      shadowOffset: { width: -1, height: 0 },
-      elevation: 2,
+      ...Platform.select({
+        ios: {
+          shadowColor: colors.text,
+          shadowOpacity: 0.12,
+          shadowRadius: 6,
+          shadowOffset: { width: -1, height: 0 },
+        },
+        default: { elevation: 0 },
+      }),
     },
   });
 }
