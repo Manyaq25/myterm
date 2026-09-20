@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { useTheme, fontFamily, fontSize, type ThemeColors } from '../theme';
+import { useTheme, hexToRgba, fontFamily, fontSize, type ThemeColors } from '../theme';
 
 const ICON_HOME = require('../../assets/icons/tab-home.png');
 const ICON_TAKIPLER = require('../../assets/icons/tab-followups.png');
@@ -109,10 +109,13 @@ export function BottomTabBar() {
   return (
     <View style={[styles.wrap, { paddingBottom: Math.max(insets.bottom, 12) }]}>
       <View style={styles.island}>
-        {/* Android'de expo-blur'ün BlurView'ı, üst View'ın overflow:'hidden'
-            ile yuvarlattığı köşelere uymuyor — kendi köşesini de yuvarlamak
-            için borderRadius'u burada ayrıca belirtmemiz gerekiyor. */}
-        <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={[StyleSheet.absoluteFillObject, styles.islandRadius]} />
+        {/* Android'de expo-blur'ün BlurView'ı bazı cihazlarda stil/köşe
+            yuvarlamayı tamamen görmezden geçip sert kenarlı bir dikdörtgen
+            çiziyor — güvenilmez olduğu için Android'de hiç kullanmıyoruz,
+            yerine daha belirgin bir düz tonlama (islandTint) yeterli. */}
+        {Platform.OS === 'ios' && (
+          <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={[StyleSheet.absoluteFillObject, styles.islandRadius]} />
+        )}
         <View style={[StyleSheet.absoluteFillObject, styles.islandTint, styles.islandRadius]} pointerEvents="none" />
         <View style={styles.row}>
           <TabItem
@@ -185,7 +188,10 @@ function getStyles(colors: ThemeColors) {
       }),
     },
     islandTint: {
-      backgroundColor: colors.glassBgStrong,
+      // Android'de gerçek blur olmadığı için, arkadaki içeriği yıkayan
+      // ince bir ton yerine neredeyse opak bir yüzey rengi kullanıyoruz —
+      // iOS'ta bu ton gerçek BlurView'ın üstüne biniyor.
+      backgroundColor: Platform.OS === 'ios' ? colors.glassBgStrong : hexToRgba(colors.surface, 0.94),
     },
     islandRadius: { borderRadius: 28 },
     row: {
