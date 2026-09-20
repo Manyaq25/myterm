@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Alert, FlatList, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, FlatList, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
@@ -250,11 +250,15 @@ function getStyles(colors: ThemeColors) {
       fontFamily: fontFamily.body,
       color: colors.text,
       backgroundColor: colors.glassBg,
-      shadowColor: colors.primary,
-      shadowOpacity: 0.1,
-      shadowRadius: 10,
-      shadowOffset: { width: 0, height: 3 },
-      elevation: 1,
+      ...Platform.select({
+        ios: {
+          shadowColor: colors.primary,
+          shadowOpacity: 0.1,
+          shadowRadius: 10,
+          shadowOffset: { width: 0, height: 3 },
+        },
+        default: { elevation: 0 },
+      }),
     },
     selectToggle: { paddingVertical: 8, paddingHorizontal: 4 },
     selectToggleText: { color: colors.primary, fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold },
