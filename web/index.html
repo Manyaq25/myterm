@@ -3,12 +3,14 @@
 <meta name="description" content="İbrahim Aydın'ın geliştirdiği uygulamalar — destek ve gizlilik sayfaları.">
 <style>
   :root {
-    --primary: #4F6AF0; --primary-text: #3449C4; --bg: #F5F6FA; --surface: #FFFFFF;
-    --text: #15182B; --text-muted: rgba(21, 24, 43, 0.62); --border: rgba(21, 24, 43, 0.10);
+    --primary: #00A896; --primary-text: #006B5F; --secondary: #FF6B4A;
+    --bg: #F4F7F6; --surface: #FFFFFF;
+    --text: #132228; --text-muted: rgba(19, 34, 40, 0.64); --border: rgba(19, 34, 40, 0.10);
   }
   @media (prefers-color-scheme: dark) {
-    :root { --primary: #8FA2FF; --primary-text: #AEBBFF; --bg: #0C0E1A; --surface: #161A2E;
-      --text: #ECEEFB; --text-muted: rgba(236, 238, 251, 0.64); --border: rgba(236, 238, 251, 0.12); }
+    :root { --primary: #59DBC7; --primary-text: #79F7E3; --secondary: #FFB4A3;
+      --bg: #0B1614; --surface: #132228;
+      --text: #E3F3FC; --text-muted: rgba(227, 243, 252, 0.66); --border: rgba(227, 243, 252, 0.14); }
   }
   * { box-sizing: border-box; }
   body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -20,14 +22,16 @@
   .lede { color: var(--text-muted); font-size: 16px; max-width: 48ch; }
   section h2 { font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 14px; }
   .apps { display: flex; flex-direction: column; gap: 14px; }
-  .app-card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px 22px; display: flex; align-items: center; gap: 16px; }
-  .app-card img { width: 52px; height: 52px; border-radius: 13px; flex-shrink: 0; }
-  .app-card .info { flex: 1; display: flex; flex-direction: column; gap: 3px; }
-  .app-card .name { font-weight: 700; font-size: 16px; }
-  .app-card .desc { color: var(--text-muted); font-size: 14px; }
-  .app-card .links { display: flex; gap: 14px; flex-wrap: wrap; }
-  .app-card .links a { color: var(--primary-text); font-size: 13px; font-weight: 600; text-decoration: none; }
-  .app-card .links a:hover { text-decoration: underline; }
+  .app-card { position: relative; overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 22px; padding: 22px; display: flex; flex-direction: column; gap: 16px; }
+  .app-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); }
+  .app-head { display: flex; align-items: center; gap: 16px; }
+  .app-head img { width: 60px; height: 60px; border-radius: 16px; flex-shrink: 0; box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+  .app-head .info { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+  .app-head .name { font-weight: 800; font-size: 18px; }
+  .app-head .desc { color: var(--text-muted); font-size: 14px; }
+  .links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .links a { color: var(--primary-text); font-size: 13px; font-weight: 700; text-decoration: none; background: color-mix(in srgb, var(--primary) 12%, transparent); padding: 7px 12px; border-radius: 999px; }
+  .links a:hover { background: color-mix(in srgb, var(--primary) 20%, transparent); }
   footer { border-top: 1px solid var(--border); padding-top: 20px; font-size: 13px; color: var(--text-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
   footer a { color: inherit; }
 </style></head>
@@ -43,15 +47,17 @@
     <h2>Uygulamalar</h2>
     <div class="apps">
       <div class="app-card">
-        <img src="/apps/synvia-ai/icon.png" alt="Synvia AI ikonu">
-        <div class="info">
-          <div class="name">Synvia AI</div>
-          <div class="desc">Kişisel hatırlatma ve takip asistanı.</div>
+        <div class="app-head">
+          <img src="apps/synvia-ai/icon.png" alt="Synvia AI ikonu">
+          <div class="info">
+            <div class="name">Synvia AI</div>
+            <div class="desc">Kişisel hatırlatma ve takip asistanı.</div>
+          </div>
         </div>
         <div class="links">
-          <a href="/apps/synvia-ai/support.html">Destek</a>
-          <a href="/apps/synvia-ai/privacy-policy.html">Gizlilik</a>
-          <a href="/apps/synvia-ai/delete-data.html">Veri Silme</a>
+          <a href="apps/synvia-ai/support.html">Destek</a>
+          <a href="apps/synvia-ai/privacy-policy.html">Gizlilik</a>
+          <a href="apps/synvia-ai/delete-data.html">Veri Silme</a>
         </div>
       </div>
     </div>
