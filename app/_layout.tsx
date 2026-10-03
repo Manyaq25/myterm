@@ -100,7 +100,7 @@ export default function RootLayout() {
                 />
                 <Stack.Screen name="takip/yeni" options={{ headerShown: false }} />
                 <Stack.Screen name="takip/ai-cikar" options={{ headerShown: false }} />
-                <Stack.Screen name="takip/[id]" options={{ title: t('stackTitles.takipDetay') }} />
+                <Stack.Screen name="takip/[id]" options={{ headerShown: false }} />
                 <Stack.Screen name="kisi/[id]" options={{ title: t('stackTitles.kisiProfili') }} />
                 <Stack.Screen name="gorunum/bekliyorum" options={{ title: t('stackTitles.neyiBekliyorum') }} />
                 <Stack.Screen name="gorunum/soz-verdim" options={{ title: t('stackTitles.kimeSozVerdim') }} />

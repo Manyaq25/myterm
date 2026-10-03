@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ArrowLeft } from 'lucide-react-native';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -11,7 +13,7 @@ import { Avatar } from '../../src/components/Avatar';
 import { Button } from '../../src/components/Button';
 import { TypeBadge } from '../../src/components/TypeBadge';
 import { getCardSurface } from '../../src/constants/cardStyle';
-import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
+import { useTheme, fontFamily, fontSize, letterSpacing, type ThemeColors } from '../../src/theme';
 
 export default function TakipDetayScreen() {
   const { colors } = useTheme();
@@ -34,11 +36,38 @@ export default function TakipDetayScreen() {
     }, [load])
   );
 
+  // Native stack başlığındaki geri tuşu bu ekranda iOS'ta yanıt vermiyordu;
+  // Yeni Takip / AI ile Çıkar'daki gibi kendi başlığımızı kullanıyoruz.
+  // Geçmiş yoksa (ör. derin bağlantıyla açıldıysa) ana sayfaya dönülür.
+  function goBack() {
+    if (router.canGoBack()) router.back();
+    else router.replace('/');
+  }
+
+  const header = (
+    <View style={styles.header}>
+      <Pressable
+        onPress={goBack}
+        style={styles.backButton}
+        accessibilityRole="button"
+        accessibilityLabel={t('common.back')}
+        hitSlop={8}
+      >
+        <ArrowLeft color={colors.text} size={20} strokeWidth={2.2} />
+      </Pressable>
+      <Text style={styles.headerTitle}>{t('stackTitles.takipDetay')}</Text>
+      <View style={styles.headerSpacer} />
+    </View>
+  );
+
   if (!item) {
     return (
-      <View style={styles.container}>
-        <Text style={styles.detail}>{t('common.loading')}</Text>
-      </View>
+      <SafeAreaView style={styles.safeArea} edges={['top']}>
+        {header}
+        <View style={styles.container}>
+          <Text style={styles.detail}>{t('common.loading')}</Text>
+        </View>
+      </SafeAreaView>
     );
   }
 
@@ -47,7 +76,7 @@ export default function TakipDetayScreen() {
   async function markDone() {
     if (!item) return;
     await completeFollowUp(db, item);
-    router.back();
+    goBack();
   }
 
   async function handleDelete() {
@@ -59,13 +88,15 @@ export default function TakipDetayScreen() {
         style: 'destructive',
         onPress: async () => {
           await removeFollowUp(db, item);
-          router.back();
+          goBack();
         },
       },
     ]);
   }
 
   return (
+    <SafeAreaView style={styles.safeArea} edges={['top']}>
+    {header}
     <ScrollView contentContainerStyle={styles.content}>
       <View style={styles.card}>
         <TypeBadge type={item.type} style={styles.badge} />
@@ -97,11 +128,39 @@ export default function TakipDetayScreen() {
 
       <Button label={t('common.delete')} variant="ghostDanger" onPress={handleDelete} />
     </ScrollView>
+    </SafeAreaView>
   );
 }
 
 function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
+    safeArea: { flex: 1, backgroundColor: colors.background },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.glassBorder,
+    },
+    backButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 16,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.glassBg,
+      borderWidth: 1,
+      borderColor: colors.glassBorder,
+    },
+    headerTitle: {
+      fontSize: fontSize.title,
+      fontFamily: fontFamily.bodyBold,
+      color: colors.text,
+      letterSpacing: letterSpacing.title,
+    },
+    headerSpacer: { width: 40, height: 40 },
     container: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background },
     content: { padding: 20, backgroundColor: colors.background, flexGrow: 1 },
     card: {
