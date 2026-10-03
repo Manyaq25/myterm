@@ -7,7 +7,8 @@
 <div class="pointer-events-none fixed -top-40 -left-40 w-96 h-96 rounded-full bg-primary opacity-15 blur-[120px] z-0"></div>
 <div class="pointer-events-none fixed top-1/4 -right-40 w-96 h-96 rounded-full bg-secondary opacity-10 blur-[140px] z-0"></div>
 <header class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.45)]">
-<div class="min-h-20 max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg flex items-center justify-between gap-space-sm py-3">
+<div class="max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg flex flex-col md:flex-row md:items-center md:justify-between gap-2 md:gap-0 py-3">
+<div class="flex items-center justify-between md:contents">
 <a class="group flex items-center gap-space-sm focus:outline-none shrink-0" href="#top">
 <div class="relative shrink-0">
 <div class="absolute -inset-1 rounded-full bg-primary/20 blur-sm group-hover:bg-primary/40 transition-all"></div>
@@ -18,7 +19,7 @@
 <span class="hidden sm:block font-label-caps text-label-caps text-on-surface-variant whitespace-nowrap">İBRAHİM AYDIN</span>
 </div>
 </a>
-<div class="flex items-center gap-space-md md:gap-space-lg">
+<div class="flex items-center gap-space-md md:gap-space-lg md:order-2">
 <nav class="hidden md:flex items-center gap-space-xs sm:gap-space-sm md:gap-space-md">
 <a class="px-space-md py-space-xs transition-colors bg-surface-container-high text-primary font-headline-sm rounded-lg" href="#uygulamalar">Uygulamalar</a>
 <a class="font-body-md text-body-md px-space-md py-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="#hakkimda">Hakkımda</a>
@@ -29,8 +30,13 @@
 </a>
 </div>
 </div>
+<nav class="flex md:hidden items-center justify-center gap-space-sm">
+<a class="px-space-md py-1.5 text-sm transition-colors bg-surface-container-high text-primary font-headline-sm rounded-lg" href="#uygulamalar">Uygulamalar</a>
+<a class="font-body-md text-sm px-space-md py-1.5 text-on-surface-variant hover:text-on-surface transition-colors" href="#hakkimda">Hakkımda</a>
+</nav>
+</div>
 </header>
-<main class="relative z-10 w-full pt-20 bg-transparent min-h-[calc(100vh-140px)]">
+<main class="relative z-10 w-full pt-28 md:pt-20 bg-transparent min-h-[calc(100vh-140px)]">
 <div class="flex flex-col w-full" id="top">
 
 <!-- HERO SECTION -->
