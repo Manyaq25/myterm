@@ -1,71 +1,244 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>İbrahim Aydın</title>
-<meta name="description" content="İbrahim Aydın'ın geliştirdiği uygulamalar — destek ve gizlilik sayfaları.">
-<style>
-  :root {
-    --primary: #00A896; --primary-text: #006B5F; --secondary: #FF6B4A;
-    --bg: #F4F7F6; --surface: #FFFFFF;
-    --text: #132228; --text-muted: rgba(19, 34, 40, 0.64); --border: rgba(19, 34, 40, 0.10);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root { --primary: #59DBC7; --primary-text: #79F7E3; --secondary: #FFB4A3;
-      --bg: #0B1614; --surface: #132228;
-      --text: #E3F3FC; --text-muted: rgba(227, 243, 252, 0.66); --border: rgba(227, 243, 252, 0.14); }
-  }
-  * { box-sizing: border-box; }
-  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    padding: 56px 20px 80px; line-height: 1.6; margin: 0; }
-  .page { max-width: 680px; margin-inline: auto; display: flex; flex-direction: column; gap: 40px; }
-  header { display: flex; flex-direction: column; gap: 10px; }
-  .eyebrow { color: var(--primary-text); font-weight: 700; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
-  h1 { font-size: clamp(28px, 6vw, 38px); line-height: 1.15; margin: 0; }
-  .lede { color: var(--text-muted); font-size: 16px; max-width: 48ch; }
-  section h2 { font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 14px; }
-  .apps { display: flex; flex-direction: column; gap: 14px; }
-  .app-card { position: relative; overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 22px; padding: 22px; display: flex; flex-direction: column; gap: 16px; }
-  .app-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: linear-gradient(90deg, var(--primary), var(--secondary)); }
-  .app-head { display: flex; align-items: center; gap: 16px; }
-  .app-head img { width: 60px; height: 60px; border-radius: 16px; flex-shrink: 0; box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
-  .app-head .info { flex: 1; display: flex; flex-direction: column; gap: 3px; }
-  .app-head .name { font-weight: 800; font-size: 18px; }
-  .app-head .desc { color: var(--text-muted); font-size: 14px; }
-  .links { display: flex; gap: 10px; flex-wrap: wrap; }
-  .links a { color: var(--primary-text); font-size: 13px; font-weight: 700; text-decoration: none; background: color-mix(in srgb, var(--primary) 12%, transparent); padding: 7px 12px; border-radius: 999px; }
-  .links a:hover { background: color-mix(in srgb, var(--primary) 20%, transparent); }
-  footer { border-top: 1px solid var(--border); padding-top: 20px; font-size: 13px; color: var(--text-muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-  footer a { color: inherit; }
-</style></head>
-<body>
-<div class="page">
-  <header>
-    <div class="eyebrow">aydinapp.com.tr</div>
-    <h1>İbrahim Aydın</h1>
-    <p class="lede">Mobil uygulamalar geliştiriyorum. Aşağıda yayındaki uygulamaların destek ve gizlilik sayfalarını bulabilirsin.</p>
-  </header>
-
-  <section>
-    <h2>Uygulamalar</h2>
-    <div class="apps">
-      <div class="app-card">
-        <div class="app-head">
-          <img src="apps/synvia-ai/icon.png" alt="Synvia AI ikonu">
-          <div class="info">
-            <div class="name">Synvia AI</div>
-            <div class="desc">Kişisel hatırlatma ve takip asistanı.</div>
-          </div>
-        </div>
-        <div class="links">
-          <a href="apps/synvia-ai/support.html">Destek</a>
-          <a href="apps/synvia-ai/privacy-policy.html">Gizlilik</a>
-          <a href="apps/synvia-ai/delete-data.html">Veri Silme</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <span>© 2026 İbrahim Aydın</span>
-    <a href="mailto:aydinibrahim25@gmail.com">aydinibrahim25@gmail.com</a>
-  </footer>
+<!DOCTYPE html><html class="dark" lang="tr"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>İbrahim Aydın — aydinapp</title>
+<meta name="description" content="İbrahim Aydın'ın geliştirdiği uygulamalar. Bağımsız iOS &amp; AI geliştirici.">
+<link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}html{scroll-behavior:smooth;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-fixed-dim":"#59dbc7","on-primary-fixed":"#00201c","surface-container-lowest":"#06100e","surface-tint":"#59dbc7","on-primary-container":"#005e53","on-tertiary-fixed":"#00201c","outline":"#869490","on-error-container":"#ffdad6","primary-container":"#59dbc7","on-tertiary-fixed-variant":"#005047","error":"#ffb4ab","on-secondary-container":"#ffa08a","secondary-fixed-dim":"#ffb4a3","tertiary-fixed":"#79f7e3","primary-fixed":"#78f7e3","inverse-primary":"#006b5f","on-error":"#690005","tertiary-fixed-dim":"#59dbc7","on-secondary-fixed":"#3d0600","on-primary":"#003730","error-container":"#93000a","primary":"#79f8e3","on-surface":"#d9e5e1","inverse-surface":"#d9e5e1","on-secondary":"#630f00","on-background":"#d9e5e1","surface-container-highest":"#2c3735","secondary-fixed":"#ffdad2","on-secondary-fixed-variant":"#8c1900","surface":"#0a1513","secondary":"#ffb4a3","surface-variant":"#2c3735","surface-bright":"#303b39","background":"#0a1513","tertiary":"#79f8e3","secondary-container":"#8f1b01","outline-variant":"#3c4946","surface-dim":"#0a1513","on-surface-variant":"#bbcac5","on-tertiary-container":"#005e53","on-primary-fixed-variant":"#005047","surface-container-high":"#212c2a","inverse-on-surface":"#273330","surface-container-low":"#131e1c","surface-container":"#172220","tertiary-container":"#5adbc7","on-tertiary":"#003731"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{gutter:"1.5rem","space-xl":"2.5rem","space-md":"1rem","gutter-lg":"2rem","margin-lg":"5rem","space-lg":"1.5rem","space-2xl":"4rem","margin-md":"3rem","space-sm":"0.5rem","gutter-sm":"1rem","space-xs":"0.25rem",margin:"1.5rem"},fontFamily:{"code-mono":["JetBrains Mono"],"display-hero":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"body-sm":["Plus Jakarta Sans"],"display-hero-mobile":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"label-caps":["JetBrains Mono"],"body-md":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"]},fontSize:{"code-mono":["0.8125rem",{lineHeight:"1.25rem",letterSpacing:"-0.01em",fontWeight:"500"}],"display-hero":["4.5rem",{lineHeight:"5rem",letterSpacing:"-0.04em",fontWeight:"800"}],"headline-lg":["2.5rem",{lineHeight:"3rem",letterSpacing:"-0.03em",fontWeight:"700"}],"body-sm":["0.8125rem",{lineHeight:"1.25rem",letterSpacing:"0.005em",fontWeight:"400"}],"display-hero-mobile":["2.75rem",{lineHeight:"3.25rem",letterSpacing:"-0.035em",fontWeight:"800"}],"body-lg":["1.125rem",{lineHeight:"1.75rem",letterSpacing:"-0.01em",fontWeight:"400"}],"headline-sm":["1.25rem",{lineHeight:"1.75rem",letterSpacing:"-0.015em",fontWeight:"600"}],"label-caps":["0.6875rem",{lineHeight:"1rem",letterSpacing:"0.08em",fontWeight:"600"}],"body-md":["0.9375rem",{lineHeight:"1.5rem",letterSpacing:"0em",fontWeight:"400"}],"headline-md":["1.75rem",{lineHeight:"2.25rem",letterSpacing:"-0.02em",fontWeight:"600"}],"headline-lg-mobile":["1.875rem",{lineHeight:"2.375rem",letterSpacing:"-0.025em",fontWeight:"700"}]}}}};</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen relative overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<div class="pointer-events-none fixed -top-40 -left-40 w-96 h-96 rounded-full bg-primary opacity-15 blur-[120px] z-0"></div>
+<div class="pointer-events-none fixed top-1/4 -right-40 w-96 h-96 rounded-full bg-secondary opacity-10 blur-[140px] z-0"></div>
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.45)]">
+<div class="h-20 max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg flex items-center justify-between">
+<a class="group flex items-center gap-space-sm focus:outline-none" href="#top">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm tracking-tighter text-on-surface group-hover:text-primary transition-colors">aydin<span class="text-primary">app</span></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">İBRAHİM AYDIN</span>
 </div>
+</a>
+<div class="flex items-center gap-space-md md:gap-space-lg">
+<nav class="flex items-center gap-space-xs sm:gap-space-sm md:gap-space-md">
+<a class="px-space-md py-space-xs transition-colors bg-surface-container-high text-primary font-headline-sm rounded-lg" href="#uygulamalar">Uygulamalar</a>
+<a class="font-body-md text-body-md px-space-md py-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="#hakkimda">Hakkımda</a>
+</nav>
+<a class="group relative inline-flex items-center justify-center px-space-md py-space-xs rounded-full bg-surface-container/60 hover:bg-surface-container-high text-on-surface hover:text-primary shadow-[inset_0_1px_1px_rgba(255,255,255,0.12)] transition-all" href="#iletisim">
+<span class="font-code-mono text-code-mono font-medium">İletişim</span>
+<span class="ml-space-xs w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+</a>
+</div>
+</div>
+</header>
+<main class="relative z-10 w-full pt-20 bg-transparent min-h-[calc(100vh-140px)]">
+<div class="flex flex-col w-full" id="top">
+
+<!-- HERO SECTION -->
+<section class="relative w-full pt-space-xl pb-space-2xl overflow-hidden">
+<div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-gradient-to-tr from-primary/15 via-primary-container/10 to-secondary/10 blur-[130px] rounded-full z-0"></div>
+<div class="pointer-events-none absolute -top-12 right-1/4 w-[320px] h-[320px] bg-secondary-container/20 blur-[120px] rounded-full z-0"></div>
+<div class="relative z-10 max-w-6xl mx-auto px-margin md:px-margin-md lg:px-margin-lg flex flex-col items-center text-center">
+<div class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container/70 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] mb-space-lg hover:bg-surface-container-high transition-all">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant font-medium tracking-wider uppercase">Bağımsız iOS &amp; AI Geliştirici</span>
+<span class="font-code-mono text-code-mono text-primary text-xs pl-space-xs font-semibold">2026</span>
+</div>
+<h1 class="font-display-hero text-display-hero text-on-surface tracking-tighter leading-none mb-space-md max-w-4xl selection:text-primary">
+İbrahim Aydın
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl font-light mb-space-xl leading-relaxed">
+Mobil uygulamalar geliştiriyorum — <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-fixed-dim to-secondary font-medium">yapay zekâ destekli</span>, zanaatkar hassasiyeti ve sade bir gizlilik anlayışıyla.
+</p>
+<div class="w-full max-w-3xl rounded-2xl bg-surface-container-low/70 backdrop-blur-xl p-space-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] flex flex-wrap items-center justify-around gap-space-md text-center">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">deployed_code</span>
+<span class="font-code-mono text-code-mono text-on-surface font-medium">Bağımsız Proje</span>
+</div>
+<div class="hidden sm:block w-1 h-1 rounded-full bg-outline-variant"></div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<span class="font-code-mono text-code-mono text-on-surface font-medium">Expo &amp; React Native</span>
+</div>
+<div class="hidden sm:block w-1 h-1 rounded-full bg-outline-variant"></div>
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary-fixed-dim text-lg" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+<span class="font-code-mono text-code-mono text-on-surface font-medium">Reklamsız &amp; Takipsiz</span>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FEATURED APP SHOWCASE (Synvia AI) -->
+<section class="relative z-10 w-full py-space-xl max-w-6xl mx-auto px-margin md:px-margin-md lg:px-margin-lg" id="uygulamalar">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between gap-space-sm mb-space-lg">
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-gradient-to-r from-primary to-secondary"></span>
+<span class="font-label-caps text-label-caps text-secondary uppercase font-semibold">Öne Çıkan Uygulama</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Akıllı Hatırlatma Mimarisi</h2>
+</div>
+<div class="font-code-mono text-code-mono text-on-surface-variant flex items-center gap-space-xs">
+<span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span>App Store'da • Canlı</span>
+</div>
+</div>
+<div class="relative w-full rounded-3xl bg-surface-container/60 backdrop-blur-2xl shadow-2xl shadow-surface-container-lowest/80 overflow-hidden group">
+<div class="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-primary to-secondary opacity-80"></div>
+<div class="pointer-events-none absolute -bottom-24 -left-24 w-80 h-80 bg-primary/10 blur-[100px] rounded-full"></div>
+<div class="pointer-events-none absolute -top-24 -right-24 w-80 h-80 bg-secondary/10 blur-[100px] rounded-full"></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl p-space-lg md:p-space-xl lg:p-space-2xl items-center relative z-10">
+<div class="lg:col-span-7 flex flex-col gap-space-lg">
+<div class="flex items-start gap-space-md">
+<div class="relative shrink-0">
+<div class="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-primary to-secondary opacity-30 blur-md group-hover:opacity-50 transition-opacity"></div>
+<img alt="Synvia AI uygulama ikonu" class="relative w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-lg object-cover" src="apps/synvia-ai/icon.png">
+</div>
+<div class="flex flex-col gap-space-xs">
+<div class="flex flex-wrap items-center gap-space-xs">
+<h3 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Synvia AI</h3>
+<span class="inline-flex items-center px-space-xs py-0.5 rounded-full bg-primary/15 text-primary font-code-mono text-xs font-semibold">v1.0 Yayında</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface-variant font-normal">Kişisel hatırlatma ve takip asistanı</p>
+</div>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface font-light leading-relaxed">
+Konuşmalarını, ekran görüntülerini ve notlarını yapay zekâ ile anında takip maddelerine ve hatırlatıcılara dönüştüren kişisel asistan. Tüm kayıtların yalnızca kendi cihazında saklanır.
+</p>
+<div class="flex flex-wrap gap-space-xs">
+<div class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-high/70 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
+<span class="text-sm">🧠</span><span class="font-code-mono text-code-mono text-on-surface font-medium">Bağlamsal Anlama</span>
+</div>
+<div class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-high/70 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
+<span class="text-sm">⚡</span><span class="font-code-mono text-code-mono text-on-surface font-medium">Sıfır Çaba Girişi</span>
+</div>
+<div class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-high/70 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
+<span class="text-sm">💾</span><span class="font-code-mono text-code-mono text-on-surface font-medium">Yerel Veri Saklama</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-md pt-space-xs">
+<a class="group/btn relative inline-flex items-center justify-center gap-space-sm px-space-xl py-space-md rounded-2xl bg-gradient-to-r from-primary-fixed-dim via-primary to-secondary text-surface font-headline-sm text-headline-sm font-bold shadow-[0_0_28px_rgba(89,219,199,0.35)] hover:shadow-[0_0_36px_rgba(255,107,74,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all" href="https://apps.apple.com/app/id6812456837" rel="noopener noreferrer" target="_blank">
+<svg class="w-6 h-6 fill-surface transition-transform group-hover/btn:-translate-y-0.5" viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.61-.75 1.04-1.8 0.92-2.87-.9.04-2 .6-2.65 1.36-.58.67-1.09 1.74-.95 2.78 1.01.08 2.06-.52 2.68-1.27z"></path></svg>
+<span>App Store'dan İndirin</span>
+<span class="material-symbols-outlined text-surface text-lg">arrow_outward</span>
+</a>
+</div>
+<div class="flex flex-wrap items-center gap-space-xs pt-space-xs">
+<a class="group/btn inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-low/80 hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all text-sm" href="apps/synvia-ai/support.html">
+<span class="material-symbols-outlined text-base">support_agent</span><span class="font-code-mono text-code-mono">Destek</span>
+</a>
+<a class="group/btn inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-low/80 hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all text-sm" href="apps/synvia-ai/privacy-policy.html">
+<span class="material-symbols-outlined text-base">security</span><span class="font-code-mono text-code-mono">Gizlilik Politikası</span>
+</a>
+<a class="group/btn inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-low/80 hover:bg-secondary-container/30 text-on-surface-variant hover:text-secondary transition-all text-sm" href="apps/synvia-ai/delete-data.html">
+<span class="material-symbols-outlined text-base">delete_sweep</span><span class="font-code-mono text-code-mono">Veri Silme</span>
+</a>
+</div>
+</div>
+<!-- RIGHT COLUMN: Phone mockup, built from real markup (no stock/placeholder imagery) -->
+<div class="lg:col-span-5 flex justify-center lg:justify-end">
+<div class="relative w-[300px] sm:w-[320px] aspect-[9/19] rounded-[44px] p-2.5 bg-gradient-to-b from-surface-bright via-surface-container-highest to-surface-container-low shadow-2xl shadow-black/80 ring-1 ring-white/10 group-hover:scale-[1.01] transition-transform duration-500">
+<div class="absolute -left-3.5 top-24 w-1 h-10 bg-surface-bright rounded-l"></div>
+<div class="absolute -left-3.5 top-36 w-1 h-10 bg-surface-bright rounded-l"></div>
+<div class="absolute -right-3.5 top-28 w-1 h-14 bg-surface-bright rounded-r"></div>
+<div class="relative w-full h-full rounded-[36px] bg-surface-container-lowest overflow-hidden flex flex-col text-on-surface border border-white/5 px-4 pt-7 pb-5 gap-3">
+<div class="flex items-center justify-between px-1">
+<span class="font-code-mono text-[10px] text-on-surface-variant">9:41</span>
+<span class="font-headline-sm text-sm text-on-surface">Bugün</span>
+<span class="material-symbols-outlined text-primary text-sm">wifi</span>
+</div>
+<div class="flex flex-col gap-2 mt-2">
+<div class="rounded-2xl bg-surface-container/80 border-l-2 border-primary px-3 py-2.5 flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-lg shrink-0">event</span>
+<div class="flex flex-col min-w-0">
+<span class="font-body-sm text-on-surface font-medium truncate">Ahmet ile toplantı</span>
+<span class="font-code-mono text-[10px] text-on-surface-variant">14:30 · Bugün</span>
+</div>
+</div>
+<div class="rounded-2xl bg-surface-container/80 border-l-2 border-secondary px-3 py-2.5 flex items-center gap-2.5">
+<span class="material-symbols-outlined text-secondary text-lg shrink-0">call</span>
+<div class="flex flex-col min-w-0">
+<span class="font-body-sm text-on-surface font-medium truncate">Ayşe'yi ara</span>
+<span class="font-code-mono text-[10px] text-on-surface-variant">17:00 · Bugün</span>
+</div>
+</div>
+<div class="rounded-2xl bg-surface-container/80 border-l-2 border-primary-fixed-dim px-3 py-2.5 flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary-fixed-dim text-lg shrink-0">receipt_long</span>
+<div class="flex flex-col min-w-0">
+<span class="font-body-sm text-on-surface font-medium truncate">Fatura ödemesi</span>
+<span class="font-code-mono text-[10px] text-on-surface-variant">Yarın</span>
+</div>
+</div>
+</div>
+<div class="mt-auto flex items-center justify-center gap-2 pb-1">
+<div class="w-11 h-11 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-[0_0_18px_rgba(89,219,199,0.4)]">
+<span class="material-symbols-outlined text-surface">add</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- HAKKIMDA (About & Craft) STRIP -->
+<section class="relative z-10 w-full py-space-xl max-w-6xl mx-auto px-margin md:px-margin-md lg:px-margin-lg" id="hakkimda">
+<div class="rounded-3xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg md:p-space-xl shadow-xl flex flex-col md:flex-row items-start gap-space-xl relative overflow-hidden">
+<div class="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
+<div class="shrink-0 flex items-center justify-center w-14 h-14 rounded-2xl bg-surface-container-high text-primary shadow-inner">
+<span class="material-symbols-outlined text-3xl">terminal</span>
+</div>
+<div class="flex flex-col gap-space-md flex-1">
+<div class="flex items-center gap-space-sm">
+<span class="font-headline-md text-headline-md text-on-surface">Hakkımda &amp; Vizyon</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed font-light">
+Merhaba, ben İbrahim Aydın. Günlük hayatın karmaşasını sadeleştiren, yapay zekâyı kullanıcı deneyiminin merkezine koyan bağımsız mobil uygulamalar geliştiriyorum. Reklamsız, gereksiz veri toplamayan ve kullanıcı gizliliğine önem veren bir yaklaşımla üretiyorum.
+</p>
+<div class="flex flex-wrap gap-space-xs pt-space-xs">
+<div class="flex items-center gap-1.5 px-space-md py-1 rounded-lg bg-surface-container text-on-surface font-code-mono text-code-mono">
+<span class="material-symbols-outlined text-primary text-sm">code</span><span>Expo / React Native</span>
+</div>
+<div class="flex items-center gap-1.5 px-space-md py-1 rounded-lg bg-surface-container text-on-surface font-code-mono text-code-mono">
+<span class="material-symbols-outlined text-secondary text-sm">memory</span><span>Claude &amp; Whisper API Entegrasyonu</span>
+</div>
+<div class="flex items-center gap-1.5 px-space-md py-1 rounded-lg bg-surface-container text-on-surface font-code-mono text-code-mono">
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm">lock</span><span>Gizlilik Odaklı Tasarım</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- DIRECT ACTION & COLLABORATION CTA STRIP -->
+<section class="relative z-10 w-full py-space-xl pb-space-2xl max-w-6xl mx-auto px-margin md:px-margin-md lg:px-margin-lg" id="iletisim">
+<div class="rounded-3xl bg-gradient-to-r from-surface-container/90 via-surface-container-high/90 to-surface-container/90 backdrop-blur-2xl p-space-lg md:p-space-xl flex flex-col md:flex-row items-center justify-between gap-space-lg shadow-xl shadow-surface-container-lowest/60">
+<div class="flex flex-col gap-space-xs text-center md:text-left">
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase font-semibold">Doğrudan İletişim</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Bir sonraki projenizi veya geri bildiriminizi paylaşın</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Yeni fikirler, teknik sorular veya iş birlikleri için her zaman açığım.</p>
+</div>
+<div class="shrink-0 flex items-center gap-space-md">
+<a class="inline-flex items-center gap-space-sm px-space-xl py-space-md rounded-2xl bg-primary text-on-primary font-headline-sm text-headline-sm font-bold shadow-[0_0_24px_rgba(89,219,199,0.3)] hover:scale-105 active:scale-95 transition-all" href="mailto:aydinibrahim25@gmail.com">
+<span class="material-symbols-outlined text-xl">send</span><span>E-posta Gönder</span>
+</a>
+</div>
+</div>
+</section>
+
+</div>
+</main>
+<footer class="relative z-10 w-full bg-surface-container-lowest/80 backdrop-blur-md shadow-[0_-1px_12px_rgba(0,0,0,0.35)] py-space-xl">
+<div class="max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg flex flex-col md:flex-row items-center justify-between gap-space-lg">
+<div class="flex flex-col items-center md:items-start gap-space-xs">
+<div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface">aydin<span class="text-primary">app</span></span></div>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-center md:text-left">© 2026 İbrahim Aydın. Tüm hakları saklıdır.</p>
+</div>
+<div class="flex items-center gap-space-lg">
+<a class="flex items-center gap-space-xs font-code-mono text-code-mono text-on-surface-variant hover:text-primary transition-colors" href="mailto:aydinibrahim25@gmail.com">
+<span class="material-symbols-outlined text-base">mail</span><span>aydinibrahim25@gmail.com</span>
+</a>
+<a aria-label="App Store" class="p-space-xs rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" href="https://apps.apple.com/app/id6812456837" rel="noopener noreferrer" target="_blank"><span class="material-symbols-outlined">apps</span></a>
+</div>
+</div>
+</footer>
 </body></html>
