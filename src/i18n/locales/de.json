@@ -184,7 +184,15 @@
     "engineBrand": "Synvia Natural NLP Engine",
     "clearText": "Leeren",
     "quickVoice": "Spracheingabe",
-    "quickScreenshot": "Screenshot"
+    "quickScreenshot": "Screenshot",
+    "timeMissing": "Keine Uhrzeit angegeben — wähle eine Uhrzeit für die Erinnerung.",
+    "pickTime": "Uhrzeit wählen",
+    "pickTimeA11y": "Uhrzeit für {{title}} wählen",
+    "editTime": "Bearbeiten",
+    "editTimeA11y": "Datum und Uhrzeit für {{title}} bearbeiten",
+    "timeMissingAlertTitle": "Keine Uhrzeit gewählt",
+    "timeMissingAlertMessage": "Für diese Einträge wurde keine Uhrzeit angegeben:\n{{items}}\n\nWähle eine Uhrzeit, um erinnert zu werden.",
+    "saveWithoutReminder": "Ohne Erinnerung speichern"
   },
   "asistan": {
     "mockBanner": "Testmodus: Das echte KI-Backend ist noch nicht verbunden, Antworten sind simuliert.",

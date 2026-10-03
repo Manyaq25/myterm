@@ -184,7 +184,15 @@
     "engineBrand": "Synvia Natural NLP Engine",
     "clearText": "Очистить",
     "quickVoice": "Голосовой ввод",
-    "quickScreenshot": "Скриншот"
+    "quickScreenshot": "Скриншот",
+    "timeMissing": "Время не указано — выберите время напоминания.",
+    "pickTime": "Выбрать время",
+    "pickTimeA11y": "Выбрать время для «{{title}}»",
+    "editTime": "Изменить",
+    "editTimeA11y": "Изменить дату и время для «{{title}}»",
+    "timeMissingAlertTitle": "Время не выбрано",
+    "timeMissingAlertMessage": "Для этих пунктов время не указано:\n{{items}}\n\nВыберите время, чтобы получить напоминание.",
+    "saveWithoutReminder": "Сохранить без напоминания"
   },
   "asistan": {
     "mockBanner": "Тестовый режим: реальный ИИ-бэкенд ещё не подключён, ответы будут смоделированы.",

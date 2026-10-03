@@ -184,7 +184,15 @@
     "engineBrand": "Synvia Natural NLP Engine",
     "clearText": "지우기",
     "quickVoice": "음성 입력",
-    "quickScreenshot": "스크린샷"
+    "quickScreenshot": "스크린샷",
+    "timeMissing": "시간이 언급되지 않았습니다 — 알림 시간을 선택하세요.",
+    "pickTime": "시간 선택",
+    "pickTimeA11y": "{{title}} 시간 선택",
+    "editTime": "편집",
+    "editTimeA11y": "{{title}}의 날짜와 시간 편집",
+    "timeMissingAlertTitle": "선택된 시간 없음",
+    "timeMissingAlertMessage": "다음 항목에는 시간이 언급되지 않았습니다:\n{{items}}\n\n알림을 받으려면 시간을 선택하세요.",
+    "saveWithoutReminder": "알림 없이 저장"
   },
   "asistan": {
     "mockBanner": "테스트 모드: 실제 AI 백엔드가 아직 연결되지 않아 답변은 가짜 데이터로 표시됩니다.",

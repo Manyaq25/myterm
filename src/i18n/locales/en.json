@@ -184,7 +184,15 @@
     "engineBrand": "Synvia Natural NLP Engine",
     "clearText": "Clear",
     "quickVoice": "Voice input",
-    "quickScreenshot": "Screenshot"
+    "quickScreenshot": "Screenshot",
+    "timeMissing": "No time was mentioned — pick a time for the reminder.",
+    "pickTime": "Pick time",
+    "pickTimeA11y": "Pick a time for {{title}}",
+    "editTime": "Edit",
+    "editTimeA11y": "Edit date and time for {{title}}",
+    "timeMissingAlertTitle": "No time selected",
+    "timeMissingAlertMessage": "No time was mentioned for these items:\n{{items}}\n\nPick a time to get a reminder.",
+    "saveWithoutReminder": "Save without reminder"
   },
   "asistan": {
     "mockBanner": "Test mode: the real AI backend isn't connected yet, answers will be mocked.",

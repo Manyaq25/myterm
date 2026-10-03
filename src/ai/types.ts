@@ -5,6 +5,8 @@ export interface ExtractedFollowUp {
   type: FollowUpType;
   personName: string | null;
   dueAtISO: string | null;
+  /** Metinde açık bir saat geçiyorsa true; eski backend sürümleri göndermez. */
+  timeSpecified?: boolean;
   confidence: number;
   note: string | null;
 }

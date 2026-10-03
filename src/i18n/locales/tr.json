@@ -184,7 +184,15 @@
     "engineBrand": "Synvia Natural NLP Engine",
     "clearText": "Temizle",
     "quickVoice": "Sesle aktar",
-    "quickScreenshot": "Ekran görüntüsü"
+    "quickScreenshot": "Ekran görüntüsü",
+    "timeMissing": "Metinde saat belirtilmemiş — hatırlatma için bir saat seç.",
+    "pickTime": "Saat seç",
+    "pickTimeA11y": "{{title}} için saat seç",
+    "editTime": "Düzenle",
+    "editTimeA11y": "{{title}} için tarih ve saati düzenle",
+    "timeMissingAlertTitle": "Saat seçilmedi",
+    "timeMissingAlertMessage": "Şu maddelerde metinde saat belirtilmemiş:\n{{items}}\n\nHatırlatma alabilmek için bir saat seçmelisin.",
+    "saveWithoutReminder": "Hatırlatmasız kaydet"
   },
   "asistan": {
     "mockBanner": "Test modu: gerçek AI backend'i henüz bağlı değil, cevaplar sahte (mock) olacak.",

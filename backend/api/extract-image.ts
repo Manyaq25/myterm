@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
-import { RefusalError, extractFollowUpsFromImage, type ImageMediaType } from '../lib/extract';
+import { RefusalError, extractFollowUpsFromImage, parseClientTime, type ImageMediaType } from '../lib/extract';
 import { isRateLimited } from '../lib/rateLimit';
 
 const ALLOWED_MEDIA_TYPES: ImageMediaType[] = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -74,7 +74,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   const model = process.env.ANTHROPIC_MODEL || 'claude-opus-5';
 
   try {
-    const candidates = await extractFollowUpsFromImage(client, model, imageBase64, mediaType as ImageMediaType);
+    const candidates = await extractFollowUpsFromImage(client, model, imageBase64, mediaType as ImageMediaType, parseClientTime(req.headers));
     res.statusCode = 200;
     res.end(JSON.stringify({ candidates }));
   } catch (error) {

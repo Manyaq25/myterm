@@ -1,7 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI, { toFile } from 'openai';
-import { RefusalError, extractFollowUpsFromText } from '../lib/extract';
+import { RefusalError, extractFollowUpsFromText, parseClientTime } from '../lib/extract';
 import { isRateLimited } from '../lib/rateLimit';
 
 const MAX_AUDIO_BYTES = 15 * 1024 * 1024; // 15 MB, generous for a few minutes of voice notes
@@ -80,7 +80,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
       return;
     }
 
-    const candidates = await extractFollowUpsFromText(anthropic, extractModel, transcript);
+    const candidates = await extractFollowUpsFromText(anthropic, extractModel, transcript, parseClientTime(req.headers));
     res.statusCode = 200;
     res.end(JSON.stringify({ transcript, candidates }));
   } catch (error) {

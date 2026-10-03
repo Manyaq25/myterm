@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
-import { RefusalError, extractFollowUpsFromPdf } from '../lib/extract';
+import { RefusalError, extractFollowUpsFromPdf, parseClientTime } from '../lib/extract';
 import { isRateLimited } from '../lib/rateLimit';
 
 // ~5MB raw PDF, base64 adds ~37% overhead.
@@ -68,7 +68,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   const model = process.env.ANTHROPIC_MODEL || 'claude-opus-5';
 
   try {
-    const candidates = await extractFollowUpsFromPdf(client, model, pdfBase64);
+    const candidates = await extractFollowUpsFromPdf(client, model, pdfBase64, parseClientTime(req.headers));
     res.statusCode = 200;
     res.end(JSON.stringify({ candidates }));
   } catch (error) {

@@ -4,6 +4,7 @@ import {
   Alert,
   Image,
   KeyboardAvoidingView,
+  Modal,
   Platform,
   Pressable,
   ScrollView,
@@ -28,11 +29,12 @@ import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system/legacy';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
 import type { FollowUpSource } from '../../src/types';
 import { followUpTypeLabel } from '../../src/i18n/labels';
 import { aiProvider, isUsingMockAI, type ExtractedFollowUp, type ImageMediaType } from '../../src/ai';
-import { applyReminderLead } from '../../src/utils/date';
+import { applyReminderLead, formatDueDate } from '../../src/utils/date';
 import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
 import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
@@ -47,6 +49,10 @@ import { getCardSurface } from '../../src/constants/cardStyle';
 
 interface Candidate extends ExtractedFollowUp {
   selected: boolean;
+  /** Yerel zaman damgası; yalnızca tarih biliniyorsa günün başlangıcı. */
+  dueAt: number | null;
+  /** Saat metinden geldiyse veya kullanıcı seçtiyse true. */
+  hasTime: boolean;
 }
 
 type Mode = 'text' | 'voice' | 'image' | 'pdf';
@@ -59,8 +65,38 @@ const LOW_CONFIDENCE_THRESHOLD = 0.6;
 // önce uyarmak için burada da kontrol ediyoruz.
 const MAX_PDF_BASE64_LENGTH = 7 * 1024 * 1024;
 
+// Saat, metinde yazdığı gibi yerel duvar saati olarak yorumlanır — ISO'daki
+// ofset yok sayılıp bileşenlerden yerel bir tarih kurulur. Böylece "10:00"
+// hangi saat diliminde olursa olsun 10:00 olarak kalır.
+function parseLocalDue(iso: string | null): number | null {
+  if (!iso) return null;
+  const m = /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2}))?/.exec(iso);
+  if (!m) return null;
+  const [, y, mo, d, h, mi] = m;
+  return new Date(Number(y), Number(mo) - 1, Number(d), h ? Number(h) : 0, mi ? Number(mi) : 0).getTime();
+}
+
 function toCandidates(results: ExtractedFollowUp[]): Candidate[] {
-  return results.map((r) => ({ ...r, selected: r.confidence >= LOW_CONFIDENCE_THRESHOLD }));
+  return results.map((r) => {
+    const dueAt = parseLocalDue(r.dueAtISO);
+    return {
+      ...r,
+      selected: r.confidence >= LOW_CONFIDENCE_THRESHOLD,
+      dueAt,
+      hasTime: dueAt !== null && (r.timeSpecified ?? true),
+    };
+  });
+}
+
+function initialPickerDate(c: Candidate): Date {
+  if (c.dueAt !== null) {
+    const d = new Date(c.dueAt);
+    if (!c.hasTime) d.setHours(9, 0, 0, 0);
+    return d;
+  }
+  const d = new Date();
+  d.setHours(d.getHours() + 1, 0, 0, 0);
+  return d;
 }
 
 function formatDuration(ms: number): string {
@@ -97,6 +133,9 @@ export default function AiCikarScreen() {
   const [transcript, setTranscript] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [importantQueue, setImportantQueue] = useState<{ id: string; title: string; dueAt: number }[]>([]);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [pickerValue, setPickerValue] = useState<Date>(new Date());
+  const [androidPickerStage, setAndroidPickerStage] = useState<'date' | 'time' | null>(null);
   const isPremium = useIsPremium();
   const [usageCount, setUsageCount] = useState(0);
 
@@ -320,10 +359,41 @@ export default function AiCikarScreen() {
     );
   }
 
-  async function handleSave() {
+  function openTimePicker(index: number) {
+    const c = candidates?.[index];
+    if (!c) return;
+    setPickerValue(initialPickerDate(c));
+    setEditingIndex(index);
+    if (Platform.OS === 'android') setAndroidPickerStage('date');
+  }
+
+  function commitTime(index: number, date: Date) {
+    setCandidates((prev) =>
+      prev ? prev.map((c, i) => (i === index ? { ...c, dueAt: date.getTime(), hasTime: true, selected: true } : c)) : prev
+    );
+    setEditingIndex(null);
+  }
+
+  function handleSave() {
     if (!candidates || saving) return;
     const selected = candidates.filter((c) => c.selected);
     if (selected.length === 0) return;
+    const missing = selected.filter((c) => !c.hasTime);
+    if (missing.length > 0) {
+      Alert.alert(
+        t('aiCikar.timeMissingAlertTitle'),
+        t('aiCikar.timeMissingAlertMessage', { items: missing.map((c) => `• ${c.title}`).join('\n') }),
+        [
+          { text: t('aiCikar.saveWithoutReminder'), onPress: () => void saveCandidates(selected) },
+          { text: t('aiCikar.pickTime'), style: 'cancel', onPress: () => openTimePicker(candidates.indexOf(missing[0])) },
+        ]
+      );
+      return;
+    }
+    void saveCandidates(selected);
+  }
+
+  async function saveCandidates(selected: Candidate[]) {
     setSaving(true);
     try {
       const people = await listPeople(db);
@@ -342,7 +412,7 @@ export default function AiCikarScreen() {
           }
         }
 
-        const dueAt = candidate.dueAtISO ? new Date(candidate.dueAtISO).getTime() : null;
+        const dueAt = candidate.hasTime ? candidate.dueAt : null;
         const remindAt = dueAt ? applyReminderLead(dueAt, reminderLeadMinutes) : null;
         const followUp = await createFollowUp(db, {
           title: candidate.title,
@@ -701,7 +771,7 @@ export default function AiCikarScreen() {
                 followUpTypeLabel(c.type, t),
                 c.title,
                 c.personName ? t('aiCikar.personLabel', { name: c.personName }) : null,
-                c.dueAtISO ? t('aiCikar.dateLabel', { date: new Date(c.dueAtISO).toLocaleString(i18n.language) }) : null,
+                c.hasTime && c.dueAt !== null ? t('aiCikar.dateLabel', { date: formatDueDate(c.dueAt) }) : t('aiCikar.timeMissing'),
                 c.confidence < LOW_CONFIDENCE_THRESHOLD ? t('aiCikar.lowConfidenceA11y') : null,
               ]
                 .filter(Boolean)
@@ -722,8 +792,35 @@ export default function AiCikarScreen() {
                   <Text style={styles.candidateType}>{followUpTypeLabel(c.type, t)}</Text>
                   <Text style={styles.candidateTitle}>{c.title}</Text>
                   {c.personName && <Text style={styles.candidateMeta}>👤 {c.personName}</Text>}
-                  {c.dueAtISO && (
-                    <Text style={styles.candidateMeta}>⏰ {new Date(c.dueAtISO).toLocaleString(i18n.language)}</Text>
+                  {c.hasTime && c.dueAt !== null ? (
+                    <View style={styles.timeRow}>
+                      <Text style={styles.candidateMeta}>⏰ {formatDueDate(c.dueAt)}</Text>
+                      <Pressable
+                        onPress={() => openTimePicker(i)}
+                        hitSlop={10}
+                        accessibilityRole="button"
+                        accessibilityLabel={t('aiCikar.editTimeA11y', { title: c.title })}
+                      >
+                        <Text style={styles.timeEdit}>{t('aiCikar.editTime')}</Text>
+                      </Pressable>
+                    </View>
+                  ) : (
+                    <View style={styles.timeMissingBox}>
+                      {c.dueAt !== null && (
+                        <Text style={styles.candidateMeta}>
+                          📅 {new Date(c.dueAt).toLocaleDateString(i18n.language, { day: 'numeric', month: 'short', year: 'numeric' })}
+                        </Text>
+                      )}
+                      <Text style={styles.timeMissingText}>⚠️ {t('aiCikar.timeMissing')}</Text>
+                      <Pressable
+                        style={styles.pickTimeButton}
+                        onPress={() => openTimePicker(i)}
+                        accessibilityRole="button"
+                        accessibilityLabel={t('aiCikar.pickTimeA11y', { title: c.title })}
+                      >
+                        <Text style={styles.pickTimeButtonText}>{t('aiCikar.pickTime')}</Text>
+                      </Pressable>
+                    </View>
                   )}
                   {c.confidence < LOW_CONFIDENCE_THRESHOLD && (
                     <Text style={styles.candidateLowConfidence}>{t('aiCikar.lowConfidenceText')}</Text>
@@ -763,6 +860,67 @@ export default function AiCikarScreen() {
           accessibilityLabel={t('aiCikar.extract')}
         />
       </View>
+      {Platform.OS === 'ios' && (
+        <Modal
+          visible={editingIndex !== null}
+          transparent
+          animationType="slide"
+          onRequestClose={() => setEditingIndex(null)}
+        >
+          <Pressable style={styles.pickerBackdrop} onPress={() => setEditingIndex(null)} accessibilityLabel={t('common.cancel')} />
+          <View style={[styles.pickerSheet, { paddingBottom: Math.max(insets.bottom, 16) }]}>
+            <Text style={styles.pickerTitle} numberOfLines={2}>
+              {editingIndex !== null ? candidates?.[editingIndex]?.title : ''}
+            </Text>
+            <DateTimePicker
+              value={pickerValue}
+              mode="datetime"
+              display="spinner"
+              locale={i18n.language}
+              onChange={(_, selected) => {
+                if (selected) setPickerValue(selected);
+              }}
+            />
+            <Button
+              label={t('yeni.datePickerDone')}
+              onPress={() => editingIndex !== null && commitTime(editingIndex, pickerValue)}
+            />
+          </View>
+        </Modal>
+      )}
+      {Platform.OS === 'android' && androidPickerStage === 'date' && (
+        <DateTimePicker
+          value={pickerValue}
+          mode="date"
+          onChange={(event, selected) => {
+            if (event.type !== 'set' || !selected) {
+              setAndroidPickerStage(null);
+              setEditingIndex(null);
+              return;
+            }
+            const combined = new Date(selected);
+            combined.setHours(pickerValue.getHours(), pickerValue.getMinutes(), 0, 0);
+            setPickerValue(combined);
+            setAndroidPickerStage('time');
+          }}
+        />
+      )}
+      {Platform.OS === 'android' && androidPickerStage === 'time' && (
+        <DateTimePicker
+          value={pickerValue}
+          mode="time"
+          onChange={(event, selected) => {
+            setAndroidPickerStage(null);
+            if (event.type !== 'set' || !selected || editingIndex === null) {
+              setEditingIndex(null);
+              return;
+            }
+            const combined = new Date(pickerValue);
+            combined.setHours(selected.getHours(), selected.getMinutes(), 0, 0);
+            commitTime(editingIndex, combined);
+          }}
+        />
+      )}
       <SmartReminderPrompt
         visible={importantQueue.length > 0}
         title={importantQueue[0]?.title ?? ''}
@@ -961,6 +1119,36 @@ function getStyles(colors: ThemeColors) {
     candidateMeta: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 2, fontFamily: fontFamily.body },
     candidateLowConfidence: { fontSize: fontSize.caption, color: colors.gold, marginTop: 4, fontFamily: fontFamily.bodySemiBold },
     candidateNote: { fontSize: fontSize.caption, color: colors.textMuted, marginTop: 4, fontStyle: 'italic', fontFamily: fontFamily.body },
+    timeRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 8 },
+    timeEdit: { fontSize: fontSize.small, fontFamily: fontFamily.bodyBold, color: colors.primary, marginTop: 2 },
+    timeMissingBox: {
+      marginTop: 8,
+      padding: 10,
+      borderRadius: 12,
+      backgroundColor: hexToRgba(colors.gold, 0.12),
+      borderWidth: 1,
+      borderColor: hexToRgba(colors.gold, 0.35),
+      gap: 6,
+    },
+    timeMissingText: { fontSize: fontSize.caption, fontFamily: fontFamily.bodySemiBold, color: colors.text, lineHeight: 18 },
+    pickTimeButton: {
+      alignSelf: 'flex-start',
+      backgroundColor: colors.primary,
+      borderRadius: 999,
+      paddingHorizontal: 14,
+      paddingVertical: 7,
+    },
+    pickTimeButtonText: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.onPrimary },
+    pickerBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.35)' },
+    pickerSheet: {
+      backgroundColor: colors.surface,
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
+      paddingHorizontal: 20,
+      paddingTop: 18,
+      gap: 8,
+    },
+    pickerTitle: { fontSize: fontSize.base, fontFamily: fontFamily.displaySemiBold, color: colors.text, textAlign: 'center' },
     saveButtonWrap: { marginTop: 8 },
   });
 }

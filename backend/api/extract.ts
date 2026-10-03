@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
-import { MAX_TEXT_LENGTH, RefusalError, extractFollowUpsFromText } from '../lib/extract';
+import { MAX_TEXT_LENGTH, RefusalError, extractFollowUpsFromText, parseClientTime } from '../lib/extract';
 import { isRateLimited } from '../lib/rateLimit';
 
 function requireEnv(name: string): string {
@@ -65,7 +65,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   const model = process.env.ANTHROPIC_MODEL || 'claude-opus-5';
 
   try {
-    const candidates = await extractFollowUpsFromText(client, model, text);
+    const candidates = await extractFollowUpsFromText(client, model, text, parseClientTime(req.headers));
     res.statusCode = 200;
     res.end(JSON.stringify({ candidates }));
   } catch (error) {

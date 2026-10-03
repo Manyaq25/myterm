@@ -184,7 +184,15 @@
     "engineBrand": "Synvia Natural NLP Engine",
     "clearText": "مسح",
     "quickVoice": "إدخال صوتي",
-    "quickScreenshot": "لقطة شاشة"
+    "quickScreenshot": "لقطة شاشة",
+    "timeMissing": "لم يُذكر وقت — اختر وقتًا للتذكير.",
+    "pickTime": "اختر الوقت",
+    "pickTimeA11y": "اختر وقتًا لـ {{title}}",
+    "editTime": "تعديل",
+    "editTimeA11y": "تعديل التاريخ والوقت لـ {{title}}",
+    "timeMissingAlertTitle": "لم يتم اختيار وقت",
+    "timeMissingAlertMessage": "لم يُذكر وقت لهذه العناصر:\n{{items}}\n\nاختر وقتًا لتلقي تذكير.",
+    "saveWithoutReminder": "حفظ بدون تذكير"
   },
   "asistan": {
     "mockBanner": "وضع الاختبار: خلفية الذكاء الاصطناعي الحقيقية غير متصلة بعد، ستكون الإجابات تجريبية.",

@@ -184,7 +184,15 @@
     "engineBrand": "Synvia Natural NLP Engine",
     "clearText": "クリア",
     "quickVoice": "音声入力",
-    "quickScreenshot": "スクリーンショット"
+    "quickScreenshot": "スクリーンショット",
+    "timeMissing": "時刻が記載されていません — リマインダーの時刻を選んでください。",
+    "pickTime": "時刻を選ぶ",
+    "pickTimeA11y": "{{title}} の時刻を選ぶ",
+    "editTime": "編集",
+    "editTimeA11y": "{{title}} の日時を編集",
+    "timeMissingAlertTitle": "時刻が選択されていません",
+    "timeMissingAlertMessage": "次の項目には時刻が記載されていません:\n{{items}}\n\nリマインダーを受け取るには時刻を選んでください。",
+    "saveWithoutReminder": "リマインダーなしで保存"
   },
   "asistan": {
     "mockBanner": "テストモード：実際のAIバックエンドはまだ接続されていません。回答は模擬的なものになります。",

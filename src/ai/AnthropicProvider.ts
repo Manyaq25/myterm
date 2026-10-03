@@ -17,6 +17,22 @@ async function fetchWithTimeout(url: string, init: RequestInit): Promise<Respons
   }
 }
 
+// Backend "yarın", "pazartesi saat 10:00" gibi ifadeleri kullanıcının yerel
+// saatine göre çözebilsin diye cihazın saat dilimini her çıkarım isteğiyle
+// gönderiyoruz — aksi halde UTC varsayılıp saatler kayıyordu.
+function clientTimeHeaders(): Record<string, string> {
+  let timezone = '';
+  try {
+    timezone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? '';
+  } catch {
+    timezone = '';
+  }
+  return {
+    'X-Client-UTC-Offset': String(-new Date().getTimezoneOffset()),
+    ...(timezone ? { 'X-Client-Timezone': timezone } : {}),
+  };
+}
+
 export class AnthropicProvider implements AIProvider {
   constructor(private readonly backendUrl: string, private readonly appSecret?: string) {}
 
@@ -25,6 +41,7 @@ export class AnthropicProvider implements AIProvider {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...clientTimeHeaders(),
         ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
       },
       body: JSON.stringify({ text }),
@@ -45,6 +62,7 @@ export class AnthropicProvider implements AIProvider {
       uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
       headers: {
         'Content-Type': 'audio/m4a',
+        ...clientTimeHeaders(),
         ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
       },
     });
@@ -62,6 +80,7 @@ export class AnthropicProvider implements AIProvider {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...clientTimeHeaders(),
         ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
       },
       body: JSON.stringify({ imageBase64: base64Image, mediaType }),
@@ -81,6 +100,7 @@ export class AnthropicProvider implements AIProvider {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...clientTimeHeaders(),
         ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
       },
       body: JSON.stringify({ pdfBase64: base64Pdf }),

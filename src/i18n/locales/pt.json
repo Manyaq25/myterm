@@ -184,7 +184,15 @@
     "engineBrand": "Synvia Natural NLP Engine",
     "clearText": "Limpar",
     "quickVoice": "Entrada de voz",
-    "quickScreenshot": "Captura de tela"
+    "quickScreenshot": "Captura de tela",
+    "timeMissing": "Nenhum horário mencionado — escolha um horário para o lembrete.",
+    "pickTime": "Escolher horário",
+    "pickTimeA11y": "Escolher horário para {{title}}",
+    "editTime": "Editar",
+    "editTimeA11y": "Editar data e hora de {{title}}",
+    "timeMissingAlertTitle": "Nenhum horário escolhido",
+    "timeMissingAlertMessage": "Nenhum horário foi mencionado nestes itens:\n{{items}}\n\nEscolha um horário para receber um lembrete.",
+    "saveWithoutReminder": "Salvar sem lembrete"
   },
   "asistan": {
     "mockBanner": "Modo de teste: o backend de IA real ainda não está conectado, as respostas serão simuladas.",
