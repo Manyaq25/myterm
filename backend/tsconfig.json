@@ -7,7 +7,12 @@
     "strict": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-  "include": ["api/**/*.ts"]
+  "include": [
+    "api/**/*.ts",
+    "types/**/*.d.ts"
+  ]
 }

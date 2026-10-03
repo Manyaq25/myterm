@@ -3,6 +3,7 @@ import { MockAIProvider } from './MockAIProvider';
 import { AnthropicProvider } from './AnthropicProvider';
 
 export type { AIProvider, ExtractedFollowUp, ImageMediaType, TranscriptionResult } from './types';
+export { AIRequestError } from './types';
 
 const backendUrl = process.env.EXPO_PUBLIC_BACKEND_URL;
 const appSecret = process.env.EXPO_PUBLIC_APP_SHARED_SECRET;

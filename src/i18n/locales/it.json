@@ -192,7 +192,9 @@
     "editTimeA11y": "Modifica data e ora di {{title}}",
     "timeMissingAlertTitle": "Nessun orario scelto",
     "timeMissingAlertMessage": "Per questi elementi non è stato indicato un orario:\n{{items}}\n\nScegli un orario per ricevere un promemoria.",
-    "saveWithoutReminder": "Salva senza promemoria"
+    "saveWithoutReminder": "Salva senza promemoria",
+    "imageTooLarge": "Questa immagine è troppo grande. Ritaglia lo screenshot e riprova.",
+    "imageUnsupported": "Questo formato di immagine non è supportato. Scegli uno screenshot o una foto JPEG/PNG."
   },
   "asistan": {
     "mockBanner": "Modalità test: il vero backend IA non è ancora connesso, le risposte saranno simulate.",

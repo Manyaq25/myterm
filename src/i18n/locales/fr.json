@@ -192,7 +192,9 @@
     "editTimeA11y": "Modifier la date et l'heure de {{title}}",
     "timeMissingAlertTitle": "Aucune heure choisie",
     "timeMissingAlertMessage": "Aucune heure n'a été mentionnée pour ces éléments :\n{{items}}\n\nChoisis une heure pour recevoir un rappel.",
-    "saveWithoutReminder": "Enregistrer sans rappel"
+    "saveWithoutReminder": "Enregistrer sans rappel",
+    "imageTooLarge": "Cette image est trop volumineuse. Recadre la capture et réessaie.",
+    "imageUnsupported": "Ce format d'image n'est pas pris en charge. Choisis une capture ou une photo JPEG/PNG."
   },
   "asistan": {
     "mockBanner": "Mode test : le vrai backend IA n'est pas encore connecté, les réponses seront simulées.",

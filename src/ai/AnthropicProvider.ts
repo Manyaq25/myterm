@@ -1,5 +1,5 @@
 import * as FileSystem from 'expo-file-system/legacy';
-import type { AIProvider, ExtractedFollowUp, ImageMediaType, TranscriptionResult } from './types';
+import { AIRequestError, type AIProvider, type ExtractedFollowUp, type TranscriptionResult } from './types';
 
 // AI çıkarım/asistan çağrıları normalde birkaç saniyede döner ama zayıf bir
 // bağlantıda ya da backend takılırsa fetch süresiz asılı kalabilir — bu da
@@ -75,24 +75,31 @@ export class AnthropicProvider implements AIProvider {
     return JSON.parse(result.body) as TranscriptionResult;
   }
 
-  async extractFollowUpsFromImage(base64Image: string, mediaType: ImageMediaType): Promise<ExtractedFollowUp[]> {
-    const response = await fetchWithTimeout(`${this.backendUrl}/api/extract-image`, {
-      method: 'POST',
+  // Görsel base64'e çevrilmeden ham dosya olarak yükleniyor (~%27 daha küçük
+  // gövde, bellekte dev bir base64 dizgesi yok); biçimi backend dosyadan
+  // anlayıp JPEG'e çeviriyor.
+  async extractFollowUpsFromImage(imageUri: string): Promise<ExtractedFollowUp[]> {
+    const result = await FileSystem.uploadAsync(`${this.backendUrl}/api/extract-image`, imageUri, {
+      httpMethod: 'POST',
+      uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/octet-stream',
         ...clientTimeHeaders(),
         ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
       },
-      body: JSON.stringify({ imageBase64: base64Image, mediaType }),
     });
 
-    if (!response.ok) {
-      const body = await response.json().catch(() => ({}));
-      throw new Error(`Image extraction failed (${response.status}): ${body.error ?? 'unknown'}`);
+    if (result.status < 200 || result.status >= 300) {
+      let code = 'unknown';
+      try {
+        code = (JSON.parse(result.body || '{}') as { error?: string }).error ?? code;
+      } catch {
+        // Vercel'in 413 gibi yanıtları JSON olmayabiliyor.
+      }
+      throw new AIRequestError(result.status, code);
     }
 
-    const body = (await response.json()) as { candidates: ExtractedFollowUp[] };
-    return body.candidates;
+    return (JSON.parse(result.body) as { candidates: ExtractedFollowUp[] }).candidates;
   }
 
   async extractFollowUpsFromPdf(base64Pdf: string): Promise<ExtractedFollowUp[]> {

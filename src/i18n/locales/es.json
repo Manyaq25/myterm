@@ -192,7 +192,9 @@
     "editTimeA11y": "Editar fecha y hora de {{title}}",
     "timeMissingAlertTitle": "No se eligió ninguna hora",
     "timeMissingAlertMessage": "No se mencionó ninguna hora en estos elementos:\n{{items}}\n\nElige una hora para recibir un recordatorio.",
-    "saveWithoutReminder": "Guardar sin recordatorio"
+    "saveWithoutReminder": "Guardar sin recordatorio",
+    "imageTooLarge": "Esta imagen es demasiado grande. Recorta la captura y vuelve a intentarlo.",
+    "imageUnsupported": "Este formato de imagen no es compatible. Elige una captura o una foto JPEG/PNG."
   },
   "asistan": {
     "mockBanner": "Modo de prueba: el backend de IA real aún no está conectado, las respuestas serán simuladas.",

@@ -1,11 +1,12 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
-import { RefusalError, extractFollowUpsFromImage, parseClientTime, type ImageMediaType } from '../lib/extract';
+import { RefusalError, extractFollowUpsFromImage, parseClientTime } from '../lib/extract';
+import { UnsupportedImageError, normalizeImage } from '../lib/image';
 import { isRateLimited } from '../lib/rateLimit';
 
-const ALLOWED_MEDIA_TYPES: ImageMediaType[] = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-// ~5MB raw image, base64 adds ~37% overhead.
-const MAX_BASE64_LENGTH = 7 * 1024 * 1024;
+// Vercel zaten ~4.5MB'ın üzerindeki istek gövdelerini fonksiyona ulaşmadan
+// reddediyor; bu yalnızca bir üst güvenlik sınırı.
+const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -13,13 +14,28 @@ function requireEnv(name: string): string {
   return value;
 }
 
-async function readJsonBody(req: IncomingMessage): Promise<unknown> {
+async function readRawBody(req: IncomingMessage): Promise<Buffer> {
   const chunks: Buffer[] = [];
   for await (const chunk of req) {
     chunks.push(chunk as Buffer);
   }
-  const raw = Buffer.concat(chunks).toString('utf8');
-  return raw ? JSON.parse(raw) : {};
+  return Buffer.concat(chunks);
+}
+
+/**
+ * Yeni istemciler görseli ham dosya olarak (base64'süz, ~%27 daha küçük)
+ * gönderiyor; eski sürümler JSON içinde base64 gönderiyor. İkisini de kabul
+ * ediyoruz. Bildirilen mediaType'a güvenmiyoruz — biçim dosyanın kendisinden
+ * belirleniyor.
+ */
+function imageBufferFromRequest(req: IncomingMessage, raw: Buffer): Buffer | null {
+  const contentType = String(req.headers['content-type'] ?? '').toLowerCase();
+  if (contentType.includes('application/json')) {
+    const body = raw.length ? (JSON.parse(raw.toString('utf8')) as { imageBase64?: unknown } | null) : null;
+    const b64 = body?.imageBase64;
+    return typeof b64 === 'string' && b64.length > 0 ? Buffer.from(b64, 'base64') : null;
+  }
+  return raw.length > 0 ? raw : null;
 }
 
 export default async function handler(req: IncomingMessage, res: ServerResponse): Promise<void> {
@@ -44,37 +60,42 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     return;
   }
 
-  let body: unknown;
+  let imageBuffer: Buffer | null;
   try {
-    body = await readJsonBody(req);
+    imageBuffer = imageBufferFromRequest(req, await readRawBody(req));
   } catch {
     res.statusCode = 400;
     res.end(JSON.stringify({ error: 'invalid_json' }));
     return;
   }
-
-  const { imageBase64, mediaType } = (body as { imageBase64?: unknown; mediaType?: unknown } | null) ?? {};
-  if (typeof imageBase64 !== 'string' || imageBase64.length === 0) {
+  if (!imageBuffer) {
     res.statusCode = 400;
     res.end(JSON.stringify({ error: 'image_required' }));
     return;
   }
-  if (imageBase64.length > MAX_BASE64_LENGTH) {
-    res.statusCode = 400;
+  if (imageBuffer.length > MAX_IMAGE_BYTES) {
+    res.statusCode = 413;
     res.end(JSON.stringify({ error: 'image_too_large' }));
     return;
   }
-  if (typeof mediaType !== 'string' || !ALLOWED_MEDIA_TYPES.includes(mediaType as ImageMediaType)) {
-    res.statusCode = 400;
-    res.end(JSON.stringify({ error: 'invalid_media_type', allowed: ALLOWED_MEDIA_TYPES }));
-    return;
+
+  let image: { base64: string; mediaType: 'image/jpeg' };
+  try {
+    image = await normalizeImage(imageBuffer);
+  } catch (error) {
+    if (error instanceof UnsupportedImageError) {
+      res.statusCode = 415;
+      res.end(JSON.stringify({ error: 'unsupported_image' }));
+      return;
+    }
+    throw error;
   }
 
   const client = new Anthropic({ apiKey: requireEnv('ANTHROPIC_API_KEY') });
   const model = process.env.ANTHROPIC_MODEL || 'claude-opus-5';
 
   try {
-    const candidates = await extractFollowUpsFromImage(client, model, imageBase64, mediaType as ImageMediaType, parseClientTime(req.headers));
+    const candidates = await extractFollowUpsFromImage(client, model, image.base64, image.mediaType, parseClientTime(req.headers));
     res.statusCode = 200;
     res.end(JSON.stringify({ candidates }));
   } catch (error) {

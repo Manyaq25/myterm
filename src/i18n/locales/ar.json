@@ -192,7 +192,9 @@
     "editTimeA11y": "تعديل التاريخ والوقت لـ {{title}}",
     "timeMissingAlertTitle": "لم يتم اختيار وقت",
     "timeMissingAlertMessage": "لم يُذكر وقت لهذه العناصر:\n{{items}}\n\nاختر وقتًا لتلقي تذكير.",
-    "saveWithoutReminder": "حفظ بدون تذكير"
+    "saveWithoutReminder": "حفظ بدون تذكير",
+    "imageTooLarge": "هذه الصورة كبيرة جدًا. اقتطع لقطة الشاشة وحاول مرة أخرى.",
+    "imageUnsupported": "تنسيق هذه الصورة غير مدعوم. اختر لقطة شاشة أو صورة JPEG/PNG."
   },
   "asistan": {
     "mockBanner": "وضع الاختبار: خلفية الذكاء الاصطناعي الحقيقية غير متصلة بعد، ستكون الإجابات تجريبية.",

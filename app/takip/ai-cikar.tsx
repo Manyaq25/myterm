@@ -33,7 +33,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
 import type { FollowUpSource } from '../../src/types';
 import { followUpTypeLabel } from '../../src/i18n/labels';
-import { aiProvider, isUsingMockAI, type ExtractedFollowUp, type ImageMediaType } from '../../src/ai';
+import { AIRequestError, aiProvider, isUsingMockAI, type ExtractedFollowUp } from '../../src/ai';
+import { MAX_IMAGE_UPLOAD_BYTES, getFileSize, prepareImageForUpload, type PickedImage } from '../../src/utils/imageUpload';
 import { applyReminderLead, formatDueDate } from '../../src/utils/date';
 import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
@@ -106,14 +107,6 @@ function formatDuration(ms: number): string {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 
-function guessMediaType(filename: string | null | undefined): ImageMediaType {
-  const ext = (filename ?? '').toLowerCase().split('.').pop();
-  if (ext === 'png') return 'image/png';
-  if (ext === 'webp') return 'image/webp';
-  if (ext === 'gif') return 'image/gif';
-  return 'image/jpeg';
-}
-
 export default function AiCikarScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
@@ -159,9 +152,7 @@ export default function AiCikarScreen() {
   const recorderState = useAudioRecorderState(recorder, 200);
   const [hasRecording, setHasRecording] = useState(false);
 
-  const [imagePreviewUri, setImagePreviewUri] = useState<string | null>(null);
-  const [imageBase64, setImageBase64] = useState<string | null>(null);
-  const [imageMediaType, setImageMediaType] = useState<ImageMediaType | null>(null);
+  const [image, setImage] = useState<PickedImage | null>(null);
   const [imageLoading, setImageLoading] = useState(false);
 
   const [pdfName, setPdfName] = useState<string | null>(null);
@@ -244,14 +235,17 @@ export default function AiCikarScreen() {
     }
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
-      base64: true,
       quality: 0.7,
+      // HEIC fotoğrafların JPEG olarak (kaliteyle sıkıştırılmış) gelmesi için.
+      preferredAssetRepresentationMode: ImagePicker.UIImagePickerPreferredAssetRepresentationMode.Compatible,
     });
-    if (result.canceled || !result.assets[0]?.base64) return;
+    if (result.canceled) return;
     const asset = result.assets[0];
-    setImagePreviewUri(asset.uri);
-    setImageBase64(asset.base64 ?? null);
-    setImageMediaType((asset.mimeType as ImageMediaType) || guessMediaType(asset.fileName));
+    if (!asset?.uri) {
+      setError(t('aiCikar.screenshotLoadError'));
+      return;
+    }
+    setImage({ uri: asset.uri, width: asset.width, height: asset.height });
     setCandidates(null);
   }
 
@@ -277,11 +271,11 @@ export default function AiCikarScreen() {
         return;
       }
       const info = await MediaLibrary.getAssetInfoAsync(asset);
-      const uri = info.localUri ?? asset.uri;
-      const base64 = await FileSystem.readAsStringAsync(uri, { encoding: 'base64' });
-      setImagePreviewUri(uri);
-      setImageBase64(base64);
-      setImageMediaType(guessMediaType(asset.filename));
+      if (!info.localUri) {
+        setError(t('aiCikar.screenshotLoadError'));
+        return;
+      }
+      setImage({ uri: info.localUri, width: asset.width, height: asset.height });
       setCandidates(null);
     } catch (e) {
       setError(t('aiCikar.screenshotLoadError'));
@@ -291,18 +285,26 @@ export default function AiCikarScreen() {
   }
 
   async function handleExtractImage() {
-    if (!imageBase64 || !imageMediaType || loading) return;
+    if (!image || loading) return;
     if (!(await checkAiUsageGate())) return;
     setLoading(true);
     setError(null);
     try {
-      const results = await aiProvider.extractFollowUpsFromImage(imageBase64, imageMediaType);
+      const uploadUri = await prepareImageForUpload(image);
+      const size = await getFileSize(uploadUri);
+      if (size !== null && size > MAX_IMAGE_UPLOAD_BYTES) {
+        setError(t('aiCikar.imageTooLarge'));
+        return;
+      }
+      const results = await aiProvider.extractFollowUpsFromImage(uploadUri);
       await consumeAiUsage();
       setCandidates(toCandidates(results));
       setCandidateSource('screenshot');
       setTranscript(null);
     } catch (e) {
-      setError(t('aiCikar.imageError'));
+      if (e instanceof AIRequestError && e.status === 413) setError(t('aiCikar.imageTooLarge'));
+      else if (e instanceof AIRequestError && e.status === 415) setError(t('aiCikar.imageUnsupported'));
+      else setError(t('aiCikar.imageError'));
     } finally {
       setLoading(false);
     }
@@ -476,7 +478,7 @@ export default function AiCikarScreen() {
   const extractDisabled: Record<Mode, boolean> = {
     text: !text.trim() || loading,
     voice: !hasRecording || loading,
-    image: !imageBase64 || loading,
+    image: !image || loading,
     pdf: !pdfBase64 || loading,
   };
 
@@ -692,10 +694,10 @@ export default function AiCikarScreen() {
                 <ActivityIndicator />
                 <Text style={styles.hint}>{t('aiCikar.imageLoadingScreenshot')}</Text>
               </View>
-            ) : imagePreviewUri ? (
+            ) : image ? (
               <View style={styles.imagePreviewBox}>
                 <Image
-                  source={{ uri: imagePreviewUri }}
+                  source={{ uri: image.uri }}
                   style={styles.imagePreview}
                   resizeMode="contain"
                   accessibilityLabel={t('aiCikar.imagePreviewA11y')}

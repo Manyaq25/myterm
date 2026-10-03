@@ -192,7 +192,9 @@
     "editTimeA11y": "Edit date and time for {{title}}",
     "timeMissingAlertTitle": "No time selected",
     "timeMissingAlertMessage": "No time was mentioned for these items:\n{{items}}\n\nPick a time to get a reminder.",
-    "saveWithoutReminder": "Save without reminder"
+    "saveWithoutReminder": "Save without reminder",
+    "imageTooLarge": "This image is too large. Crop the screenshot and try again.",
+    "imageUnsupported": "This image format isn't supported. Pick a screenshot or a JPEG/PNG photo."
   },
   "asistan": {
     "mockBanner": "Test mode: the real AI backend isn't connected yet, answers will be mocked.",

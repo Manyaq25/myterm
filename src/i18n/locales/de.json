@@ -192,7 +192,9 @@
     "editTimeA11y": "Datum und Uhrzeit für {{title}} bearbeiten",
     "timeMissingAlertTitle": "Keine Uhrzeit gewählt",
     "timeMissingAlertMessage": "Für diese Einträge wurde keine Uhrzeit angegeben:\n{{items}}\n\nWähle eine Uhrzeit, um erinnert zu werden.",
-    "saveWithoutReminder": "Ohne Erinnerung speichern"
+    "saveWithoutReminder": "Ohne Erinnerung speichern",
+    "imageTooLarge": "Dieses Bild ist zu groß. Schneide den Screenshot zu und versuche es erneut.",
+    "imageUnsupported": "Dieses Bildformat wird nicht unterstützt. Wähle einen Screenshot oder ein JPEG/PNG-Foto."
   },
   "asistan": {
     "mockBanner": "Testmodus: Das echte KI-Backend ist noch nicht verbunden, Antworten sind simuliert.",

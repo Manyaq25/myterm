@@ -192,7 +192,9 @@
     "editTimeA11y": "{{title}} için tarih ve saati düzenle",
     "timeMissingAlertTitle": "Saat seçilmedi",
     "timeMissingAlertMessage": "Şu maddelerde metinde saat belirtilmemiş:\n{{items}}\n\nHatırlatma alabilmek için bir saat seçmelisin.",
-    "saveWithoutReminder": "Hatırlatmasız kaydet"
+    "saveWithoutReminder": "Hatırlatmasız kaydet",
+    "imageTooLarge": "Bu görsel çok büyük. Ekran görüntüsünü kırpıp tekrar dene.",
+    "imageUnsupported": "Bu görsel biçimi desteklenmiyor. Ekran görüntüsü veya JPEG/PNG bir fotoğraf seç."
   },
   "asistan": {
     "mockBanner": "Test modu: gerçek AI backend'i henüz bağlı değil, cevaplar sahte (mock) olacak.",

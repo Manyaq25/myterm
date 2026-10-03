@@ -18,10 +18,20 @@ export interface TranscriptionResult {
 
 export type ImageMediaType = 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif';
 
+/** Backend'in döndürdüğü HTTP durumunu ve hata kodunu taşır (ör. 413 image_too_large). */
+export class AIRequestError extends Error {
+  constructor(
+    readonly status: number,
+    readonly code: string
+  ) {
+    super(`AI request failed (${status}): ${code}`);
+  }
+}
+
 export interface AIProvider {
   extractFollowUpsFromText(text: string): Promise<ExtractedFollowUp[]>;
   transcribeAndExtract(audioFileUri: string): Promise<TranscriptionResult>;
-  extractFollowUpsFromImage(base64Image: string, mediaType: ImageMediaType): Promise<ExtractedFollowUp[]>;
+  extractFollowUpsFromImage(imageUri: string): Promise<ExtractedFollowUp[]>;
   extractFollowUpsFromPdf(base64Pdf: string): Promise<ExtractedFollowUp[]>;
   askAssistant(question: string, context: string): Promise<string>;
 }
