@@ -1,3 +1,4 @@
+import { requireOptionalNativeModule } from 'expo';
 import * as FileSystem from 'expo-file-system/legacy';
 import type * as ImageManipulatorModule from 'expo-image-manipulator';
 
@@ -17,10 +18,19 @@ let cachedManipulator: Manipulator | null | undefined;
 
 // expo-image-manipulator yerel bir modül ve 1.0.1 build'iyle geliyor. Bu JS
 // anlık güncellemeyle (EAS Update) modülün olmadığı eski build'lere de
-// ulaşabildiği için statik import yerine ihtiyaç anında yüklüyoruz;
-// yüklenemezse görsel olduğu gibi gönderilir (backend yine JPEG'e çeviriyor).
+// ulaştığı için önce yerel modülün varlığını kontrol ediyoruz; yoksa görsel
+// olduğu gibi gönderilir (backend yine JPEG'e çeviriyor).
+//
+// Kontrol şart: Metro, olay işleyicisinden geç yüklenen bir modülün açılışta
+// fırlattığı hatayı çağırana iletmiyor, ErrorUtils.reportFatalError ile
+// ölümcül hata sayıyor — try/catch onu yakalayamıyor ve yayın build'inde
+// uygulama kapanıyor.
 function loadManipulator(): Manipulator | null {
   if (cachedManipulator !== undefined) return cachedManipulator;
+  if (!requireOptionalNativeModule('ExpoImageManipulator')) {
+    cachedManipulator = null;
+    return null;
+  }
   try {
     // eslint-disable-next-line @typescript-eslint/no-require-imports
     cachedManipulator = require('expo-image-manipulator') as Manipulator;
