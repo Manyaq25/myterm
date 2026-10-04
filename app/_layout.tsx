@@ -70,7 +70,8 @@ export default function RootLayout() {
     const subscription = Notifications.addNotificationResponseReceivedListener((response) => {
       const data = response.notification.request.content.data;
       if (data?.kind === 'screenshot-suggestion') {
-        router.push('/takip/ai-cikar?mode=image&autoScreenshot=1');
+        const assetId = typeof data.assetId === 'string' ? `&assetId=${encodeURIComponent(data.assetId)}` : '';
+        router.push(`/takip/ai-cikar?mode=image&autoScreenshot=1${assetId}`);
       }
     });
     return () => subscription.remove();

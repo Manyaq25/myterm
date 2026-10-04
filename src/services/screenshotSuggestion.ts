@@ -174,31 +174,12 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
     const threshold = since - TIMESTAMP_ROUNDING_BUFFER_MS;
     for (const delay of RETRY_DELAYS_MS) {
       if (delay > 0) await sleep(delay);
-      const page = await MediaLibrary.getAssetsAsync({
-        first: 1,
-        mediaType: 'photo',
-        // Android'de ekran görüntülerinin creationTime'ı (MediaStore DATE_TAKEN,
-        // kameranın EXIF "çekilme tarihi"ne dayanır) genelde hiç dolmuyor/0
-        // kalıyor — ekran görüntüsü kamerayla çekilmediği için. modificationTime
-        // (dosyanın diske yazıldığı an) her iki platformda da güvenilir.
-        sortBy: [['modificationTime', false]],
-        // iOS'ta mediaSubtypes filtresi olmadan bu sorgu sadece "arka plana
-        // geçtikten sonra galeriye eklenen en yeni fotoğraf" arıyordu — bu da
-        // o sırada WhatsApp/Mesajlar'dan kaydedilen ya da kamerayla çekilen
-        // alakasız bir fotoğrafı (ör. bir kişinin resmini) ekran görüntüsü
-        // sanıp yanlış öneri bildirimi göndermesine yol açıyordu. iOS gerçek
-        // ekran görüntülerini PHAsset mediaSubtypes'ta 'screenshot' olarak
-        // işaretliyor — bunu sorguya filtre olarak veriyoruz ki yanlış pozitif
-        // hiç mümkün olmasın. Android'de bu alan yok, mevcut zamanlama
-        // sezgisiyle devam ediyor.
-        ...(Platform.OS === 'ios' ? { mediaSubtypes: 'screenshot' as const } : {}),
-      });
-      const asset = page.assets[0];
+      const asset = await getLatestScreenshot();
       if (!asset || asset.id === lastNotifiedAssetId) continue;
-      if (asset.modificationTime < threshold) continue;
+      if (screenshotTime(asset) < threshold) continue;
       lastNotifiedAssetId = asset.id;
       void SecureStore.setItemAsync(LAST_NOTIFIED_ASSET_ID_KEY, asset.id);
-      await notifySuggestion();
+      await notifySuggestion(asset.id);
       return;
     }
   } catch {
@@ -210,7 +191,44 @@ async function checkForBackgroundScreenshot(since: number): Promise<void> {
   }
 }
 
-async function notifySuggestion(): Promise<void> {
+/**
+ * Galerideki en yeni ekran görüntüsünü bulur — normal fotoğrafları değil.
+ *
+ * iOS'ta modificationTime, fotoğraf düzenlendiğinde, favorilere eklendiğinde,
+ * iCloud ile eşitlendiğinde ya da sistemin arka plandaki fotoğraf analizi
+ * sırasında güncelleniyor; bu yüzden ona göre sıralamak, aylar önce çekilmiş
+ * alakasız bir fotoğrafı "en yeni" gibi gösterebiliyordu. iOS'ta gerçek ekran
+ * görüntüsü işaretiyle (mediaSubtypes) filtreleyip çekilme anına
+ * (creationTime) göre sıralıyoruz. Android'de bu işaret yok ve ekran
+ * görüntülerinin creationTime'ı genelde boş kalıyor; orada sistemin
+ * "Screenshots" klasörüne bakıp modificationTime'a göre sıralıyoruz.
+ */
+export async function getLatestScreenshot(): Promise<MediaLibrary.Asset | null> {
+  if (Platform.OS === 'ios') {
+    const page = await MediaLibrary.getAssetsAsync({
+      first: 1,
+      mediaType: 'photo',
+      mediaSubtypes: 'screenshot',
+      sortBy: [['creationTime', false]],
+    });
+    return page.assets[0] ?? null;
+  }
+  const album = await MediaLibrary.getAlbumAsync('Screenshots').catch(() => null);
+  const page = await MediaLibrary.getAssetsAsync({
+    first: 1,
+    mediaType: 'photo',
+    sortBy: [['modificationTime', false]],
+    ...(album ? { album } : {}),
+  });
+  return page.assets[0] ?? null;
+}
+
+/** Ekran görüntüsünün alındığı an — platforma göre güvenilir olan alan. */
+function screenshotTime(asset: MediaLibrary.Asset): number {
+  return Platform.OS === 'ios' ? asset.creationTime : asset.modificationTime;
+}
+
+async function notifySuggestion(assetId?: string): Promise<void> {
   const now = Date.now();
   if (now - lastNotifiedAt < NOTIFICATION_DEBOUNCE_MS) return;
   lastNotifiedAt = now;
@@ -224,7 +242,9 @@ async function notifySuggestion(): Promise<void> {
     content: {
       title: 'Az önce bir ekran görüntüsü aldın',
       body: 'Bunu takip listesine eklememi ister misin? Dokun, gözden geçir.',
-      data: { kind: 'screenshot-suggestion' },
+      // Bildirime dokunulduğunda galeriden "en yeni" fotoğrafı tahmin etmek
+      // yerine tam olarak bu ekran görüntüsü açılıyor.
+      data: { kind: 'screenshot-suggestion', ...(assetId ? { assetId } : {}) },
       ...(Platform.OS === 'android' ? { channelId: 'screenshot-suggestions' } : {}),
     },
     trigger: null,

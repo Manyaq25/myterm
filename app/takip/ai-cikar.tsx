@@ -39,6 +39,7 @@ import { applyReminderLead, formatDueDate } from '../../src/utils/date';
 import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
 import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
+import { getLatestScreenshot } from '../../src/services/screenshotSuggestion';
 import { updateWidgetSummary } from '../../src/services/widget';
 import { AI_USAGE_FREE_LIMIT, getAiUsageCount, hasAiUsageRemaining, incrementAiUsageCount } from '../../src/services/aiUsage';
 import { useIsPremium } from '../../src/services/subscription';
@@ -115,7 +116,7 @@ export default function AiCikarScreen() {
   const { t, i18n } = useTranslation();
   const insets = useSafeAreaInsets();
   const keyboardHeight = useKeyboardHeight();
-  const params = useLocalSearchParams<{ mode?: string; autoScreenshot?: string }>();
+  const params = useLocalSearchParams<{ mode?: string; autoScreenshot?: string; assetId?: string }>();
 
   const [mode, setMode] = useState<Mode>('text');
   const [text, setText] = useState('');
@@ -165,10 +166,10 @@ export default function AiCikarScreen() {
 
   useEffect(() => {
     if (params.autoScreenshot === '1') {
-      void handleLoadLastScreenshot();
+      void handleLoadLastScreenshot(params.assetId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.autoScreenshot]);
+  }, [params.autoScreenshot, params.assetId]);
 
   async function handleExtractText() {
     if (!text.trim() || loading) return;
@@ -249,7 +250,8 @@ export default function AiCikarScreen() {
     setCandidates(null);
   }
 
-  async function handleLoadLastScreenshot() {
+  /** Bildirimden gelindiyse o ekran görüntüsünü, değilse en yenisini yükler. */
+  async function handleLoadLastScreenshot(assetId?: string) {
     setImageLoading(true);
     setError(null);
     try {
@@ -258,24 +260,24 @@ export default function AiCikarScreen() {
         setError(t('aiCikar.screenshotPermissionError'));
         return;
       }
-      const page = await MediaLibrary.getAssetsAsync({
-        first: 1,
-        mediaType: 'photo',
-        // Android'de ekran görüntülerinin creationTime'ı (kameranın EXIF
-        // tarihine dayanır) genelde boş kalıyor; modificationTime güvenilir.
-        sortBy: [['modificationTime', false]],
-      });
-      const asset = page.assets[0];
-      if (!asset) {
-        setError(t('aiCikar.screenshotNotFound'));
-        return;
+      let info: MediaLibrary.AssetInfo | null = null;
+      if (assetId) {
+        // Ekran görüntüsü bu arada silinmiş olabilir; o zaman en yenisine düşüyoruz.
+        info = await MediaLibrary.getAssetInfoAsync(assetId).catch(() => null);
       }
-      const info = await MediaLibrary.getAssetInfoAsync(asset);
+      if (!info) {
+        const asset = await getLatestScreenshot();
+        if (!asset) {
+          setError(t('aiCikar.screenshotNotFound'));
+          return;
+        }
+        info = await MediaLibrary.getAssetInfoAsync(asset);
+      }
       if (!info.localUri) {
         setError(t('aiCikar.screenshotLoadError'));
         return;
       }
-      setImage({ uri: info.localUri, width: asset.width, height: asset.height });
+      setImage({ uri: info.localUri, width: info.width, height: info.height });
       setCandidates(null);
     } catch (e) {
       setError(t('aiCikar.screenshotLoadError'));
