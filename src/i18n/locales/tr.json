@@ -112,7 +112,14 @@
     "personProfileA11y": "{{name}} profilini aç",
     "markDone": "Tamamlandı olarak işaretle",
     "deleteAlertTitle": "Sil",
-    "deleteAlertMessage": "Bu takip kalıcı olarak silinsin mi?"
+    "deleteAlertMessage": "Bu takip kalıcı olarak silinsin mi?",
+    "changeTime": "Zamanı değiştir",
+    "addTime": "Hatırlatma zamanı ekle",
+    "snoozeHour": "1 saat ertele",
+    "snoozeTomorrow": "Yarına ertele",
+    "noTime": "Hatırlatma zamanı yok",
+    "pickerTitle": "Hatırlatma zamanı",
+    "rescheduledA11y": "Hatırlatma {{date}} olarak güncellendi"
   },
   "yeni": {
     "labelTitle": "Ne takip ediyorsun?",
@@ -260,7 +267,8 @@
     "overdueLabel": "Gecikmiş, son tarih {{date}}",
     "dueLabel": "Son tarih {{date}}",
     "detailsHint": "Detayları görmek için dokun",
-    "moreActionsA11y": "Daha fazla işlem"
+    "moreActionsA11y": "Daha fazla işlem",
+    "changeTime": "Zamanı değiştir"
   },
   "lateSuggestionCard": {
     "message": "{{name}}'ten beklediğin işler son {{count}} seferdir gecikmiş. Daha erken hatırlatmamı ister misin?",

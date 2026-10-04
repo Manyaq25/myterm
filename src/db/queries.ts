@@ -124,6 +124,20 @@ export async function updateFollowUpStatus(
   );
 }
 
+export async function updateFollowUpSchedule(
+  db: SQLiteDatabase,
+  id: string,
+  dueAt: number | null,
+  remindAt: number | null
+): Promise<void> {
+  await db.runAsync(`UPDATE follow_ups SET dueAt = ?, remindAt = ?, updatedAt = ? WHERE id = ?`, [
+    dueAt,
+    remindAt,
+    Date.now(),
+    id,
+  ]);
+}
+
 export async function setFollowUpNotificationId(
   db: SQLiteDatabase,
   id: string,
@@ -210,6 +224,14 @@ export async function addFollowUpReminder(
      VALUES (?, ?, ?, ?, ?, ?)`,
     [newId(), followUpId, notificationId, triggerAt, kind, Date.now()]
   );
+}
+
+export async function listFollowUpReminderKinds(db: SQLiteDatabase, followUpId: string): Promise<string[]> {
+  const rows = await db.getAllAsync<{ kind: string }>(
+    `SELECT DISTINCT kind FROM follow_up_reminders WHERE followUpId = ?`,
+    [followUpId]
+  );
+  return rows.map((r) => r.kind);
 }
 
 export async function deleteFollowUpReminders(

@@ -112,7 +112,14 @@
     "personProfileA11y": "فتح الملف الشخصي لـ {{name}}",
     "markDone": "وضع علامة كمنجز",
     "deleteAlertTitle": "حذف",
-    "deleteAlertMessage": "هل تريد حذف هذه المتابعة نهائيًا؟"
+    "deleteAlertMessage": "هل تريد حذف هذه المتابعة نهائيًا؟",
+    "changeTime": "تغيير الوقت",
+    "addTime": "إضافة وقت التذكير",
+    "snoozeHour": "تأجيل ساعة",
+    "snoozeTomorrow": "تأجيل إلى الغد",
+    "noTime": "لا يوجد وقت للتذكير",
+    "pickerTitle": "وقت التذكير",
+    "rescheduledA11y": "تم تحديث التذكير إلى {{date}}"
   },
   "yeni": {
     "labelTitle": "ماذا تتابع؟",
@@ -260,7 +267,8 @@
     "overdueLabel": "متأخر، الموعد النهائي كان {{date}}",
     "dueLabel": "الموعد النهائي {{date}}",
     "detailsHint": "اضغط لرؤية التفاصيل",
-    "moreActionsA11y": "المزيد من الإجراءات"
+    "moreActionsA11y": "المزيد من الإجراءات",
+    "changeTime": "تغيير الوقت"
   },
   "lateSuggestionCard": {
     "message": "ما تنتظره من {{name}} تأخر آخر {{count}} مرات. هل تريد أن أذكرك مبكرًا؟",

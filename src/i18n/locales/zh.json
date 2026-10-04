@@ -112,7 +112,14 @@
     "personProfileA11y": "打开 {{name}} 的资料",
     "markDone": "标记为已完成",
     "deleteAlertTitle": "删除",
-    "deleteAlertMessage": "确定要永久删除此跟进事项吗？"
+    "deleteAlertMessage": "确定要永久删除此跟进事项吗？",
+    "changeTime": "更改时间",
+    "addTime": "添加提醒时间",
+    "snoozeHour": "推迟 1 小时",
+    "snoozeTomorrow": "推迟到明天",
+    "noTime": "未设置提醒时间",
+    "pickerTitle": "提醒时间",
+    "rescheduledA11y": "提醒已更新为 {{date}}"
   },
   "yeni": {
     "labelTitle": "你要跟进什么事项？",
@@ -260,7 +267,8 @@
     "overdueLabel": "已逾期，截止时间为 {{date}}",
     "dueLabel": "截止时间 {{date}}",
     "detailsHint": "点击查看详情",
-    "moreActionsA11y": "更多操作"
+    "moreActionsA11y": "更多操作",
+    "changeTime": "更改时间"
   },
   "lateSuggestionCard": {
     "message": "你在等 {{name}} 的事情已经连续 {{count}} 次延迟了。需要我提前提醒你吗？",

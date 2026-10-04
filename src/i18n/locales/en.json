@@ -112,7 +112,14 @@
     "personProfileA11y": "Open {{name}}'s profile",
     "markDone": "Mark as done",
     "deleteAlertTitle": "Delete",
-    "deleteAlertMessage": "Delete this follow-up permanently?"
+    "deleteAlertMessage": "Delete this follow-up permanently?",
+    "changeTime": "Change time",
+    "addTime": "Add reminder time",
+    "snoozeHour": "Snooze 1 hour",
+    "snoozeTomorrow": "Move to tomorrow",
+    "noTime": "No reminder time",
+    "pickerTitle": "Reminder time",
+    "rescheduledA11y": "Reminder updated to {{date}}"
   },
   "yeni": {
     "labelTitle": "What are you following up on?",
@@ -260,7 +267,8 @@
     "overdueLabel": "Overdue, due {{date}}",
     "dueLabel": "Due {{date}}",
     "detailsHint": "Tap to see details",
-    "moreActionsA11y": "More actions"
+    "moreActionsA11y": "More actions",
+    "changeTime": "Change time"
   },
   "lateSuggestionCard": {
     "message": "What you're waiting on from {{name}} has been late the last {{count}} times. Want me to remind you earlier?",

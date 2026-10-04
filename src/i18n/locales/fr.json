@@ -112,7 +112,14 @@
     "personProfileA11y": "Ouvrir le profil de {{name}}",
     "markDone": "Marquer comme terminé",
     "deleteAlertTitle": "Supprimer",
-    "deleteAlertMessage": "Supprimer ce suivi de façon permanente ?"
+    "deleteAlertMessage": "Supprimer ce suivi de façon permanente ?",
+    "changeTime": "Modifier l'heure",
+    "addTime": "Ajouter une heure de rappel",
+    "snoozeHour": "Reporter d'1 heure",
+    "snoozeTomorrow": "Reporter à demain",
+    "noTime": "Aucune heure de rappel",
+    "pickerTitle": "Heure du rappel",
+    "rescheduledA11y": "Rappel mis à jour : {{date}}"
   },
   "yeni": {
     "labelTitle": "Que suivez-vous ?",
@@ -260,7 +267,8 @@
     "overdueLabel": "En retard, échéance {{date}}",
     "dueLabel": "Échéance {{date}}",
     "detailsHint": "Touchez pour voir les détails",
-    "moreActionsA11y": "Plus d'actions"
+    "moreActionsA11y": "Plus d'actions",
+    "changeTime": "Modifier l'heure"
   },
   "lateSuggestionCard": {
     "message": "Ce que vous attendez de {{name}} a été en retard les {{count}} dernières fois. Voulez-vous que je vous le rappelle plus tôt ?",

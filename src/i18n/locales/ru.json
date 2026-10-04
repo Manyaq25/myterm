@@ -112,7 +112,14 @@
     "personProfileA11y": "Открыть профиль {{name}}",
     "markDone": "Отметить как выполнено",
     "deleteAlertTitle": "Удалить",
-    "deleteAlertMessage": "Удалить эту задачу навсегда?"
+    "deleteAlertMessage": "Удалить эту задачу навсегда?",
+    "changeTime": "Изменить время",
+    "addTime": "Добавить время напоминания",
+    "snoozeHour": "Отложить на 1 час",
+    "snoozeTomorrow": "Перенести на завтра",
+    "noTime": "Время напоминания не задано",
+    "pickerTitle": "Время напоминания",
+    "rescheduledA11y": "Напоминание перенесено на {{date}}"
   },
   "yeni": {
     "labelTitle": "Что вы отслеживаете?",
@@ -260,7 +267,8 @@
     "overdueLabel": "Просрочено, срок был {{date}}",
     "dueLabel": "Срок {{date}}",
     "detailsHint": "Нажмите, чтобы увидеть детали",
-    "moreActionsA11y": "Другие действия"
+    "moreActionsA11y": "Другие действия",
+    "changeTime": "Изменить время"
   },
   "lateSuggestionCard": {
     "message": "То, чего вы ждёте от {{name}}, задерживается уже {{count}} раз подряд. Напоминать вам об этом раньше?",

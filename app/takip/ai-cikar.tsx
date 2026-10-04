@@ -4,7 +4,6 @@ import {
   Alert,
   Image,
   KeyboardAvoidingView,
-  Modal,
   Platform,
   Pressable,
   ScrollView,
@@ -29,7 +28,6 @@ import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system/legacy';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
 import type { FollowUpSource } from '../../src/types';
 import { followUpTypeLabel } from '../../src/i18n/labels';
@@ -39,6 +37,7 @@ import { applyReminderLead, formatDueDate } from '../../src/utils/date';
 import { scheduleMainReminder } from '../../src/services/reminderScheduler';
 import { isImportantFollowUp, scheduleExtraReminders, type ExtraReminderChoice } from '../../src/services/smartReminders';
 import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
+import { DateTimeSheet } from '../../src/components/DateTimeSheet';
 import { getLatestScreenshot } from '../../src/services/screenshotSuggestion';
 import { updateWidgetSummary } from '../../src/services/widget';
 import { AI_USAGE_FREE_LIMIT, getAiUsageCount, hasAiUsageRemaining, incrementAiUsageCount } from '../../src/services/aiUsage';
@@ -129,7 +128,6 @@ export default function AiCikarScreen() {
   const [importantQueue, setImportantQueue] = useState<{ id: string; title: string; dueAt: number }[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [pickerValue, setPickerValue] = useState<Date>(new Date());
-  const [androidPickerStage, setAndroidPickerStage] = useState<'date' | 'time' | null>(null);
   const isPremium = useIsPremium();
   const [usageCount, setUsageCount] = useState(0);
 
@@ -368,7 +366,6 @@ export default function AiCikarScreen() {
     if (!c) return;
     setPickerValue(initialPickerDate(c));
     setEditingIndex(index);
-    if (Platform.OS === 'android') setAndroidPickerStage('date');
   }
 
   function commitTime(index: number, date: Date) {
@@ -864,67 +861,13 @@ export default function AiCikarScreen() {
           accessibilityLabel={t('aiCikar.extract')}
         />
       </View>
-      {Platform.OS === 'ios' && (
-        <Modal
-          visible={editingIndex !== null}
-          transparent
-          animationType="slide"
-          onRequestClose={() => setEditingIndex(null)}
-        >
-          <Pressable style={styles.pickerBackdrop} onPress={() => setEditingIndex(null)} accessibilityLabel={t('common.cancel')} />
-          <View style={[styles.pickerSheet, { paddingBottom: Math.max(insets.bottom, 16) }]}>
-            <Text style={styles.pickerTitle} numberOfLines={2}>
-              {editingIndex !== null ? candidates?.[editingIndex]?.title : ''}
-            </Text>
-            <DateTimePicker
-              value={pickerValue}
-              mode="datetime"
-              display="spinner"
-              locale={i18n.language}
-              onChange={(_, selected) => {
-                if (selected) setPickerValue(selected);
-              }}
-            />
-            <Button
-              label={t('yeni.datePickerDone')}
-              onPress={() => editingIndex !== null && commitTime(editingIndex, pickerValue)}
-            />
-          </View>
-        </Modal>
-      )}
-      {Platform.OS === 'android' && androidPickerStage === 'date' && (
-        <DateTimePicker
-          value={pickerValue}
-          mode="date"
-          onChange={(event, selected) => {
-            if (event.type !== 'set' || !selected) {
-              setAndroidPickerStage(null);
-              setEditingIndex(null);
-              return;
-            }
-            const combined = new Date(selected);
-            combined.setHours(pickerValue.getHours(), pickerValue.getMinutes(), 0, 0);
-            setPickerValue(combined);
-            setAndroidPickerStage('time');
-          }}
-        />
-      )}
-      {Platform.OS === 'android' && androidPickerStage === 'time' && (
-        <DateTimePicker
-          value={pickerValue}
-          mode="time"
-          onChange={(event, selected) => {
-            setAndroidPickerStage(null);
-            if (event.type !== 'set' || !selected || editingIndex === null) {
-              setEditingIndex(null);
-              return;
-            }
-            const combined = new Date(pickerValue);
-            combined.setHours(selected.getHours(), selected.getMinutes(), 0, 0);
-            commitTime(editingIndex, combined);
-          }}
-        />
-      )}
+      <DateTimeSheet
+        visible={editingIndex !== null}
+        initialValue={pickerValue}
+        title={editingIndex !== null ? candidates?.[editingIndex]?.title : undefined}
+        onConfirm={(date) => editingIndex !== null && commitTime(editingIndex, date)}
+        onCancel={() => setEditingIndex(null)}
+      />
       <SmartReminderPrompt
         visible={importantQueue.length > 0}
         title={importantQueue[0]?.title ?? ''}
@@ -1143,16 +1086,6 @@ function getStyles(colors: ThemeColors) {
       paddingVertical: 7,
     },
     pickTimeButtonText: { fontSize: fontSize.caption, fontFamily: fontFamily.bodyBold, color: colors.onPrimary },
-    pickerBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.35)' },
-    pickerSheet: {
-      backgroundColor: colors.surface,
-      borderTopLeftRadius: 24,
-      borderTopRightRadius: 24,
-      paddingHorizontal: 20,
-      paddingTop: 18,
-      gap: 8,
-    },
-    pickerTitle: { fontSize: fontSize.base, fontFamily: fontFamily.displaySemiBold, color: colors.text, textAlign: 'center' },
     saveButtonWrap: { marginTop: 8 },
   });
 }

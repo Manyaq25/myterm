@@ -11,6 +11,7 @@ import { Avatar } from '../../src/components/Avatar';
 import { ContactOptions } from '../../src/components/ContactOptions';
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
 import { Button } from '../../src/components/Button';
+import { ScreenHeader } from '../../src/components/ScreenHeader';
 import { buildReminderMessage } from '../../src/services/contact';
 import { buildPersonInsights, formatInsightText } from '../../src/services/personInsights';
 import { useIsPremium } from '../../src/services/subscription';
@@ -120,10 +121,15 @@ export default function KisiProfiliScreen() {
     }, [load])
   );
 
+  const header = <ScreenHeader title={t('stackTitles.kisiProfili')} />;
+
   if (!person) {
     return (
-      <View style={styles.centered}>
-        <Text style={styles.rowMeta}>{t('common.loading')}</Text>
+      <View style={styles.root}>
+        {header}
+        <View style={styles.centered}>
+          <Text style={styles.rowMeta}>{t('common.loading')}</Text>
+        </View>
       </View>
     );
   }
@@ -149,6 +155,8 @@ export default function KisiProfiliScreen() {
   const insights = buildPersonInsights(followUps);
 
   return (
+    <View style={styles.root}>
+    {header}
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <View style={styles.header}>
         <Avatar name={person.name} size={56} />
@@ -250,12 +258,14 @@ export default function KisiProfiliScreen() {
 
       {followUps.length === 0 && <Text style={styles.empty}>{t('kisiProfili.emptyFollowUps')}</Text>}
     </ScrollView>
+    </View>
   );
 }
 
 function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
     centered: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background },
+    root: { flex: 1, backgroundColor: colors.background },
     screen: { backgroundColor: colors.background },
     content: { padding: 20, paddingBottom: 60 },
     header: { flexDirection: 'row', alignItems: 'center', gap: 14 },

@@ -1,11 +1,19 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 import type { FollowUp } from '../types';
-import { deleteFollowUp, updateFollowUpStatus } from '../db/queries';
-import { removeFromReminderDay } from './reminderScheduler';
-import { cancelExtraReminders } from './smartReminders';
+import {
+  deleteFollowUp,
+  getPerson,
+  listFollowUpReminderKinds,
+  updateFollowUpSchedule,
+  updateFollowUpStatus,
+} from '../db/queries';
+import { applyReminderLead } from '../utils/date';
+import { removeFromReminderDay, scheduleMainReminder } from './reminderScheduler';
+import { cancelExtraReminders, scheduleExtraReminders, type ExtraReminderChoice } from './smartReminders';
 import { updateWidgetSummary } from './widget';
 
 type ReminderRef = Pick<FollowUp, 'id' | 'remindAt'>;
+type RescheduleRef = Pick<FollowUp, 'id' | 'remindAt' | 'title' | 'personId'>;
 
 export async function completeFollowUp(db: SQLiteDatabase, item: ReminderRef): Promise<void> {
   await removeFromReminderDay(db, item.remindAt, item.id);
@@ -27,5 +35,32 @@ export async function removeFollowUps(db: SQLiteDatabase, items: ReminderRef[]):
     await cancelExtraReminders(db, item.id);
     await deleteFollowUp(db, item.id);
   }
+  await updateWidgetSummary(db);
+}
+
+function extraChoiceFromKinds(kinds: string[]): ExtraReminderChoice {
+  const dayBefore = kinds.includes('day_before');
+  const morning = kinds.includes('same_day_morning');
+  if (dayBefore && morning) return 'both';
+  if (dayBefore) return 'day_before';
+  if (morning) return 'morning';
+  return 'none';
+}
+
+/**
+ * Takibin zamanını değiştirir: eski hatırlatmaları iptal edip yenisini
+ * kişinin "ne kadar önce hatırlat" ayarına göre kurar. Kullanıcı daha önce
+ * ek hatırlatma (1 gün önce / sabah) seçtiyse onlar da yeni zamana taşınır.
+ */
+export async function rescheduleFollowUp(db: SQLiteDatabase, item: RescheduleRef, dueAt: number): Promise<void> {
+  const extraKinds = await listFollowUpReminderKinds(db, item.id);
+  await removeFromReminderDay(db, item.remindAt, item.id);
+  await cancelExtraReminders(db, item.id);
+
+  const person = item.personId ? await getPerson(db, item.personId) : null;
+  const remindAt = applyReminderLead(dueAt, person?.reminderLeadMinutes ?? 0);
+  await updateFollowUpSchedule(db, item.id, dueAt, remindAt);
+  await scheduleMainReminder(db, item.id, remindAt);
+  await scheduleExtraReminders(db, item.id, item.title, dueAt, extraChoiceFromKinds(extraKinds));
   await updateWidgetSummary(db);
 }

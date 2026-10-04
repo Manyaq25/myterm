@@ -112,7 +112,14 @@
     "personProfileA11y": "Profil von {{name}} öffnen",
     "markDone": "Als erledigt markieren",
     "deleteAlertTitle": "Löschen",
-    "deleteAlertMessage": "Diesen Vorgang endgültig löschen?"
+    "deleteAlertMessage": "Diesen Vorgang endgültig löschen?",
+    "changeTime": "Zeit ändern",
+    "addTime": "Erinnerungszeit hinzufügen",
+    "snoozeHour": "1 Stunde verschieben",
+    "snoozeTomorrow": "Auf morgen verschieben",
+    "noTime": "Keine Erinnerungszeit",
+    "pickerTitle": "Erinnerungszeit",
+    "rescheduledA11y": "Erinnerung auf {{date}} geändert"
   },
   "yeni": {
     "labelTitle": "Was verfolgst du?",
@@ -260,7 +267,8 @@
     "overdueLabel": "Überfällig, fällig am {{date}}",
     "dueLabel": "Fällig am {{date}}",
     "detailsHint": "Zum Anzeigen der Details antippen",
-    "moreActionsA11y": "Weitere Aktionen"
+    "moreActionsA11y": "Weitere Aktionen",
+    "changeTime": "Zeit ändern"
   },
   "lateSuggestionCard": {
     "message": "Was du von {{name}} erwartest, war die letzten {{count}} Male verspätet. Soll ich dich früher erinnern?",

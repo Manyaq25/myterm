@@ -112,7 +112,14 @@
     "personProfileA11y": "{{name}}のプロフィールを開く",
     "markDone": "完了としてマーク",
     "deleteAlertTitle": "削除",
-    "deleteAlertMessage": "このフォローアップを完全に削除しますか？"
+    "deleteAlertMessage": "このフォローアップを完全に削除しますか？",
+    "changeTime": "時間を変更",
+    "addTime": "リマインダー時刻を追加",
+    "snoozeHour": "1時間後に延期",
+    "snoozeTomorrow": "明日に延期",
+    "noTime": "リマインダー時刻なし",
+    "pickerTitle": "リマインダー時刻",
+    "rescheduledA11y": "リマインダーを{{date}}に更新しました"
   },
   "yeni": {
     "labelTitle": "何をフォローアップしますか？",
@@ -260,7 +267,8 @@
     "overdueLabel": "期限切れ、期限は{{date}}",
     "dueLabel": "期限：{{date}}",
     "detailsHint": "タップして詳細を見る",
-    "moreActionsA11y": "その他の操作"
+    "moreActionsA11y": "その他の操作",
+    "changeTime": "時間を変更"
   },
   "lateSuggestionCard": {
     "message": "{{name}}から待っていることが、直近{{count}}回連続で遅れています。もっと早くリマインドしましょうか？",

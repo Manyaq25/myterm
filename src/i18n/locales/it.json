@@ -112,7 +112,14 @@
     "personProfileA11y": "Apri il profilo di {{name}}",
     "markDone": "Segna come fatto",
     "deleteAlertTitle": "Elimina",
-    "deleteAlertMessage": "Eliminare questo promemoria in modo permanente?"
+    "deleteAlertMessage": "Eliminare questo promemoria in modo permanente?",
+    "changeTime": "Cambia orario",
+    "addTime": "Aggiungi orario promemoria",
+    "snoozeHour": "Posticipa di 1 ora",
+    "snoozeTomorrow": "Sposta a domani",
+    "noTime": "Nessun orario promemoria",
+    "pickerTitle": "Orario promemoria",
+    "rescheduledA11y": "Promemoria aggiornato a {{date}}"
   },
   "yeni": {
     "labelTitle": "Cosa stai seguendo?",
@@ -260,7 +267,8 @@
     "overdueLabel": "In ritardo, scadenza {{date}}",
     "dueLabel": "Scadenza {{date}}",
     "detailsHint": "Tocca per vedere i dettagli",
-    "moreActionsA11y": "Altre azioni"
+    "moreActionsA11y": "Altre azioni",
+    "changeTime": "Cambia orario"
   },
   "lateSuggestionCard": {
     "message": "Quello che aspetti da {{name}} è in ritardo negli ultimi {{count}} casi. Vuoi che te lo ricordi prima?",

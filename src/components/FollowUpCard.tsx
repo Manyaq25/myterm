@@ -35,6 +35,7 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
   const [cardHeight, setCardHeight] = useState<number | null>(null);
   const overdue = isOverdue(item.dueAt) && item.status === 'open';
   const canComplete = onComplete && (item.status === 'open' || item.status === 'snoozed');
+  const canReschedule = item.status === 'open' || item.status === 'snoozed';
 
   const accessibilityLabel = [
     followUpTypeLabel(item.type, t),
@@ -65,6 +66,9 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
   function handleMorePress() {
     Alert.alert(item.title, undefined, [
       ...(canComplete ? [{ text: t('followUpCard.completeA11y'), onPress: onComplete }] : []),
+      ...(canReschedule
+        ? [{ text: t('followUpCard.changeTime') as string, onPress: () => router.push(`/takip/${item.id}?edit=1`) }]
+        : []),
       ...(onDelete ? [{ text: t('common.delete') as string, style: 'destructive' as const, onPress: onDelete }] : []),
       { text: t('common.cancelShort'), style: 'cancel' as const },
     ]);
@@ -76,7 +80,7 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
         <Text style={styles.title} numberOfLines={2}>
           {item.title}
         </Text>
-        {!selectionMode && (canComplete || onDelete) && (
+        {!selectionMode && (canComplete || canReschedule || onDelete) && (
           <Pressable
             onPress={handleMorePress}
             hitSlop={10}

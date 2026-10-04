@@ -112,7 +112,14 @@
     "personProfileA11y": "{{name}}님의 프로필 열기",
     "markDone": "완료로 표시",
     "deleteAlertTitle": "삭제",
-    "deleteAlertMessage": "이 팔로우업을 영구적으로 삭제하시겠습니까?"
+    "deleteAlertMessage": "이 팔로우업을 영구적으로 삭제하시겠습니까?",
+    "changeTime": "시간 변경",
+    "addTime": "알림 시간 추가",
+    "snoozeHour": "1시간 미루기",
+    "snoozeTomorrow": "내일로 미루기",
+    "noTime": "알림 시간 없음",
+    "pickerTitle": "알림 시간",
+    "rescheduledA11y": "알림이 {{date}}(으)로 변경되었습니다"
   },
   "yeni": {
     "labelTitle": "무엇을 팔로우업하나요?",
@@ -260,7 +267,8 @@
     "overdueLabel": "기한 초과, 기한은 {{date}}였습니다",
     "dueLabel": "기한 {{date}}",
     "detailsHint": "세부정보를 보려면 탭하세요",
-    "moreActionsA11y": "더보기"
+    "moreActionsA11y": "더보기",
+    "changeTime": "시간 변경"
   },
   "lateSuggestionCard": {
     "message": "{{name}}님으로부터 기다리는 일이 최근 {{count}}번 연속 늦어졌습니다. 더 일찍 알려드릴까요?",

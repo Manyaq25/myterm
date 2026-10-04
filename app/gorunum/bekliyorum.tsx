@@ -1,10 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { listFollowUpsByType } from '../../src/db/queries';
 import { PersonGroupedList } from '../../src/components/PersonGroupedList';
+import { ScreenHeader } from '../../src/components/ScreenHeader';
 import { groupFollowUpsByPerson, type PersonGroup } from '../../src/utils/grouping';
 import { useTheme, type ThemeColors } from '../../src/theme';
 
@@ -22,6 +23,8 @@ export default function NeyiBekliyorumScreen() {
   );
 
   return (
+    <View style={styles.root}>
+    <ScreenHeader title={t('stackTitles.neyiBekliyorum')} />
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <PersonGroupedList
         groups={groups}
@@ -29,11 +32,13 @@ export default function NeyiBekliyorumScreen() {
         emptySubtitle={t('bekliyorum.emptySubtitle')}
       />
     </ScrollView>
+    </View>
   );
 }
 
 function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
+    root: { flex: 1, backgroundColor: colors.background },
     screen: { backgroundColor: colors.background },
     content: { padding: 20, paddingBottom: 60, flexGrow: 1 },
   });
