@@ -23,6 +23,7 @@ Son güncelleme: 5 Ekim 2026 (yol haritası onaylandı)
 - [ ] **3b** 7 gün ücretsiz deneme + indirimli yıllık plan (mağaza panellerinde ürün/teklif + premium ekranı).
 - [ ] **3d** Ülkeye göre fiyat (yalnızca mağaza panelleri).
 - [ ] **3c** Premium paketini yeni özelliklerle zenginleştirmek.
+- [ ] **3f** Arkadaşını davet et (+3 AI hakkı) — 1a'dan sonra.
 - [ ] **3a** Nazik ve tek seferlik öneriler (3b ve 3f hazır olduktan sonra):
   - İlk başarılı çıkarımdan sonra, kayıt bittikten sonra küçük bir kart: "Arkadaşını davet et (+3 hak)" ve "Premium'u 7 gün ücretsiz dene". Kapat (✕) tuşu var; kapatılınca bir daha gösterilmez.
   - Birkaç kullanımdan sonra (örn. 3. başarılı çıkarım) bir kez premium önerisi, kapat tuşuyla.
@@ -36,7 +37,6 @@ Son güncelleme: 5 Ekim 2026 (yol haritası onaylandı)
   - iOS: SQLite dosyasının iCloud yedeğine dahil olduğu doğrulanacak.
 - [ ] **2c** AI ile hatırlatma mesajı: rehber izni olmadan sistemin kişi seçicisiyle "Rehberden seç" (doğru kişiyi kullanıcı seçer, numara kişi kartına bir kez kaydedilir), AI mesaj yazar, WhatsApp hazır açılır. Yeni build gerekir.
   - Kişi seçici, "Galeriden seç" gibi çalışır: pencereyi telefon gösterir, uygulama rehberin tamamını görmez, yalnızca seçilen kişinin numarası gelir. Kurarken izin gerektirmediği iOS ve Android'de doğrulanacak.
-- [ ] **3f** Arkadaşını davet et (+3 AI hakkı) — 1a'dan sonra.
 
 ## Reddedilen / iptal edilenler
 - **1b (ilk hali):** Ucuz modele geçmek — kalite riski.
