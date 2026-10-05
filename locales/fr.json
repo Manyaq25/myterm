@@ -1,0 +1,8 @@
+{
+  "ios": {
+    "NSFaceIDUsageDescription": "Face ID est utilisé pour déverrouiller l’app.",
+    "NSMicrophoneUsageDescription": "L’accès au micro est nécessaire pour transformer tes notes vocales en suivis.",
+    "NSPhotoLibraryUsageDescription": "L’accès à tes photos est nécessaire pour transformer tes captures d’écran ou images choisies en suivis.",
+    "NSPhotoLibraryAddUsageDescription": "Cette app n’enregistre aucune photo dans ta photothèque."
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "ios": {
+    "NSFaceIDUsageDescription": "Face ID используется для разблокировки приложения.",
+    "NSMicrophoneUsageDescription": "Доступ к микрофону нужен, чтобы превращать голосовые заметки в напоминания.",
+    "NSPhotoLibraryUsageDescription": "Доступ к фото нужен, чтобы превращать скриншоты или выбранные изображения в напоминания.",
+    "NSPhotoLibraryAddUsageDescription": "Это приложение не сохраняет фото в вашу медиатеку."
+  }
+}

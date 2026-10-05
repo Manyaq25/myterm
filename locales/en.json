@@ -1,0 +1,8 @@
+{
+  "ios": {
+    "NSFaceIDUsageDescription": "Face ID is used to unlock the app.",
+    "NSMicrophoneUsageDescription": "Microphone access is needed to turn your voice notes into follow-ups.",
+    "NSPhotoLibraryUsageDescription": "Photo library access is needed to turn your screenshots or selected images into follow-ups.",
+    "NSPhotoLibraryAddUsageDescription": "This app does not save photos to your library."
+  }
+}

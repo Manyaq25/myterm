@@ -3,7 +3,7 @@
     "name": "Synvia AI",
     "slug": "benim-yerime-takip-et",
     "scheme": "benim-yerime-takip-et",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -86,11 +86,36 @@
           "tg"
         ],
         "ITSAppUsesNonExemptEncryption": false,
-        "CFBundleDevelopmentRegion": "tr",
+        "CFBundleDevelopmentRegion": "en",
         "CFBundleLocalizations": [
-          "tr"
+          "tr",
+          "en",
+          "de",
+          "es",
+          "fr",
+          "it",
+          "pt",
+          "ru",
+          "ar",
+          "ja",
+          "ko",
+          "zh-Hans"
         ]
       }
+    },
+    "locales": {
+      "tr": "./locales/tr.json",
+      "en": "./locales/en.json",
+      "de": "./locales/de.json",
+      "es": "./locales/es.json",
+      "fr": "./locales/fr.json",
+      "it": "./locales/it.json",
+      "pt": "./locales/pt.json",
+      "ru": "./locales/ru.json",
+      "ar": "./locales/ar.json",
+      "ja": "./locales/ja.json",
+      "ko": "./locales/ko.json",
+      "zh-Hans": "./locales/zh-Hans.json"
     },
     "android": {
       "package": "com.manyaq25.benimyerimetakipet",

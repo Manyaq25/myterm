@@ -1,0 +1,8 @@
+{
+  "ios": {
+    "NSFaceIDUsageDescription": "Face ID viene usato per sbloccare l’app.",
+    "NSMicrophoneUsageDescription": "L’accesso al microfono serve per trasformare le tue note vocali in promemoria.",
+    "NSPhotoLibraryUsageDescription": "L’accesso alle foto serve per trasformare screenshot o immagini selezionate in promemoria.",
+    "NSPhotoLibraryAddUsageDescription": "Questa app non salva foto nella tua libreria."
+  }
+}

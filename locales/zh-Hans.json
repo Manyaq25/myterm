@@ -1,0 +1,8 @@
+{
+  "ios": {
+    "NSFaceIDUsageDescription": "使用面容 ID 解锁应用。",
+    "NSMicrophoneUsageDescription": "需要麦克风权限，才能将你的语音笔记转换为跟进事项。",
+    "NSPhotoLibraryUsageDescription": "需要照片权限，才能将截图或所选图片转换为跟进事项。",
+    "NSPhotoLibraryAddUsageDescription": "本应用不会将照片保存到你的图库。"
+  }
+}

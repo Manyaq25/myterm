@@ -1,0 +1,8 @@
+{
+  "ios": {
+    "NSFaceIDUsageDescription": "アプリのロック解除に Face ID を使用します。",
+    "NSMicrophoneUsageDescription": "音声メモをフォローアップに変換するため、マイクへのアクセスが必要です。",
+    "NSPhotoLibraryUsageDescription": "スクリーンショットや選択した画像をフォローアップに変換するため、写真へのアクセスが必要です。",
+    "NSPhotoLibraryAddUsageDescription": "このアプリは写真ライブラリに写真を保存しません。"
+  }
+}

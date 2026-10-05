@@ -1,0 +1,8 @@
+{
+  "ios": {
+    "NSFaceIDUsageDescription": "Uygulama kilidini açmak için Face ID kullanılıyor.",
+    "NSMicrophoneUsageDescription": "Sesli notlarını takip maddesine çevirmek için mikrofon erişimi gerekiyor.",
+    "NSPhotoLibraryUsageDescription": "Ekran görüntünü ya da seçtiğin görseli takip maddesine çevirmek için galerine erişim gerekiyor.",
+    "NSPhotoLibraryAddUsageDescription": "Bu uygulama galerine fotoğraf kaydetmiyor."
+  }
+}
