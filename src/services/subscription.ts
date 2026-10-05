@@ -135,3 +135,20 @@ export async function restorePurchases(): Promise<boolean> {
     return false;
   }
 }
+
+/**
+ * Sunucunun premium durumunu RevenueCat'ten kendisinin doğrulayabilmesi için
+ * AI isteklerine eklenen RevenueCat kullanıcı kimliği. RevenueCat ayarlı
+ * değilse ya da zamanında hazır olmazsa null döner.
+ */
+export async function getRevenueCatAppUserId(): Promise<string | null> {
+  if (!isRevenueCatConfigured) return null;
+  try {
+    const timeout = new Promise<null>((resolve) => setTimeout(() => resolve(null), 3000));
+    const ready = await Promise.race([subscriptionReady.then(() => true), timeout]);
+    if (!ready) return null;
+    return await Promise.race([Purchases.getAppUserID(), timeout]);
+  } catch {
+    return null;
+  }
+}

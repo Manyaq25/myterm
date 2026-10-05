@@ -40,7 +40,13 @@ import { SmartReminderPrompt } from '../../src/components/SmartReminderPrompt';
 import { DateTimeSheet } from '../../src/components/DateTimeSheet';
 import { getLatestScreenshot } from '../../src/services/screenshotSuggestion';
 import { updateWidgetSummary } from '../../src/services/widget';
-import { AI_USAGE_FREE_LIMIT, getAiUsageCount, hasAiUsageRemaining, incrementAiUsageCount } from '../../src/services/aiUsage';
+import {
+  AI_USAGE_FREE_LIMIT,
+  getAiUsageCount,
+  hasAiUsageRemaining,
+  markAiUsageLimitReached,
+  recordAiUsage,
+} from '../../src/services/aiUsage';
 import { useIsPremium } from '../../src/services/subscription';
 import { useTheme, hexToRgba, fontFamily, fontSize, letterSpacing, type ThemeColors } from '../../src/theme';
 import { Button } from '../../src/components/Button';
@@ -135,20 +141,33 @@ export default function AiCikarScreen() {
     getAiUsageCount().then(setUsageCount);
   }, []);
 
-  async function checkAiUsageGate(): Promise<boolean> {
-    if (isPremium) return true;
-    if (await hasAiUsageRemaining()) return true;
+  function showAiLimitReached() {
     setError(t('aiUsage.limitReachedMessage', { limit: AI_USAGE_FREE_LIMIT }));
     Alert.alert(t('aiUsage.limitReachedTitle'), t('aiUsage.limitReachedMessage', { limit: AI_USAGE_FREE_LIMIT }), [
       { text: t('common.cancel'), style: 'cancel' },
       { text: t('aiUsage.goPremiumButton'), onPress: () => router.push('/premium') },
     ]);
+  }
+
+  async function checkAiUsageGate(): Promise<boolean> {
+    if (isPremium) return true;
+    if (await hasAiUsageRemaining()) return true;
+    showAiLimitReached();
     return false;
   }
 
   async function consumeAiUsage() {
     if (isPremium) return;
-    setUsageCount(await incrementAiUsageCount());
+    setUsageCount(await recordAiUsage());
+  }
+
+  // Asıl sınır sunucuda: telefondaki sayaç hak kaldığını sansa bile (ör. uygulama
+  // yeniden yüklendiyse) sunucu 402 döndürürse aynı premium penceresini gösteririz.
+  function handleAiLimitError(e: unknown): boolean {
+    if (!(e instanceof AIRequestError) || e.status !== 402) return false;
+    void markAiUsageLimitReached().then(setUsageCount);
+    showAiLimitReached();
+    return true;
   }
 
   const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
@@ -185,6 +204,7 @@ export default function AiCikarScreen() {
       setCandidateSource('text');
       setTranscript(null);
     } catch (e) {
+      if (handleAiLimitError(e)) return;
       setError(t('aiCikar.textError'));
     } finally {
       setLoading(false);
@@ -223,6 +243,7 @@ export default function AiCikarScreen() {
       setCandidates(toCandidates(result.candidates));
       setCandidateSource('voice');
     } catch (e) {
+      if (handleAiLimitError(e)) return;
       setError(t('aiCikar.voiceError'));
     } finally {
       setLoading(false);
@@ -306,6 +327,7 @@ export default function AiCikarScreen() {
       setCandidateSource('screenshot');
       setTranscript(null);
     } catch (e) {
+      if (handleAiLimitError(e)) return;
       if (e instanceof AIRequestError && e.status === 413) setError(t('aiCikar.imageTooLarge'));
       else if (e instanceof AIRequestError && e.status === 415) setError(t('aiCikar.imageUnsupported'));
       else setError(t('aiCikar.imageError'));
@@ -353,6 +375,7 @@ export default function AiCikarScreen() {
       setCandidateSource('pdf');
       setTranscript(null);
     } catch (e) {
+      if (handleAiLimitError(e)) return;
       setError(t('aiCikar.pdfError'));
     } finally {
       setLoading(false);

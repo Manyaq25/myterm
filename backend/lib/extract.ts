@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
+import { recordTokenUsage } from './stats';
 
 const FOLLOW_UP_TYPES = ['promise_made', 'promise_expected', 'task', 'waiting_on'] as const;
 
@@ -192,6 +193,7 @@ export async function extractFollowUpsFromText(
     messages: [{ role: 'user', content: `${nowLine(ct)}\n\n${text}` }],
   });
 
+  await recordTokenUsage('text', response.usage);
   return normalizeCandidates(extractToolResult(response), ct);
 }
 
@@ -219,6 +221,7 @@ export async function extractFollowUpsFromPdf(
     ],
   });
 
+  await recordTokenUsage('pdf', response.usage);
   return normalizeCandidates(extractToolResult(response), ct);
 }
 
@@ -249,5 +252,6 @@ export async function extractFollowUpsFromImage(
     ],
   });
 
+  await recordTokenUsage('image', response.usage);
   return normalizeCandidates(extractToolResult(response), ct);
 }

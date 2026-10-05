@@ -31,3 +31,53 @@ export async function incrementAiUsageCount(): Promise<number> {
   await SecureStore.setItemAsync(COUNT_KEY, String(next));
   return next;
 }
+
+export interface ServerAiUsage {
+  used: number;
+  limit: number;
+  premium: boolean;
+}
+
+// Sunucu her başarılı AI isteğinden sonra güncel kullanımı döndürüyor; o
+// istekle ilgili ekran kaydı tamamlandığında recordAiUsage ile yazılıyor.
+let pendingServerUsage: ServerAiUsage | null = null;
+
+export function reportServerAiUsage(usage: unknown): void {
+  if (
+    usage &&
+    typeof usage === 'object' &&
+    typeof (usage as ServerAiUsage).used === 'number' &&
+    typeof (usage as ServerAiUsage).limit === 'number'
+  ) {
+    pendingServerUsage = usage as ServerAiUsage;
+  }
+}
+
+async function setAiUsageCount(count: number): Promise<void> {
+  await SecureStore.setItemAsync(MONTH_KEY, currentMonthKey());
+  await SecureStore.setItemAsync(COUNT_KEY, String(count));
+}
+
+/**
+ * Başarılı bir AI isteğinden sonra çağrılır. Sunucunun saydığı değer varsa
+ * onu esas alır (asıl sınır sunucuda); yoksa (eski sunucu, ağ sorunu) yerel
+ * sayacı bir artırır.
+ */
+export async function recordAiUsage(): Promise<number> {
+  const server = pendingServerUsage;
+  pendingServerUsage = null;
+  if (server && !server.premium) {
+    await setAiUsageCount(server.used);
+    return server.used;
+  }
+  return incrementAiUsageCount();
+}
+
+/** Sunucu "hak doldu" dediğinde yerel sayacı da sınıra eşitler. */
+export async function markAiUsageLimitReached(): Promise<number> {
+  const server = pendingServerUsage;
+  pendingServerUsage = null;
+  const used = Math.max(server?.used ?? 0, AI_USAGE_FREE_LIMIT);
+  await setAiUsageCount(used);
+  return used;
+}

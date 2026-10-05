@@ -1,7 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
 import { RefusalError, extractFollowUpsFromPdf, parseClientTime } from '../lib/extract';
-import { isRateLimited } from '../lib/rateLimit';
+import { commitAiUsage, openAiGate } from '../lib/quota';
 
 // ~5MB raw PDF, base64 adds ~37% overhead.
 const MAX_BASE64_LENGTH = 7 * 1024 * 1024;
@@ -37,9 +37,10 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     return;
   }
 
-  if (isRateLimited(req)) {
-    res.statusCode = 429;
-    res.end(JSON.stringify({ error: 'rate_limited' }));
+  const gate = await openAiGate(req);
+  if (!gate.ok) {
+    res.statusCode = gate.status;
+    res.end(JSON.stringify(gate.body));
     return;
   }
 
@@ -69,8 +70,9 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
 
   try {
     const candidates = await extractFollowUpsFromPdf(client, model, pdfBase64, parseClientTime(req.headers));
+    const usage = await commitAiUsage(gate.ctx);
     res.statusCode = 200;
-    res.end(JSON.stringify({ candidates }));
+    res.end(JSON.stringify({ candidates, usage }));
   } catch (error) {
     if (error instanceof RefusalError) {
       res.statusCode = 422;

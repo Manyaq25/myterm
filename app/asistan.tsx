@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -14,7 +15,15 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { aiProvider, isUsingMockAI } from '../src/ai';
+import { useRouter } from 'expo-router';
+import { AIRequestError, aiProvider, isUsingMockAI } from '../src/ai';
+import {
+  AI_USAGE_FREE_LIMIT,
+  hasAiUsageRemaining,
+  markAiUsageLimitReached,
+  recordAiUsage,
+} from '../src/services/aiUsage';
+import { useIsPremium } from '../src/services/subscription';
 import { buildAssistantContext } from '../src/services/assistantContext';
 import { useKeyboardHeight } from '../src/hooks/useKeyboardHeight';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../src/theme';
@@ -37,18 +46,38 @@ export default function AsistanScreen() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<Exchange[]>([]);
+  const router = useRouter();
+  const isPremium = useIsPremium();
+
+  // Asistan soruları da AI ile Çıkar'la aynı aylık ücretsiz hakka dahil.
+  function showAiLimitReached() {
+    Alert.alert(t('aiUsage.limitReachedTitle'), t('aiUsage.limitReachedMessage', { limit: AI_USAGE_FREE_LIMIT }), [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('aiUsage.goPremiumButton'), onPress: () => router.push('/premium') },
+    ]);
+  }
 
   async function handleAsk(q?: string) {
     const finalQuestion = (q ?? question).trim();
     if (!finalQuestion || loading) return;
+    if (!isPremium && !(await hasAiUsageRemaining())) {
+      showAiLimitReached();
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
       const context = await buildAssistantContext(db);
       const answer = await aiProvider.askAssistant(finalQuestion, context);
+      if (!isPremium) await recordAiUsage();
       setHistory((prev) => [...prev, { question: finalQuestion, answer }]);
       setQuestion('');
     } catch (e) {
+      if (e instanceof AIRequestError && e.status === 402) {
+        await markAiUsageLimitReached();
+        showAiLimitReached();
+        return;
+      }
       setError(t('asistan.errorText'));
     } finally {
       setLoading(false);

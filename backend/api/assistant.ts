@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
-import { isRateLimited } from '../lib/rateLimit';
+import { commitAiUsage, openAiGate } from '../lib/quota';
+import { recordTokenUsage } from '../lib/stats';
 
 const MAX_QUESTION_LENGTH = 500;
 const MAX_CONTEXT_LENGTH = 20000;
@@ -46,9 +47,10 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     return;
   }
 
-  if (isRateLimited(req)) {
-    res.statusCode = 429;
-    res.end(JSON.stringify({ error: 'rate_limited' }));
+  const gate = await openAiGate(req);
+  if (!gate.ok) {
+    res.statusCode = gate.status;
+    res.end(JSON.stringify(gate.body));
     return;
   }
 
@@ -100,6 +102,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
         },
       ],
     });
+    await recordTokenUsage('assistant', response.usage);
 
     if (response.stop_reason === 'refusal') {
       res.statusCode = 422;
@@ -110,8 +113,9 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     const textBlock = response.content.find((block): block is Anthropic.TextBlock => block.type === 'text');
     const answer = textBlock?.text?.trim() || 'Bir cevap üretemedim, lütfen tekrar dener misin?';
 
+    const usage = await commitAiUsage(gate.ctx);
     res.statusCode = 200;
-    res.end(JSON.stringify({ answer }));
+    res.end(JSON.stringify({ answer, usage }));
   } catch (error) {
     res.statusCode = 500;
     res.end(JSON.stringify({ error: 'assistant_failed', message: (error as Error).message }));

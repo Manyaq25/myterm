@@ -92,6 +92,7 @@ jobs:
           status=$(curl -sS -o response.json -w "%{http_code}" --max-time 20 \
             "${{ steps.deploy.outputs.url }}/api/extract" \
             -H "Content-Type: application/json" \
+            -H "X-Device-Id: ci-${{ github.run_id }}-${{ github.run_attempt }}" \
             -d '{"text":"Ahmete yarin teklifi gonderecegim, ondan da gecen haftaki raporu bekliyorum."}')
           echo "HTTP $status"
           cat response.json
@@ -112,6 +113,7 @@ jobs:
           status=$(curl -sS -o response_type.json -w "%{http_code}" --max-time 20 \
             "${{ steps.deploy.outputs.url }}/api/extract" \
             -H "Content-Type: application/json" \
+            -H "X-Device-Id: ci-${{ github.run_id }}-${{ github.run_attempt }}" \
             -d '{"text":"Ali gazete getirecek."}')
           echo "HTTP $status"
           cat response_type.json
@@ -145,6 +147,7 @@ jobs:
           status=$(curl -sS -o response_image.json -w "%{http_code}" --max-time 30 \
             "${{ steps.deploy.outputs.url }}/api/extract-image" \
             -H "Content-Type: application/json" \
+            -H "X-Device-Id: ci-${{ github.run_id }}-${{ github.run_attempt }}" \
             --data @image_payload.json)
           echo "HTTP $status"
           cat response_image.json
@@ -179,6 +182,7 @@ jobs:
           status=$(curl -sS -o response_pdf.json -w "%{http_code}" --max-time 30 \
             "${{ steps.deploy.outputs.url }}/api/extract-pdf" \
             -H "Content-Type: application/json" \
+            -H "X-Device-Id: ci-${{ github.run_id }}-${{ github.run_attempt }}" \
             --data @pdf_payload.json)
           echo "HTTP $status"
           cat response_pdf.json
@@ -199,6 +203,7 @@ jobs:
           status=$(curl -sS -o response_assistant.json -w "%{http_code}" --max-time 20 \
             "${{ steps.deploy.outputs.url }}/api/assistant" \
             -H "Content-Type: application/json" \
+            -H "X-Device-Id: ci-${{ github.run_id }}-${{ github.run_attempt }}" \
             -d '{"question":"Ahmetle ilgili ne var?","context":"- [Verdiğim söz] Ahmete teklifi gönder | Kişi: Ahmet | Durum: Açık | Son tarih: yok"}')
           echo "HTTP $status"
           cat response_assistant.json

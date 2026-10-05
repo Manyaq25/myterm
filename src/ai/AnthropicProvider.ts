@@ -1,5 +1,8 @@
 import * as FileSystem from 'expo-file-system/legacy';
 import { AIRequestError, type AIProvider, type ExtractedFollowUp, type TranscriptionResult } from './types';
+import { getDeviceId } from '../services/deviceId';
+import { getRevenueCatAppUserId, isPremiumNow } from '../services/subscription';
+import { reportServerAiUsage } from '../services/aiUsage';
 
 // AI çıkarım/asistan çağrıları normalde birkaç saniyede döner ama zayıf bir
 // bağlantıda ya da backend takılırsa fetch süresiz asılı kalabilir — bu da
@@ -33,6 +36,50 @@ function clientTimeHeaders(): Record<string, string> {
   };
 }
 
+
+// Ücretsiz AI hakkı sunucuda cihaz başına sayılıyor; premium durumu da sunucu
+// tarafından RevenueCat'e sorularak doğrulanıyor. X-Client-Premium yalnızca
+// RevenueCat'e ulaşılamadığı durumlar için bir ipucu.
+async function identityHeaders(): Promise<Record<string, string>> {
+  const [deviceId, appUserId] = await Promise.all([getDeviceId(), getRevenueCatAppUserId()]);
+  return {
+    'X-Device-Id': deviceId,
+    ...(appUserId ? { 'X-RC-App-User-Id': appUserId } : {}),
+    ...(isPremiumNow() ? { 'X-Client-Premium': '1' } : {}),
+  };
+}
+
+function errorCode(body: unknown): string {
+  const code = (body as { error?: unknown } | null)?.error;
+  return typeof code === 'string' ? code : 'unknown';
+}
+
+// Hata gövdesini okur, hak doldu yanıtındaki kullanım bilgisini kaydeder ve
+// durum koduyla birlikte fırlatır (402 = aylık ücretsiz hak doldu).
+function throwRequestError(status: number, body: unknown): never {
+  reportServerAiUsage((body as { usage?: unknown } | null)?.usage);
+  throw new AIRequestError(status, errorCode(body));
+}
+
+async function readJsonResponse<T>(response: Response): Promise<T> {
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) throwRequestError(response.status, body);
+  reportServerAiUsage((body as { usage?: unknown }).usage);
+  return body as T;
+}
+
+function parseUploadResult<T>(result: FileSystem.FileSystemUploadResult): T {
+  let body: unknown = {};
+  try {
+    body = JSON.parse(result.body || '{}');
+  } catch {
+    // Vercel'in 413 gibi yanıtları JSON olmayabiliyor.
+  }
+  if (result.status < 200 || result.status >= 300) throwRequestError(result.status, body);
+  reportServerAiUsage((body as { usage?: unknown }).usage);
+  return body as T;
+}
+
 export class AnthropicProvider implements AIProvider {
   constructor(private readonly backendUrl: string, private readonly appSecret?: string) {}
 
@@ -42,18 +89,12 @@ export class AnthropicProvider implements AIProvider {
       headers: {
         'Content-Type': 'application/json',
         ...clientTimeHeaders(),
+        ...(await identityHeaders()),
         ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
       },
       body: JSON.stringify({ text }),
     });
-
-    if (!response.ok) {
-      const body = await response.json().catch(() => ({}));
-      throw new Error(`Extraction failed (${response.status}): ${body.error ?? 'unknown'}`);
-    }
-
-    const body = (await response.json()) as { candidates: ExtractedFollowUp[] };
-    return body.candidates;
+    return (await readJsonResponse<{ candidates: ExtractedFollowUp[] }>(response)).candidates;
   }
 
   async transcribeAndExtract(audioFileUri: string): Promise<TranscriptionResult> {
@@ -63,16 +104,11 @@ export class AnthropicProvider implements AIProvider {
       headers: {
         'Content-Type': 'audio/m4a',
         ...clientTimeHeaders(),
+        ...(await identityHeaders()),
         ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
       },
     });
-
-    if (result.status < 200 || result.status >= 300) {
-      const errorBody = JSON.parse(result.body || '{}');
-      throw new Error(`Transcription failed (${result.status}): ${errorBody.error ?? 'unknown'}`);
-    }
-
-    return JSON.parse(result.body) as TranscriptionResult;
+    return parseUploadResult<TranscriptionResult>(result);
   }
 
   // Görsel base64'e çevrilmeden ham dosya olarak yükleniyor (~%27 daha küçük
@@ -85,21 +121,11 @@ export class AnthropicProvider implements AIProvider {
       headers: {
         'Content-Type': 'application/octet-stream',
         ...clientTimeHeaders(),
+        ...(await identityHeaders()),
         ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
       },
     });
-
-    if (result.status < 200 || result.status >= 300) {
-      let code = 'unknown';
-      try {
-        code = (JSON.parse(result.body || '{}') as { error?: string }).error ?? code;
-      } catch {
-        // Vercel'in 413 gibi yanıtları JSON olmayabiliyor.
-      }
-      throw new AIRequestError(result.status, code);
-    }
-
-    return (JSON.parse(result.body) as { candidates: ExtractedFollowUp[] }).candidates;
+    return parseUploadResult<{ candidates: ExtractedFollowUp[] }>(result).candidates;
   }
 
   async extractFollowUpsFromPdf(base64Pdf: string): Promise<ExtractedFollowUp[]> {
@@ -108,18 +134,12 @@ export class AnthropicProvider implements AIProvider {
       headers: {
         'Content-Type': 'application/json',
         ...clientTimeHeaders(),
+        ...(await identityHeaders()),
         ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
       },
       body: JSON.stringify({ pdfBase64: base64Pdf }),
     });
-
-    if (!response.ok) {
-      const body = await response.json().catch(() => ({}));
-      throw new Error(`PDF extraction failed (${response.status}): ${body.error ?? 'unknown'}`);
-    }
-
-    const body = (await response.json()) as { candidates: ExtractedFollowUp[] };
-    return body.candidates;
+    return (await readJsonResponse<{ candidates: ExtractedFollowUp[] }>(response)).candidates;
   }
 
   async askAssistant(question: string, context: string): Promise<string> {
@@ -127,17 +147,11 @@ export class AnthropicProvider implements AIProvider {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        ...(await identityHeaders()),
         ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
       },
       body: JSON.stringify({ question, context }),
     });
-
-    if (!response.ok) {
-      const body = await response.json().catch(() => ({}));
-      throw new Error(`Assistant failed (${response.status}): ${body.error ?? 'unknown'}`);
-    }
-
-    const body = (await response.json()) as { answer: string };
-    return body.answer;
+    return (await readJsonResponse<{ answer: string }>(response)).answer;
   }
 }

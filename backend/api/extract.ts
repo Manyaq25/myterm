@@ -1,7 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
 import { MAX_TEXT_LENGTH, RefusalError, extractFollowUpsFromText, parseClientTime } from '../lib/extract';
-import { isRateLimited } from '../lib/rateLimit';
+import { commitAiUsage, openAiGate } from '../lib/quota';
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -34,9 +34,10 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     return;
   }
 
-  if (isRateLimited(req)) {
-    res.statusCode = 429;
-    res.end(JSON.stringify({ error: 'rate_limited' }));
+  const gate = await openAiGate(req);
+  if (!gate.ok) {
+    res.statusCode = gate.status;
+    res.end(JSON.stringify(gate.body));
     return;
   }
 
@@ -66,8 +67,9 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
 
   try {
     const candidates = await extractFollowUpsFromText(client, model, text, parseClientTime(req.headers));
+    const usage = await commitAiUsage(gate.ctx);
     res.statusCode = 200;
-    res.end(JSON.stringify({ candidates }));
+    res.end(JSON.stringify({ candidates, usage }));
   } catch (error) {
     if (error instanceof RefusalError) {
       res.statusCode = 422;

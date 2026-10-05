@@ -2,7 +2,7 @@ import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI, { toFile } from 'openai';
 import { RefusalError, extractFollowUpsFromText, parseClientTime } from '../lib/extract';
-import { isRateLimited } from '../lib/rateLimit';
+import { commitAiUsage, openAiGate } from '../lib/quota';
 
 const MAX_AUDIO_BYTES = 15 * 1024 * 1024; // 15 MB, generous for a few minutes of voice notes
 
@@ -41,9 +41,10 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     return;
   }
 
-  if (isRateLimited(req)) {
-    res.statusCode = 429;
-    res.end(JSON.stringify({ error: 'rate_limited' }));
+  const gate = await openAiGate(req);
+  if (!gate.ok) {
+    res.statusCode = gate.status;
+    res.end(JSON.stringify(gate.body));
     return;
   }
 
@@ -81,8 +82,9 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
     }
 
     const candidates = await extractFollowUpsFromText(anthropic, extractModel, transcript, parseClientTime(req.headers));
+    const usage = await commitAiUsage(gate.ctx);
     res.statusCode = 200;
-    res.end(JSON.stringify({ transcript, candidates }));
+    res.end(JSON.stringify({ transcript, candidates, usage }));
   } catch (error) {
     if (error instanceof RefusalError) {
       res.statusCode = 422;

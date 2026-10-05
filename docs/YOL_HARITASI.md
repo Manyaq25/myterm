@@ -11,8 +11,9 @@ Son güncelleme: 5 Ekim 2026 (yol haritası onaylandı)
 ## Onaylanan işler
 
 ### Faz 1 — Temel
-- [ ] **1a** AI hakkı ve premium kontrolünü sunucuya taşımak (silip yükleyince hak sıfırlanmasın, sunucuya dışarıdan istek atılamasın). Ertelenen güvenlik düzeltmeleriyle birlikte.
-- [ ] **1b** Sabit talimatları önbelleğe alarak maliyeti düşürmek (kalite aynı kalır). Önce çıkarım başına gerçek maliyet ölçülecek.
+- [x] **1a** AI hakkı ve premium kontrolü sunucuda (Upstash Redis + RevenueCat doğrulaması). Ücretsiz: ayda 6 istek, **AI Asistan dahil** (karar: tek sayaç). Cihaz kimliği silip yüklemede değişmez; IP başına dakikalık/günlük sınır; eski sürümler 20 Ekim 2026'ya kadar kimliksiz çalışır. Test: `backend/test/quota-e2e.js`.
+  - Kalan: shared secret ve App Attest / Play Integrity (kötüye kullanım görülürse).
+- [ ] **1b** Önbellek zaten kurulu (Opus 5 için en az 512 token, talimatlar bunun üstünde). Ölçüm başladı: Upstash'te `stats:YYYY-MM-DD` anahtarları (istek, girdi, çıktı, cache_write, cache_read). Birkaç gün sonra karar: önbelleği tut / ayarla / kaldır.
 - [ ] **1c** Hata raporlama (Sentry) ve basit kullanım ölçümü. Yeni build gerekir; kullanıcının Sentry hesabı açması gerekir.
 
 ### Faz 2 — Hızlı kazanımlar
