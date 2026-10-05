@@ -2,7 +2,7 @@ import * as SecureStore from 'expo-secure-store';
 
 // Ücretsiz katmanda ayda toplam (metin+ses+görsel+PDF) izin verilen AI
 // çıkarım sayısı. Tek yerden değiştirilebilir sabit.
-export const AI_USAGE_FREE_LIMIT = 18;
+export const AI_USAGE_FREE_LIMIT = 6;
 
 const COUNT_KEY = 'aiUsageCount';
 const MONTH_KEY = 'aiUsageResetMonth';
