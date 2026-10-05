@@ -1,3 +1,4 @@
+import { initCrashReporting, wrapWithCrashReporting } from '../src/services/crashReporting';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { Stack, usePathname, useRouter } from 'expo-router';
@@ -29,9 +30,11 @@ void SplashScreen.preventAutoHideAsync();
 
 // Bu ekranlar tam kaplı (native modal) deneyimler — alt navigasyon kalıcı
 // olsa bile burada gösterilmiyor.
+initCrashReporting();
+
 const FULL_SCREEN_PATHS = new Set(['/onboarding', '/asistan', '/premium']);
 
-export default function RootLayout() {
+function RootLayout() {
   const router = useRouter();
   const pathname = usePathname();
   const { t, i18n } = useTranslation();
@@ -117,3 +120,5 @@ export default function RootLayout() {
     </GestureHandlerRootView>
   );
 }
+
+export default wrapWithCrashReporting(RootLayout);

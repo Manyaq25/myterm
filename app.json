@@ -3,13 +3,13 @@
     "name": "Synvia AI",
     "slug": "benim-yerime-takip-et",
     "scheme": "benim-yerime-takip-et",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "runtimeVersion": {
-      "policy": "sdkVersion"
+      "policy": "appVersion"
     },
     "updates": {
       "url": "https://u.expo.dev/db715a1a-2a9d-4096-888e-7f9c672e1b40"
@@ -66,6 +66,13 @@
           "granularPermissions": [
             "photo"
           ]
+        }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "organization": "aydinapp",
+          "project": "react-native"
         }
       ],
       "./plugins/withAdjustNothingKeyboard",
