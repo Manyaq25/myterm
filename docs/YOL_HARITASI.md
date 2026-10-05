@@ -25,7 +25,7 @@ Son güncelleme: 5 Ekim 2026 (yol haritası onaylandı)
 - [ ] **3c** Premium paketini yeni özelliklerle zenginleştirmek.
 - [ ] **3f** Arkadaşını davet et (+3 AI hakkı) — 1a'dan sonra.
 - [ ] **3a** Nazik ve tek seferlik öneriler (3b ve 3f hazır olduktan sonra):
-  - İlk başarılı çıkarımdan sonra, kayıt bittikten sonra küçük bir kart: "Arkadaşını davet et (+3 hak)" ve "Premium'u 7 gün ücretsiz dene". Kapat (✕) tuşu var; kapatılınca bir daha gösterilmez.
+  - İlk başarılı çıkarımdan sonra, kayıt bittikten sonra küçük bir kart: "Arkadaşını davet et (+3 hak)" ve "Premium'u 7 gün ücretsiz dene". Kapat (✕) tuşu var; kapatılınca bir daha gösterilmez. Kartın altında küçük bir not: "Bunu istediğin zaman Ayarlar'dan yapabilirsin."
   - Birkaç kullanımdan sonra (örn. 3. başarılı çıkarım) bir kez premium önerisi, kapat tuşuyla.
   - Her öneri yalnızca bir kez gösterilir (cihazda işaretlenir); her çıkarımdan sonra çıkmaz, reklam havası olmaz. Premium kullanıcılara gösterilmez. Çıkarım sırasında değil, işlem bittikten sonra gelir.
   - Hak dolunca çıkan "Premium'a Geç" penceresi olduğu gibi kalır.
