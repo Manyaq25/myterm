@@ -29,6 +29,7 @@ Son güncelleme: 5 Ekim 2026 (yol haritası onaylandı)
   - Birkaç kullanımdan sonra (örn. 3. başarılı çıkarım) bir kez premium önerisi, kapat tuşuyla.
   - Her öneri yalnızca bir kez gösterilir (cihazda işaretlenir); her çıkarımdan sonra çıkmaz, reklam havası olmaz. Premium kullanıcılara gösterilmez. Çıkarım sırasında değil, işlem bittikten sonra gelir.
   - Hak dolunca çıkan "Premium'a Geç" penceresi olduğu gibi kalır.
+  - Ayarlar'da kalıcı bölüm (yalnızca premium olmayanlara): "Premium'u 7 gün ücretsiz dene" ve "Arkadaşını davet et (+3 hak)". Kart kaçırılsa da kullanıcı istediği zaman ulaşır; kendiliğinden açılmaz. Premium olunca bölüm kaybolur.
 
 ### Faz 4 — Büyük özellikler
 - [ ] **2d** Tekrarlayan takipler: Yeni Takip'te "Tekrarla" (her gün / hafta / ay), AI "her pazartesi" gibi ifadeleri algılar, tamamlanınca sonraki otomatik oluşur, kartta 🔁. Premium olabilir.
