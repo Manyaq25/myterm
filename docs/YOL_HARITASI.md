@@ -31,6 +31,7 @@ Son güncelleme: 5 Ekim 2026
   - Android: `allowBackup="true"` zaten açık. Veritabanının yedeğe girdiği ve geri yüklemede SecureStore'un sorun çıkarmadığı doğrulanacak (expo-secure-store eklentisi app.json'da yok, yedek kuralları eklenmemiş).
   - iOS: SQLite dosyasının iCloud yedeğine dahil olduğu doğrulanacak.
 - [ ] **2c** AI ile hatırlatma mesajı: rehber izni olmadan sistemin kişi seçicisiyle "Rehberden seç" (doğru kişiyi kullanıcı seçer, numara kişi kartına bir kez kaydedilir), AI mesaj yazar, WhatsApp hazır açılır. Yeni build gerekir.
+  - Kişi seçici, "Galeriden seç" gibi çalışır: pencereyi telefon gösterir, uygulama rehberin tamamını görmez, yalnızca seçilen kişinin numarası gelir. Kurarken izin gerektirmediği iOS ve Android'de doğrulanacak.
 - [ ] **3f** Arkadaşını davet et (+3 AI hakkı) — 1a'dan sonra.
 
 ## Reddedilen / iptal edilenler
