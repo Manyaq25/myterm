@@ -1,6 +1,6 @@
 # Synvia AI — Yol Haritası ve Kararlar
 
-Son güncelleme: 5 Ekim 2026
+Son güncelleme: 5 Ekim 2026 (yol haritası onaylandı)
 
 ## Kalıcı kurallar
 
@@ -17,13 +17,17 @@ Son güncelleme: 5 Ekim 2026
 
 ### Faz 2 — Hızlı kazanımlar
 - [ ] **2b** Bildirimden "Tamamlandı / 1 saat ertele / Yarın".
-- [ ] **3a** Premium'u ilk başarılı çıkarımdan sonra göstermek.
 - [ ] **3e** Mutlu anda Apple/Google değerlendirme penceresi (yeni build).
 
 ### Faz 3 — Gelir
 - [ ] **3b** 7 gün ücretsiz deneme + indirimli yıllık plan (mağaza panellerinde ürün/teklif + premium ekranı).
 - [ ] **3d** Ülkeye göre fiyat (yalnızca mağaza panelleri).
 - [ ] **3c** Premium paketini yeni özelliklerle zenginleştirmek.
+- [ ] **3a** Nazik ve tek seferlik öneriler (3b ve 3f hazır olduktan sonra):
+  - İlk başarılı çıkarımdan sonra, kayıt bittikten sonra küçük bir kart: "Arkadaşını davet et (+3 hak)" ve "Premium'u 7 gün ücretsiz dene". Kapat (✕) tuşu var; kapatılınca bir daha gösterilmez.
+  - Birkaç kullanımdan sonra (örn. 3. başarılı çıkarım) bir kez premium önerisi, kapat tuşuyla.
+  - Her öneri yalnızca bir kez gösterilir (cihazda işaretlenir); her çıkarımdan sonra çıkmaz, reklam havası olmaz. Premium kullanıcılara gösterilmez. Çıkarım sırasında değil, işlem bittikten sonra gelir.
+  - Hak dolunca çıkan "Premium'a Geç" penceresi olduğu gibi kalır.
 
 ### Faz 4 — Büyük özellikler
 - [ ] **2d** Tekrarlayan takipler: Yeni Takip'te "Tekrarla" (her gün / hafta / ay), AI "her pazartesi" gibi ifadeleri algılar, tamamlanınca sonraki otomatik oluşur, kartta 🔁. Premium olabilir.
