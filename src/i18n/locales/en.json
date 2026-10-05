@@ -315,7 +315,8 @@
   "aiUsage": {
     "limitReachedMessage": "You've used all your AI extractions this month ({{limit}} per month). Go Premium for unlimited use.",
     "goPremiumButton": "Go Premium",
-    "remainingHint": "You've used {{used}}/{{limit}} AI extractions this month."
+    "remainingHint": "You've used {{used}}/{{limit}} AI extractions this month.",
+    "limitReachedTitle": "You've used your free AI extractions"
   },
   "premium": {
     "title": "Go Premium",

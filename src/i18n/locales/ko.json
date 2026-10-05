@@ -315,7 +315,8 @@
   "aiUsage": {
     "limitReachedMessage": "이번 달 AI 추출 횟수를 모두 사용했어요 (월 {{limit}}회). 프리미엄으로 업그레이드하면 무제한으로 사용할 수 있어요.",
     "goPremiumButton": "프리미엄으로 업그레이드",
-    "remainingHint": "이번 달 AI 추출을 {{used}}/{{limit}}회 사용했어요."
+    "remainingHint": "이번 달 AI 추출을 {{used}}/{{limit}}회 사용했어요.",
+    "limitReachedTitle": "무료 AI 추출 횟수를 모두 사용했습니다"
   },
   "premium": {
     "title": "프리미엄으로 업그레이드",

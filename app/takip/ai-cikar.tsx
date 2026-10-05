@@ -139,6 +139,10 @@ export default function AiCikarScreen() {
     if (isPremium) return true;
     if (await hasAiUsageRemaining()) return true;
     setError(t('aiUsage.limitReachedMessage', { limit: AI_USAGE_FREE_LIMIT }));
+    Alert.alert(t('aiUsage.limitReachedTitle'), t('aiUsage.limitReachedMessage', { limit: AI_USAGE_FREE_LIMIT }), [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('aiUsage.goPremiumButton'), onPress: () => router.push('/premium') },
+    ]);
     return false;
   }
 

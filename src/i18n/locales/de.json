@@ -315,7 +315,8 @@
   "aiUsage": {
     "limitReachedMessage": "Du hast diesen Monat alle KI-Extraktionen aufgebraucht ({{limit}} pro Monat). Wechsle zu Premium für unbegrenzte Nutzung.",
     "goPremiumButton": "Zu Premium wechseln",
-    "remainingHint": "Du hast diesen Monat {{used}}/{{limit}} KI-Extraktionen genutzt."
+    "remainingHint": "Du hast diesen Monat {{used}}/{{limit}} KI-Extraktionen genutzt.",
+    "limitReachedTitle": "Deine kostenlosen KI-Auswertungen sind aufgebraucht"
   },
   "premium": {
     "title": "Zu Premium wechseln",

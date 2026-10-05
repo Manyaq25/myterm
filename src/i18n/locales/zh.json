@@ -315,7 +315,8 @@
   "aiUsage": {
     "limitReachedMessage": "你本月的AI提取次数已用完(每月{{limit}}次)。升级到高级版即可无限使用。",
     "goPremiumButton": "升级到高级版",
-    "remainingHint": "你本月已使用 {{used}}/{{limit}} 次AI提取。"
+    "remainingHint": "你本月已使用 {{used}}/{{limit}} 次AI提取。",
+    "limitReachedTitle": "你的免费 AI 提取次数已用完"
   },
   "premium": {
     "title": "升级到高级版",

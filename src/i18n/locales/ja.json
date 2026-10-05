@@ -315,7 +315,8 @@
   "aiUsage": {
     "limitReachedMessage": "今月のAI抽出回数の上限に達しました(月{{limit}}回)。プレミアムにアップグレードすると無制限に使えます。",
     "goPremiumButton": "プレミアムにアップグレード",
-    "remainingHint": "今月は{{used}}/{{limit}}回のAI抽出を使用しました。"
+    "remainingHint": "今月は{{used}}/{{limit}}回のAI抽出を使用しました。",
+    "limitReachedTitle": "無料のAI抽出回数を使い切りました"
   },
   "premium": {
     "title": "プレミアムにアップグレード",

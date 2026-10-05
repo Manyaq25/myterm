@@ -315,7 +315,8 @@
   "aiUsage": {
     "limitReachedMessage": "Bu ay AI çıkarım hakkın doldu (aylık {{limit}} çıkarım). Premium'a geçerek sınırsız kullanabilirsin.",
     "goPremiumButton": "Premium'a Geç",
-    "remainingHint": "Bu ay {{used}}/{{limit}} AI çıkarımı kullandın."
+    "remainingHint": "Bu ay {{used}}/{{limit}} AI çıkarımı kullandın.",
+    "limitReachedTitle": "AI çıkarım hakkın doldu"
   },
   "premium": {
     "title": "Premium'a Geç",

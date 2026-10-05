@@ -315,7 +315,8 @@
   "aiUsage": {
     "limitReachedMessage": "Você usou todas as suas extrações de IA este mês ({{limit}} por mês). Torne-se Premium para uso ilimitado.",
     "goPremiumButton": "Torne-se Premium",
-    "remainingHint": "Você usou {{used}}/{{limit}} extrações de IA este mês."
+    "remainingHint": "Você usou {{used}}/{{limit}} extrações de IA este mês.",
+    "limitReachedTitle": "Você usou suas extrações com IA gratuitas"
   },
   "premium": {
     "title": "Torne-se Premium",
