@@ -39,6 +39,12 @@ Son güncelleme: 5 Ekim 2026 (yol haritası onaylandı)
 - [ ] **2c** AI ile hatırlatma mesajı: rehber izni olmadan sistemin kişi seçicisiyle "Rehberden seç" (doğru kişiyi kullanıcı seçer, numara kişi kartına bir kez kaydedilir), AI mesaj yazar, WhatsApp hazır açılır. Yeni build gerekir.
   - Kişi seçici, "Galeriden seç" gibi çalışır: pencereyi telefon gösterir, uygulama rehberin tamamını görmez, yalnızca seçilen kişinin numarası gelir. Kurarken izin gerektirmediği iOS ve Android'de doğrulanacak.
 
+### Faz 5 — Tanıtım
+- [ ] **Tanıtım videosunu güncellemek** (kaynak: `promo/video/`):
+  - Kapanışta Google Play'in de yayında olduğu gösterilecek ("Çok yakında" yerine).
+  - Yol haritasındaki yeni özellikler videoya eklenecek (erteleme, bildirimden işlem, tekrarlayan takipler, AI ile hatırlatma mesajı, 7 gün ücretsiz deneme vb.).
+  - Sitedeki "Google Play — Yakında" düğmesi de gerçek bağlantıyla değiştirilecek.
+
 ## Reddedilen / iptal edilenler
 - **1b (ilk hali):** Ucuz modele geçmek — kalite riski.
 - **1d:** Kademeli yayın (%10) ve ayrı test sürümü — iptal.
