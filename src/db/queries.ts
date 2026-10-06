@@ -122,6 +122,20 @@ export async function updateFollowUpRecurrence(
   await db.runAsync(`UPDATE follow_ups SET recurrence = ?, updatedAt = ? WHERE id = ?`, [recurrence, Date.now(), id]);
 }
 
+/**
+ * Takibi yalnızca hâlâ açıksa tamamlandı yapar; daha önce tamamlanmışsa false.
+ * Aynı anda iki kez tamamlanırsa (çift dokunma, bildirim + uygulama) tekrarlayan
+ * takibin bir sonrakinin iki kez oluşmasını önler.
+ */
+export async function markFollowUpDoneIfOpen(db: SQLiteDatabase, id: string): Promise<boolean> {
+  const now = Date.now();
+  const result = await db.runAsync(
+    `UPDATE follow_ups SET status = 'done', updatedAt = ?, completedAt = ? WHERE id = ? AND status IN ('open', 'snoozed')`,
+    [now, now, id]
+  );
+  return result.changes > 0;
+}
+
 export async function updateFollowUpStatus(
   db: SQLiteDatabase,
   id: string,

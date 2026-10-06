@@ -7,7 +7,7 @@ import {
   getPerson,
   listFollowUpReminderKinds,
   updateFollowUpSchedule,
-  updateFollowUpStatus,
+  markFollowUpDoneIfOpen,
 } from '../db/queries';
 import { applyReminderLead } from '../utils/date';
 import { nextOccurrence } from '../utils/recurrence';
@@ -19,18 +19,23 @@ type ReminderRef = Pick<FollowUp, 'id' | 'remindAt'>;
 type RescheduleRef = Pick<FollowUp, 'id' | 'remindAt' | 'title' | 'personId'>;
 
 export async function completeFollowUp(db: SQLiteDatabase, item: ReminderRef): Promise<void> {
+  // Ek hatırlatma seçimi (1 gün önce / sabah) iptal edilmeden önce okunur ki
+  // tekrarlayan takibin bir sonrakine taşınabilsin.
+  const extraKinds = await listFollowUpReminderKinds(db, item.id);
   await removeFromReminderDay(db, item.remindAt, item.id);
   await cancelExtraReminders(db, item.id);
-  await updateFollowUpStatus(db, item.id, 'done');
-  const full = await getFollowUp(db, item.id);
-  if (full?.recurrence && full.dueAt !== null) {
-    await createNextOccurrence(db, full);
+  const changed = await markFollowUpDoneIfOpen(db, item.id);
+  if (changed) {
+    const full = await getFollowUp(db, item.id);
+    if (full?.recurrence && full.dueAt !== null) {
+      await createNextOccurrence(db, full, extraChoiceFromKinds(extraKinds));
+    }
   }
   await updateWidgetSummary(db);
 }
 
-/** Tekrarlayan takip tamamlanınca bir sonrakini aynı bilgilerle oluşturup hatırlatmasını kurar. */
-async function createNextOccurrence(db: SQLiteDatabase, done: FollowUp): Promise<void> {
+/** Tekrarlayan takip tamamlanınca bir sonrakini aynı bilgilerle oluşturup hatırlatmalarını kurar. */
+async function createNextOccurrence(db: SQLiteDatabase, done: FollowUp, extraChoice: ExtraReminderChoice): Promise<void> {
   const dueAt = nextOccurrence(done.dueAt!, done.recurrence!);
   const person = done.personId ? await getPerson(db, done.personId) : null;
   const remindAt = applyReminderLead(dueAt, person?.reminderLeadMinutes ?? 0);
@@ -45,6 +50,7 @@ async function createNextOccurrence(db: SQLiteDatabase, done: FollowUp): Promise
     recurrence: done.recurrence,
   });
   await scheduleMainReminder(db, next.id, remindAt);
+  await scheduleExtraReminders(db, next.id, next.title, dueAt, extraChoice);
 }
 
 export async function removeFollowUp(db: SQLiteDatabase, item: ReminderRef): Promise<void> {

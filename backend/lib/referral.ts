@@ -7,8 +7,10 @@ export const REFERRAL_REWARD = 3;
 /** Bir kişinin ödül alabileceği en fazla davet sayısı (kötüye kullanıma karşı). */
 export const MAX_REWARDED_INVITES = 10;
 
-// Karışan karakterler (0/O, 1/I/L) yok; elle yazılması kolay olsun.
-const CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+// Karışan karakterler (0/O, 1/I/L) yok; elle yazılması kolay olsun. "E" de yok:
+// Upstash istemcisi okunan değerleri JSON olarak çözüyor, "234E56" gibi bir kod
+// üslü sayıya dönüşüp bozuluyordu.
+const CODE_ALPHABET = 'ABCDFGHJKMNPQRSTUVWXYZ23456789';
 const CODE_LENGTH = 6;
 export const CODE_PATTERN = new RegExp(`^[${CODE_ALPHABET}]{${CODE_LENGTH}}$`);
 

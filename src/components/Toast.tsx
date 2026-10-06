@@ -28,7 +28,10 @@ export function ToastHost() {
       if (hideTimer) clearTimeout(hideTimer);
       Animated.timing(opacity, { toValue: 1, duration: 180, useNativeDriver: true }).start();
       hideTimer = setTimeout(() => {
-        Animated.timing(opacity, { toValue: 0, duration: 220, useNativeDriver: true }).start(() => setMessage(null));
+        Animated.timing(opacity, { toValue: 0, duration: 220, useNativeDriver: true }).start(({ finished }) => {
+          // Kaybolurken yeni bir mesaj geldiyse animasyon yarıda kesilir; o mesajı silme.
+          if (finished) setMessage(null);
+        });
       }, VISIBLE_MS);
     };
     listeners.add(listener);

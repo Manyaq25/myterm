@@ -169,7 +169,9 @@ export async function commitAiUsage(ctx: AiRequestContext): Promise<UsageInfo | 
     if (ctx.useBonus && ctx.deviceId && redis) {
       let bonus = await redis.decr(bonusKey(ctx.deviceId));
       if (bonus < 0) {
-        await redis.set(bonusKey(ctx.deviceId), 0);
+        // Aynı anda gelen iki istek son hakkı paylaştı: geri al. SET 0 yerine INCR,
+        // çünkü o arada davetle eklenen hakları silmesin.
+        await redis.incr(bonusKey(ctx.deviceId));
         bonus = 0;
       }
       return withBonus({ used: ctx.usedBefore ?? FREE_MONTHLY_LIMIT, limit: FREE_MONTHLY_LIMIT, premium: false }, bonus);

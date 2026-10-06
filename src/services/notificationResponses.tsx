@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import * as Notifications from 'expo-notifications';
-import { useRouter, type Router } from 'expo-router';
+import { useRootNavigationState, useRouter, type Href } from 'expo-router';
 import { useSQLiteContext, type SQLiteDatabase } from 'expo-sqlite';
 import * as SecureStore from 'expo-secure-store';
 import i18n from '../i18n';
@@ -50,26 +50,25 @@ async function migrateExistingReminders(db: SQLiteDatabase): Promise<void> {
 // Aynı cevabın hem "son cevap" hem dinleyici üzerinden iki kez işlenmesini önler.
 const handledResponses = new Set<string>();
 
-async function handleResponse(db: SQLiteDatabase, router: Router, response: Notifications.NotificationResponse) {
+/** Bildirime göre yapılacak işlemi yapar; açılması gereken ekran varsa onu döndürür. */
+async function handleResponse(db: SQLiteDatabase, response: Notifications.NotificationResponse): Promise<Href | null> {
   const data = response.notification.request.content.data ?? {};
   const action = response.actionIdentifier;
 
   if (data.kind === 'screenshot-suggestion') {
     const assetId = typeof data.assetId === 'string' ? `&assetId=${encodeURIComponent(data.assetId)}` : '';
-    router.push(`/takip/ai-cikar?mode=image&autoScreenshot=1${assetId}`);
-    return;
+    return `/takip/ai-cikar?mode=image&autoScreenshot=1${assetId}` as Href;
   }
 
   const followUpId = typeof data.followUpId === 'string' ? data.followUpId : null;
-  if (!followUpId) return;
+  if (!followUpId) return null;
 
   if (action === Notifications.DEFAULT_ACTION_IDENTIFIER) {
-    router.push(`/takip/${followUpId}`);
-    return;
+    return `/takip/${followUpId}` as Href;
   }
 
   const item = await getFollowUp(db, followUpId);
-  if (!item || (item.status !== 'open' && item.status !== 'snoozed')) return;
+  if (!item || (item.status !== 'open' && item.status !== 'snoozed')) return null;
 
   if (action === ACTION_COMPLETE) {
     await completeFollowUp(db, item);
@@ -81,9 +80,10 @@ async function handleResponse(db: SQLiteDatabase, router: Router, response: Noti
     await moveFollowUpToTomorrow(db, item);
     showToast(i18n.t('notifications.toastTomorrow'));
   } else {
-    return;
+    return null;
   }
   notifyDataChanged();
+  return null;
 }
 
 /**
@@ -94,6 +94,16 @@ async function handleResponse(db: SQLiteDatabase, router: Router, response: Noti
 export function NotificationResponseHandler() {
   const db = useSQLiteContext();
   const router = useRouter();
+  // Uygulama bildirimle soğuk açıldığında gezinme yapısı henüz hazır olmayabilir;
+  // açılacak ekran hazır olana kadar bekletilir.
+  const navigationReady = !!useRootNavigationState()?.key;
+  const [pendingRoute, setPendingRoute] = useState<Href | null>(null);
+
+  useEffect(() => {
+    if (!pendingRoute || !navigationReady) return;
+    router.push(pendingRoute);
+    setPendingRoute(null);
+  }, [pendingRoute, navigationReady, router]);
 
   useEffect(() => {
     const handle = (response: Notifications.NotificationResponse) => {
@@ -101,7 +111,9 @@ export function NotificationResponseHandler() {
       if (handledResponses.has(key)) return;
       handledResponses.add(key);
       Notifications.clearLastNotificationResponse();
-      handleResponse(db, router, response).catch(() => {});
+      handleResponse(db, response)
+        .then((route) => route && setPendingRoute(route))
+        .catch(() => {});
     };
 
     // Uygulama bir bildirimle açıldıysa o cevap dinleyici kurulmadan gelmiş olabilir.
@@ -110,7 +122,7 @@ export function NotificationResponseHandler() {
 
     const subscription = Notifications.addNotificationResponseReceivedListener(handle);
     return () => subscription.remove();
-  }, [db, router]);
+  }, [db]);
 
   useEffect(() => {
     (async () => {

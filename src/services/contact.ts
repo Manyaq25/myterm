@@ -1,5 +1,6 @@
 import { Platform } from 'react-native';
 import * as Localization from 'expo-localization';
+import i18n from '../i18n';
 
 // Uygulamanın kullanıldığı başlıca ülkelerin telefon kodları. Yerel biçimde
 // ("0151...", "0532...") yazılmış numaraya hangi kodun ekleneceğini telefonun
@@ -26,6 +27,9 @@ export function toInternationalDigits(phone: string): string {
   if (trimmed.startsWith('+')) return digits;
   if (digits.startsWith('00')) return digits.slice(2);
   const code = deviceCallingCode();
+  // "05xx xxx xx xx" Türk cep numarası biçimi: yurt dışında yaşayan Türkçe
+  // kullanıcıların rehberindeki numaralar da +90'la açılsın.
+  if (/^05\d{9}$/.test(digits) && (code === '90' || i18n.language === 'tr')) return `90${digits.slice(1)}`;
   if (digits.startsWith('0')) return `${code}${digits.slice(1)}`;
   // Başında 0 olmadan yazılmış yerel numara (ör. "532 123 45 67", "555 123 4567").
   if (digits.length === 10 && (code === '90' || code === '1')) return `${code}${digits}`;

@@ -54,7 +54,8 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   try {
     const ip = clientIp(req);
     const now = new Date();
-    const perMinute = await incrWithExpiry(`rl:${ip}:${now.toISOString().slice(0, 16)}`, 120);
+    // AI isteklerinin dakikalık sınırından ayrı: davet ekranı AI hakkını yemesin.
+    const perMinute = await incrWithExpiry(`rl:ref:${ip}:${now.toISOString().slice(0, 16)}`, 120);
     if (perMinute > PER_MINUTE_LIMIT) return send(res, 429, { error: 'rate_limited' });
 
     if (body.action === 'status') {

@@ -77,7 +77,19 @@ export async function restoreMissingReminders(db: SQLiteDatabase): Promise<void>
   }
 }
 
-async function rebuildDayNotification(db: SQLiteDatabase, day: string): Promise<void> {
+// Bir günün bildirimini yeniden kurmak "eskiyi iptal et → yenisini planla →
+// kimliği kaydet" adımlarından oluşuyor. Açılıştaki yenileme ile bildirim
+// düğmesinden gelen bir işlem aynı anda çalışırsa adımlar karışıp iptal
+// edilemeyen bir bildirim kalabiliyordu; bu yüzden yenilemeler sırayla yapılır.
+let rebuildQueue: Promise<void> = Promise.resolve();
+
+function rebuildDayNotification(db: SQLiteDatabase, day: string): Promise<void> {
+  const run = rebuildQueue.then(() => rebuildDayNotificationNow(db, day));
+  rebuildQueue = run.catch(() => {});
+  return run;
+}
+
+async function rebuildDayNotificationNow(db: SQLiteDatabase, day: string): Promise<void> {
   const existing = await getReminderDay(db, day);
   if (existing?.notificationId) {
     await cancelFollowUpReminder(existing.notificationId);

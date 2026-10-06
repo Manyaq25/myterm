@@ -68,14 +68,16 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   const transcribeModel = process.env.OPENAI_TRANSCRIBE_MODEL || 'whisper-1';
   const extractModel = process.env.ANTHROPIC_MODEL || 'claude-opus-5';
 
-  // Kullanıcı büyük olasılıkla uygulamanın dilinde konuşuyor; eski sürümlerde Türkçe.
   const lang = parseAppLanguage(req.headers);
 
   try {
+    // Türkçe arayüzde (ve dil göndermeyen eski sürümlerde) eskisi gibi Türkçe
+    // dinlenir. Diğer dillerde dil zorlanmaz, otomatik algılanır: arayüzü
+    // İngilizce olup Türkçe konuşan biri de doğru deşifre alsın.
     const transcription = await openai.audio.transcriptions.create({
       file: await toFile(audio, 'recording.m4a', { type: 'audio/m4a' }),
       model: transcribeModel,
-      language: lang,
+      ...(lang === 'tr' ? { language: 'tr' } : {}),
     });
     const transcript = transcription.text.trim();
 
