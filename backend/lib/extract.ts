@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { recordTokenUsage } from './stats';
+import { responseLanguageLine, type AppLanguage } from './language';
 
 const FOLLOW_UP_TYPES = ['promise_made', 'promise_expected', 'task', 'waiting_on'] as const;
 
@@ -20,7 +21,7 @@ const EXTRACT_TOOL: Anthropic.Tool = {
           properties: {
             title: {
               type: 'string',
-              description: 'Türkçe, kısa, emir kipiyle özet (ör. "Ahmete teklifi gönder").',
+              description: 'Kısa, emir kipiyle özet (ör. "Ahmete teklifi gönder"), kullanıcı mesajındaki yanıt dilinde.',
             },
             type: {
               type: 'string',
@@ -48,7 +49,7 @@ const EXTRACT_TOOL: Anthropic.Tool = {
             },
             note: {
               type: ['string', 'null'],
-              description: 'Ek bağlam/detay, yoksa null.',
+              description: 'Ek bağlam/detay (yanıt dilinde), yoksa null.',
             },
           },
           required: ['title', 'type', 'personName', 'dueAtISO', 'timeSpecified', 'confidence', 'note'],
@@ -136,6 +137,9 @@ function buildSystemPrompt(extraNote?: string): string {
     'Sesli not deşifresi olabilir; konuşma dili doldurma kelimelerini ("şey", "yani", "ee") ve yarım kalmış tekrarları göz ardı et.',
     'Bir maddeden emin değilsen (belirsiz ifade, "sanırım" gibi tahmini bir dil, ima yoluyla çıkarım, okunaksız/bulanık kaynak vb.) bunu uydurmak yerine confidence değerini düşük tut (ör. 0.3-0.5) ve note alanına neden emin olmadığını kısaca yaz.',
   ];
+  lines.push(
+    'DİL: title ve note alanlarını, kaynak metin hangi dilde olursa olsun, kullanıcı mesajının başında belirtilen yanıt dilinde yaz. Kişi adlarını olduğu gibi bırak.'
+  );
   if (extraNote) lines.push(extraNote);
   lines.push('record_follow_ups aracını çağırarak sonucu döndür.');
   return lines.join('\n');
@@ -172,11 +176,18 @@ function nowLine(ct: ClientTime): string {
   return `Kullanıcının yerel tarih ve saati: ${wall} (${WEEKDAYS_TR[local.getUTCDay()]}), saat dilimi: ${ct.timezone} (UTC${offsetSuffix(ct.utcOffsetMinutes)}).`;
 }
 
+// Tarih/saat ve dil her istekte değişebildiği için sistem prompt'una değil
+// kullanıcı mesajına yazılıyor (sistem prompt'u önbellekte sabit kalsın).
+function contextLine(ct: ClientTime, lang: AppLanguage): string {
+  return `${nowLine(ct)}\n${responseLanguageLine(lang)}`;
+}
+
 export async function extractFollowUpsFromText(
   client: Anthropic,
   model: string,
   text: string,
-  ct: ClientTime = DEFAULT_CLIENT_TIME
+  ct: ClientTime = DEFAULT_CLIENT_TIME,
+  lang: AppLanguage = 'tr'
 ): Promise<ExtractedCandidate[]> {
   const response = await client.messages.create({
     model,
@@ -190,7 +201,7 @@ export async function extractFollowUpsFromText(
     system: [{ type: 'text', text: buildSystemPrompt(), cache_control: { type: 'ephemeral' } }],
     tools: [EXTRACT_TOOL],
     tool_choice: { type: 'tool', name: 'record_follow_ups' },
-    messages: [{ role: 'user', content: `${nowLine(ct)}\n\n${text}` }],
+    messages: [{ role: 'user', content: `${contextLine(ct, lang)}\n\n${text}` }],
   });
 
   await recordTokenUsage('text', response.usage);
@@ -201,7 +212,8 @@ export async function extractFollowUpsFromPdf(
   client: Anthropic,
   model: string,
   base64Pdf: string,
-  ct: ClientTime = DEFAULT_CLIENT_TIME
+  ct: ClientTime = DEFAULT_CLIENT_TIME,
+  lang: AppLanguage = 'tr'
 ): Promise<ExtractedCandidate[]> {
   const response = await client.messages.create({
     model,
@@ -215,7 +227,7 @@ export async function extractFollowUpsFromPdf(
         role: 'user',
         content: [
           { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64Pdf } },
-          { type: 'text', text: `${nowLine(ct)}\n\nBu belgedeki takip edilmesi gereken maddeleri çıkar.` },
+          { type: 'text', text: `${contextLine(ct, lang)}\n\nBu belgedeki takip edilmesi gereken maddeleri çıkar.` },
         ],
       },
     ],
@@ -232,7 +244,8 @@ export async function extractFollowUpsFromImage(
   model: string,
   base64Image: string,
   mediaType: ImageMediaType,
-  ct: ClientTime = DEFAULT_CLIENT_TIME
+  ct: ClientTime = DEFAULT_CLIENT_TIME,
+  lang: AppLanguage = 'tr'
 ): Promise<ExtractedCandidate[]> {
   const response = await client.messages.create({
     model,
@@ -246,7 +259,7 @@ export async function extractFollowUpsFromImage(
         role: 'user',
         content: [
           { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64Image } },
-          { type: 'text', text: `${nowLine(ct)}\n\nBu görseldeki takip edilmesi gereken maddeleri çıkar.` },
+          { type: 'text', text: `${contextLine(ct, lang)}\n\nBu görseldeki takip edilmesi gereken maddeleri çıkar.` },
         ],
       },
     ],

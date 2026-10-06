@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
 import { RefusalError, extractFollowUpsFromPdf, parseClientTime } from '../lib/extract';
+import { parseAppLanguage } from '../lib/language';
 import { commitAiUsage, openAiGate } from '../lib/quota';
 
 // ~5MB raw PDF, base64 adds ~37% overhead.
@@ -69,7 +70,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   const model = process.env.ANTHROPIC_MODEL || 'claude-opus-5';
 
   try {
-    const candidates = await extractFollowUpsFromPdf(client, model, pdfBase64, parseClientTime(req.headers));
+    const candidates = await extractFollowUpsFromPdf(client, model, pdfBase64, parseClientTime(req.headers), parseAppLanguage(req.headers));
     const usage = await commitAiUsage(gate.ctx);
     res.statusCode = 200;
     res.end(JSON.stringify({ candidates, usage }));

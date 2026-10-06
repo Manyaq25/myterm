@@ -3,6 +3,7 @@ import { AIRequestError, type AIProvider, type ExtractedFollowUp, type Transcrip
 import { getDeviceId } from '../services/deviceId';
 import { getRevenueCatAppUserId, isPremiumNow } from '../services/subscription';
 import { reportServerAiUsage } from '../services/aiUsage';
+import i18n from '../i18n';
 
 // AI çıkarım/asistan çağrıları normalde birkaç saniyede döner ama zayıf bir
 // bağlantıda ya da backend takılırsa fetch süresiz asılı kalabilir — bu da
@@ -44,6 +45,8 @@ async function identityHeaders(): Promise<Record<string, string>> {
   const [deviceId, appUserId] = await Promise.all([getDeviceId(), getRevenueCatAppUserId()]);
   return {
     'X-Device-Id': deviceId,
+    // AI'nin başlıkları/cevapları bu dilde yazması ve sesli notu bu dilde dinlemesi için.
+    'X-App-Language': i18n.language,
     ...(appUserId ? { 'X-RC-App-User-Id': appUserId } : {}),
     ...(isPremiumNow() ? { 'X-Client-Premium': '1' } : {}),
   };

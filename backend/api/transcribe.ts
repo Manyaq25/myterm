@@ -2,6 +2,7 @@ import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI, { toFile } from 'openai';
 import { RefusalError, extractFollowUpsFromText, parseClientTime } from '../lib/extract';
+import { parseAppLanguage } from '../lib/language';
 import { commitAiUsage, openAiGate } from '../lib/quota';
 
 const MAX_AUDIO_BYTES = 15 * 1024 * 1024; // 15 MB, generous for a few minutes of voice notes
@@ -67,11 +68,14 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   const transcribeModel = process.env.OPENAI_TRANSCRIBE_MODEL || 'whisper-1';
   const extractModel = process.env.ANTHROPIC_MODEL || 'claude-opus-5';
 
+  // Kullanıcı büyük olasılıkla uygulamanın dilinde konuşuyor; eski sürümlerde Türkçe.
+  const lang = parseAppLanguage(req.headers);
+
   try {
     const transcription = await openai.audio.transcriptions.create({
       file: await toFile(audio, 'recording.m4a', { type: 'audio/m4a' }),
       model: transcribeModel,
-      language: 'tr',
+      language: lang,
     });
     const transcript = transcription.text.trim();
 
@@ -81,7 +85,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
       return;
     }
 
-    const candidates = await extractFollowUpsFromText(anthropic, extractModel, transcript, parseClientTime(req.headers));
+    const candidates = await extractFollowUpsFromText(anthropic, extractModel, transcript, parseClientTime(req.headers), lang);
     const usage = await commitAiUsage(gate.ctx);
     res.statusCode = 200;
     res.end(JSON.stringify({ transcript, candidates, usage }));

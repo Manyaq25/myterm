@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
 import { MAX_TEXT_LENGTH, RefusalError, extractFollowUpsFromText, parseClientTime } from '../lib/extract';
+import { parseAppLanguage } from '../lib/language';
 import { commitAiUsage, openAiGate } from '../lib/quota';
 
 function requireEnv(name: string): string {
@@ -66,7 +67,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   const model = process.env.ANTHROPIC_MODEL || 'claude-opus-5';
 
   try {
-    const candidates = await extractFollowUpsFromText(client, model, text, parseClientTime(req.headers));
+    const candidates = await extractFollowUpsFromText(client, model, text, parseClientTime(req.headers), parseAppLanguage(req.headers));
     const usage = await commitAiUsage(gate.ctx);
     res.statusCode = 200;
     res.end(JSON.stringify({ candidates, usage }));

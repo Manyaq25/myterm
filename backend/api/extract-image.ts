@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 import Anthropic from '@anthropic-ai/sdk';
 import { RefusalError, extractFollowUpsFromImage, parseClientTime } from '../lib/extract';
+import { parseAppLanguage } from '../lib/language';
 import { UnsupportedImageError, normalizeImage } from '../lib/image';
 import { commitAiUsage, openAiGate } from '../lib/quota';
 
@@ -96,7 +97,7 @@ export default async function handler(req: IncomingMessage, res: ServerResponse)
   const model = process.env.ANTHROPIC_MODEL || 'claude-opus-5';
 
   try {
-    const candidates = await extractFollowUpsFromImage(client, model, image.base64, image.mediaType, parseClientTime(req.headers));
+    const candidates = await extractFollowUpsFromImage(client, model, image.base64, image.mediaType, parseClientTime(req.headers), parseAppLanguage(req.headers));
     const usage = await commitAiUsage(gate.ctx);
     res.statusCode = 200;
     res.end(JSON.stringify({ candidates, usage }));
