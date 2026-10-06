@@ -80,6 +80,12 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
   - Telefon numarası artık telefonun bölgesine göre ülke koduyla tamamlanıyor (önceden hep +90 varsayılıyordu).
 
 ### Faz 5 — Tanıtım
+- **Karar (7 Ekim):** Bütün video işleri, uygulama hem iOS'ta hem Android'de (Google Play üretimde) yayınlandıktan sonra başlayacak:
+  - App Store ön izleme videoları (gerçek ekran kaydı şart; özellik başına kısa kayıtları kullanıcı telefonla çeker, kurgu/metin/ölçü bizde).
+  - Özel ürün sayfaları (Custom Product Pages): 📸 Ekran görüntüsü, 🎙️ Sesli not, 📄 PDF, 💬 Mesajla hatırlat; her birine anahtar kelime ve derin bağlantı.
+  - Sosyal medya için özellik videoları (dikey, 15–20 sn; `promo/video` sistemiyle).
+  - Hazır olanlar: başlık ve arama sonucu görsel/videoları (TR/EN) `promo/store-assets/out/`; yeni özellikler yayına girdikten sonra Asset Library'ye yüklenecek, diğer 10 dil istenirse eklenecek.
+  - A/B testi (Product Page Optimization): trafik artınca.
 - **Bekliyor (6 Ekim):** Video, yeni özellikler telefonlara gidip test edildikten ve Google Play üretim onayı geldikten sonra güncellenecek; yeni ekranların gerçek görüntüleri (bildirim düğmeleri, Mesajla hatırlat, tekrarlayan takip, davet) telefondan alınacak.
 - [ ] **Tanıtım videosunu güncellemek** (kaynak: `promo/video/`):
   - Kapanışta Google Play'in de yayında olduğu gösterilecek ("Çok yakında" yerine).
