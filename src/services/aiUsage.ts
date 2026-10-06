@@ -6,6 +6,19 @@ export const AI_USAGE_FREE_LIMIT = 6;
 
 const COUNT_KEY = 'aiUsageCount';
 const MONTH_KEY = 'aiUsageResetMonth';
+// Davetle kazanılan ek haklar: aylık hak bitince kullanılır, ay geçince silinmez.
+// Asıl değer sunucuda; burada son bilinen değer tutuluyor.
+const BONUS_KEY = 'aiBonusRemaining';
+
+export async function getAiBonus(): Promise<number> {
+  const raw = await SecureStore.getItemAsync(BONUS_KEY);
+  const value = raw ? parseInt(raw, 10) : 0;
+  return Number.isFinite(value) && value > 0 ? value : 0;
+}
+
+export async function setAiBonus(bonus: number): Promise<void> {
+  await SecureStore.setItemAsync(BONUS_KEY, String(Math.max(0, Math.floor(bonus))));
+}
 
 function currentMonthKey(): string {
   return new Date().toISOString().slice(0, 7); // '2026-09'
@@ -20,7 +33,7 @@ export async function getAiUsageCount(): Promise<number> {
 
 export async function hasAiUsageRemaining(): Promise<boolean> {
   const count = await getAiUsageCount();
-  return count < AI_USAGE_FREE_LIMIT;
+  return count < AI_USAGE_FREE_LIMIT || (await getAiBonus()) > 0;
 }
 
 export async function incrementAiUsageCount(): Promise<number> {
@@ -36,6 +49,8 @@ export interface ServerAiUsage {
   used: number;
   limit: number;
   premium: boolean;
+  /** Yalnızca 0'dan büyükse gönderilir. */
+  bonus?: number;
 }
 
 // Sunucu her başarılı AI isteğinden sonra güncel kullanımı döndürüyor; o
@@ -68,7 +83,16 @@ export async function recordAiUsage(): Promise<number> {
   pendingServerUsage = null;
   if (server && !server.premium) {
     await setAiUsageCount(server.used);
+    await setAiBonus(server.bonus ?? 0);
     return server.used;
+  }
+  const current = await getAiUsageCount();
+  if (current >= AI_USAGE_FREE_LIMIT) {
+    const bonus = await getAiBonus();
+    if (bonus > 0) {
+      await setAiBonus(bonus - 1);
+      return current;
+    }
   }
   return incrementAiUsageCount();
 }
@@ -79,5 +103,6 @@ export async function markAiUsageLimitReached(): Promise<number> {
   pendingServerUsage = null;
   const used = Math.max(server?.used ?? 0, AI_USAGE_FREE_LIMIT);
   await setAiUsageCount(used);
+  await setAiBonus(0);
   return used;
 }

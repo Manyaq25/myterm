@@ -218,5 +218,21 @@ jobs:
             exit 1
           fi
 
+      - name: Smoke test /api/referral
+        run: |
+          set -e
+          status=$(curl -sS -o response_referral.json -w "%{http_code}" --max-time 20 \
+            "${{ steps.deploy.outputs.url }}/api/referral" \
+            -H "Content-Type: application/json" \
+            -H "X-Device-Id: ci-${{ github.run_id }}-${{ github.run_attempt }}" \
+            -d '{"action":"status"}')
+          echo "HTTP $status"
+          cat response_referral.json
+          if [ "$status" != "200" ]; then
+            echo "Smoke test failed"
+            exit 1
+          fi
+          python3 -c "import json,re,sys; c=json.load(open('response_referral.json'))['code']; sys.exit(0 if re.fullmatch(r'[A-Z2-9]{6}', c) else 1)"
+
       - name: Print deployment URL in job summary
         run: echo "Backend deployed to ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"

@@ -372,5 +372,27 @@
     "toastCompleted": "Follow-up completato",
     "toastSnoozed": "Te lo ricorderò di nuovo tra 1 ora",
     "toastTomorrow": "Spostato a domani"
+  },
+  "invite": {
+    "sectionTitle": "Invita un amico",
+    "description": "Condividi il tuo codice invito. Quando il tuo amico installa l'app e lo inserisce, ricevi {{reward}} crediti IA.",
+    "yourCode": "Il tuo codice invito",
+    "progress": "{{count}}/{{max}} inviti premiati",
+    "bonus": "Crediti IA extra: {{bonus}}",
+    "shareButton": "Invita",
+    "shareMessage": "Synvia AI tiene traccia delle promesse e delle cose da fare nei tuoi messaggi. Dopo l'installazione, vai in Impostazioni → Inserisci codice invito e scrivi {{code}} per regalarmi {{reward}} crediti IA 🙏\n{{link}}",
+    "enterCodeRow": "Inserisci codice invito",
+    "enterCodeHint": "Se qualcuno ti ha invitato, inserisci il suo codice: il tuo amico riceverà {{reward}} crediti IA.",
+    "enterCodeTitle": "Codice invito",
+    "enterCodePlaceholder": "es. ABC234",
+    "submit": "Invia",
+    "successTitle": "Grazie!",
+    "successMessage": "Hai regalato {{reward}} crediti IA al tuo amico.",
+    "errorInvalid": "Codice non trovato. Controllalo e riprova.",
+    "errorOwn": "Non puoi inserire il tuo codice.",
+    "errorAlready": "Su questo dispositivo è già stato inserito un codice invito.",
+    "errorNetwork": "Impossibile connettersi. Riprova.",
+    "loadError": "Impossibile caricare le informazioni sugli inviti ora.",
+    "bonusHint": "Hai usato i crediti di questo mese; hai {{bonus}} crediti extra dagli inviti."
   }
 }

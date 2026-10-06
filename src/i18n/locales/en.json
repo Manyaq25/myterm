@@ -372,5 +372,27 @@
     "toastCompleted": "Follow-up completed",
     "toastSnoozed": "I'll remind you again in 1 hour",
     "toastTomorrow": "Moved to tomorrow"
+  },
+  "invite": {
+    "sectionTitle": "Invite a friend",
+    "description": "Share your invite code. When your friend installs the app and enters it, you get {{reward}} AI credits.",
+    "yourCode": "Your invite code",
+    "progress": "{{count}}/{{max}} invites rewarded",
+    "bonus": "Extra AI credits: {{bonus}}",
+    "shareButton": "Invite",
+    "shareMessage": "Synvia AI keeps track of promises and to-dos from your messages. After installing, go to Settings → Enter invite code and type {{code}} to give me {{reward}} AI credits 🙏\n{{link}}",
+    "enterCodeRow": "Enter invite code",
+    "enterCodeHint": "If someone invited you, enter their code — your friend gets {{reward}} AI credits.",
+    "enterCodeTitle": "Invite code",
+    "enterCodePlaceholder": "e.g. ABC234",
+    "submit": "Submit",
+    "successTitle": "Thank you!",
+    "successMessage": "You gave your friend {{reward}} AI credits.",
+    "errorInvalid": "That code wasn't found. Please check it and try again.",
+    "errorOwn": "You can't enter your own code.",
+    "errorAlready": "An invite code has already been entered on this device.",
+    "errorNetwork": "Couldn't connect. Please try again.",
+    "loadError": "Invite info couldn't be loaded right now.",
+    "bonusHint": "You've used this month's credits; you have {{bonus}} extra credits from invites."
   }
 }

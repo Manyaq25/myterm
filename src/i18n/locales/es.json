@@ -372,5 +372,27 @@
     "toastCompleted": "Seguimiento completado",
     "toastSnoozed": "Te lo recordaré de nuevo en 1 hora",
     "toastTomorrow": "Pasado a mañana"
+  },
+  "invite": {
+    "sectionTitle": "Invita a un amigo",
+    "description": "Comparte tu código de invitación. Cuando tu amigo instale la app y lo introduzca, recibirás {{reward}} créditos de IA.",
+    "yourCode": "Tu código de invitación",
+    "progress": "{{count}}/{{max}} invitaciones premiadas",
+    "bonus": "Créditos de IA extra: {{bonus}}",
+    "shareButton": "Invitar",
+    "shareMessage": "Synvia AI lleva el seguimiento de las promesas y tareas de tus mensajes. Después de instalarla, ve a Ajustes → Introducir código de invitación y escribe {{code}} para regalarme {{reward}} créditos de IA 🙏\n{{link}}",
+    "enterCodeRow": "Introducir código de invitación",
+    "enterCodeHint": "Si alguien te invitó, introduce su código: tu amigo recibirá {{reward}} créditos de IA.",
+    "enterCodeTitle": "Código de invitación",
+    "enterCodePlaceholder": "p. ej. ABC234",
+    "submit": "Enviar",
+    "successTitle": "¡Gracias!",
+    "successMessage": "Le diste {{reward}} créditos de IA a tu amigo.",
+    "errorInvalid": "No se encontró ese código. Revísalo e inténtalo de nuevo.",
+    "errorOwn": "No puedes introducir tu propio código.",
+    "errorAlready": "Ya se introdujo un código de invitación en este dispositivo.",
+    "errorNetwork": "No se pudo conectar. Inténtalo de nuevo.",
+    "loadError": "No se pudo cargar la información de invitaciones ahora.",
+    "bonusHint": "Ya usaste los créditos de este mes; tienes {{bonus}} créditos extra por invitaciones."
   }
 }

@@ -372,5 +372,27 @@
     "toastCompleted": "Acompanhamento concluído",
     "toastSnoozed": "Vou lembrar de novo em 1 hora",
     "toastTomorrow": "Adiado para amanhã"
+  },
+  "invite": {
+    "sectionTitle": "Convide um amigo",
+    "description": "Compartilhe seu código de convite. Quando seu amigo instalar o app e digitar o código, você ganha {{reward}} créditos de IA.",
+    "yourCode": "Seu código de convite",
+    "progress": "{{count}}/{{max}} convites recompensados",
+    "bonus": "Créditos de IA extras: {{bonus}}",
+    "shareButton": "Convidar",
+    "shareMessage": "O Synvia AI acompanha as promessas e tarefas das suas mensagens. Depois de instalar, vá em Ajustes → Inserir código de convite e digite {{code}} para me dar {{reward}} créditos de IA 🙏\n{{link}}",
+    "enterCodeRow": "Inserir código de convite",
+    "enterCodeHint": "Se alguém convidou você, digite o código: seu amigo ganha {{reward}} créditos de IA.",
+    "enterCodeTitle": "Código de convite",
+    "enterCodePlaceholder": "ex.: ABC234",
+    "submit": "Enviar",
+    "successTitle": "Obrigado!",
+    "successMessage": "Você deu {{reward}} créditos de IA ao seu amigo.",
+    "errorInvalid": "Código não encontrado. Confira e tente de novo.",
+    "errorOwn": "Você não pode inserir seu próprio código.",
+    "errorAlready": "Um código de convite já foi inserido neste aparelho.",
+    "errorNetwork": "Não foi possível conectar. Tente de novo.",
+    "loadError": "Não foi possível carregar os convites agora.",
+    "bonusHint": "Você usou os créditos deste mês; tem {{bonus}} créditos extras de convites."
   }
 }

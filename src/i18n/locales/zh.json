@@ -372,5 +372,27 @@
     "toastCompleted": "跟进事项已完成",
     "toastSnoozed": "1 小时后再提醒你",
     "toastTomorrow": "已推迟到明天"
+  },
+  "invite": {
+    "sectionTitle": "邀请好友",
+    "description": "分享你的邀请码。好友安装应用并输入邀请码后，你将获得 {{reward}} 次 AI 额度。",
+    "yourCode": "你的邀请码",
+    "progress": "已获奖励的邀请：{{count}}/{{max}}",
+    "bonus": "额外 AI 额度：{{bonus}}",
+    "shareButton": "邀请",
+    "shareMessage": "Synvia AI 会帮你跟进消息里的承诺和待办。安装后在 设置 → 输入邀请码 中填写 {{code}}，我就能获得 {{reward}} 次 AI 额度 🙏\n{{link}}",
+    "enterCodeRow": "输入邀请码",
+    "enterCodeHint": "如果有人邀请了你，请输入对方的邀请码，邀请你的好友将获得 {{reward}} 次 AI 额度。",
+    "enterCodeTitle": "邀请码",
+    "enterCodePlaceholder": "例如 ABC234",
+    "submit": "提交",
+    "successTitle": "谢谢！",
+    "successMessage": "你为好友送出了 {{reward}} 次 AI 额度。",
+    "errorInvalid": "未找到该邀请码，请检查后重试。",
+    "errorOwn": "不能输入自己的邀请码。",
+    "errorAlready": "此设备已输入过邀请码。",
+    "errorNetwork": "无法连接，请重试。",
+    "loadError": "暂时无法加载邀请信息。",
+    "bonusHint": "本月额度已用完；你还有 {{bonus}} 次邀请获得的额外额度。"
   }
 }

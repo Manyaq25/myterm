@@ -372,5 +372,27 @@
     "toastCompleted": "Takip tamamlandı",
     "toastSnoozed": "1 saat sonra tekrar hatırlatacağım",
     "toastTomorrow": "Yarına ertelendi"
+  },
+  "invite": {
+    "sectionTitle": "Arkadaşını davet et",
+    "description": "Davet kodunu paylaş. Arkadaşın uygulamayı indirip kodunu girdiğinde sana {{reward}} AI hakkı eklenir.",
+    "yourCode": "Davet kodun",
+    "progress": "{{count}}/{{max}} davet ödüllendirildi",
+    "bonus": "Ek AI hakkın: {{bonus}}",
+    "shareButton": "Davet et",
+    "shareMessage": "Synvia AI, mesajlardaki sözleri ve işleri senin yerine takip ediyor. İndirdikten sonra Ayarlar → Davet kodu gir bölümüne {{code}} yazarsan bana {{reward}} AI hakkı kazandırırsın 🙏\n{{link}}",
+    "enterCodeRow": "Davet kodu gir",
+    "enterCodeHint": "Seni biri davet ettiyse kodunu gir; davet eden arkadaşın {{reward}} AI hakkı kazanır.",
+    "enterCodeTitle": "Davet kodu",
+    "enterCodePlaceholder": "Örn. ABC234",
+    "submit": "Gönder",
+    "successTitle": "Teşekkürler!",
+    "successMessage": "Arkadaşına {{reward}} AI hakkı kazandırdın.",
+    "errorInvalid": "Bu kod bulunamadı. Kontrol edip tekrar dene.",
+    "errorOwn": "Kendi kodunu giremezsin.",
+    "errorAlready": "Bu cihazda daha önce bir davet kodu girildi.",
+    "errorNetwork": "Bağlantı kurulamadı. Lütfen tekrar dene.",
+    "loadError": "Davet bilgisi şu an yüklenemedi.",
+    "bonusHint": "Aylık hakkın doldu; davetlerden kazandığın {{bonus}} ek hakkın var."
   }
 }

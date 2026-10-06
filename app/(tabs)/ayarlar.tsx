@@ -5,6 +5,7 @@ import { ChevronRight } from 'lucide-react-native';
 import { ThemedSwitch } from '../../src/components/ThemedSwitch';
 import { Button } from '../../src/components/Button';
 import { GradientBackground } from '../../src/components/GradientBackground';
+import { InviteSection } from '../../src/components/InviteSection';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -230,6 +231,8 @@ export default function AyarlarScreen() {
           </Pressable>
         )}
       </View>
+
+      <InviteSection />
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('ayarlar.sectionData')}</Text>

@@ -42,6 +42,7 @@ import { getLatestScreenshot } from '../../src/services/screenshotSuggestion';
 import { updateWidgetSummary } from '../../src/services/widget';
 import {
   AI_USAGE_FREE_LIMIT,
+  getAiBonus,
   getAiUsageCount,
   hasAiUsageRemaining,
   markAiUsageLimitReached,
@@ -136,9 +137,11 @@ export default function AiCikarScreen() {
   const [pickerValue, setPickerValue] = useState<Date>(new Date());
   const isPremium = useIsPremium();
   const [usageCount, setUsageCount] = useState(0);
+  const [bonusCount, setBonusCount] = useState(0);
 
   useEffect(() => {
     getAiUsageCount().then(setUsageCount);
+    getAiBonus().then(setBonusCount);
   }, []);
 
   function showAiLimitReached() {
@@ -159,13 +162,17 @@ export default function AiCikarScreen() {
   async function consumeAiUsage() {
     if (isPremium) return;
     setUsageCount(await recordAiUsage());
+    setBonusCount(await getAiBonus());
   }
 
   // Asıl sınır sunucuda: telefondaki sayaç hak kaldığını sansa bile (ör. uygulama
   // yeniden yüklendiyse) sunucu 402 döndürürse aynı premium penceresini gösteririz.
   function handleAiLimitError(e: unknown): boolean {
     if (!(e instanceof AIRequestError) || e.status !== 402) return false;
-    void markAiUsageLimitReached().then(setUsageCount);
+    void markAiUsageLimitReached().then((count) => {
+      setUsageCount(count);
+      setBonusCount(0);
+    });
     showAiLimitReached();
     return true;
   }
@@ -543,7 +550,12 @@ export default function AiCikarScreen() {
           </View>
         )}
 
-        {!isPremium && usageCount >= AI_USAGE_FREE_LIMIT && (
+        {!isPremium && usageCount >= AI_USAGE_FREE_LIMIT && bonusCount > 0 && (
+          <View style={styles.usageRow}>
+            <Text style={styles.usageHint}>{t('invite.bonusHint', { bonus: bonusCount })}</Text>
+          </View>
+        )}
+        {!isPremium && usageCount >= AI_USAGE_FREE_LIMIT && bonusCount === 0 && (
           <View style={styles.usageLimitBanner}>
             <Text style={styles.usageLimitText}>{t('aiUsage.limitReachedMessage', { limit: AI_USAGE_FREE_LIMIT })}</Text>
             <Pressable

@@ -14,7 +14,14 @@ function runCommand([cmd, ...args]) {
   if (c === 'INCR') { const n = Number(store.get(args[0]) ?? 0) + 1; store.set(args[0], String(n)); return n; }
   if (c === 'EXPIRE') return 1;
   if (c === 'GET') { const v = store.get(args[0]); return v === undefined ? null : v; }
-  if (c === 'SET') { store.set(args[0], String(args[1])); return 'OK'; }
+  if (c === 'SET') {
+    const nx = args.slice(2).some((a) => String(a).toUpperCase() === 'NX');
+    if (nx && store.has(args[0])) return null;
+    store.set(args[0], String(args[1])); return 'OK';
+  }
+  if (c === 'DEL') return store.delete(args[0]) ? 1 : 0;
+  if (c === 'DECR') { const n = Number(store.get(args[0]) ?? 0) - 1; store.set(args[0], String(n)); return n; }
+  if (c === 'INCRBY') { const n = Number(store.get(args[0]) ?? 0) + Number(args[1]); store.set(args[0], String(n)); return n; }
   if (c === 'HINCRBY') {
     const h = store.get(args[0]) instanceof Map ? store.get(args[0]) : new Map();
     const n = Number(h.get(args[1]) ?? 0) + Number(args[2]); h.set(args[1], n); store.set(args[0], h); return n;
@@ -72,7 +79,10 @@ function readBody(req) {
 
   const extract = require('./.build/api/extract.js').default;
   const assistant = require('./.build/api/assistant.js').default;
-  const api = await listen((req, res) => (req.url === '/api/assistant' ? assistant : extract)(req, res));
+  const referral = require('./.build/api/referral.js').default;
+  const api = await listen((req, res) =>
+    (req.url === '/api/assistant' ? assistant : req.url === '/api/referral' ? referral : extract)(req, res)
+  );
 
   let ipCounter = 0;
   async function call(path, headers, body) {
@@ -155,6 +165,49 @@ function readBody(req) {
   assert.ok(stats instanceof Map && stats.get('text:requests') > 0 && stats.get('assistant:requests') === 1, 'stats');
   assert.strictEqual(stats.get('text:cache_read'), stats.get('text:requests') * 900);
   console.log('ok 7 ölçüm kaydı', Object.fromEntries(stats));
+
+  // 8) Davet: kod oluşur, başkası girince davet eden +3 kazanır; aylık hak bitince bonus kullanılır.
+  r = await call('/api/referral', free, { action: 'status' });
+  assert.strictEqual(r.status, 200, JSON.stringify(r.body));
+  const code = r.body.code;
+  assert.match(code, /^[A-Z2-9]{6}$/);
+  assert.strictEqual(r.body.bonus, 0);
+  r = await call('/api/referral', free, { action: 'status' });
+  assert.strictEqual(r.body.code, code, 'kod kalıcı olmalı');
+  r = await call('/api/referral', free, { action: 'redeem', code });
+  assert.strictEqual(r.status, 400); assert.strictEqual(r.body.error, 'own_code');
+  r = await call('/api/referral', { 'X-Device-Id': 'i:friend-0001-aaaa' }, { action: 'redeem', code: 'ZZZZZZ' });
+  assert.strictEqual(r.body.error, 'invalid_code');
+  r = await call('/api/referral', { 'X-Device-Id': 'i:friend-0001-aaaa' }, { action: 'redeem', code: code.toLowerCase() });
+  assert.strictEqual(r.status, 200, JSON.stringify(r.body));
+  r = await call('/api/referral', { 'X-Device-Id': 'i:friend-0001-aaaa' }, { action: 'redeem', code });
+  assert.strictEqual(r.status, 409); assert.strictEqual(r.body.error, 'already_redeemed');
+  r = await call('/api/referral', { 'X-Device-Id': 'i:friend-0001-aaaa' }, { action: 'status' });
+  assert.strictEqual(r.body.bonus, 0, 'davet edilen kazanmaz'); assert.strictEqual(r.body.redeemed, true);
+  r = await call('/api/referral', free, { action: 'status' });
+  assert.strictEqual(r.body.bonus, 3); assert.strictEqual(r.body.invites, 1);
+  console.log('ok 8 davet kodu: sadece davet eden +3 kazanır, kod bir kez girilir');
+
+  // 9) Aylık hak bitmiş cihaz bonusla devam eder; bonus bitince yine 402.
+  for (let i = 3; i >= 1; i--) {
+    r = await call('/api/extract', free, textBody);
+    assert.strictEqual(r.status, 200, JSON.stringify(r.body));
+    const expected = { used: 6, limit: 6, premium: false, ...(i - 1 > 0 ? { bonus: i - 1 } : {}) };
+    assert.deepStrictEqual(r.body.usage, expected);
+  }
+  r = await call('/api/extract', free, textBody);
+  assert.strictEqual(r.status, 402);
+  console.log('ok 9 bonus haklar aylık hak bitince kullanılıyor');
+
+  // 10) Ödül en fazla 10 davet için verilir.
+  for (let i = 0; i < 12; i++) {
+    r = await call('/api/referral', { 'X-Device-Id': `i:friend-cap-${String(i).padStart(4, '0')}` }, { action: 'redeem', code });
+    assert.strictEqual(r.status, 200, JSON.stringify(r.body));
+  }
+  r = await call('/api/referral', free, { action: 'status' });
+  assert.strictEqual(r.body.invites, 13); assert.strictEqual(r.body.rewardedInvites, 10);
+  assert.strictEqual(r.body.bonus, 27, '10 davetten 30 hak, 3 tanesi kullanıldı');
+  console.log('ok 10 davet ödülü 10 davetle sınırlı');
 
   for (const s of [redis, rc, anthropic, api]) s.srv.close();
   console.log('TÜM TESTLER GEÇTİ');

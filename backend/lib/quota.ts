@@ -20,23 +20,39 @@ const USAGE_TTL_SECONDS = 40 * 24 * 60 * 60;
 const DEVICE_ID_PATTERN = /^[A-Za-z0-9:_.-]{8,128}$/;
 const APP_USER_ID_PATTERN = /^[\x21-\x7e]{1,128}$/;
 
+/** Geçerli bir cihaz kimliği yoksa null. */
+export function deviceIdFrom(req: IncomingMessage): string | null {
+  const raw = header(req, 'x-device-id');
+  return raw && DEVICE_ID_PATTERN.test(raw) ? raw : null;
+}
+
 export interface UsageInfo {
   used: number;
   limit: number;
   premium: boolean;
+  /** Davetle kazanılmış, aylık hak bitince kullanılan ek haklar (yalnızca 0'dan büyükse gönderilir). */
+  bonus?: number;
 }
 
 export interface AiRequestContext {
   deviceId: string | null;
   premium: boolean;
   usageKey: string | null;
+  /** Aylık hak bitmiş, bu istek davet bonusundan düşülecek. */
+  useBonus?: boolean;
+  usedBefore?: number;
+}
+
+/** Davetle kazanılan ek AI hakları; ay geçse de silinmez. */
+export function bonusKey(deviceId: string): string {
+  return `bonus:${deviceId}`;
 }
 
 export type GateResult =
   | { ok: true; ctx: AiRequestContext }
   | { ok: false; status: number; body: Record<string, unknown> };
 
-function header(req: IncomingMessage, name: string): string | null {
+export function header(req: IncomingMessage, name: string): string | null {
   const value = req.headers[name];
   const first = Array.isArray(value) ? value[0] : value;
   return typeof first === 'string' && first.length > 0 ? first : null;
@@ -46,7 +62,7 @@ function monthKey(now = new Date()): string {
   return now.toISOString().slice(0, 7);
 }
 
-function dayKey(now = new Date()): string {
+export function dayKey(now = new Date()): string {
   return now.toISOString().slice(0, 10);
 }
 
@@ -55,7 +71,7 @@ function legacyCutoff(): number {
   return Number.isNaN(parsed) ? Date.parse(DEFAULT_LEGACY_CUTOFF) : parsed;
 }
 
-async function incrWithExpiry(key: string, ttlSeconds: number): Promise<number> {
+export async function incrWithExpiry(key: string, ttlSeconds: number): Promise<number> {
   const redis = getRedis();
   if (!redis) return 0;
   const [count] = await redis.pipeline().incr(key).expire(key, ttlSeconds).exec<[number, number]>();
@@ -84,8 +100,7 @@ export async function openAiGate(req: IncomingMessage): Promise<GateResult> {
       return { ok: false, status: 429, body: { error: 'rate_limited' } };
     }
 
-    const rawDeviceId = header(req, 'x-device-id');
-    const deviceId = rawDeviceId && DEVICE_ID_PATTERN.test(rawDeviceId) ? rawDeviceId : null;
+    const deviceId = deviceIdFrom(req);
 
     if (!deviceId) {
       if (Date.now() >= legacyCutoff()) {
@@ -124,6 +139,10 @@ export async function openAiGate(req: IncomingMessage): Promise<GateResult> {
 
     const used = Number((await redis.get<number>(usageKey)) ?? 0);
     if (used >= FREE_MONTHLY_LIMIT) {
+      const bonus = Number((await redis.get<number>(bonusKey(deviceId))) ?? 0);
+      if (bonus > 0) {
+        return { ok: true, ctx: { deviceId, premium, usageKey, useBonus: true, usedBefore: used } };
+      }
       return {
         ok: false,
         status: 402,
@@ -137,13 +156,27 @@ export async function openAiGate(req: IncomingMessage): Promise<GateResult> {
   }
 }
 
+function withBonus(usage: UsageInfo, bonus: number): UsageInfo {
+  return bonus > 0 ? { ...usage, bonus } : usage;
+}
+
 /** AI başarılı döndükten sonra hakkı düşer ve güncel kullanımı döndürür. */
 export async function commitAiUsage(ctx: AiRequestContext): Promise<UsageInfo | undefined> {
   if (!ctx.usageKey) return undefined;
   if (ctx.premium) return { used: 0, limit: FREE_MONTHLY_LIMIT, premium: true };
   try {
+    const redis = getRedis();
+    if (ctx.useBonus && ctx.deviceId && redis) {
+      let bonus = await redis.decr(bonusKey(ctx.deviceId));
+      if (bonus < 0) {
+        await redis.set(bonusKey(ctx.deviceId), 0);
+        bonus = 0;
+      }
+      return withBonus({ used: ctx.usedBefore ?? FREE_MONTHLY_LIMIT, limit: FREE_MONTHLY_LIMIT, premium: false }, bonus);
+    }
     const used = await incrWithExpiry(ctx.usageKey, USAGE_TTL_SECONDS);
-    return { used, limit: FREE_MONTHLY_LIMIT, premium: false };
+    const bonus = ctx.deviceId && redis ? Number((await redis.get<number>(bonusKey(ctx.deviceId))) ?? 0) : 0;
+    return withBonus({ used, limit: FREE_MONTHLY_LIMIT, premium: false }, bonus);
   } catch (error) {
     console.warn(JSON.stringify({ event: 'quota_commit_error', message: (error as Error).message }));
     return undefined;

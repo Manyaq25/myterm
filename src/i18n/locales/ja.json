@@ -372,5 +372,27 @@
     "toastCompleted": "フォローアップを完了しました",
     "toastSnoozed": "1時間後にもう一度お知らせします",
     "toastTomorrow": "明日に延期しました"
+  },
+  "invite": {
+    "sectionTitle": "友だちを招待",
+    "description": "招待コードをシェアしましょう。友だちがアプリを入れてコードを入力すると、あなたにAIクレジットが{{reward}}回分追加されます。",
+    "yourCode": "あなたの招待コード",
+    "progress": "特典対象の招待：{{count}}/{{max}}",
+    "bonus": "追加AIクレジット：{{bonus}}",
+    "shareButton": "招待する",
+    "shareMessage": "Synvia AIは、メッセージの中の約束ややることを代わりに管理してくれるアプリです。インストール後、設定 → 招待コードを入力 で {{code}} と入れてくれると、私にAIクレジットが{{reward}}回分届きます🙏\n{{link}}",
+    "enterCodeRow": "招待コードを入力",
+    "enterCodeHint": "招待された場合はコードを入力してください。招待した友だちにAIクレジットが{{reward}}回分追加されます。",
+    "enterCodeTitle": "招待コード",
+    "enterCodePlaceholder": "例：ABC234",
+    "submit": "送信",
+    "successTitle": "ありがとうございます！",
+    "successMessage": "友だちにAIクレジットを{{reward}}回分贈りました。",
+    "errorInvalid": "このコードは見つかりません。確認してもう一度お試しください。",
+    "errorOwn": "自分のコードは入力できません。",
+    "errorAlready": "この端末ではすでに招待コードが入力されています。",
+    "errorNetwork": "接続できませんでした。もう一度お試しください。",
+    "loadError": "招待情報を読み込めませんでした。",
+    "bonusHint": "今月の回数を使い切りました。招待で獲得した追加クレジットが{{bonus}}回分あります。"
   }
 }

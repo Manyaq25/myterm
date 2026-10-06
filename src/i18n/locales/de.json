@@ -372,5 +372,27 @@
     "toastCompleted": "Vorgang erledigt",
     "toastSnoozed": "Ich erinnere dich in 1 Stunde erneut",
     "toastTomorrow": "Auf morgen verschoben"
+  },
+  "invite": {
+    "sectionTitle": "Freunde einladen",
+    "description": "Teile deinen Einladungscode. Wenn deine Freundin oder dein Freund die App installiert und ihn eingibt, bekommst du {{reward}} KI-Guthaben.",
+    "yourCode": "Dein Einladungscode",
+    "progress": "{{count}}/{{max}} Einladungen belohnt",
+    "bonus": "Zusätzliches KI-Guthaben: {{bonus}}",
+    "shareButton": "Einladen",
+    "shareMessage": "Synvia AI behält Zusagen und Aufgaben aus deinen Nachrichten im Blick. Gib nach der Installation unter Einstellungen → Einladungscode eingeben {{code}} ein, dann bekomme ich {{reward}} KI-Guthaben 🙏\n{{link}}",
+    "enterCodeRow": "Einladungscode eingeben",
+    "enterCodeHint": "Wenn dich jemand eingeladen hat, gib den Code ein – die Person bekommt {{reward}} KI-Guthaben.",
+    "enterCodeTitle": "Einladungscode",
+    "enterCodePlaceholder": "z. B. ABC234",
+    "submit": "Senden",
+    "successTitle": "Danke!",
+    "successMessage": "Du hast {{reward}} KI-Guthaben verschenkt.",
+    "errorInvalid": "Dieser Code wurde nicht gefunden. Bitte prüfe ihn und versuche es erneut.",
+    "errorOwn": "Du kannst deinen eigenen Code nicht eingeben.",
+    "errorAlready": "Auf diesem Gerät wurde bereits ein Einladungscode eingegeben.",
+    "errorNetwork": "Keine Verbindung. Bitte versuche es erneut.",
+    "loadError": "Einladungsinfos konnten gerade nicht geladen werden.",
+    "bonusHint": "Dein Monatskontingent ist aufgebraucht; du hast noch {{bonus}} zusätzliche Guthaben aus Einladungen."
   }
 }

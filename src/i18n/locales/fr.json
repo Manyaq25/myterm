@@ -372,5 +372,27 @@
     "toastCompleted": "Suivi terminé",
     "toastSnoozed": "Je te le rappelle dans 1 heure",
     "toastTomorrow": "Reporté à demain"
+  },
+  "invite": {
+    "sectionTitle": "Inviter un ami",
+    "description": "Partage ton code d'invitation. Quand ton ami installe l'app et le saisit, tu reçois {{reward}} crédits IA.",
+    "yourCode": "Ton code d'invitation",
+    "progress": "{{count}}/{{max}} invitations récompensées",
+    "bonus": "Crédits IA en plus : {{bonus}}",
+    "shareButton": "Inviter",
+    "shareMessage": "Synvia AI suit les promesses et les tâches de tes messages. Après l'installation, va dans Réglages → Saisir un code d'invitation et tape {{code}} pour m'offrir {{reward}} crédits IA 🙏\n{{link}}",
+    "enterCodeRow": "Saisir un code d'invitation",
+    "enterCodeHint": "Si quelqu'un t'a invité, saisis son code : ton ami recevra {{reward}} crédits IA.",
+    "enterCodeTitle": "Code d'invitation",
+    "enterCodePlaceholder": "ex. ABC234",
+    "submit": "Envoyer",
+    "successTitle": "Merci !",
+    "successMessage": "Tu as offert {{reward}} crédits IA à ton ami.",
+    "errorInvalid": "Ce code est introuvable. Vérifie-le et réessaie.",
+    "errorOwn": "Tu ne peux pas saisir ton propre code.",
+    "errorAlready": "Un code d'invitation a déjà été saisi sur cet appareil.",
+    "errorNetwork": "Connexion impossible. Réessaie.",
+    "loadError": "Impossible de charger les infos d'invitation pour le moment.",
+    "bonusHint": "Tu as utilisé tes crédits du mois ; il te reste {{bonus}} crédits en plus grâce aux invitations."
   }
 }

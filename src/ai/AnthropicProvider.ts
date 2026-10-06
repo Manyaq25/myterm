@@ -41,7 +41,7 @@ function clientTimeHeaders(): Record<string, string> {
 // Ücretsiz AI hakkı sunucuda cihaz başına sayılıyor; premium durumu da sunucu
 // tarafından RevenueCat'e sorularak doğrulanıyor. X-Client-Premium yalnızca
 // RevenueCat'e ulaşılamadığı durumlar için bir ipucu.
-async function identityHeaders(): Promise<Record<string, string>> {
+export async function identityHeaders(): Promise<Record<string, string>> {
   const [deviceId, appUserId] = await Promise.all([getDeviceId(), getRevenueCatAppUserId()]);
   return {
     'X-Device-Id': deviceId,
