@@ -1,4 +1,5 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
+import * as Notifications from 'expo-notifications';
 import {
   addReminderDayItem,
   removeReminderDayItem,
@@ -54,6 +55,25 @@ export async function rebuildUpcomingReminders(db: SQLiteDatabase): Promise<void
   const days = await listReminderDaysFrom(db, dayKey(Date.now()));
   for (const day of days) {
     await rebuildDayNotification(db, day);
+  }
+}
+
+/**
+ * Yedekten geri yüklenen bir telefonda takipler gelir ama planlanmış
+ * bildirimler gelmez (iOS/Android bunları yedeğe almıyor). Açılışta,
+ * veritabanında kayıtlı olup telefonda planlı olmayan günleri yeniden kurar.
+ * Bildirim izni yoksa hiçbir şey yapmaz (açılışta izin penceresi çıkmasın).
+ */
+export async function restoreMissingReminders(db: SQLiteDatabase): Promise<void> {
+  const permission = await Notifications.getPermissionsAsync();
+  if (!permission.granted) return;
+  const scheduled = new Set((await Notifications.getAllScheduledNotificationsAsync()).map((n) => n.identifier));
+  const days = await listReminderDaysFrom(db, dayKey(Date.now()));
+  for (const day of days) {
+    const row = await getReminderDay(db, day);
+    if (!row?.notificationId || !scheduled.has(row.notificationId)) {
+      await rebuildDayNotification(db, day);
+    }
   }
 }
 

@@ -8,7 +8,7 @@ import { getFollowUp } from '../db/queries';
 import { FOLLOW_UP_CATEGORY } from './notifications';
 import { completeFollowUp, moveFollowUpToTomorrow, snoozeFollowUpReminder } from './followUpActions';
 import { notifyDataChanged } from './dataEvents';
-import { rebuildUpcomingReminders } from './reminderScheduler';
+import { rebuildUpcomingReminders, restoreMissingReminders } from './reminderScheduler';
 import { showToast } from '../components/Toast';
 
 const ACTION_COMPLETE = 'complete';
@@ -111,7 +111,14 @@ export function NotificationResponseHandler() {
   }, [db, router]);
 
   useEffect(() => {
-    void migrateExistingReminders(db);
+    (async () => {
+      await migrateExistingReminders(db);
+      try {
+        await restoreMissingReminders(db);
+      } catch {
+        // Bir sonraki açılışta yeniden denenir.
+      }
+    })();
   }, [db]);
 
   return null;

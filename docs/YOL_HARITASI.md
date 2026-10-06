@@ -65,9 +65,12 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
   - Bilinen sınır: ayın 29–31'ine kurulan aylık takip kısa bir aydan sonra o ayın son gününe kayar.
   - Veritabanı: `follow_ups.recurrence` sütunu (eski kurulumlara açılışta eklenir).
 
-- [ ] **1e** Yedekleme — **B seçeneği seçildi:** telefonun kendi gece yedeğine (iCloud / Google) dahil olmak; hesap gerekmez.
-  - Android: yedek kuralları 1.1.1'de eklendi (veritabanı dahil, SecureStore hariç). Gerçek cihazda yedekten geri yükleme denenecek.
-  - iOS: SQLite dosyasının iCloud yedeğine dahil olduğu doğrulanacak.
+- [x] **1e** Yedekleme — **B seçeneği:** telefonun kendi gece yedeği (iCloud / Google), hesap gerekmez.
+  - iOS: veritabanı `Documents/SQLite` içinde; iCloud yedeğine kendiliğinden giriyor (kodla doğrulandı).
+  - Android: 1.1.1'deki kurallarla veritabanı yedekte, SecureStore hariç.
+  - Geri yüklemede planlı bildirimler gelmediği için uygulama açılışta eksik hatırlatmaları yeniden kuruyor (bildirim izni varsa).
+  - Kalan: gerçek bir telefonda yedekten geri yükleme denemesi (fırsat olunca).
+
 - [x] **2c** "💬 Mesajla hatırlat" (kod hazır; sunucu yayında, uygulama aynı `eas update`'te).
   - Yalnızca "birinden beklediğim" takiplerde, kişi atanmışsa: takip detayında düğme; kişi kartındaki gecikmiş satırlarda kısayol.
   - Numara yoksa önce istenir: iPhone'da sistem kişi seçicisi (izin gerekmez) veya elle; kişi kartına bir kez kaydedilir. Kişi kartında numara düzenlerken de "Rehberden seç" var.
