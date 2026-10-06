@@ -315,10 +315,10 @@
     "promiseMadeOnTime": " You usually keep your promises on time."
   },
   "aiUsage": {
-    "limitReachedMessage": "You've used all your AI extractions this month ({{limit}} per month). Go Premium for unlimited use.",
+    "limitReachedMessage": "You've used this month's {{limit}} AI credits. Go Premium for unlimited use, or invite a friend from Settings to earn extra credits.",
     "goPremiumButton": "Go Premium",
     "remainingHint": "You've used {{used}}/{{limit}} AI extractions this month.",
-    "limitReachedTitle": "You've used your free AI extractions"
+    "limitReachedTitle": "You're out of AI credits"
   },
   "premium": {
     "title": "Go Premium",
@@ -328,8 +328,8 @@
     "premiumColumn": "Premium",
     "feature": {
       "manualTracking": "Manual follow-up creation",
-      "aiExtractionLimited": "Limited AI extractions per month",
-      "aiExtractionUnlimited": "Unlimited AI extractions",
+      "aiExtractionLimited": "Limited monthly AI use (extraction, assistant, remind by message)",
+      "aiExtractionUnlimited": "Unlimited AI use (extraction, assistant, remind by message)",
       "smartReminders": "Smart reminder suggestions",
       "personInsights": "Relationship insight summaries",
       "widgetSiri": "Widget and Siri shortcuts"
@@ -424,5 +424,17 @@
     "error": "Couldn't write the message.",
     "retry": "Try again",
     "openError": "Couldn't open the messaging app."
+  },
+  "suggestion": {
+    "firstTitle": "Your first extraction is saved 🎉",
+    "firstBody": "If you like Synvia AI:",
+    "inviteAction": "Invite a friend (+{{reward}} AI credits)",
+    "trialAction": "Try Premium free for {{count}} days",
+    "settingsNote": "You can do this anytime from Settings.",
+    "premiumTitle": "Looks like Synvia AI is helping 🙌",
+    "premiumBody": "With Premium, AI extraction, the AI Assistant and Remind by message are unlimited.",
+    "premiumAction": "See Premium",
+    "closeA11y": "Close",
+    "trialRow": "Try Premium free for {{count}} days"
   }
 }

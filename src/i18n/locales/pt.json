@@ -315,10 +315,10 @@
     "promiseMadeOnTime": " Você costuma cumprir suas promessas no prazo."
   },
   "aiUsage": {
-    "limitReachedMessage": "Você usou todas as suas extrações de IA este mês ({{limit}} por mês). Torne-se Premium para uso ilimitado.",
+    "limitReachedMessage": "Você usou os {{limit}} créditos de IA deste mês. Assine o Premium para uso ilimitado ou convide um amigo em Ajustes para ganhar créditos extras.",
     "goPremiumButton": "Torne-se Premium",
     "remainingHint": "Você usou {{used}}/{{limit}} extrações de IA este mês.",
-    "limitReachedTitle": "Você usou suas extrações com IA gratuitas"
+    "limitReachedTitle": "Seus créditos de IA acabaram"
   },
   "premium": {
     "title": "Torne-se Premium",
@@ -328,8 +328,8 @@
     "premiumColumn": "Premium",
     "feature": {
       "manualTracking": "Criação manual de acompanhamentos",
-      "aiExtractionLimited": "Extrações de IA limitadas por mês",
-      "aiExtractionUnlimited": "Extrações de IA ilimitadas",
+      "aiExtractionLimited": "Uso de IA limitado por mês (extração, assistente, lembrar por mensagem)",
+      "aiExtractionUnlimited": "Uso de IA ilimitado (extração, assistente, lembrar por mensagem)",
       "smartReminders": "Sugestões de lembrete inteligentes",
       "personInsights": "Resumos de insights de relacionamento",
       "widgetSiri": "Widget e atalhos da Siri"
@@ -424,5 +424,17 @@
     "error": "Não foi possível escrever a mensagem.",
     "retry": "Tentar de novo",
     "openError": "Não foi possível abrir o app de mensagens."
+  },
+  "suggestion": {
+    "firstTitle": "Sua primeira extração foi salva 🎉",
+    "firstBody": "Se você gostou do Synvia AI:",
+    "inviteAction": "Convide um amigo (+{{reward}} créditos de IA)",
+    "trialAction": "Teste o Premium grátis por {{count}} dias",
+    "settingsNote": "Você pode fazer isso quando quiser em Ajustes.",
+    "premiumTitle": "Parece que o Synvia AI está ajudando 🙌",
+    "premiumBody": "Com o Premium, a extração com IA, o Assistente de IA e o Lembrar por mensagem são ilimitados.",
+    "premiumAction": "Ver Premium",
+    "closeA11y": "Fechar",
+    "trialRow": "Teste o Premium grátis por {{count}} dias"
   }
 }

@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import { Platform } from 'react-native';
 import Purchases, {
   INTRO_ELIGIBILITY_STATUS,
@@ -200,4 +200,37 @@ export async function getEligibleFreeTrials(packages: PurchasesPackage[]): Promi
     // Uygunluk öğrenilemezse deneme gösterilmez.
   }
   return result;
+}
+
+let freeTrialDaysCache: Promise<number | null> | null = null;
+
+/** Kullanıcının yararlanabileceği en uzun ücretsiz deneme (gün); yoksa null. Oturum boyunca saklanır. */
+export function loadFreeTrialDays(): Promise<number | null> {
+  if (!freeTrialDaysCache) {
+    freeTrialDaysCache = (async () => {
+      const offering = await getCurrentOffering();
+      if (!offering) {
+        freeTrialDaysCache = null; // bağlantı yoksa sonra yeniden denensin
+        return null;
+      }
+      const days = Object.values(await getEligibleFreeTrials(offering.availablePackages));
+      return days.length > 0 ? Math.max(...days) : null;
+    })().catch(() => {
+      freeTrialDaysCache = null;
+      return null;
+    });
+  }
+  return freeTrialDaysCache;
+}
+
+export function useFreeTrialDays(): number | null {
+  const [days, setDays] = useState<number | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    loadFreeTrialDays().then((value) => !cancelled && setDays(value));
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return days;
 }

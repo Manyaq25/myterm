@@ -315,10 +315,10 @@
     "promiseMadeOnTime": " 你通常会按时兑现承诺。"
   },
   "aiUsage": {
-    "limitReachedMessage": "你本月的AI提取次数已用完(每月{{limit}}次)。升级到高级版即可无限使用。",
+    "limitReachedMessage": "你已用完本月的 {{limit}} 次 AI 额度。开通 Premium 可无限使用，也可以在设置中邀请好友获得额外额度。",
     "goPremiumButton": "升级到高级版",
     "remainingHint": "你本月已使用 {{used}}/{{limit}} 次AI提取。",
-    "limitReachedTitle": "你的免费 AI 提取次数已用完"
+    "limitReachedTitle": "AI 额度已用完"
   },
   "premium": {
     "title": "升级到高级版",
@@ -328,8 +328,8 @@
     "premiumColumn": "高级版",
     "feature": {
       "manualTracking": "手动创建跟进事项",
-      "aiExtractionLimited": "每月AI提取次数有限",
-      "aiExtractionUnlimited": "无限次AI提取",
+      "aiExtractionLimited": "每月 AI 使用次数有限（提取、助手、发消息提醒）",
+      "aiExtractionUnlimited": "AI 无限次使用（提取、助手、发消息提醒）",
       "smartReminders": "智能提醒建议",
       "personInsights": "关系洞察摘要",
       "widgetSiri": "小组件和 Siri 快捷指令"
@@ -424,5 +424,17 @@
     "error": "无法撰写消息。",
     "retry": "重试",
     "openError": "无法打开消息应用。"
+  },
+  "suggestion": {
+    "firstTitle": "你的第一次提取已保存 🎉",
+    "firstBody": "如果你喜欢 Synvia AI：",
+    "inviteAction": "邀请好友（+{{reward}} 次 AI 额度）",
+    "trialAction": "免费试用 Premium {{count}} 天",
+    "settingsNote": "你可以随时在设置中进行。",
+    "premiumTitle": "看来 Synvia AI 帮上忙了 🙌",
+    "premiumBody": "开通 Premium 后，AI 提取、AI 助手和发消息提醒均不限次数。",
+    "premiumAction": "了解 Premium",
+    "closeA11y": "关闭",
+    "trialRow": "免费试用 Premium {{count}} 天"
   }
 }

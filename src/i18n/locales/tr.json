@@ -315,10 +315,10 @@
     "promiseMadeOnTime": " Sözlerini genelde zamanında tutuyorsun."
   },
   "aiUsage": {
-    "limitReachedMessage": "Bu ay AI çıkarım hakkın doldu (aylık {{limit}} çıkarım). Premium'a geçerek sınırsız kullanabilirsin.",
+    "limitReachedMessage": "Bu ayki {{limit}} AI hakkını kullandın. Premium'a geçerek sınırsız kullanabilir ya da Ayarlar'dan arkadaşını davet ederek ek hak kazanabilirsin.",
     "goPremiumButton": "Premium'a Geç",
     "remainingHint": "Bu ay {{used}}/{{limit}} AI çıkarımı kullandın.",
-    "limitReachedTitle": "AI çıkarım hakkın doldu"
+    "limitReachedTitle": "AI hakkın doldu"
   },
   "premium": {
     "title": "Premium'a Geç",
@@ -328,8 +328,8 @@
     "premiumColumn": "Premium",
     "feature": {
       "manualTracking": "Manuel takip oluşturma",
-      "aiExtractionLimited": "Ayda sınırlı AI çıkarımı",
-      "aiExtractionUnlimited": "Sınırsız AI çıkarımı",
+      "aiExtractionLimited": "Ayda sınırlı AI kullanımı (çıkarım, asistan, mesajla hatırlat)",
+      "aiExtractionUnlimited": "Sınırsız AI kullanımı (çıkarım, asistan, mesajla hatırlat)",
       "smartReminders": "Akıllı hatırlatma önerileri",
       "personInsights": "İlişki içgörüsü özetleri",
       "widgetSiri": "Widget ve Siri kısayolları"
@@ -424,5 +424,17 @@
     "error": "Mesaj yazılamadı.",
     "retry": "Tekrar dene",
     "openError": "Mesaj uygulaması açılamadı."
+  },
+  "suggestion": {
+    "firstTitle": "İlk çıkarımın kaydedildi 🎉",
+    "firstBody": "Synvia AI'yi beğendiysen:",
+    "inviteAction": "Arkadaşını davet et (+{{reward}} AI hakkı)",
+    "trialAction": "Premium'u {{count}} gün ücretsiz dene",
+    "settingsNote": "Bunu istediğin zaman Ayarlar'dan yapabilirsin.",
+    "premiumTitle": "Synvia AI işine yarıyor gibi 🙌",
+    "premiumBody": "Premium'la AI çıkarımı, AI Asistan ve Mesajla hatırlat sınırsız olur.",
+    "premiumAction": "Premium'u incele",
+    "closeA11y": "Kapat",
+    "trialRow": "Premium'u {{count}} gün ücretsiz dene"
   }
 }

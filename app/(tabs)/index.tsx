@@ -17,6 +17,8 @@ import { GradientBackground } from '../../src/components/GradientBackground';
 import { isOverdue } from '../../src/utils/date';
 import { completeFollowUp, removeFollowUp } from '../../src/services/followUpActions';
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
+import { SuggestionCard } from '../../src/components/SuggestionCard';
+import { takePendingSuggestion, type SuggestionKind } from '../../src/services/suggestionCards';
 import { useTheme, fontFamily, fontSize, letterSpacing, type ThemeColors } from '../../src/theme';
 import { isOnboardingSeen, markOnboardingSeen } from '../../src/services/onboarding';
 import { useIsPremium } from '../../src/services/subscription';
@@ -38,6 +40,7 @@ export default function HomeScreen() {
   const [items, setItems] = useState<FollowUpWithPerson[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [suggestion, setSuggestion] = useState<LatePersonSuggestion | null>(null);
+  const [suggestionCard, setSuggestionCard] = useState<SuggestionKind | null>(null);
   const [hasPendingNotification, setHasPendingNotification] = useState(false);
   const [showScrollHint, setShowScrollHint] = useState(false);
   const quickLinksContentWidth = useRef(0);
@@ -69,6 +72,8 @@ export default function HomeScreen() {
   }
 
   const load = useCallback(async () => {
+    const nextCard = await takePendingSuggestion();
+    if (nextCard) setSuggestionCard(nextCard);
     const rows = await listFollowUps(db, ['open', 'snoozed']);
     setItems(rows);
     const suggestions = await detectLatePersonSuggestions(db);
@@ -205,6 +210,7 @@ export default function HomeScreen() {
                 </View>
               )}
             </View>
+            {suggestionCard && <SuggestionCard kind={suggestionCard} onClose={() => setSuggestionCard(null)} />}
             {suggestion && (
               <LateSuggestionCard
                 suggestion={suggestion}

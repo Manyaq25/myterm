@@ -27,6 +27,8 @@ import {
 import {
   getRevenueCatAppUserId,
   restorePurchases,
+  useFreeTrialDays,
+  useIsPremium,
   useSubscription,
   type SubscriptionStatus,
 } from '../../src/services/subscription';
@@ -53,6 +55,9 @@ export default function AyarlarScreen() {
   const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage | null>(null);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
   const { status: subscriptionStatus } = useSubscription();
+  const isPremium = useIsPremium();
+  // Mağazada ücretsiz deneme tanımlı ve kullanıcı uygunsa (yol haritası 3a).
+  const trialDays = useFreeTrialDays();
   const [restoring, setRestoring] = useState(false);
 
   async function handleExport() {
@@ -208,6 +213,17 @@ export default function AyarlarScreen() {
             <ChevronRight color={colors.textMuted} size={16} strokeWidth={2.2} />
           </View>
         </Pressable>
+        {!isPremium && trialDays ? (
+          <Pressable
+            style={[styles.row, styles.trialRow]}
+            onPress={() => router.push('/premium')}
+            accessibilityRole="button"
+            accessibilityLabel={t('suggestion.trialRow', { count: trialDays })}
+          >
+            <Text style={styles.trialRowLabel}>{t('suggestion.trialRow', { count: trialDays })}</Text>
+            <ChevronRight color={colors.textMuted} size={16} strokeWidth={2.2} />
+          </Pressable>
+        ) : null}
         <View style={styles.dataButtonWrap}>
           <Button
             variant="success"
@@ -385,6 +401,8 @@ function getStyles(colors: ThemeColors) {
     },
     row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
     rowLabel: { fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold, color: colors.text },
+    trialRow: { marginTop: 14 },
+    trialRowLabel: { fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold, color: colors.primaryText },
     supportId: { fontFamily: fontFamily.bodySemiBold, color: colors.text },
     rowValueGroup: { flexDirection: 'row', alignItems: 'center', gap: 4 },
     languageValue: { fontSize: fontSize.base, fontFamily: fontFamily.body, color: colors.textMuted },

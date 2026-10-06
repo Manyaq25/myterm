@@ -315,10 +315,10 @@
     "promiseMadeOnTime": " Vous tenez généralement vos promesses à temps."
   },
   "aiUsage": {
-    "limitReachedMessage": "Tu as utilisé toutes tes extractions IA ce mois-ci ({{limit}} par mois). Passe à Premium pour un usage illimité.",
+    "limitReachedMessage": "Tu as utilisé les {{limit}} crédits IA de ce mois. Passe à Premium pour un usage illimité, ou invite un ami depuis les Réglages pour gagner des crédits en plus.",
     "goPremiumButton": "Passer à Premium",
     "remainingHint": "Tu as utilisé {{used}}/{{limit}} extractions IA ce mois-ci.",
-    "limitReachedTitle": "Tu as utilisé tes extractions IA gratuites"
+    "limitReachedTitle": "Plus de crédits IA"
   },
   "premium": {
     "title": "Passer à Premium",
@@ -328,8 +328,8 @@
     "premiumColumn": "Premium",
     "feature": {
       "manualTracking": "Création manuelle de suivis",
-      "aiExtractionLimited": "Extractions IA limitées par mois",
-      "aiExtractionUnlimited": "Extractions IA illimitées",
+      "aiExtractionLimited": "Utilisation de l'IA limitée par mois (extraction, assistant, relance par message)",
+      "aiExtractionUnlimited": "Utilisation de l'IA illimitée (extraction, assistant, relance par message)",
       "smartReminders": "Suggestions de rappels intelligents",
       "personInsights": "Résumés d'insights relationnels",
       "widgetSiri": "Widget et raccourcis Siri"
@@ -424,5 +424,17 @@
     "error": "Impossible de rédiger le message.",
     "retry": "Réessayer",
     "openError": "Impossible d'ouvrir l'app de messagerie."
+  },
+  "suggestion": {
+    "firstTitle": "Ta première extraction est enregistrée 🎉",
+    "firstBody": "Si Synvia AI te plaît :",
+    "inviteAction": "Inviter un ami (+{{reward}} crédits IA)",
+    "trialAction": "Essayer Premium gratuitement {{count}} jours",
+    "settingsNote": "Tu peux le faire à tout moment depuis les Réglages.",
+    "premiumTitle": "Synvia AI semble t'être utile 🙌",
+    "premiumBody": "Avec Premium, l'extraction IA, l'Assistant IA et Relancer par message sont illimités.",
+    "premiumAction": "Voir Premium",
+    "closeA11y": "Fermer",
+    "trialRow": "Essayer Premium gratuitement {{count}} jours"
   }
 }

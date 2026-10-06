@@ -315,10 +315,10 @@
     "promiseMadeOnTime": " Du hältst deine Versprechen normalerweise pünktlich."
   },
   "aiUsage": {
-    "limitReachedMessage": "Du hast diesen Monat alle KI-Extraktionen aufgebraucht ({{limit}} pro Monat). Wechsle zu Premium für unbegrenzte Nutzung.",
+    "limitReachedMessage": "Du hast die {{limit}} KI-Nutzungen dieses Monats verbraucht. Mit Premium nutzt du die KI unbegrenzt, oder lade in den Einstellungen Freunde ein und erhalte zusätzliches Guthaben.",
     "goPremiumButton": "Zu Premium wechseln",
     "remainingHint": "Du hast diesen Monat {{used}}/{{limit}} KI-Extraktionen genutzt.",
-    "limitReachedTitle": "Deine kostenlosen KI-Auswertungen sind aufgebraucht"
+    "limitReachedTitle": "KI-Guthaben aufgebraucht"
   },
   "premium": {
     "title": "Zu Premium wechseln",
@@ -328,8 +328,8 @@
     "premiumColumn": "Premium",
     "feature": {
       "manualTracking": "Manuelles Erstellen von Vorgängen",
-      "aiExtractionLimited": "Begrenzte KI-Extraktionen pro Monat",
-      "aiExtractionUnlimited": "Unbegrenzte KI-Extraktionen",
+      "aiExtractionLimited": "Begrenzte KI-Nutzung pro Monat (Extraktion, Assistent, Erinnern per Nachricht)",
+      "aiExtractionUnlimited": "Unbegrenzte KI-Nutzung (Extraktion, Assistent, Erinnern per Nachricht)",
       "smartReminders": "Intelligente Erinnerungsvorschläge",
       "personInsights": "Zusammenfassungen zu Beziehungsmustern",
       "widgetSiri": "Widget und Siri-Kurzbefehle"
@@ -424,5 +424,17 @@
     "error": "Die Nachricht konnte nicht geschrieben werden.",
     "retry": "Erneut versuchen",
     "openError": "Die Nachrichten-App konnte nicht geöffnet werden."
+  },
+  "suggestion": {
+    "firstTitle": "Deine erste Extraktion ist gespeichert 🎉",
+    "firstBody": "Wenn dir Synvia AI gefällt:",
+    "inviteAction": "Freunde einladen (+{{reward}} KI-Guthaben)",
+    "trialAction": "Premium {{count}} Tage kostenlos testen",
+    "settingsNote": "Das geht jederzeit in den Einstellungen.",
+    "premiumTitle": "Synvia AI scheint dir zu helfen 🙌",
+    "premiumBody": "Mit Premium sind KI-Extraktion, KI-Assistent und Erinnern per Nachricht unbegrenzt.",
+    "premiumAction": "Premium ansehen",
+    "closeA11y": "Schließen",
+    "trialRow": "Premium {{count}} Tage kostenlos testen"
   }
 }

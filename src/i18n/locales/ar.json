@@ -315,10 +315,10 @@
     "promiseMadeOnTime": " عادةً ما تفي بوعودك في الوقت المحدد."
   },
   "aiUsage": {
-    "limitReachedMessage": "لقد استخدمت كل عمليات استخراج الذكاء الاصطناعي لهذا الشهر ({{limit}} شهريًا). قم بالترقية إلى Premium للاستخدام غير المحدود.",
+    "limitReachedMessage": "استخدمت أرصدة هذا الشهر البالغة {{limit}}. اشترك في Premium لاستخدام غير محدود، أو ادعُ صديقًا من الإعدادات لتحصل على أرصدة إضافية.",
     "goPremiumButton": "الترقية إلى Premium",
     "remainingHint": "لقد استخدمت {{used}}/{{limit}} من عمليات استخراج الذكاء الاصطناعي هذا الشهر.",
-    "limitReachedTitle": "لقد استنفدت عمليات الاستخراج المجانية بالذكاء الاصطناعي"
+    "limitReachedTitle": "نفدت أرصدة الذكاء الاصطناعي"
   },
   "premium": {
     "title": "الترقية إلى Premium",
@@ -328,8 +328,8 @@
     "premiumColumn": "Premium",
     "feature": {
       "manualTracking": "إنشاء متابعات يدويًا",
-      "aiExtractionLimited": "عدد محدود من عمليات استخراج الذكاء الاصطناعي شهريًا",
-      "aiExtractionUnlimited": "عمليات استخراج غير محدودة بالذكاء الاصطناعي",
+      "aiExtractionLimited": "استخدام محدود للذكاء الاصطناعي شهريًا (الاستخراج، المساعد، التذكير برسالة)",
+      "aiExtractionUnlimited": "استخدام غير محدود للذكاء الاصطناعي (الاستخراج، المساعد، التذكير برسالة)",
       "smartReminders": "اقتراحات تذكير ذكية",
       "personInsights": "ملخصات رؤى العلاقات",
       "widgetSiri": "الودجت واختصارات Siri"
@@ -424,5 +424,17 @@
     "error": "تعذّرت كتابة الرسالة.",
     "retry": "حاول مرة أخرى",
     "openError": "تعذّر فتح تطبيق الرسائل."
+  },
+  "suggestion": {
+    "firstTitle": "تم حفظ أول استخراج لك 🎉",
+    "firstBody": "إذا أعجبك Synvia AI:",
+    "inviteAction": "ادعُ صديقًا (+{{reward}} أرصدة ذكاء اصطناعي)",
+    "trialAction": "جرّب Premium مجانًا لمدة {{count}} أيام",
+    "settingsNote": "يمكنك فعل ذلك في أي وقت من الإعدادات.",
+    "premiumTitle": "يبدو أن Synvia AI يساعدك 🙌",
+    "premiumBody": "مع Premium يصبح الاستخراج بالذكاء الاصطناعي والمساعد الذكي والتذكير برسالة بلا حدود.",
+    "premiumAction": "اكتشف Premium",
+    "closeA11y": "إغلاق",
+    "trialRow": "جرّب Premium مجانًا لمدة {{count}} أيام"
   }
 }

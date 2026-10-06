@@ -315,10 +315,10 @@
     "promiseMadeOnTime": " 보통 제때 약속을 지킵니다."
   },
   "aiUsage": {
-    "limitReachedMessage": "이번 달 AI 추출 횟수를 모두 사용했어요 (월 {{limit}}회). 프리미엄으로 업그레이드하면 무제한으로 사용할 수 있어요.",
+    "limitReachedMessage": "이번 달 AI 크레딧 {{limit}}회를 모두 사용했어요. Premium으로 무제한 이용하거나, 설정에서 친구를 초대해 추가 크레딧을 받을 수 있어요.",
     "goPremiumButton": "프리미엄으로 업그레이드",
     "remainingHint": "이번 달 AI 추출을 {{used}}/{{limit}}회 사용했어요.",
-    "limitReachedTitle": "무료 AI 추출 횟수를 모두 사용했습니다"
+    "limitReachedTitle": "AI 크레딧을 모두 사용했어요"
   },
   "premium": {
     "title": "프리미엄으로 업그레이드",
@@ -328,8 +328,8 @@
     "premiumColumn": "프리미엄",
     "feature": {
       "manualTracking": "수동 팔로우업 생성",
-      "aiExtractionLimited": "월 AI 추출 횟수 제한",
-      "aiExtractionUnlimited": "무제한 AI 추출",
+      "aiExtractionLimited": "월 AI 사용 횟수 제한 (추출, 어시스턴트, 메시지로 알리기)",
+      "aiExtractionUnlimited": "AI 무제한 사용 (추출, 어시스턴트, 메시지로 알리기)",
       "smartReminders": "스마트 리마인더 제안",
       "personInsights": "관계 인사이트 요약",
       "widgetSiri": "위젯 및 Siri 단축어"
@@ -424,5 +424,17 @@
     "error": "메시지를 쓰지 못했어요.",
     "retry": "다시 시도",
     "openError": "메시지 앱을 열 수 없어요."
+  },
+  "suggestion": {
+    "firstTitle": "첫 추출이 저장됐어요 🎉",
+    "firstBody": "Synvia AI가 마음에 든다면:",
+    "inviteAction": "친구 초대 (AI 크레딧 +{{reward}}회)",
+    "trialAction": "Premium {{count}}일 무료 체험",
+    "settingsNote": "설정에서 언제든지 할 수 있어요.",
+    "premiumTitle": "Synvia AI가 도움이 되고 있네요 🙌",
+    "premiumBody": "Premium이면 AI 추출, AI 어시스턴트, 메시지로 알리기를 무제한으로 쓸 수 있어요.",
+    "premiumAction": "Premium 보기",
+    "closeA11y": "닫기",
+    "trialRow": "Premium {{count}}일 무료 체험"
   }
 }

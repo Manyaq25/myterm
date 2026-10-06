@@ -49,6 +49,7 @@ import {
   recordAiUsage,
 } from '../../src/services/aiUsage';
 import { useIsPremium } from '../../src/services/subscription';
+import { recordSuccessfulExtraction } from '../../src/services/suggestionCards';
 import { useTheme, hexToRgba, fontFamily, fontSize, letterSpacing, type ThemeColors } from '../../src/theme';
 import { Button } from '../../src/components/Button';
 import { TextField } from '../../src/components/TextField';
@@ -472,6 +473,7 @@ export default function AiCikarScreen() {
       }
 
       await updateWidgetSummary(db);
+      await recordSuccessfulExtraction();
 
       if (important.length > 0) {
         setImportantQueue(important);

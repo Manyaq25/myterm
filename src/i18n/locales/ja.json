@@ -315,10 +315,10 @@
     "promiseMadeOnTime": " 通常は約束を時間通りに守っています。"
   },
   "aiUsage": {
-    "limitReachedMessage": "今月のAI抽出回数の上限に達しました(月{{limit}}回)。プレミアムにアップグレードすると無制限に使えます。",
+    "limitReachedMessage": "今月のAIクレジット{{limit}}回分を使い切りました。Premiumなら無制限に使えます。設定から友だちを招待して追加クレジットを獲得することもできます。",
     "goPremiumButton": "プレミアムにアップグレード",
     "remainingHint": "今月は{{used}}/{{limit}}回のAI抽出を使用しました。",
-    "limitReachedTitle": "無料のAI抽出回数を使い切りました"
+    "limitReachedTitle": "AIクレジットを使い切りました"
   },
   "premium": {
     "title": "プレミアムにアップグレード",
@@ -328,8 +328,8 @@
     "premiumColumn": "プレミアム",
     "feature": {
       "manualTracking": "手動でのフォローアップ作成",
-      "aiExtractionLimited": "月間のAI抽出回数に制限あり",
-      "aiExtractionUnlimited": "AI抽出が無制限",
+      "aiExtractionLimited": "月ごとに回数制限のあるAI利用（抽出・アシスタント・メッセージでリマインド）",
+      "aiExtractionUnlimited": "AIを無制限に利用（抽出・アシスタント・メッセージでリマインド）",
       "smartReminders": "スマートリマインダー提案",
       "personInsights": "関係性インサイトの要約",
       "widgetSiri": "ウィジェットとSiriショートカット"
@@ -424,5 +424,17 @@
     "error": "メッセージを作成できませんでした。",
     "retry": "もう一度試す",
     "openError": "メッセージアプリを開けませんでした。"
+  },
+  "suggestion": {
+    "firstTitle": "最初の抽出を保存しました🎉",
+    "firstBody": "Synvia AIを気に入ったら：",
+    "inviteAction": "友だちを招待（AIクレジット+{{reward}}回）",
+    "trialAction": "Premiumを{{count}}日間無料で試す",
+    "settingsNote": "設定からいつでもできます。",
+    "premiumTitle": "Synvia AIがお役に立っているようです🙌",
+    "premiumBody": "PremiumならAI抽出、AIアシスタント、メッセージでリマインドが無制限です。",
+    "premiumAction": "Premiumを見る",
+    "closeA11y": "閉じる",
+    "trialRow": "Premiumを{{count}}日間無料で試す"
   }
 }

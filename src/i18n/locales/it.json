@@ -315,10 +315,10 @@
     "promiseMadeOnTime": " Di solito mantieni le tue promesse puntualmente."
   },
   "aiUsage": {
-    "limitReachedMessage": "Hai esaurito le estrazioni IA di questo mese ({{limit}} al mese). Passa a Premium per un uso illimitato.",
+    "limitReachedMessage": "Hai usato i {{limit}} crediti IA di questo mese. Passa a Premium per un uso illimitato oppure invita un amico dalle Impostazioni per ottenere crediti extra.",
     "goPremiumButton": "Passa a Premium",
     "remainingHint": "Hai utilizzato {{used}}/{{limit}} estrazioni IA questo mese.",
-    "limitReachedTitle": "Hai esaurito le estrazioni IA gratuite"
+    "limitReachedTitle": "Crediti IA esauriti"
   },
   "premium": {
     "title": "Passa a Premium",
@@ -328,8 +328,8 @@
     "premiumColumn": "Premium",
     "feature": {
       "manualTracking": "Creazione manuale dei follow-up",
-      "aiExtractionLimited": "Estrazioni IA limitate al mese",
-      "aiExtractionUnlimited": "Estrazioni IA illimitate",
+      "aiExtractionLimited": "Uso dell'IA limitato al mese (estrazione, assistente, promemoria via messaggio)",
+      "aiExtractionUnlimited": "Uso dell'IA illimitato (estrazione, assistente, promemoria via messaggio)",
       "smartReminders": "Suggerimenti di promemoria intelligenti",
       "personInsights": "Riepiloghi sugli schemi relazionali",
       "widgetSiri": "Widget e scorciatoie Siri"
@@ -424,5 +424,17 @@
     "error": "Impossibile scrivere il messaggio.",
     "retry": "Riprova",
     "openError": "Impossibile aprire l'app dei messaggi."
+  },
+  "suggestion": {
+    "firstTitle": "La tua prima estrazione è salvata 🎉",
+    "firstBody": "Se Synvia AI ti piace:",
+    "inviteAction": "Invita un amico (+{{reward}} crediti IA)",
+    "trialAction": "Prova Premium gratis per {{count}} giorni",
+    "settingsNote": "Puoi farlo quando vuoi dalle Impostazioni.",
+    "premiumTitle": "Sembra che Synvia AI ti sia utile 🙌",
+    "premiumBody": "Con Premium, estrazione IA, Assistente IA e Ricorda con un messaggio sono illimitati.",
+    "premiumAction": "Scopri Premium",
+    "closeA11y": "Chiudi",
+    "trialRow": "Prova Premium gratis per {{count}} giorni"
   }
 }
