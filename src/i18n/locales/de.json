@@ -252,7 +252,9 @@
     "subscriptionFree": "Kostenlos",
     "subscriptionTrial": "Kostenlose Testphase",
     "subscriptionActive": "Premium (Aktiv)",
-    "subscriptionExpired": "Abgelaufen"
+    "subscriptionExpired": "Abgelaufen",
+    "supportIdLabel": "Support-ID",
+    "supportIdA11y": "Support-ID teilen"
   },
   "bottomTabBar": {
     "add": "Hinzufügen",

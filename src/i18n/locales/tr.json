@@ -252,7 +252,9 @@
     "subscriptionFree": "Ücretsiz",
     "subscriptionTrial": "Deneme Sürümü",
     "subscriptionActive": "Premium (Aktif)",
-    "subscriptionExpired": "Süresi Doldu"
+    "subscriptionExpired": "Süresi Doldu",
+    "supportIdLabel": "Destek kimliği",
+    "supportIdA11y": "Destek kimliğini paylaş"
   },
   "bottomTabBar": {
     "add": "Ekle",

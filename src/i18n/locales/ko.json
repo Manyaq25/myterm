@@ -252,7 +252,9 @@
     "subscriptionFree": "무료",
     "subscriptionTrial": "무료 체험",
     "subscriptionActive": "프리미엄 (활성)",
-    "subscriptionExpired": "만료됨"
+    "subscriptionExpired": "만료됨",
+    "supportIdLabel": "지원 ID",
+    "supportIdA11y": "지원 ID 공유"
   },
   "bottomTabBar": {
     "add": "추가",

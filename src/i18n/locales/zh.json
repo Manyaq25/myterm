@@ -252,7 +252,9 @@
     "subscriptionFree": "免费",
     "subscriptionTrial": "免费试用",
     "subscriptionActive": "高级版(已激活)",
-    "subscriptionExpired": "已过期"
+    "subscriptionExpired": "已过期",
+    "supportIdLabel": "支持 ID",
+    "supportIdA11y": "分享支持 ID"
   },
   "bottomTabBar": {
     "add": "添加",

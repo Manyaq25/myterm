@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Image, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, Modal, Pressable, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ChevronRight } from 'lucide-react-native';
 import { ThemedSwitch } from '../../src/components/ThemedSwitch';
@@ -23,7 +23,12 @@ import {
   SUPPORTED_LANGUAGES,
   type SupportedLanguage,
 } from '../../src/i18n';
-import { restorePurchases, useSubscription, type SubscriptionStatus } from '../../src/services/subscription';
+import {
+  getRevenueCatAppUserId,
+  restorePurchases,
+  useSubscription,
+  type SubscriptionStatus,
+} from '../../src/services/subscription';
 import { getCardSurface } from '../../src/constants/cardStyle';
 import { useTheme, fontFamily, fontSize, letterSpacing, type ThemeColors } from '../../src/theme';
 
@@ -38,6 +43,12 @@ export default function AyarlarScreen() {
   const [appLockOn, setAppLockOn] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  // Destek taleplerinde kullanıcının RevenueCat kaydını bulabilmek için.
+  const [supportId, setSupportId] = useState<string | null>(null);
+
+  useEffect(() => {
+    getRevenueCatAppUserId().then(setSupportId);
+  }, []);
   const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage | null>(null);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
   const { status: subscriptionStatus } = useSubscription();
@@ -206,6 +217,18 @@ export default function AyarlarScreen() {
             accessibilityLabel={t('premium.restoreButton')}
           />
         </View>
+        {supportId && (
+          <Pressable
+            onPress={() => Share.share({ message: supportId })}
+            accessibilityRole="button"
+            accessibilityLabel={t('ayarlar.supportIdA11y')}
+            hitSlop={6}
+          >
+            <Text style={styles.hint}>
+              {t('ayarlar.supportIdLabel')}: <Text style={styles.supportId}>{supportId}</Text>
+            </Text>
+          </Pressable>
+        )}
       </View>
 
       <View style={styles.section}>
@@ -359,6 +382,7 @@ function getStyles(colors: ThemeColors) {
     },
     row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
     rowLabel: { fontSize: fontSize.base, fontFamily: fontFamily.bodySemiBold, color: colors.text },
+    supportId: { fontFamily: fontFamily.bodySemiBold, color: colors.text },
     rowValueGroup: { flexDirection: 'row', alignItems: 'center', gap: 4 },
     languageValue: { fontSize: fontSize.base, fontFamily: fontFamily.body, color: colors.textMuted },
     hint: { fontSize: fontSize.small, fontFamily: fontFamily.body, color: colors.textMuted, marginTop: 8, lineHeight: 18 },

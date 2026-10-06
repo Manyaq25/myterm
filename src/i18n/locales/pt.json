@@ -252,7 +252,9 @@
     "subscriptionFree": "Grátis",
     "subscriptionTrial": "Teste gratuito",
     "subscriptionActive": "Premium (Ativa)",
-    "subscriptionExpired": "Expirada"
+    "subscriptionExpired": "Expirada",
+    "supportIdLabel": "ID de suporte",
+    "supportIdA11y": "Compartilhar ID de suporte"
   },
   "bottomTabBar": {
     "add": "Adicionar",

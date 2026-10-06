@@ -252,7 +252,9 @@
     "subscriptionFree": "Бесплатно",
     "subscriptionTrial": "Пробный период",
     "subscriptionActive": "Премиум (активна)",
-    "subscriptionExpired": "Истекла"
+    "subscriptionExpired": "Истекла",
+    "supportIdLabel": "ID поддержки",
+    "supportIdA11y": "Поделиться ID поддержки"
   },
   "bottomTabBar": {
     "add": "Добавить",

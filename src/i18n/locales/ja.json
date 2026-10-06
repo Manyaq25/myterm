@@ -252,7 +252,9 @@
     "subscriptionFree": "無料",
     "subscriptionTrial": "無料トライアル",
     "subscriptionActive": "プレミアム(有効)",
-    "subscriptionExpired": "期限切れ"
+    "subscriptionExpired": "期限切れ",
+    "supportIdLabel": "サポートID",
+    "supportIdA11y": "サポートIDを共有"
   },
   "bottomTabBar": {
     "add": "追加",

@@ -252,7 +252,9 @@
     "subscriptionFree": "مجاني",
     "subscriptionTrial": "فترة تجريبية",
     "subscriptionActive": "Premium (نشط)",
-    "subscriptionExpired": "منتهي الصلاحية"
+    "subscriptionExpired": "منتهي الصلاحية",
+    "supportIdLabel": "معرّف الدعم",
+    "supportIdA11y": "مشاركة معرّف الدعم"
   },
   "bottomTabBar": {
     "add": "إضافة",
