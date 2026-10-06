@@ -1,0 +1,268 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="node_modules/@fontsource/plus-jakarta-sans/500.css">
+<link rel="stylesheet" href="node_modules/@fontsource/plus-jakarta-sans/600.css">
+<link rel="stylesheet" href="node_modules/@fontsource/plus-jakarta-sans/700.css">
+<link rel="stylesheet" href="node_modules/@fontsource/plus-jakarta-sans/800.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{overflow:hidden;background:#061110;font-family:'Plus Jakarta Sans','Noto Color Emoji',sans-serif;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;left:0;top:0;overflow:hidden}
+.abs{position:absolute}
+.bg{position:absolute;inset:0;background:radial-gradient(1200px 800px at 50% 30%,#0f2e2a 0%,#081816 60%,#040b0a 100%)}
+.blob{position:absolute;border-radius:50%}
+
+.headline{position:absolute;text-align:center;color:#fff;font-weight:800;letter-spacing:-1.5px;line-height:1.08}
+.acc{background:linear-gradient(90deg,#9BFFEF 0%,#59DBC7 45%,#FF9A7A 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* chat card (generic messenger, no third-party branding) */
+.chat{position:absolute;border-radius:34px;background:#f4f1ec;box-shadow:0 40px 80px rgba(0,0,0,.45);overflow:hidden}
+.chathead{height:64px;background:#e9e4dc;display:flex;align-items:center;gap:12px;padding:0 20px;font-weight:700;color:#1d2a2a;font-size:20px}
+.chathead .av{width:38px;height:38px;border-radius:50%;background:#FF8A65;color:#fff;font-size:15px;display:flex;align-items:center;justify-content:center}
+.bubble{position:absolute;max-width:76%;padding:12px 16px 10px;border-radius:20px;font-size:19px;line-height:1.3;color:#1a2424;box-shadow:0 2px 4px rgba(0,0,0,.06)}
+.bubble.in{left:16px;background:#fff;border-top-left-radius:6px}
+.bubble.out{right:16px;background:#cdeee6;border-top-right-radius:6px}
+.bubble .tm{display:block;text-align:right;font-size:12px;color:#7a8a88;margin-top:4px}
+.scan{position:absolute;left:0;right:0;height:120px;background:linear-gradient(180deg,rgba(89,219,199,0),rgba(89,219,199,.45) 50%,rgba(89,219,199,0));mix-blend-mode:multiply}
+.highlight{position:absolute;border-radius:16px;border:3px solid #00A896;box-shadow:0 0 0 6px rgba(0,168,150,.18)}
+
+/* beam */
+.beam{position:absolute;height:6px;border-radius:3px;background:linear-gradient(90deg,rgba(89,219,199,0),rgba(89,219,199,.9),rgba(255,154,122,.9),rgba(255,154,122,0))}
+.spark{position:absolute;width:16px;height:16px;border-radius:50%;background:#bffff4;box-shadow:0 0 18px 6px rgba(89,219,199,.8)}
+.aichip{position:absolute;display:flex;align-items:center;gap:10px;padding:10px 18px 10px 12px;border-radius:999px;background:rgba(255,255,255,.1);border:1.5px solid rgba(155,255,239,.45);color:#fff;font-weight:700;font-size:20px;backdrop-filter:blur(6px)}
+.aichip img{width:34px;height:34px;border-radius:9px}
+
+/* phone */
+.phone{position:absolute;border-radius:64px;background:linear-gradient(150deg,#59625f 0%,#262d2c 18%,#141918 50%,#2b3331 82%,#4a5350 100%);box-shadow:0 60px 120px rgba(0,0,0,.6)}
+.screen{position:absolute;left:12px;top:12px;right:12px;bottom:12px;border-radius:53px;overflow:hidden;background:linear-gradient(180deg,#dff5ef 0%,#eef8f5 40%,#f4f7f6 100%)}
+.island{position:absolute;left:50%;top:13px;width:118px;height:34px;margin-left:-59px;border-radius:18px;background:#000;z-index:9}
+.status{position:absolute;top:16px;left:34px;right:30px;display:flex;justify-content:space-between;font-size:16px;font-weight:700;color:#132228}
+.ptitle{position:absolute;left:26px;top:96px;font-size:34px;font-weight:800;color:#132228;letter-spacing:-.8px}
+.pdate{position:absolute;left:26px;top:66px;font-size:12px;font-weight:700;color:#fff;background:#00A896;border-radius:999px;padding:4px 10px;letter-spacing:.5px}
+.fcard{position:absolute;left:18px;right:18px;background:#fff;border-radius:22px;padding:16px 18px 14px;box-shadow:0 8px 20px rgba(16,40,36,.09);border:1.5px solid rgba(0,168,150,.18)}
+.fcard .t{font-size:21px;font-weight:700;color:#132228;line-height:1.22;letter-spacing:-.3px}
+.fcard .p{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:16px;color:#132228;font-weight:500}
+.fcard .p .av{width:28px;height:28px;border-radius:50%;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.fcard .sep{height:1px;background:rgba(19,34,40,.08);margin:11px 0 10px}
+.fcard .r{display:flex;justify-content:space-between;align-items:center}
+.fcard .d{font-size:16px;font-weight:700;color:#0E7C70}
+.fcard .d{white-space:nowrap}
+.fcard .b{font-size:12px;font-weight:700;padding:6px 11px;border-radius:999px;white-space:nowrap}
+.fcard .check{position:absolute;right:14px;top:14px;width:30px;height:30px;border-radius:50%;background:#00A896;color:#fff;font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.notif{position:absolute;left:12px;right:12px;border-radius:26px;background:#fafcfb;box-shadow:0 18px 40px rgba(0,0,0,.22);padding:14px 16px 12px;z-index:8}
+.notif .row{display:flex;align-items:center;gap:10px}
+.notif img{width:34px;height:34px;border-radius:9px}
+.notif .app{font-size:13px;font-weight:700;color:#5d6d6b;letter-spacing:.4px;flex:1}
+.notif .now{font-size:13px;color:#7a8a88}
+.notif .nt{font-size:18px;font-weight:700;color:#132228;margin-top:8px}
+.notif .nx{font-size:16px;color:#3c4b49;margin-top:2px}
+.notif .acts{display:flex;gap:8px;margin-top:12px}
+.notif .act{flex:1;text-align:center;font-size:13px;white-space:nowrap;font-weight:700;color:#0E7C70;background:#e3f4ef;border-radius:12px;padding:9px 4px}
+.notif .act.on{background:#00A896;color:#fff}
+
+/* search layout extras */
+.chips{position:absolute;display:flex;flex-direction:column;gap:22px}
+.chip{display:inline-flex;align-items:center;gap:16px;padding:18px 30px 18px 22px;border-radius:999px;background:rgba(255,255,255,.08);border:2px solid rgba(155,255,239,.35);color:#fff;font-weight:700;font-size:44px;width:max-content}
+</style></head>
+<body>
+<div id="stage"></div>
+<script>
+const params = new URLSearchParams(location.search);
+const KIND = params.get('kind') || 'header';
+const LANG = params.get('lang') || 'tr';
+
+const S = {
+  tr: {
+    headline: 'Konuşmalardaki sözler<br><span class="acc">kendiliğinden hatırlatmaya dönüşür</span>',
+    searchHeadline: 'Sözlerin ve işlerin,<br><span class="acc">AI ile takipte</span>',
+    sender: 'Ahmet', senderInitials: 'A',
+    inMsg: 'Raporu cuma sabah gönderebilir misin?', inTime: '09:41',
+    outMsg: "Olur, cuma 10'da gönderirim 👍", outTime: '09:42',
+    title: 'Takipler', datePill: 'BUGÜN',
+    c1: "Ahmet'e raporu gönder", c1p: 'Ahmet Yılmaz', c1d: '⏰ Cuma, 10:00', c1b: 'Verdiğim söz',
+    c2: "Ahmet'ten sözleşme taslağını al", c2p: 'Ahmet Yılmaz', c2d: '⏰ Pzt, 14:00', c2b: 'Birinden beklediğim',
+    nt: "Ahmet'e raporu gönder", nx: 'Zamanı geldi', now: 'şimdi',
+    a1: 'Tamamlandı', a2: '1 saat ertele', a3: 'Yarın',
+    c3: 'Haftalık raporu hazırla', c3d: '🔁 Her pazartesi, 09:00', c3b: 'Yapılacak iş',
+    chips: ['📸 Ekran görüntüsü', '🎙️ Sesli not', '📄 PDF'],
+  },
+  en: {
+    headline: 'Promises in your chats<br><span class="acc">become reminders, automatically</span>',
+    searchHeadline: 'Your promises and tasks,<br><span class="acc">tracked by AI</span>',
+    sender: 'Alex', senderInitials: 'A',
+    inMsg: 'Can you send the report Friday morning?', inTime: '9:41 AM',
+    outMsg: "Sure, I'll send it Friday at 10 👍", outTime: '9:42 AM',
+    title: 'Follow-ups', datePill: 'TODAY',
+    c1: 'Send the report to Alex', c1p: 'Alex Morgan', c1d: '⏰ Fri, 10:00 AM', c1b: 'My promise',
+    c2: 'Get the contract draft from Alex', c2p: 'Alex Morgan', c2d: '⏰ Mon, 2:00 PM', c2b: 'Waiting on',
+    nt: 'Send the report to Alex', nx: "It's time", now: 'now',
+    a1: 'Done', a2: 'Snooze 1 hour', a3: 'Tomorrow',
+    c3: 'Prepare the weekly report', c3d: '🔁 Every Monday, 9:00 AM', c3b: 'Task',
+    chips: ['📸 Screenshot', '🎙️ Voice note', '📄 PDF'],
+  },
+}[LANG];
+
+// Tuval: CSS piksel; çıktı 2x ölçekle alınır (başlık 3840x1646, arama 3840x2560).
+const SIZE = KIND === 'header' ? { w: 1920, h: 823 } : { w: 1920, h: 1280 };
+window.DURATION = KIND === 'header' ? 12 : 10;
+const stage = document.getElementById('stage');
+stage.style.width = SIZE.w + 'px';
+stage.style.height = SIZE.h + 'px';
+document.body.style.width = SIZE.w + 'px';
+document.body.style.height = SIZE.h + 'px';
+
+// Yerleşim: başlıkta her şey ortadaki dar alanda (iPhone geniş görseli kırpıyor,
+// alt kısma uygulama adı ve "Al" düğmesi biniyor); aramada solda metin, sağda sahne.
+const L = KIND === 'header'
+  ? { head: { x: 360, y: 40, w: 1200, fs: 50 }, chat: { x: 540, y: 205, w: 330, h: 300 }, chip: { x: 885, y: 300 },
+      beam: { x: 870, y: 352, w: 190 }, phone: { x: 1060, y: 180, w: 330, h: 680 } }
+  : { head: { x: 110, y: 190, w: 1120, fs: 96, align: 'left' }, chips: { x: 110, y: 610 },
+      chat: { x: 800, y: 600, w: 430, h: 330 }, chip: { x: 860, y: 500 }, beam: { x: 0, y: 0, w: 0 },
+      phone: { x: 1250, y: 90, w: 440, h: 1000, scale: 1.28 } };
+
+function el(tag, cls, html, style) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (html != null) e.innerHTML = html;
+  if (style) Object.assign(e.style, style);
+  return e;
+}
+const px = (v) => v + 'px';
+
+const bg = el('div', 'bg');
+stage.appendChild(bg);
+const b1 = el('div', 'blob', null, { width: '1300px', height: '1300px', left: '-500px', top: '-700px', background: 'radial-gradient(circle,rgba(89,219,199,.28) 0%,rgba(89,219,199,0) 62%)' });
+const b2 = el('div', 'blob', null, { width: '1300px', height: '1300px', right: '-520px', top: '-200px', background: 'radial-gradient(circle,rgba(255,107,74,.20) 0%,rgba(255,107,74,0) 62%)' });
+stage.append(b1, b2);
+
+const head = el('div', 'headline', KIND === 'header' ? S.headline : S.searchHeadline, {
+  left: px(L.head.x), top: px(L.head.y), width: px(L.head.w), fontSize: px(L.head.fs), textAlign: L.head.align || 'center',
+});
+stage.appendChild(head);
+// Uzun dillerde başlık iki satırı geçmesin: sığana kadar küçült.
+(function fitHeadline() {
+  let fs = L.head.fs;
+  while (fs > 30 && head.getBoundingClientRect().height > fs * 1.08 * 2 + 6) {
+    fs -= 2;
+    head.style.fontSize = px(fs);
+  }
+})();
+
+let chipsBox = null;
+if (KIND === 'search') {
+  chipsBox = el('div', 'chips', S.chips.map((c) => `<div class="chip">${c}</div>`).join(''), { left: px(L.chips.x), top: px(L.chips.y) });
+  stage.appendChild(chipsBox);
+}
+
+// Sohbet kartı
+const chat = el('div', 'chat', null, { left: px(L.chat.x), top: px(L.chat.y), width: px(L.chat.w), height: px(L.chat.h) });
+chat.appendChild(el('div', 'chathead', `<div class="av">${S.senderInitials}</div>${S.sender}`));
+const bin = el('div', 'bubble in', `${S.inMsg}<span class="tm">${S.inTime}</span>`, { top: '84px' });
+const bout = el('div', 'bubble out', `${S.outMsg}<span class="tm">${S.outTime} ✓✓</span>`, { top: KIND === 'header' ? '180px' : '196px' });
+const hl = el('div', 'highlight');
+const scan = el('div', 'scan');
+chat.append(bin, bout, scan, hl);
+stage.appendChild(chat);
+
+const beam = el('div', 'beam', null, { left: px(L.beam.x), top: px(L.beam.y), width: px(L.beam.w) });
+const spark = el('div', 'spark');
+if (KIND === 'header') stage.append(beam, spark);
+const aichip = el('div', 'aichip', `<img src="icon.png">Synvia AI`, { left: px(L.chip.x), top: px(L.chip.y) });
+stage.appendChild(aichip);
+
+// Telefon
+const phone = el('div', 'phone', null, { left: px(L.phone.x), top: px(L.phone.y), width: px(L.phone.w), height: px(L.phone.h), transformOrigin: '0 0' });
+const screen = el('div', 'screen');
+screen.append(el('div', 'island'), el('div', 'status', '<span>9:41</span><span>●●● 􀙇</span>'));
+screen.querySelector('.status').lastChild.textContent = '▮▮▮';
+screen.append(el('div', 'pdate', S.datePill), el('div', 'ptitle', S.title));
+const card = (t, p, d, b, bstyle, top, avColor) => el('div', 'fcard',
+  `<div class="t">${t}</div>` +
+    (p ? `<div class="p"><div class="av" style="background:${avColor}">${p.split(' ').map((w) => w[0]).join('')}</div>${p}</div>` : '') +
+    `<div class="sep"></div><div class="r"><div class="d">${d}</div><div class="b" style="${bstyle}">${b}</div></div>`,
+  { top: px(top) });
+// Kartlar bildirimin altında kalsın, başlıkları görünsün.
+const card1 = card(S.c1, S.c1p, S.c1d, S.c1b, 'background:#FFE4E8;color:#C2185B', 250, '#FF7043');
+const card2 = card(S.c2, S.c2p, S.c2d, S.c2b, 'background:#FFF1CC;color:#8a5a00', 432, '#FF7043');
+const check = el('div', 'check', '✓');
+card1.appendChild(check);
+const notif = el('div', 'notif', `<div class="row"><img src="icon.png"><div class="app">SYNVIA AI</div><div class="now">${S.now}</div></div>
+  <div class="nt">${S.nt}</div><div class="nx">${S.nx}</div>
+  <div class="acts"><div class="act a1">${S.a1}</div><div class="act">${S.a2}</div><div class="act">${S.a3}</div></div>`, { top: '58px' });
+// Tekrarlayan takip (yeni özellik) üçüncü kart.
+const card3 = card(S.c3, null, S.c3d, S.c3b, 'background:#DDF3EE;color:#0E7C70', 614, null);
+screen.append(card1, card2, card3, notif);
+phone.appendChild(screen);
+stage.appendChild(phone);
+
+// Zaman çizelgesi yardımcıları
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const back = (x) => { const c = 1.6; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+function show(node, p, dy = 20, scale = false) {
+  node.style.opacity = p;
+  node.style.transform = `translateY(${(1 - p) * dy}px)` + (scale ? ` scale(${0.92 + 0.08 * p})` : '');
+}
+
+// Döngü: t=0 tam sahne (kapak karesi) → sahne boşalır → yeniden kurulur → son
+// kare ilk kareyle aynı, dikişsiz döner.
+function render(t) {
+  const D = window.DURATION;
+  const k = D / 12; // arama videosu biraz daha kısa: zamanlar orantılı
+  const T = t / k;
+  // 0–4.5 tam sahne (hafif hareket), 4.5–5.5 temizlenir, 5.5–11 kurulur, 11–12 tam sahne
+  let pIn = 1, pOut = 1, pScan = 0, pC1 = 1, pC2 = 1, pNotif = 1, pDone = 0;
+  if (T >= 4.5 && T < 5.5) {
+    const c = ease(seg(T, 4.5, 5.5));
+    pIn = pOut = pC1 = pC2 = pNotif = 1 - c;
+  } else if (T >= 5.5 && T < 11) {
+    pIn = back(seg(T, 5.6, 6.1));
+    pOut = back(seg(T, 6.3, 6.8));
+    pScan = seg(T, 7.0, 8.0);
+    pC1 = back(seg(T, 8.1, 8.6));
+    pC2 = back(seg(T, 8.6, 9.1));
+    pNotif = ease(seg(T, 9.4, 10.0));
+  }
+  // "Tamamlandı" düğmesine basılması: 2.0–3.4 arası tam sahnede
+  pDone = T < 4.5 ? seg(T, 2.0, 2.3) * (1 - seg(T, 3.6, 4.0)) : 0;
+
+  show(bin, pIn, 14, true);
+  show(bout, pOut, 14, true);
+  scan.style.top = px(-120 + pScan * (L.chat.h + 120));
+  scan.style.opacity = pScan > 0 && pScan < 1 ? 1 : 0;
+  // Son saniye (11–12) ilk kareyle aynı olmalı ki döngü dikişsiz olsun.
+  const hlOn = T >= 7.6 || T < 4.5 ? 1 : 0;
+  const bo = bout.getBoundingClientRect(), cr = chat.getBoundingClientRect();
+  Object.assign(hl.style, { left: px(bo.left - cr.left - 6), top: px(bo.top - cr.top - 6), width: px(bo.width + 12), height: px(bo.height + 12) });
+  hl.style.opacity = hlOn * Math.min(pOut, T < 4.5 ? 1 : seg(T, 7.6, 7.9));
+
+  show(card1, pC1, 30, true);
+  show(card2, pC2, 30, true);
+  show(card3, pC2, 30, true);
+  notif.style.opacity = pNotif;
+  notif.style.transform = `translateY(${(1 - pNotif) * -90}px)`;
+  notif.querySelector('.a1').classList.toggle('on', pDone > 0.5);
+  check.style.opacity = pDone;
+  check.style.transform = `scale(${0.6 + 0.4 * pDone})`;
+
+  // Işın üzerinde ilerleyen kıvılcım (yalnızca başlıkta)
+  if (KIND === 'header') {
+    const pb = seg(T, 7.4, 8.3);
+    spark.style.left = px(L.beam.x + pb * L.beam.w - 8);
+    spark.style.top = px(L.beam.y - 5);
+    spark.style.opacity = pb > 0 && pb < 1 ? 1 : 0;
+    beam.style.opacity = 0.35 + 0.65 * (pb > 0 && pb < 1 ? 1 : 0.4);
+  }
+  // Yavaş nefes alan arka plan ve hafif yüzen telefon (döngüyle uyumlu sinüs)
+  const w = (2 * Math.PI * t) / D;
+  b1.style.transform = `translate(${Math.sin(w) * 40}px, ${Math.cos(w) * 30}px)`;
+  b2.style.transform = `translate(${Math.cos(w) * -40}px, ${Math.sin(w) * 30}px)`;
+  phone.style.transform = `translateY(${Math.sin(w) * 6}px) scale(${L.phone.scale || 1})`;
+  chat.style.transform = `translateY(${Math.cos(w) * 5}px) rotate(-2deg)`;
+  aichip.style.transform = `translateY(${Math.sin(w * 2) * 4}px)`;
+}
+window.render = render;
+render(0);
+</script>
+</body></html>
