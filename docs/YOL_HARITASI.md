@@ -76,7 +76,7 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
   - Numara yoksa önce istenir: iPhone'da sistem kişi seçicisi (izin gerekmez) veya elle; kişi kartına bir kez kaydedilir. Kişi kartında numara düzenlerken de "Rehberden seç" var.
   - AI mesajı uygulama dilinde yazar; ton: Samimi / Resmi / Kısa; gönderilmeden düzenlenebilir; WhatsApp veya SMS açılır, gönderme kullanıcıda.
   - AI hakkına sayılır (ücretsiz 6/ay, premium sınırsız). Sunucu: `/api/reminder-message`, ölçüm anahtarı `reminder`.
-  - Android: seçici rehber izni istediği için şimdilik yalnızca elle numara. Android üretim build'inde izinsiz seçici ayrıca ele alınacak.
+  - Android: kendi yerel modülümüz `modules/phone-picker` sistemin "telefon numarası seç" ekranını açıyor; rehber izni gerekmiyor, yalnızca seçilen numara geliyor. Yeni Android build'iyle gelir (modül yoksa elle numara). Kotlin kodu bu ortamda derlenemedi; ilk Android build'inde derleme kontrol edilecek.
   - Telefon numarası artık telefonun bölgesine göre ülke koduyla tamamlanıyor (önceden hep +90 varsayılıyordu).
 
 ### Faz 5 — Tanıtım
@@ -109,4 +109,5 @@ Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:i
 ## Bekleyen dış işler
 - App Store 1.1.1 (15) 6 Ekim 2026'da incelemeye gönderildi.
 - Mağaza sayfası 16 dilde (metinler: `docs/magaza/app-store-metinleri.md`): tr, en-US/GB/CA/AU, de, fr, it, es-MX/ES, pt-BR/PT, ru, ar, ja, ko, zh-Hans, nl. Ana dil Türkçe kaldı (kullanıcı kararı); İngilizceye geçmek için önce English (U.S.) ekran görüntüleri gerekir.
+- Android üretim build'i (`eas build --platform android --profile production`): telefon numarası seçici modülünü içerecek. İlk build'de derlemenin geçtiği ve "Rehberden seç"in izin istemeden çalıştığı kontrol edilecek.
 - Google Play üretim erişimi başvurusu gönderildi; onay gelince Android üretim build'i ve sitedeki "Google Play — Yakında" düğmesinin güncellenmesi.
