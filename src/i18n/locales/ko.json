@@ -436,5 +436,14 @@
     "premiumAction": "Premium 보기",
     "closeA11y": "닫기",
     "trialRow": "Premium {{count}}일 무료 체험"
+  },
+  "recurrence": {
+    "label": "반복",
+    "none": "안 함",
+    "daily": "매일",
+    "weekly": "매주",
+    "monthly": "매월",
+    "badgeA11y": "반복 팔로우업: {{label}}",
+    "hint": "완료하면 다음 항목이 자동으로 만들어져요."
   }
 }

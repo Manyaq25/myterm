@@ -51,8 +51,14 @@ const EXTRACT_TOOL: Anthropic.Tool = {
               type: ['string', 'null'],
               description: 'Ek bağlam/detay (yanıt dilinde), yoksa null.',
             },
+            recurrence: {
+              type: 'string',
+              enum: ['none', 'daily', 'weekly', 'monthly'],
+              description:
+                'Madde düzenli tekrar ediyorsa: "her gün" → daily, "her hafta / her pazartesi" → weekly, "her ay / her ayın 5\'i" → monthly. Tek seferlikse none.',
+            },
           },
-          required: ['title', 'type', 'personName', 'dueAtISO', 'timeSpecified', 'confidence', 'note'],
+          required: ['title', 'type', 'personName', 'dueAtISO', 'timeSpecified', 'confidence', 'note', 'recurrence'],
           additionalProperties: false,
         },
       },
@@ -70,6 +76,7 @@ export interface ExtractedCandidate {
   timeSpecified: boolean;
   confidence: number;
   note: string | null;
+  recurrence: 'none' | 'daily' | 'weekly' | 'monthly';
 }
 
 export interface ClientTime {
@@ -135,7 +142,8 @@ function buildSystemPrompt(extraNote?: string): string {
     'Tür seçerken önce cümlenin ÖZNESİNE (eylemi kimin yapacağına) bak: eylemi yapacak olan kullanıcının KENDİSİ değil de başka bir kişiyse, bu her zaman "waiting_on" olmalı — "task" DEĞİL. "task" yalnızca kullanıcının kendisinin yapacağı ve hiçbir kişiye bağlı olmayan eylemler içindir (ör. "faturayı öde").',
     'Örnek: "Ali gazete getirecek" → waiting_on (özne Ali; kullanıcı Ali\'nin getirmesini bekliyor), task DEĞİL. "Aliden para alacağım" → waiting_on (kullanıcı Ali\'ye bağımlı bir şey bekliyor). "Faturayı ödeyeceğim" → task (özne kullanıcı, kimseye bağlı değil). "Ahmete teklifi göndereceğim" → promise_made (özne kullanıcı ama bir kişiye yönelik taahhüt).',
     'Sesli not deşifresi olabilir; konuşma dili doldurma kelimelerini ("şey", "yani", "ee") ve yarım kalmış tekrarları göz ardı et.',
-    'Bir maddeden emin değilsen (belirsiz ifade, "sanırım" gibi tahmini bir dil, ima yoluyla çıkarım, okunaksız/bulanık kaynak vb.) bunu uydurmak yerine confidence değerini düşük tut (ör. 0.3-0.5) ve note alanına neden emin olmadığını kısaca yaz.',
+    'TEKRAR: Madde düzenli tekrar eden bir işse (ör. "her pazartesi kira hatırlat", "her ayın 5\'inde faturayı öde") recurrence alanını doldur ve dueAtISO\'yu bir SONRAKİ tarihe ayarla; tek seferlik maddelerde recurrence=none.',
+        'Bir maddeden emin değilsen (belirsiz ifade, "sanırım" gibi tahmini bir dil, ima yoluyla çıkarım, okunaksız/bulanık kaynak vb.) bunu uydurmak yerine confidence değerini düşük tut (ör. 0.3-0.5) ve note alanına neden emin olmadığını kısaca yaz.',
   ];
   lines.push(
     'DİL: title ve note alanlarını, kaynak metin hangi dilde olursa olsun, kullanıcı mesajının başında belirtilen yanıt dilinde yaz. Kişi adlarını olduğu gibi bırak.'

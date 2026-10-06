@@ -436,5 +436,14 @@
     "premiumAction": "Premium'u incele",
     "closeA11y": "Kapat",
     "trialRow": "Premium'u {{count}} gün ücretsiz dene"
+  },
+  "recurrence": {
+    "label": "Tekrarla",
+    "none": "Yok",
+    "daily": "Her gün",
+    "weekly": "Her hafta",
+    "monthly": "Her ay",
+    "badgeA11y": "Tekrarlayan takip: {{label}}",
+    "hint": "Tamamlayınca bir sonraki otomatik oluşur."
   }
 }

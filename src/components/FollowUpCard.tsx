@@ -46,6 +46,7 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
         ? t('followUpCard.overdueLabel', { date: formatDueDate(item.dueAt) })
         : t('followUpCard.dueLabel', { date: formatDueDate(item.dueAt) })
       : null,
+    item.recurrence ? t('recurrence.badgeA11y', { label: t(`recurrence.${item.recurrence}`) }) : null,
   ]
     .filter(Boolean)
     .join('. ');
@@ -107,7 +108,10 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
           {item.dueAt !== null && (
             <View style={styles.dueRow}>
               <Clock color={overdue ? colors.danger : colors.textMuted} size={13} strokeWidth={2.2} />
-              <Text style={[styles.due, overdue && styles.dueOverdue]}>{formatDueDate(item.dueAt)}</Text>
+              <Text style={[styles.due, overdue && styles.dueOverdue]}>
+                {formatDueDate(item.dueAt)}
+                {item.recurrence ? '  🔁' : ''}
+              </Text>
             </View>
           )}
         </View>

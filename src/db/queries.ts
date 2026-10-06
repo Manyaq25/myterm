@@ -67,6 +67,7 @@ export interface CreateFollowUpInput {
   remindAt?: number | null;
   source?: FollowUp['source'];
   confidence?: number | null;
+  recurrence?: FollowUp['recurrence'];
 }
 
 export async function createFollowUp(db: SQLiteDatabase, input: CreateFollowUpInput): Promise<FollowUp> {
@@ -86,11 +87,12 @@ export async function createFollowUp(db: SQLiteDatabase, input: CreateFollowUpIn
     createdAt: now,
     updatedAt: now,
     completedAt: null,
+    recurrence: input.recurrence ?? null,
   };
   await db.runAsync(
     `INSERT INTO follow_ups
-       (id, title, detail, type, status, personId, dueAt, remindAt, source, confidence, notificationId, createdAt, updatedAt, completedAt)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       (id, title, detail, type, status, personId, dueAt, remindAt, source, confidence, notificationId, createdAt, updatedAt, completedAt, recurrence)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       followUp.id,
       followUp.title,
@@ -106,9 +108,18 @@ export async function createFollowUp(db: SQLiteDatabase, input: CreateFollowUpIn
       followUp.createdAt,
       followUp.updatedAt,
       followUp.completedAt,
+      followUp.recurrence,
     ]
   );
   return followUp;
+}
+
+export async function updateFollowUpRecurrence(
+  db: SQLiteDatabase,
+  id: string,
+  recurrence: FollowUp['recurrence']
+): Promise<void> {
+  await db.runAsync(`UPDATE follow_ups SET recurrence = ?, updatedAt = ? WHERE id = ?`, [recurrence, Date.now(), id]);
 }
 
 export async function updateFollowUpStatus(

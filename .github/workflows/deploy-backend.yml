@@ -106,6 +106,8 @@ jobs:
             echo "Smoke test failed: compound-sentence text should split into >= 2 candidates, got $count"
             exit 1
           fi
+          python3 -c "import json,sys; c=json.load(open('response.json'))['candidates']; sys.exit(0 if all(x.get('recurrence') in ('none','daily','weekly','monthly') for x in c) else 1)" \
+            || { echo "Smoke test failed: every candidate should carry a recurrence field"; exit 1; }
 
       - name: Smoke test /api/extract — waiting_on vs task classification
         run: |

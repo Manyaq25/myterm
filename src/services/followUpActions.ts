@@ -1,13 +1,16 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 import type { FollowUp } from '../types';
 import {
+  createFollowUp,
   deleteFollowUp,
+  getFollowUp,
   getPerson,
   listFollowUpReminderKinds,
   updateFollowUpSchedule,
   updateFollowUpStatus,
 } from '../db/queries';
 import { applyReminderLead } from '../utils/date';
+import { nextOccurrence } from '../utils/recurrence';
 import { removeFromReminderDay, scheduleMainReminder } from './reminderScheduler';
 import { cancelExtraReminders, scheduleExtraReminders, type ExtraReminderChoice } from './smartReminders';
 import { updateWidgetSummary } from './widget';
@@ -19,7 +22,29 @@ export async function completeFollowUp(db: SQLiteDatabase, item: ReminderRef): P
   await removeFromReminderDay(db, item.remindAt, item.id);
   await cancelExtraReminders(db, item.id);
   await updateFollowUpStatus(db, item.id, 'done');
+  const full = await getFollowUp(db, item.id);
+  if (full?.recurrence && full.dueAt !== null) {
+    await createNextOccurrence(db, full);
+  }
   await updateWidgetSummary(db);
+}
+
+/** Tekrarlayan takip tamamlanınca bir sonrakini aynı bilgilerle oluşturup hatırlatmasını kurar. */
+async function createNextOccurrence(db: SQLiteDatabase, done: FollowUp): Promise<void> {
+  const dueAt = nextOccurrence(done.dueAt!, done.recurrence!);
+  const person = done.personId ? await getPerson(db, done.personId) : null;
+  const remindAt = applyReminderLead(dueAt, person?.reminderLeadMinutes ?? 0);
+  const next = await createFollowUp(db, {
+    title: done.title,
+    detail: done.detail,
+    type: done.type,
+    personId: done.personId,
+    dueAt,
+    remindAt,
+    source: done.source,
+    recurrence: done.recurrence,
+  });
+  await scheduleMainReminder(db, next.id, remindAt);
 }
 
 export async function removeFollowUp(db: SQLiteDatabase, item: ReminderRef): Promise<void> {

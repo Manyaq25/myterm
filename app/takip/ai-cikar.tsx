@@ -29,7 +29,8 @@ import * as MediaLibrary from 'expo-media-library';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system/legacy';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
-import type { FollowUpSource } from '../../src/types';
+import type { FollowUpSource, Recurrence } from '../../src/types';
+import { recurrenceLabel } from '../../src/components/RecurrencePicker';
 import { followUpTypeLabel } from '../../src/i18n/labels';
 import { AIRequestError, aiProvider, isUsingMockAI, type ExtractedFollowUp } from '../../src/ai';
 import { MAX_IMAGE_UPLOAD_BYTES, getFileSize, prepareImageForUpload, type PickedImage } from '../../src/utils/imageUpload';
@@ -62,6 +63,11 @@ interface Candidate extends ExtractedFollowUp {
   dueAt: number | null;
   /** Saat metinden geldiyse veya kullanıcı seçtiyse true. */
   hasTime: boolean;
+}
+
+// AI "none" diyorsa veya eski sunucu alanı göndermiyorsa tekrar yok.
+function toRecurrence(value: ExtractedFollowUp['recurrence']): Recurrence | null {
+  return value === 'daily' || value === 'weekly' || value === 'monthly' ? value : null;
 }
 
 type Mode = 'text' | 'voice' | 'image' | 'pdf';
@@ -458,6 +464,7 @@ export default function AiCikarScreen() {
           remindAt,
           source: candidateSource,
           confidence: candidate.confidence,
+          recurrence: dueAt ? toRecurrence(candidate.recurrence) : null,
         });
 
         if (remindAt) {
@@ -834,6 +841,9 @@ export default function AiCikarScreen() {
                   <Text style={styles.candidateType}>{followUpTypeLabel(c.type, t)}</Text>
                   <Text style={styles.candidateTitle}>{c.title}</Text>
                   {c.personName && <Text style={styles.candidateMeta}>👤 {c.personName}</Text>}
+                  {toRecurrence(c.recurrence) && (
+                    <Text style={styles.candidateMeta}>{recurrenceLabel(toRecurrence(c.recurrence), t)}</Text>
+                  )}
                   {c.hasTime && c.dueAt !== null ? (
                     <View style={styles.timeRow}>
                       <Text style={styles.candidateMeta}>⏰ {formatDueDate(c.dueAt)}</Text>

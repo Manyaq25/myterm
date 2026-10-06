@@ -17,6 +17,7 @@ async function initDb(db: SQLiteDatabase) {
   await ensureColumn(db, 'people', 'reminderLeadMinutes', 'INTEGER NOT NULL DEFAULT 0');
   await ensureColumn(db, 'people', 'lateSuggestionDismissedAt', 'INTEGER');
   await ensureColumn(db, 'people', 'phone', 'TEXT');
+  await ensureColumn(db, 'follow_ups', 'recurrence', 'TEXT');
 }
 
 export function DatabaseProvider({ children }: { children: React.ReactNode }) {

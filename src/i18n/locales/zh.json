@@ -436,5 +436,14 @@
     "premiumAction": "了解 Premium",
     "closeA11y": "关闭",
     "trialRow": "免费试用 Premium {{count}} 天"
+  },
+  "recurrence": {
+    "label": "重复",
+    "none": "不重复",
+    "daily": "每天",
+    "weekly": "每周",
+    "monthly": "每月",
+    "badgeA11y": "重复的跟进事项：{{label}}",
+    "hint": "完成后会自动创建下一次。"
   }
 }

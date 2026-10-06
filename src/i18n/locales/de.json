@@ -436,5 +436,14 @@
     "premiumAction": "Premium ansehen",
     "closeA11y": "Schließen",
     "trialRow": "Premium {{count}} Tage kostenlos testen"
+  },
+  "recurrence": {
+    "label": "Wiederholen",
+    "none": "Nie",
+    "daily": "Jeden Tag",
+    "weekly": "Jede Woche",
+    "monthly": "Jeden Monat",
+    "badgeA11y": "Wiederkehrender Vorgang: {{label}}",
+    "hint": "Wenn du ihn erledigst, wird der nächste automatisch erstellt."
   }
 }

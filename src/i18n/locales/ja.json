@@ -436,5 +436,14 @@
     "premiumAction": "Premiumを見る",
     "closeA11y": "閉じる",
     "trialRow": "Premiumを{{count}}日間無料で試す"
+  },
+  "recurrence": {
+    "label": "繰り返し",
+    "none": "なし",
+    "daily": "毎日",
+    "weekly": "毎週",
+    "monthly": "毎月",
+    "badgeA11y": "繰り返しのフォローアップ：{{label}}",
+    "hint": "完了すると次の分が自動で作成されます。"
   }
 }

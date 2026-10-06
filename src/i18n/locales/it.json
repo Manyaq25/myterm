@@ -436,5 +436,14 @@
     "premiumAction": "Scopri Premium",
     "closeA11y": "Chiudi",
     "trialRow": "Prova Premium gratis per {{count}} giorni"
+  },
+  "recurrence": {
+    "label": "Ripeti",
+    "none": "Mai",
+    "daily": "Ogni giorno",
+    "weekly": "Ogni settimana",
+    "monthly": "Ogni mese",
+    "badgeA11y": "Follow-up ricorrente: {{label}}",
+    "hint": "Quando lo completi, il successivo viene creato automaticamente."
   }
 }

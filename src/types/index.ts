@@ -2,6 +2,11 @@ export type FollowUpType = 'promise_made' | 'promise_expected' | 'task' | 'waiti
 
 export type FollowUpStatus = 'open' | 'done' | 'snoozed' | 'cancelled';
 
+/** Tekrarlayan takip: tamamlanınca bir sonraki otomatik oluşur. */
+export type Recurrence = 'daily' | 'weekly' | 'monthly';
+
+export const RECURRENCES: Recurrence[] = ['daily', 'weekly', 'monthly'];
+
 export type FollowUpSource = 'manual' | 'text' | 'voice' | 'screenshot' | 'pdf';
 
 export interface Person {
@@ -29,6 +34,8 @@ export interface FollowUp {
   createdAt: number;
   updatedAt: number;
   completedAt: number | null;
+  /** Eski kayıtlarda ve tekrarlamayanlarda null. */
+  recurrence: Recurrence | null;
 }
 
 export interface FollowUpWithPerson extends FollowUp {

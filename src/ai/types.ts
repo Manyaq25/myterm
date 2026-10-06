@@ -9,6 +9,8 @@ export interface ExtractedFollowUp {
   timeSpecified?: boolean;
   confidence: number;
   note: string | null;
+  /** Düzenli tekrar eden madde; eski backend sürümleri göndermez. */
+  recurrence?: 'none' | 'daily' | 'weekly' | 'monthly';
 }
 
 export interface TranscriptionResult {

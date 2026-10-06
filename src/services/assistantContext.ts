@@ -15,6 +15,9 @@ function formatLine(item: FollowUpWithPerson): string {
     `Durum: ${followUpStatusLabel(item.status, i18n.t)}`,
     `Son tarih: ${item.dueAt !== null ? new Date(item.dueAt).toISOString() : 'yok'}`,
   ];
+  if (item.recurrence) {
+    parts.push(`Tekrar: ${i18n.t(`recurrence.${item.recurrence}`)}`);
+  }
   if (item.status === 'done' && item.completedAt !== null) {
     parts.push(`Tamamlanma: ${new Date(item.completedAt).toISOString()}`);
   }

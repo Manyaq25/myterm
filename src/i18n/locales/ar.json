@@ -436,5 +436,14 @@
     "premiumAction": "اكتشف Premium",
     "closeA11y": "إغلاق",
     "trialRow": "جرّب Premium مجانًا لمدة {{count}} أيام"
+  },
+  "recurrence": {
+    "label": "تكرار",
+    "none": "أبدًا",
+    "daily": "كل يوم",
+    "weekly": "كل أسبوع",
+    "monthly": "كل شهر",
+    "badgeA11y": "متابعة متكررة: {{label}}",
+    "hint": "عند إكمالها تُنشأ التالية تلقائيًا."
   }
 }

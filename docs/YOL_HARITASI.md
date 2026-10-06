@@ -58,7 +58,13 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
   - Ayarlar'da kalıcı bölüm (yalnızca premium olmayanlara): "Premium'u 7 gün ücretsiz dene" ve "Arkadaşını davet et (+3 hak)". Kart kaçırılsa da kullanıcı istediği zaman ulaşır; kendiliğinden açılmaz. Premium olunca bölüm kaybolur.
 
 ### Faz 4 — Büyük özellikler
-- [ ] **2d** Tekrarlayan takipler: Yeni Takip'te "Tekrarla" (her gün / hafta / ay), AI "her pazartesi" gibi ifadeleri algılar, tamamlanınca sonraki otomatik oluşur, kartta 🔁. Premium olabilir.
+- [x] **2d** Tekrarlayan takipler (kod hazır; sunucu yayında, uygulama aynı `eas update`'te). Ücretsiz.
+  - Yeni Takip'te tarih seçilince "🔁 Tekrarla: Yok / Her gün / Her hafta / Her ay"; takip detayından değiştirilebilir; kartta 🔁.
+  - Tamamlanınca (uygulamadan veya bildirim düğmesinden) bir sonraki aynı saatle oluşur, hatırlatması kurulur; geç tamamlanırsa kaçırılan tarihler atlanır.
+  - AI "her pazartesi", "her ayın 5'i" gibi ifadeleri tanır (`recurrence` alanı; eski sürümler yok sayar).
+  - Bilinen sınır: ayın 29–31'ine kurulan aylık takip kısa bir aydan sonra o ayın son gününe kayar.
+  - Veritabanı: `follow_ups.recurrence` sütunu (eski kurulumlara açılışta eklenir).
+
 - [ ] **1e** Yedekleme — **B seçeneği seçildi:** telefonun kendi gece yedeğine (iCloud / Google) dahil olmak; hesap gerekmez.
   - Android: yedek kuralları 1.1.1'de eklendi (veritabanı dahil, SecureStore hariç). Gerçek cihazda yedekten geri yükleme denenecek.
   - iOS: SQLite dosyasının iCloud yedeğine dahil olduğu doğrulanacak.

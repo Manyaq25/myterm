@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS follow_ups (
   createdAt INTEGER NOT NULL,
   updatedAt INTEGER NOT NULL,
   completedAt INTEGER,
+  recurrence TEXT,
   FOREIGN KEY (personId) REFERENCES people(id) ON DELETE SET NULL
 );
 

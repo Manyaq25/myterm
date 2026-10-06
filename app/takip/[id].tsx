@@ -5,8 +5,9 @@ import { useDataLoader } from '../../src/services/dataEvents';
 import { recordCompletionForReview } from '../../src/services/reviewPrompt';
 import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
-import { getFollowUp } from '../../src/db/queries';
-import type { FollowUpWithPerson } from '../../src/types';
+import { getFollowUp, updateFollowUpRecurrence } from '../../src/db/queries';
+import type { FollowUpWithPerson, Recurrence } from '../../src/types';
+import { RecurrencePicker, recurrenceLabel } from '../../src/components/RecurrencePicker';
 import { formatDueDate, isOverdue } from '../../src/utils/date';
 import { completeFollowUp, removeFollowUp, rescheduleFollowUp } from '../../src/services/followUpActions';
 import { DateTimeSheet } from '../../src/components/DateTimeSheet';
@@ -91,6 +92,12 @@ export default function TakipDetayScreen() {
     void applyNewTime(next);
   }
 
+  async function changeRecurrence(value: Recurrence | null) {
+    if (!item) return;
+    await updateFollowUpRecurrence(db, item.id, value);
+    await load();
+  }
+
   function pickerStartValue(): Date {
     if (item?.dueAt != null && item.dueAt > Date.now()) return new Date(item.dueAt);
     const d = new Date();
@@ -163,6 +170,14 @@ export default function TakipDetayScreen() {
             )}
           </View>
         )}
+        {canReschedule && item.dueAt !== null && (
+          <View style={styles.recurrenceWrap}>
+            <RecurrencePicker value={item.recurrence} onChange={changeRecurrence} />
+          </View>
+        )}
+        {!canReschedule && item.recurrence && (
+          <Text style={styles.meta}>{recurrenceLabel(item.recurrence, t)}</Text>
+        )}
         {item.detail && <Text style={styles.detail}>{item.detail}</Text>}
       </View>
 
@@ -202,6 +217,7 @@ function getStyles(colors: ThemeColors) {
     },
     badge: { marginBottom: 10 },
     remindWrap: { marginTop: 16 },
+    recurrenceWrap: { marginTop: 14 },
     title: { fontSize: fontSize.title, fontFamily: fontFamily.displaySemiBold, color: colors.text, lineHeight: 28 },
     personRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 14 },
     personText: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.text },

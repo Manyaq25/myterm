@@ -8,7 +8,8 @@ import { ArrowLeft, Check } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useKeyboardHeight } from '../../src/hooks/useKeyboardHeight';
 import { createFollowUp, createPerson, listPeople } from '../../src/db/queries';
-import { FOLLOW_UP_TYPES, type FollowUpType } from '../../src/types';
+import { FOLLOW_UP_TYPES, type FollowUpType, type Recurrence } from '../../src/types';
+import { RecurrencePicker } from '../../src/components/RecurrencePicker';
 import { followUpTypeLabel } from '../../src/i18n/labels';
 import { applyReminderLead } from '../../src/utils/date';
 import { scheduleMainReminder } from '../../src/services/reminderScheduler';
@@ -37,6 +38,7 @@ export default function YeniTakipScreen() {
   const [type, setType] = useState<FollowUpType>('task');
   const [personName, setPersonName] = useState('');
   const [dueAt, setDueAt] = useState<Date | null>(null);
+  const [recurrence, setRecurrence] = useState<Recurrence | null>(null);
   const [showPicker, setShowPicker] = useState(false);
   const [androidPickerStage, setAndroidPickerStage] = useState<'date' | 'time' | null>(null);
   const [saving, setSaving] = useState(false);
@@ -73,6 +75,8 @@ export default function YeniTakipScreen() {
         dueAt: dueAtMs,
         remindAt: remindAtMs,
         source: 'manual',
+        // Tekrar yalnızca tarihi olan takipte anlamlı.
+        recurrence: dueAtMs ? recurrence : null,
       });
 
       if (remindAtMs) {
@@ -253,6 +257,12 @@ export default function YeniTakipScreen() {
               });
             }}
           />
+        )}
+
+        {dueAt && (
+          <View style={styles.fieldSpacing}>
+            <RecurrencePicker value={recurrence} onChange={setRecurrence} />
+          </View>
         )}
 
         <View style={styles.saveButtonWrap}>

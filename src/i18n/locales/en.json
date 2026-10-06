@@ -436,5 +436,14 @@
     "premiumAction": "See Premium",
     "closeA11y": "Close",
     "trialRow": "Try Premium free for {{count}} days"
+  },
+  "recurrence": {
+    "label": "Repeat",
+    "none": "Never",
+    "daily": "Every day",
+    "weekly": "Every week",
+    "monthly": "Every month",
+    "badgeA11y": "Repeating follow-up: {{label}}",
+    "hint": "When you complete it, the next one is created automatically."
   }
 }
