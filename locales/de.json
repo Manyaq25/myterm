@@ -3,6 +3,7 @@
     "NSFaceIDUsageDescription": "Face ID wird zum Entsperren der App verwendet.",
     "NSMicrophoneUsageDescription": "Der Mikrofonzugriff wird benötigt, um deine Sprachnotizen in Erinnerungen umzuwandeln.",
     "NSPhotoLibraryUsageDescription": "Der Zugriff auf deine Fotos wird benötigt, um Screenshots oder ausgewählte Bilder in Erinnerungen umzuwandeln.",
-    "NSPhotoLibraryAddUsageDescription": "Diese App speichert keine Fotos in deiner Mediathek."
+    "NSPhotoLibraryAddUsageDescription": "Diese App speichert keine Fotos in deiner Mediathek.",
+    "NSContactsUsageDescription": "Damit du die Telefonnummer einer Person aus deinen Kontakten auswählen kannst. Die App sieht nur den gewählten Kontakt."
   }
 }

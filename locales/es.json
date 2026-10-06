@@ -3,6 +3,7 @@
     "NSFaceIDUsageDescription": "Se usa Face ID para desbloquear la app.",
     "NSMicrophoneUsageDescription": "Se necesita acceso al micrófono para convertir tus notas de voz en seguimientos.",
     "NSPhotoLibraryUsageDescription": "Se necesita acceso a tus fotos para convertir capturas de pantalla o imágenes seleccionadas en seguimientos.",
-    "NSPhotoLibraryAddUsageDescription": "Esta app no guarda fotos en tu fototeca."
+    "NSPhotoLibraryAddUsageDescription": "Esta app no guarda fotos en tu fototeca.",
+    "NSContactsUsageDescription": "Para que puedas elegir el número de teléfono de una persona de tus contactos. La app solo ve el contacto que elijas."
   }
 }

@@ -1,6 +1,6 @@
 # Synvia AI — Yol Haritası ve Kararlar
 
-Son güncelleme: 5 Ekim 2026 (yol haritası onaylandı)
+Son güncelleme: 6 Ekim 2026 (1.1.1: kalan yerel modüller tek build'de)
 
 ## Kalıcı kurallar
 
@@ -11,6 +11,13 @@ Son güncelleme: 5 Ekim 2026 (yol haritası onaylandı)
   `git checkout --detach b711a13` → `git cherry-pick --no-commit <düzeltme>` → `eas update ...` (Runtime: exposdk:54.0.0) → `git reset --hard` → `git checkout main`.
 - **Public anahtarlar kodda:** RevenueCat SDK anahtarları ve sunucu adresi `src/config/publicConfig.ts` içinde varsayılan olarak tutulur. `eas update`, `eas.json`'daki `env` bölümünü okumaz; eksik kalırsa iPhone'da premium/satın alma çalışmaz (6 Ekim'de yaşandı ve düzeltildi).
 - **Geliştirici premium'u:** Ayarlar → Destek kimliği kopyalanır → RevenueCat → Customers'ta aranır → Grant → premium → Lifetime.
+
+## 1.1.1 build'i — yerel hazırlık
+Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelliklerin kendisi sonradan `eas update` ile gelir:
+- `expo-store-review` (3e değerlendirme penceresi).
+- `expo-contacts` (2c "Rehberden seç"). iOS'ta sistem seçicisi izin istemez; izin metni 12 dilde eklendi. Android'de rehber izinleri şimdilik kapalı (READ/WRITE_CONTACTS engelli).
+- Android yedek kuralları (1e-B): her şey yedeklenir, yalnızca SecureStore hariç (`plugins/withAndroidBackupRules.js`).
+- 1.1.0 (14) incelemeye gönderilmez; mağazaya 1.1.1 gider.
 
 ## Onaylanan işler
 
@@ -41,10 +48,10 @@ Son güncelleme: 5 Ekim 2026 (yol haritası onaylandı)
 ### Faz 4 — Büyük özellikler
 - [ ] **2d** Tekrarlayan takipler: Yeni Takip'te "Tekrarla" (her gün / hafta / ay), AI "her pazartesi" gibi ifadeleri algılar, tamamlanınca sonraki otomatik oluşur, kartta 🔁. Premium olabilir.
 - [ ] **1e** Yedekleme — **B seçeneği seçildi:** telefonun kendi gece yedeğine (iCloud / Google) dahil olmak; hesap gerekmez.
-  - Android: `allowBackup="true"` zaten açık. Veritabanının yedeğe girdiği ve geri yüklemede SecureStore'un sorun çıkarmadığı doğrulanacak (expo-secure-store eklentisi app.json'da yok, yedek kuralları eklenmemiş).
+  - Android: yedek kuralları 1.1.1'de eklendi (veritabanı dahil, SecureStore hariç). Gerçek cihazda yedekten geri yükleme denenecek.
   - iOS: SQLite dosyasının iCloud yedeğine dahil olduğu doğrulanacak.
 - [ ] **2c** AI ile hatırlatma mesajı: rehber izni olmadan sistemin kişi seçicisiyle "Rehberden seç" (doğru kişiyi kullanıcı seçer, numara kişi kartına bir kez kaydedilir), AI mesaj yazar, WhatsApp hazır açılır. Yeni build gerekir.
-  - Kişi seçici, "Galeriden seç" gibi çalışır: pencereyi telefon gösterir, uygulama rehberin tamamını görmez, yalnızca seçilen kişinin numarası gelir. Kurarken izin gerektirmediği iOS ve Android'de doğrulanacak.
+  - Kişi seçici, "Galeriden seç" gibi çalışır: pencereyi telefon gösterir, uygulama rehberin tamamını görmez, yalnızca seçilen kişinin numarası gelir. iOS'ta izin gerekmiyor (doğrulandı). Android'de expo-contacts seçilen kişiyi okumak için READ_CONTACTS istiyor; Android tarafı izinsiz bir seçiciyle (telefon numarası seçme ekranı) ya da izinle ayrıca tasarlanacak — Android üretim build'i zaten yeni yapılacak.
 
 ### Faz 5 — Tanıtım
 - [ ] **Tanıtım videosunu güncellemek** (kaynak: `promo/video/`):
@@ -60,5 +67,5 @@ Son güncelleme: 5 Ekim 2026 (yol haritası onaylandı)
 - **2e:** Takvim bağlantısı — uygulama tek başına yeterli olmalı.
 
 ## Bekleyen dış işler
-- App Store 1.0.2 (12 dil + izin metinleri) incelemede.
+- App Store'da 1.0.2 yayında. Sıradaki: 1.1.1 build'i → TestFlight kontrolü → incelemeye gönderim.
 - Google Play üretim erişimi başvurusu gönderildi; onay gelince Android üretim build'i ve sitedeki "Google Play — Yakında" düğmesinin güncellenmesi.

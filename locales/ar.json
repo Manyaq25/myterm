@@ -3,6 +3,7 @@
     "NSFaceIDUsageDescription": "يُستخدم Face ID لفتح قفل التطبيق.",
     "NSMicrophoneUsageDescription": "يلزم الوصول إلى الميكروفون لتحويل ملاحظاتك الصوتية إلى متابعات.",
     "NSPhotoLibraryUsageDescription": "يلزم الوصول إلى الصور لتحويل لقطات الشاشة أو الصور المختارة إلى متابعات.",
-    "NSPhotoLibraryAddUsageDescription": "لا يحفظ هذا التطبيق أي صور في مكتبتك."
+    "NSPhotoLibraryAddUsageDescription": "لا يحفظ هذا التطبيق أي صور في مكتبتك.",
+    "NSContactsUsageDescription": "لتتمكن من اختيار رقم هاتف شخص من جهات اتصالك. لا يرى التطبيق إلا جهة الاتصال التي تختارها."
   }
 }

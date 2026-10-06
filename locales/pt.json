@@ -3,6 +3,7 @@
     "NSFaceIDUsageDescription": "O Face ID é usado para desbloquear o app.",
     "NSMicrophoneUsageDescription": "O acesso ao microfone é necessário para transformar suas notas de voz em acompanhamentos.",
     "NSPhotoLibraryUsageDescription": "O acesso às fotos é necessário para transformar capturas de tela ou imagens selecionadas em acompanhamentos.",
-    "NSPhotoLibraryAddUsageDescription": "Este app não salva fotos na sua biblioteca."
+    "NSPhotoLibraryAddUsageDescription": "Este app não salva fotos na sua biblioteca.",
+    "NSContactsUsageDescription": "Para você escolher o número de telefone de uma pessoa nos seus contatos. O app só vê o contato escolhido."
   }
 }
