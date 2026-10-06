@@ -38,6 +38,8 @@ const ACTIONS_MIGRATION_KEY = 'notificationActionsMigrated';
 async function migrateExistingReminders(db: SQLiteDatabase): Promise<void> {
   try {
     if (await SecureStore.getItemAsync(ACTIONS_MIGRATION_KEY)) return;
+    // İzin yoksa yeniden kurmanın anlamı yok; açılışta izin penceresi de çıkmasın.
+    if (!(await Notifications.getPermissionsAsync()).granted) return;
     await rebuildUpcomingReminders(db);
     await SecureStore.setItemAsync(ACTIONS_MIGRATION_KEY, '1');
   } catch {
