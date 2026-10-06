@@ -7,8 +7,10 @@ import {
   upsertReminderDay,
   deleteReminderDayRow,
   getFollowUpsByIds,
+  listReminderDaysFrom,
 } from '../db/queries';
-import { scheduleNotification, cancelFollowUpReminder } from './notifications';
+import { FOLLOW_UP_CATEGORY, scheduleNotification, cancelFollowUpReminder } from './notifications';
+import i18n from '../i18n';
 import { isOverdue } from '../utils/date';
 
 function dayKey(timestamp: number): string {
@@ -43,6 +45,18 @@ export async function removeFromReminderDay(
   await rebuildDayNotification(db, day);
 }
 
+/**
+ * Bugünden sonraki bütün günlerin bildirimlerini yeniden kurar. Bildirim
+ * düğmeleri gelmeden önce kurulmuş hatırlatmaların da düğmeli olması için
+ * bir kez çalıştırılır.
+ */
+export async function rebuildUpcomingReminders(db: SQLiteDatabase): Promise<void> {
+  const days = await listReminderDaysFrom(db, dayKey(Date.now()));
+  for (const day of days) {
+    await rebuildDayNotification(db, day);
+  }
+}
+
 async function rebuildDayNotification(db: SQLiteDatabase, day: string): Promise<void> {
   const existing = await getReminderDay(db, day);
   if (existing?.notificationId) {
@@ -65,9 +79,13 @@ async function rebuildDayNotification(db: SQLiteDatabase, day: string): Promise<
 
   if (items.length === 1) {
     const only = items[0];
-    const notificationId = await scheduleNotification(only.title, 'Zamanı geldi', new Date(only.remindAt!), {
-      followUpId: only.id,
-    });
+    const notificationId = await scheduleNotification(
+      only.title,
+      i18n.t('notifications.dueNow'),
+      new Date(only.remindAt!),
+      { followUpId: only.id },
+      FOLLOW_UP_CATEGORY
+    );
     await upsertReminderDay(db, day, notificationId);
     return;
   }
@@ -79,9 +97,9 @@ async function rebuildDayNotification(db: SQLiteDatabase, day: string): Promise<
   });
   const earliest = Math.min(...sorted.map((i) => i.remindAt!));
   const preview = sorted.slice(0, 2).map((i) => i.title).join(', ');
-  const extra = sorted.length > 2 ? ` ve ${sorted.length - 2} takip daha` : '';
+  const extra = sorted.length > 2 ? i18n.t('notifications.digestMore', { count: sorted.length - 2 }) : '';
   const notificationId = await scheduleNotification(
-    `Bugün ${sorted.length} takip var`,
+    i18n.t('notifications.digestTitle', { count: sorted.length }),
     `${preview}${extra}`,
     new Date(earliest),
     { kind: 'daily-digest', day }

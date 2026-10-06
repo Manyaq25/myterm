@@ -354,5 +354,19 @@
   },
   "splash": {
     "tagline": "소중한 인연, 잊히지 않는 약속"
+  },
+  "notifications": {
+    "channelName": "팔로우업",
+    "dueNow": "시간이 되었어요",
+    "digestTitle": "오늘 팔로우업 {{count}}개",
+    "digestMore": " 외 {{count}}개",
+    "dayBefore": "내일이 기한이에요",
+    "sameDayMorning": "오늘이 기한이에요",
+    "actionComplete": "완료",
+    "actionSnoozeHour": "1시간 미루기",
+    "actionTomorrow": "내일",
+    "toastCompleted": "팔로우업을 완료했어요",
+    "toastSnoozed": "1시간 후에 다시 알려 드릴게요",
+    "toastTomorrow": "내일로 미뤘어요"
   }
 }

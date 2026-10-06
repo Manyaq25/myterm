@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Alert, FlatList, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useFocusEffect } from 'expo-router';
+import { useDataLoader } from '../../src/services/dataEvents';
+import { recordCompletionForReview } from '../../src/services/reviewPrompt';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -54,11 +55,7 @@ export default function TakiplerScreen() {
     setItems(rows);
   }, [db, filterIndex, filters]);
 
-  useFocusEffect(
-    useCallback(() => {
-      load();
-    }, [load])
-  );
+  useDataLoader(load);
 
   const filteredItems = useMemo(
     () => items.filter((item) => matchesQuery(query, item.title, item.personName, item.detail)),
@@ -212,6 +209,7 @@ export default function TakiplerScreen() {
             onToggleSelect={() => toggleSelected(item.id)}
             onComplete={async () => {
               await completeFollowUp(db, item);
+              void recordCompletionForReview();
               await load();
             }}
             onDelete={async () => {

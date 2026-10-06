@@ -354,5 +354,19 @@
   },
   "splash": {
     "tagline": "Vos liens importants, des promesses qu'on n'oublie pas"
+  },
+  "notifications": {
+    "channelName": "Suivis",
+    "dueNow": "C'est le moment",
+    "digestTitle": "{{count}} suivis aujourd'hui",
+    "digestMore": " et {{count}} de plus",
+    "dayBefore": "Échéance demain",
+    "sameDayMorning": "Échéance aujourd'hui",
+    "actionComplete": "Terminé",
+    "actionSnoozeHour": "Reporter d'1 heure",
+    "actionTomorrow": "Demain",
+    "toastCompleted": "Suivi terminé",
+    "toastSnoozed": "Je te le rappelle dans 1 heure",
+    "toastTomorrow": "Reporté à demain"
   }
 }

@@ -354,5 +354,19 @@
   },
   "splash": {
     "tagline": "Ваши важные связи, обещания, которые не забываются"
+  },
+  "notifications": {
+    "channelName": "Задачи",
+    "dueNow": "Пора",
+    "digestTitle": "Сегодня задач: {{count}}",
+    "digestMore": " и ещё {{count}}",
+    "dayBefore": "Срок завтра",
+    "sameDayMorning": "Срок сегодня",
+    "actionComplete": "Готово",
+    "actionSnoozeHour": "Отложить на 1 час",
+    "actionTomorrow": "Завтра",
+    "toastCompleted": "Задача выполнена",
+    "toastSnoozed": "Напомню снова через 1 час",
+    "toastTomorrow": "Перенесено на завтра"
   }
 }

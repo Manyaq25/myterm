@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useFocusEffect, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
+import { useDataLoader } from '../../src/services/dataEvents';
+import { recordCompletionForReview } from '../../src/services/reviewPrompt';
 import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -89,11 +91,7 @@ export default function HomeScreen() {
     setHasPendingNotification(false);
   }
 
-  useFocusEffect(
-    useCallback(() => {
-      load();
-    }, [load])
-  );
+  useDataLoader(load);
 
   useEffect(() => {
     (async () => {
@@ -233,6 +231,7 @@ export default function HomeScreen() {
             item={item}
             onComplete={async () => {
               await completeFollowUp(db, item);
+              void recordCompletionForReview();
               await load();
             }}
             onDelete={async () => {

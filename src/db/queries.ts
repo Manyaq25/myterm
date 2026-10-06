@@ -287,6 +287,11 @@ export async function upsertReminderDay(
   );
 }
 
+export async function listReminderDaysFrom(db: SQLiteDatabase, fromDay: string): Promise<string[]> {
+  const rows = await db.getAllAsync<{ day: string }>(`SELECT day FROM reminder_days WHERE day >= ?`, [fromDay]);
+  return rows.map((r) => r.day);
+}
+
 export async function deleteReminderDayRow(db: SQLiteDatabase, day: string): Promise<void> {
   await db.runAsync(`DELETE FROM reminder_days WHERE day = ?`, [day]);
 }

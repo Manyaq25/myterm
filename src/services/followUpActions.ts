@@ -64,3 +64,34 @@ export async function rescheduleFollowUp(db: SQLiteDatabase, item: RescheduleRef
   await scheduleExtraReminders(db, item.id, item.title, dueAt, extraChoiceFromKinds(extraKinds));
   await updateWidgetSummary(db);
 }
+
+const HOUR_MS = 60 * 60 * 1000;
+
+/**
+ * Bildirimdeki "1 saat ertele": yalnızca hatırlatmayı 1 saat sonraya alır,
+ * takibin kendi tarihi değişmez (geç kalmışsa geç kalmış olarak görünmeye devam eder).
+ */
+export async function snoozeFollowUpReminder(db: SQLiteDatabase, item: RescheduleRef & Pick<FollowUp, 'dueAt'>): Promise<void> {
+  const remindAt = Date.now() + HOUR_MS;
+  await removeFromReminderDay(db, item.remindAt, item.id);
+  await updateFollowUpSchedule(db, item.id, item.dueAt, remindAt);
+  await scheduleMainReminder(db, item.id, remindAt);
+  await updateWidgetSummary(db);
+}
+
+/**
+ * Bildirimdeki "Yarın": takibi yarına, aynı saate taşır. Saat, takibin kendi
+ * saatinden (yoksa hatırlatma saatinden) alınır; ikisi de yoksa sabah 9.
+ */
+export async function moveFollowUpToTomorrow(db: SQLiteDatabase, item: RescheduleRef & Pick<FollowUp, 'dueAt'>): Promise<void> {
+  const source = item.dueAt ?? item.remindAt;
+  const target = new Date();
+  target.setDate(target.getDate() + 1);
+  if (source !== null) {
+    const time = new Date(source);
+    target.setHours(time.getHours(), time.getMinutes(), 0, 0);
+  } else {
+    target.setHours(9, 0, 0, 0);
+  }
+  await rescheduleFollowUp(db, item, target.getTime());
+}

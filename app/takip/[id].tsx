@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AccessibilityInfo, Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useDataLoader } from '../../src/services/dataEvents';
+import { recordCompletionForReview } from '../../src/services/reviewPrompt';
 import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { getFollowUp } from '../../src/db/queries';
@@ -31,11 +33,7 @@ export default function TakipDetayScreen() {
     setItem(row);
   }, [db, id]);
 
-  useFocusEffect(
-    useCallback(() => {
-      load();
-    }, [load])
-  );
+  useDataLoader(load);
 
   // Kartın "…" menüsündeki "Zamanı değiştir" bu ekranı seçici açık gelir.
   const canReschedule = item !== null && (item.status === 'open' || item.status === 'snoozed');
@@ -62,6 +60,7 @@ export default function TakipDetayScreen() {
   async function markDone() {
     if (!item) return;
     await completeFollowUp(db, item);
+    void recordCompletionForReview();
     goBack();
   }
 

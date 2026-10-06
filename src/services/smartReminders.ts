@@ -1,7 +1,8 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 import type { FollowUpType } from '../types';
 import { addFollowUpReminder, deleteFollowUpReminders } from '../db/queries';
-import { scheduleNotification, cancelFollowUpReminder } from './notifications';
+import { FOLLOW_UP_CATEGORY, scheduleNotification, cancelFollowUpReminder } from './notifications';
+import i18n from '../i18n';
 
 const NEAR_TERM_MS = 3 * 24 * 60 * 60 * 1000; // 3 gün
 
@@ -74,18 +75,21 @@ export async function scheduleExtraReminders(
 
   const targets: { date: Date; kind: string; body: string }[] = [];
   if (choice === 'day_before' || choice === 'both') {
-    targets.push({ date: dayBeforeDate(dueAt), kind: 'day_before', body: 'Yarın zamanı geliyor' });
+    targets.push({ date: dayBeforeDate(dueAt), kind: 'day_before', body: i18n.t('notifications.dayBefore') });
   }
   if (choice === 'morning' || choice === 'both') {
-    targets.push({ date: sameDayMorningDate(dueAt), kind: 'same_day_morning', body: 'Bugün zamanı geliyor' });
+    targets.push({ date: sameDayMorningDate(dueAt), kind: 'same_day_morning', body: i18n.t('notifications.sameDayMorning') });
   }
 
   for (const target of targets) {
     if (target.date.getTime() <= Date.now()) continue;
-    const notificationId = await scheduleNotification(title, target.body, target.date, {
-      followUpId,
-      kind: target.kind,
-    });
+    const notificationId = await scheduleNotification(
+      title,
+      target.body,
+      target.date,
+      { followUpId, kind: target.kind },
+      FOLLOW_UP_CATEGORY
+    );
     if (notificationId) {
       await addFollowUpReminder(db, followUpId, notificationId, target.date.getTime(), target.kind);
     }

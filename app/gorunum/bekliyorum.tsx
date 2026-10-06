@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { useFocusEffect } from 'expo-router';
+import { useDataLoader } from '../../src/services/dataEvents';
 import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { listFollowUpsByType } from '../../src/db/queries';
@@ -16,11 +16,10 @@ export default function NeyiBekliyorumScreen() {
   const { t } = useTranslation();
   const [groups, setGroups] = useState<PersonGroup[]>([]);
 
-  useFocusEffect(
-    useCallback(() => {
-      listFollowUpsByType(db, 'waiting_on').then((items) => setGroups(groupFollowUpsByPerson(items)));
-    }, [db])
-  );
+  const load = useCallback(() => {
+    listFollowUpsByType(db, 'waiting_on').then((items) => setGroups(groupFollowUpsByPerson(items)));
+  }, [db]);
+  useDataLoader(load);
 
   return (
     <View style={styles.root}>

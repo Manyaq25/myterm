@@ -354,5 +354,19 @@
   },
   "splash": {
     "tagline": "Tus conexiones importantes, promesas que no se olvidan"
+  },
+  "notifications": {
+    "channelName": "Seguimientos",
+    "dueNow": "Es la hora",
+    "digestTitle": "Hoy tienes {{count}} seguimientos",
+    "digestMore": " y {{count}} más",
+    "dayBefore": "Vence mañana",
+    "sameDayMorning": "Vence hoy",
+    "actionComplete": "Hecho",
+    "actionSnoozeHour": "Posponer 1 hora",
+    "actionTomorrow": "Mañana",
+    "toastCompleted": "Seguimiento completado",
+    "toastSnoozed": "Te lo recordaré de nuevo en 1 hora",
+    "toastTomorrow": "Pasado a mañana"
   }
 }

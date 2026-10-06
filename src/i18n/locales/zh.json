@@ -354,5 +354,19 @@
   },
   "splash": {
     "tagline": "重要的联系，不会遗忘的承诺"
+  },
+  "notifications": {
+    "channelName": "跟进事项",
+    "dueNow": "时间到了",
+    "digestTitle": "今天有 {{count}} 个跟进事项",
+    "digestMore": "，还有 {{count}} 个",
+    "dayBefore": "明天到期",
+    "sameDayMorning": "今天到期",
+    "actionComplete": "已完成",
+    "actionSnoozeHour": "1 小时后提醒",
+    "actionTomorrow": "明天",
+    "toastCompleted": "跟进事项已完成",
+    "toastSnoozed": "1 小时后再提醒你",
+    "toastTomorrow": "已推迟到明天"
   }
 }

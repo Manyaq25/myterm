@@ -354,5 +354,19 @@
   },
   "splash": {
     "tagline": "Your important connections, promises that don't slip"
+  },
+  "notifications": {
+    "channelName": "Follow-ups",
+    "dueNow": "It's time",
+    "digestTitle": "{{count}} follow-ups today",
+    "digestMore": " and {{count}} more",
+    "dayBefore": "Due tomorrow",
+    "sameDayMorning": "Due today",
+    "actionComplete": "Done",
+    "actionSnoozeHour": "Snooze 1 hour",
+    "actionTomorrow": "Tomorrow",
+    "toastCompleted": "Follow-up completed",
+    "toastSnoozed": "I'll remind you again in 1 hour",
+    "toastTomorrow": "Moved to tomorrow"
   }
 }

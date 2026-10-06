@@ -354,5 +354,19 @@
   },
   "splash": {
     "tagline": "Ihre wichtigen Verbindungen, Versprechen, die nicht vergessen werden"
+  },
+  "notifications": {
+    "channelName": "Vorgänge",
+    "dueNow": "Es ist so weit",
+    "digestTitle": "Heute {{count}} Vorgänge",
+    "digestMore": " und {{count}} weitere",
+    "dayBefore": "Morgen fällig",
+    "sameDayMorning": "Heute fällig",
+    "actionComplete": "Erledigt",
+    "actionSnoozeHour": "1 Stunde später",
+    "actionTomorrow": "Morgen",
+    "toastCompleted": "Vorgang erledigt",
+    "toastSnoozed": "Ich erinnere dich in 1 Stunde erneut",
+    "toastTomorrow": "Auf morgen verschoben"
   }
 }

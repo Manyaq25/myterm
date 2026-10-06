@@ -354,5 +354,19 @@
   },
   "splash": {
     "tagline": "Önemli bağlarınız, unutulmayan sözler"
+  },
+  "notifications": {
+    "channelName": "Takipler",
+    "dueNow": "Zamanı geldi",
+    "digestTitle": "Bugün {{count}} takip var",
+    "digestMore": " ve {{count}} takip daha",
+    "dayBefore": "Yarın zamanı geliyor",
+    "sameDayMorning": "Bugün zamanı geliyor",
+    "actionComplete": "Tamamlandı",
+    "actionSnoozeHour": "1 saat ertele",
+    "actionTomorrow": "Yarın",
+    "toastCompleted": "Takip tamamlandı",
+    "toastSnoozed": "1 saat sonra tekrar hatırlatacağım",
+    "toastTomorrow": "Yarına ertelendi"
   }
 }

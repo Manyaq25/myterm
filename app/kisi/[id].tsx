@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useDataLoader } from '../../src/services/dataEvents';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -115,11 +116,7 @@ export default function KisiProfiliScreen() {
     setSuggestion(suggestions.find((s) => s.person.id === id) ?? null);
   }, [db, id]);
 
-  useFocusEffect(
-    useCallback(() => {
-      load();
-    }, [load])
-  );
+  useDataLoader(load);
 
   const header = <ScreenHeader title={t('stackTitles.kisiProfili')} />;
 

@@ -354,5 +354,19 @@
   },
   "splash": {
     "tagline": "大切なつながり、忘れられない約束"
+  },
+  "notifications": {
+    "channelName": "フォローアップ",
+    "dueNow": "時間になりました",
+    "digestTitle": "今日のフォローアップ：{{count}}件",
+    "digestMore": "、ほか{{count}}件",
+    "dayBefore": "明日が期限です",
+    "sameDayMorning": "今日が期限です",
+    "actionComplete": "完了",
+    "actionSnoozeHour": "1時間後に通知",
+    "actionTomorrow": "明日",
+    "toastCompleted": "フォローアップを完了しました",
+    "toastSnoozed": "1時間後にもう一度お知らせします",
+    "toastTomorrow": "明日に延期しました"
   }
 }

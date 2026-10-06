@@ -30,8 +30,11 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
   - Kalan: basit kullanım ölçümü (kaç kişi ilk çıkarımı yapıyor, premium ekranını görüyor vb.) — ayrı bir araç gerekir, sonra.
 
 ### Faz 2 — Hızlı kazanımlar
-- [ ] **2b** Bildirimden "Tamamlandı / 1 saat ertele / Yarın".
-- [ ] **3e** Mutlu anda Apple/Google değerlendirme penceresi (yeni build).
+- [x] **2b** Bildirimden "Tamamlandı / 1 saat ertele / Yarın" (kod hazır, yayın: 1.1.1 onayından sonra `eas update`).
+  - Düğmeler uygulamayı açar (uygulama kapalıyken arka plan düğmeleri işlenmiyor). Ertele yalnızca hatırlatmayı kaydırır; Yarın takibi yarına aynı saate taşır. Günlük toplu bildirimde düğme yok.
+  - Bildirime dokununca takibin detayı açılır. Bildirim metinleri artık 12 dilde (önceden hep Türkçeydi).
+  - Eski hatırlatmalar ilk açılışta bir kez yeniden kurulur ki onlarda da düğme çıksın.
+- [x] **3e** Değerlendirme penceresi (kod hazır, yayın: 2b ile birlikte). Kullanıcı 3 takibi kendisi tamamladığında, ilk kullanımdan en az 2 gün sonra, 120 günde en fazla bir kez sistem penceresi istenir. 3a'daki premium önerisiyle çakışmaz (o çıkarıma bağlı).
 
 ### Faz 3 — Gelir
 - [ ] **3b** 7 gün ücretsiz deneme + indirimli yıllık plan (mağaza panellerinde ürün/teklif + premium ekranı).

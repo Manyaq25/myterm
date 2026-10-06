@@ -354,5 +354,19 @@
   },
   "splash": {
     "tagline": "I tuoi legami importanti, promesse che non si dimenticano"
+  },
+  "notifications": {
+    "channelName": "Follow-up",
+    "dueNow": "È il momento",
+    "digestTitle": "Oggi hai {{count}} follow-up",
+    "digestMore": " e altri {{count}}",
+    "dayBefore": "Scade domani",
+    "sameDayMorning": "Scade oggi",
+    "actionComplete": "Fatto",
+    "actionSnoozeHour": "Rimanda di 1 ora",
+    "actionTomorrow": "Domani",
+    "toastCompleted": "Follow-up completato",
+    "toastSnoozed": "Te lo ricorderò di nuovo tra 1 ora",
+    "toastTomorrow": "Spostato a domani"
   }
 }

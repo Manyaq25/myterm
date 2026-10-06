@@ -1,8 +1,7 @@
 import { initCrashReporting, wrapWithCrashReporting } from '../src/services/crashReporting';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { Stack, usePathname, useRouter } from 'expo-router';
-import * as Notifications from 'expo-notifications';
+import { Stack, usePathname } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import {
   useFonts,
@@ -19,6 +18,11 @@ import { DatabaseProvider } from '../src/db/DatabaseProvider';
 import { initScreenshotSuggestions } from '../src/services/screenshotSuggestion';
 import { checkAndApplyUpdate } from '../src/services/appUpdates';
 import { AppLockGate } from '../src/components/AppLockGate';
+import { ToastHost } from '../src/components/Toast';
+import {
+  NotificationResponseHandler,
+  registerFollowUpNotificationActions,
+} from '../src/services/notificationResponses';
 import { AnimatedSplash } from '../src/components/AnimatedSplash';
 import { BottomTabBar } from '../src/components/BottomTabBar';
 import { fontFamily } from '../src/theme/typography';
@@ -35,7 +39,6 @@ initCrashReporting();
 const FULL_SCREEN_PATHS = new Set(['/onboarding', '/asistan', '/premium']);
 
 function RootLayout() {
-  const router = useRouter();
   const pathname = usePathname();
   const { t, i18n } = useTranslation();
   const [showIntro, setShowIntro] = useState(true);
@@ -55,6 +58,11 @@ function RootLayout() {
     languageReady.then(() => setI18nReady(true));
   }, []);
 
+  // Bildirim düğmelerinin yazısı uygulama diliyle; dil değişince yeniden kaydedilir.
+  useEffect(() => {
+    if (i18nReady) void registerFollowUpNotificationActions();
+  }, [i18nReady, i18n.language]);
+
   useEffect(() => {
     void configureRevenueCat();
     subscriptionReady.then(() => setSubReady(true));
@@ -69,16 +77,7 @@ function RootLayout() {
   useEffect(() => {
     void checkAndApplyUpdate();
     void initScreenshotSuggestions();
-
-    const subscription = Notifications.addNotificationResponseReceivedListener((response) => {
-      const data = response.notification.request.content.data;
-      if (data?.kind === 'screenshot-suggestion') {
-        const assetId = typeof data.assetId === 'string' ? `&assetId=${encodeURIComponent(data.assetId)}` : '';
-        router.push(`/takip/ai-cikar?mode=image&autoScreenshot=1${assetId}`);
-      }
-    });
-    return () => subscription.remove();
-  }, [router]);
+  }, []);
 
   if ((!fontsLoaded && !fontError) || !i18nReady || !subReady) {
     return null;
@@ -89,6 +88,7 @@ function RootLayout() {
       <SafeAreaProvider>
         <DatabaseProvider>
           <AppLockGate>
+            <NotificationResponseHandler />
             <View style={{ flex: 1 }}>
               <Stack
                 key={i18n.language}
@@ -112,6 +112,7 @@ function RootLayout() {
                 <Stack.Screen name="premium" options={{ presentation: 'modal', title: t('stackTitles.premium') }} />
               </Stack>
               {!FULL_SCREEN_PATHS.has(pathname) && <BottomTabBar />}
+              <ToastHost />
             </View>
           </AppLockGate>
         </DatabaseProvider>

@@ -354,5 +354,19 @@
   },
   "splash": {
     "tagline": "روابطك المهمة، وعود لا تُنسى"
+  },
+  "notifications": {
+    "channelName": "المتابعات",
+    "dueNow": "حان الوقت",
+    "digestTitle": "لديك {{count}} متابعات اليوم",
+    "digestMore": " و{{count}} أخرى",
+    "dayBefore": "الموعد غدًا",
+    "sameDayMorning": "الموعد اليوم",
+    "actionComplete": "تم",
+    "actionSnoozeHour": "تأجيل ساعة",
+    "actionTomorrow": "غدًا",
+    "toastCompleted": "اكتملت المتابعة",
+    "toastSnoozed": "سأذكّرك مرة أخرى بعد ساعة",
+    "toastTomorrow": "تم التأجيل إلى الغد"
   }
 }
