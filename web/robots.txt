@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://aydinapp.com.tr/sitemap.xml
