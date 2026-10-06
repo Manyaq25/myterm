@@ -2,6 +2,8 @@
 
 Kaynak: 6 Ekim 2026, sürüm 1.1.1. Karakter sınırları: Subtitle 30, Promotional Text 170, Keywords 100, Description 4000.
 
+Not: Uygulama arayüzü 12 dilde; Hollandaca yalnızca mağaza sayfası için.
+
 Her dilde aynı kalanlar: **Name** = `Synvia AI` · **Support URL** = `https://aydinapp.com.tr/apps/synvia-ai/support.html` · **Privacy Policy URL** = `https://aydinapp.com.tr/apps/synvia-ai/privacy-policy.html` · Marketing URL boş.
 
 ## Turkish (mevcut — güncellenecek)
@@ -602,4 +604,54 @@ Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/st
 **What's New in This Version**
 ```
 性能和稳定性改进。
+```
+
+## Dutch (zaten ekli — Türkçe metnin yerine)
+
+**Subtitle** (App Information)
+```
+Onthoud alles, altijd
+```
+**Promotional Text**
+```
+Screenshot, spraakmemo of pdf: Synvia AI vindt je beloftes en waar je nog op wacht, en herinnert je op tijd. Geen account, je gegevens blijven op je telefoon.
+```
+**Description**
+```
+Maak een screenshot, spreek een memo in — Synvia AI doet de rest.
+
+Bijhouden met wie je hebt gesproken, wat je hebt beloofd en aan wie, zonder uren later "oei, vergeten" te zeggen, is niet langer jouw taak. Kies een screenshot, neem een spraakmemo op of typ één regel — Synvia AI haalt automatisch je beloftes en openstaande zaken eruit en herinnert je eraan wanneer het tijd is.
+
+ZO WERKT HET
+• Kies een screenshot van een chat (WhatsApp, Telegram enz.) — Synvia AI ziet wie wat zei en wat aan wie is beloofd
+• Gewoon praten — de app luistert naar je spraakmemo en maakt er opvolgpunten van
+• Upload een pdf — de app vindt zelf de datums en stappen
+• Vraag het de AI-assistent: "Wat doe ik vandaag?", "Op wie wacht ik nog?" — het antwoord komt uit je lijst
+• Of voeg alles in een paar seconden handmatig toe — jij kiest
+
+OOK ALS JIJ HET VERGEET, DE APP NIET
+• Stuurt precies op tijd een herinnering
+• Wijst je vriendelijk op achterstallige punten
+• Datum en tijd kun je altijd aanpassen
+• Groepeert alles per persoon: wat je hebt beloofd en waar je op wacht
+• Elke maand een beperkt aantal AI-extracties gratis, onbeperkt met Premium
+• Slimme herinneringssuggesties, relatie-inzichten, widget en Siri-opdrachten (Premium)
+
+PRIVACY VOOROP
+Al je gegevens blijven alleen op je telefoon, geen account nodig. Als je AI-functies gebruikt, wordt de verstuurde inhoud alleen op dat moment verwerkt en niet bewaard.
+
+IN 12 TALEN
+Engels, Turks, Duits, Spaans, Frans, Italiaans, Portugees, Russisch, Arabisch, Japans, Koreaans en Chinees.
+
+Laat geen belofte of taak meer door je vingers glippen — laat Synvia AI het voor je bijhouden.
+
+Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+```
+**Keywords**
+```
+herinnering,taken,to do,notities,ai,whatsapp,screenshot,spraakmemo,pdf,planner,belofte
+```
+**What's New in This Version**
+```
+Verbeteringen in prestaties en stabiliteit.
 ```
