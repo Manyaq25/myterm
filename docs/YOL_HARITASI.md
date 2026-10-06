@@ -67,5 +67,6 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
 - **2e:** Takvim bağlantısı — uygulama tek başına yeterli olmalı.
 
 ## Bekleyen dış işler
-- App Store'da 1.0.2 yayında. Sıradaki: 1.1.1 build'i → TestFlight kontrolü → incelemeye gönderim.
+- App Store 1.1.1 (15) 6 Ekim 2026'da incelemeye gönderildi.
+- Mağaza sayfası 16 dilde (metinler: `docs/magaza/app-store-metinleri.md`): tr, en-US/GB/CA/AU, de, fr, it, es-MX/ES, pt-BR/PT, ru, ar, ja, ko, zh-Hans, nl. Ana dil Türkçe kaldı (kullanıcı kararı); İngilizceye geçmek için önce English (U.S.) ekran görüntüleri gerekir.
 - Google Play üretim erişimi başvurusu gönderildi; onay gelince Android üretim build'i ve sitedeki "Google Play — Yakında" düğmesinin güncellenmesi.
