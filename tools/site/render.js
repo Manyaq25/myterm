@@ -1,4 +1,4 @@
-// Sitenin görsellerini üretir: web/og.png (link önizlemesi) ve web/apple-touch-icon.png.
+// Sitenin görsellerini üretir: web/og.png ve og-en.png (link önizlemesi) ve web/apple-touch-icon.png.
 //   node tools/site/render.js
 // Playwright, promo/store-assets'teki kurulumdan kullanılır.
 const path = require('path');
@@ -14,10 +14,12 @@ const web = (f) => path.join(__dirname, '../../web', f);
     args: ['--allow-file-access-from-files'],
   });
 
-  const og = await browser.newPage({ viewport: { width: 1200, height: 630 } });
-  await og.goto('file://' + path.join(__dirname, 'og.html'));
-  await og.evaluate(() => document.fonts.ready);
-  await og.screenshot({ path: web('og.png'), clip: { x: 0, y: 0, width: 1200, height: 630 } });
+  for (const [lang, file] of [['tr', 'og.png'], ['en', 'og-en.png']]) {
+    const og = await browser.newPage({ viewport: { width: 1200, height: 630 } });
+    await og.goto('file://' + path.join(__dirname, 'og.html') + '?lang=' + lang);
+    await og.evaluate(() => document.fonts.ready);
+    await og.screenshot({ path: web(file), clip: { x: 0, y: 0, width: 1200, height: 630 } });
+  }
 
   // iOS köşeleri kendisi yuvarlar; köşeler siyah kalmasın diye arka plan dolu
   const icon = await browser.newPage({ viewport: { width: 180, height: 180 } });
@@ -27,5 +29,5 @@ const web = (f) => path.join(__dirname, '../../web', f);
   await icon.screenshot({ path: web('apple-touch-icon.png') });
 
   await browser.close();
-  console.log('wrote web/og.png, web/apple-touch-icon.png');
+  console.log('wrote web/og.png, web/og-en.png, web/apple-touch-icon.png');
 })();

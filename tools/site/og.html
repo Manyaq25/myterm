@@ -38,17 +38,26 @@
   <div class="left">
     <div class="brand">
       <img src="../../web/apps/synvia-ai/icon.png" alt="">
-      <div><div class="name">Synvia AI</div><div class="free">APP STORE'DA ÜCRETSİZ</div></div>
+      <div><div class="name">Synvia AI</div><div class="free" data-t="free">APP STORE'DA ÜCRETSİZ</div></div>
     </div>
-    <h1>Her zaman, <span>her şeyi hatırla.</span></h1>
+    <h1 data-t="title">Her zaman, <span>her şeyi hatırla.</span></h1>
     <div class="chips">
-      <span class="chip">🎤 Sesle ekle</span>
-      <span class="chip">📷 Ekran görüntüsü</span>
-      <span class="chip">📄 PDF</span>
-      <span class="chip">💬 Mesajla hatırlat</span>
+      <span class="chip" data-t="c1">🎤 Sesle ekle</span>
+      <span class="chip" data-t="c2">📷 Ekran görüntüsü</span>
+      <span class="chip" data-t="c3">📄 PDF</span>
+      <span class="chip" data-t="c4">💬 Mesajla hatırlat</span>
     </div>
   </div>
   <div class="site"><b>aydinapp.com.tr</b></div>
   <div class="phone"><div class="screen"><img src="../../web/assets/promo/01-home-geciken.png" alt=""></div></div>
 </div>
+<script>
+  // ?lang=en → İngilizce görsel (og-en.png)
+  if (new URLSearchParams(location.search).get('lang') === 'en') {
+    var EN = { free: 'FREE ON THE APP STORE', title: 'Remember everything, <span>always.</span>',
+      c1: '🎤 Add by voice', c2: '📷 Screenshots', c3: '📄 PDFs', c4: '💬 Remind by message' };
+    document.documentElement.lang = 'en';
+    document.querySelectorAll('[data-t]').forEach(function (el) { el.innerHTML = EN[el.dataset.t]; });
+  }
+</script>
 </body></html>

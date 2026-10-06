@@ -5,8 +5,10 @@ import { setAiBonus } from './aiUsage';
 const TIMEOUT_MS = 15_000;
 const APP_SECRET = process.env.EXPO_PUBLIC_APP_SHARED_SECRET;
 
-/** Davet bağlantısı: site hem App Store hem Google Play düğmesini gösteriyor. */
-export const INVITE_LINK = 'https://aydinapp.com.tr';
+/** Davet bağlantısı: Synvia tanıtım sayfası (App Store ve Google Play düğmeleri orada). */
+export function inviteLink(language: string): string {
+  return language.startsWith('tr') ? 'https://aydinapp.com.tr/synvia/' : 'https://aydinapp.com.tr/en/synvia/';
+}
 
 export interface ReferralStatus {
   code: string;

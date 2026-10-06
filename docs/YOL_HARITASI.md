@@ -47,7 +47,7 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
 - [x] **3c** Premium: AI kullanımı (çıkarım + asistan + Mesajla hatırlat) ücretsizde 6/ay, premium'da sınırsız; tekrarlayan takipler ücretsiz (AI maliyeti yok). Premium tablosu ve "hak doldu" uyarısı buna göre güncellendi (uyarı davetle ek hak kazanmayı da anlatıyor).
 - [x] **3f** Arkadaşını davet et (kod hazır; sunucu yayında, uygulama 2b ile aynı `eas update`'te).
   - Yalnızca davet eden kazanır (+3 AI hakkı, en fazla 10 davet = 30 hak). Davet edilen ödül almaz; kendi kodunu paylaşarak kazanabilir.
-  - Ayarlar → "Arkadaşını davet et": kod, davet sayısı, ek hak, "Davet et" (paylaşım metni + aydinapp.com.tr). "Davet kodu gir" satırı herkese açık, cihaz başına bir kez.
+  - Ayarlar → "Arkadaşını davet et": kod, davet sayısı, ek hak, "Davet et" (paylaşım metni + uygulama diline göre aydinapp.com.tr/synvia/ veya /en/synvia/). "Davet kodu gir" satırı herkese açık, cihaz başına bir kez.
   - Ek haklar aylık hak bitince kullanılır, ay geçince silinmez. Kötüye kullanıma karşı: kendi kodu girilemez, IP başına günde 5 kod girişi.
   - Sunucu: `/api/referral` (status / redeem), Redis anahtarları `ref:*`, `bonus:*`. Gizlilik politikasına "Arkadaşını Davet Et" bölümü eklendi (sitenin yayınlanması gerekiyor).
 - [x] **3a** Nazik ve tek seferlik öneriler (kod hazır, aynı `eas update`'te). Deneme seçeneği mağazada deneme tanımlanınca kendiliğinden görünür:
@@ -90,13 +90,25 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
 - [ ] **Tanıtım videosunu güncellemek** (kaynak: `promo/video/`):
   - Kapanışta Google Play'in de yayında olduğu gösterilecek ("Çok yakında" yerine).
   - Yol haritasındaki yeni özellikler videoya eklenecek (erteleme, bildirimden işlem, tekrarlayan takipler, AI ile hatırlatma mesajı, 7 gün ücretsiz deneme vb.).
-  - Sitedeki "Google Play — Yakında" düğmesi de gerçek bağlantıyla değiştirilecek.
+  - Sitedeki "Google Play — Yakında" düğmesi de gerçek bağlantıyla değiştirilecek (`web/assets/store.js` → `PLAY_URL`).
+
+### Site (aydinapp.com.tr)
+Vercel'de, `main`'e push edilince yayına girer (Root Directory: `web`). Kaynak araçları `tools/site/` (README yerine dosya başlarındaki notlar):
+- `build.sh`: Synvia sayfalarını şablondan üretir (`synvia.template.html` + `synvia.i18n.js` → `web/synvia/`, `web/en/synvia/`) ve `web/assets/site.css`'i derler. HTML'de yeni Tailwind sınıfı kullanınca çalıştırılmalı.
+- `render.js`: link önizleme görselleri (`og.png`, `og-en.png`) ve `apple-touch-icon.png`.
+- [x] 1. aşama (7 Ekim, yayında): WhatsApp/iMessage önizlemesi, iPhone App Store şeridi, ilk ekranda indirme butonu, Android'de Google Play öne alınır, CDN'siz hazır CSS ve yerel fontlar, robots/sitemap/404.
+- [x] 2. aşama (7 Ekim): `/synvia/` (TR) ve `/en/synvia/` (EN) tanıtım sayfası: üç tür takip, nasıl çalışır, özellikler, kişi kartları, gizlilik, Ücretsiz/Premium, SSS. Davet linki bu sayfaya gidiyor (OTA ile).
+- [ ] Kurumsal e-posta (ör. destek@aydinapp.com.tr) — kullanıcı kurulumu gerekir.
+- [ ] Google Search Console'a site ve sitemap kaydı — kullanıcı girişi gerekir.
+- [ ] Çerezsiz ziyaretçi sayacı (Vercel Web Analytics, panelden açılır) ve gizlilik politikasına bir satır.
+- [ ] İngilizce sayfa için İngilizce ekran görüntüleri (şimdilik Türkçe görüntüler kullanılıyor); yeni özellik ekranları telefondan alınınca sayfaya eklenecek.
+- [ ] Gizlilik/destek/veri silme sayfalarının İngilizcesi.
 
 ## 1.1.1 onayından sonra: tek `eas update` ve test listesi
 `git pull` → `eas update --branch production --message "Performans ve kararlılık iyileştirmeleri"` (yalnızca 1.1.1 build'lerine gider). Telefonda:
 1. Bildirim düğmeleri: Tamamlandı / 1 saat ertele / Yarın; bildirime dokununca detay açılıyor.
 2. AI dil: uygulamayı İngilizceye alıp metin çıkarımı ve asistan → İngilizce cevap; tarih "Today, 10:00".
-3. Davet: Ayarlar → kod, Davet et, başka cihazdan kod girme → davet edene +3.
+3. Davet: Ayarlar → kod, Davet et (paylaşım metnindeki link /synvia/ sayfasını açmalı), başka cihazdan kod girme → davet edene +3.
 4. Mesajla hatırlat: numarasız kişide Rehberden seç → mesaj → WhatsApp/SMS.
 5. Tekrarlayan takip: Her gün kur, tamamla → yarına yenisi; kartta 🔁.
 6. İlk çıkarımdan sonra öneri kartı; ✕ ile kapanıyor, bir daha çıkmıyor.

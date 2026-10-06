@@ -9,8 +9,8 @@ import { getCardSurface } from '../constants/cardStyle';
 import { useTheme, fontFamily, fontSize, letterSpacing, type ThemeColors } from '../theme';
 import { useIsPremium } from '../services/subscription';
 import {
-  INVITE_LINK,
   fetchReferralStatus,
+  inviteLink,
   redeemReferralCode,
   type RedeemError,
   type ReferralStatus,
@@ -31,7 +31,7 @@ const REDEEM_ERROR_KEYS: Record<RedeemError, string> = {
 export function InviteSection() {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isPremium = useIsPremium();
   const [status, setStatus] = useState<ReferralStatus | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
@@ -61,7 +61,7 @@ export function InviteSection() {
   async function handleShare() {
     if (!status) return;
     await Share.share({
-      message: t('invite.shareMessage', { code: status.code, reward: status.reward, link: INVITE_LINK }),
+      message: t('invite.shareMessage', { code: status.code, reward: status.reward, link: inviteLink(i18n.language) }),
     });
   }
 
