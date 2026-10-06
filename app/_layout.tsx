@@ -108,7 +108,7 @@ function RootLayout() {
                 <Stack.Screen name="kisi/[id]" options={{ headerShown: false }} />
                 <Stack.Screen name="gorunum/bekliyorum" options={{ headerShown: false }} />
                 <Stack.Screen name="gorunum/soz-verdim" options={{ headerShown: false }} />
-                <Stack.Screen name="asistan" options={{ presentation: 'modal', title: t('stackTitles.aiAsistan') }} />
+                <Stack.Screen name="asistan" options={{ headerShown: false }} />
                 <Stack.Screen name="premium" options={{ presentation: 'modal', title: t('stackTitles.premium') }} />
               </Stack>
               {!FULL_SCREEN_PATHS.has(pathname) && <BottomTabBar />}

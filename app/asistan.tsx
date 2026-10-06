@@ -12,7 +12,6 @@ import {
   View,
 } from 'react-native';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useHeaderHeight } from '@react-navigation/elements';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
@@ -27,10 +26,25 @@ import { useIsPremium } from '../src/services/subscription';
 import { buildAssistantContext } from '../src/services/assistantContext';
 import { useKeyboardHeight } from '../src/hooks/useKeyboardHeight';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../src/theme';
+import { ScreenHeader } from '../src/components/ScreenHeader';
 
 interface Exchange {
   question: string;
   answer: string;
+}
+
+// AI cevaplarında kalın yazı için **…** kullanıyor; işaretleri göstermek
+// yerine o kısımları kalın çiziyoruz.
+function renderAnswer(answer: string, boldStyle: object) {
+  return answer.split(/(\*\*[^*\n]+\*\*)/g).map((part, i) =>
+    part.startsWith('**') && part.endsWith('**') && part.length > 4 ? (
+      <Text key={i} style={boldStyle}>
+        {part.slice(2, -2)}
+      </Text>
+    ) : (
+      part
+    )
+  );
 }
 
 export default function AsistanScreen() {
@@ -39,7 +53,6 @@ export default function AsistanScreen() {
   const db = useSQLiteContext();
   const { t } = useTranslation();
   const SUGGESTIONS = [t('asistan.suggestion1'), t('asistan.suggestion2'), t('asistan.suggestion3')];
-  const headerHeight = useHeaderHeight();
   const insets = useSafeAreaInsets();
   const keyboardHeight = useKeyboardHeight();
   const [question, setQuestion] = useState('');
@@ -85,10 +98,14 @@ export default function AsistanScreen() {
   }
 
   const Container = Platform.OS === 'ios' ? KeyboardAvoidingView : View;
-  const containerProps =
-    Platform.OS === 'ios' ? { behavior: 'padding' as const, keyboardVerticalOffset: headerHeight } : {};
+  const containerProps = Platform.OS === 'ios' ? { behavior: 'padding' as const } : {};
+  // Klavye kapalıyken yazma kutusu iPhone'un alt kenarına/ev çubuğuna binmesin.
+  const inputBottomPadding =
+    Platform.OS === 'android' ? 16 + insets.bottom + keyboardHeight : keyboardHeight > 0 ? 12 : Math.max(insets.bottom, 12);
 
   return (
+    <View style={styles.screen}>
+    <ScreenHeader title={t('stackTitles.aiAsistan')} />
     <Container style={{ flex: 1 }} {...containerProps}>
       {isUsingMockAI && (
         <View style={styles.mockBanner}>
@@ -114,7 +131,7 @@ export default function AsistanScreen() {
               <Text style={styles.questionText}>{exchange.question}</Text>
             </View>
             <View style={styles.answerBubble}>
-              <Text style={styles.answerText}>{exchange.answer}</Text>
+              <Text style={styles.answerText}>{renderAnswer(exchange.answer, styles.answerBold)}</Text>
             </View>
           </View>
         ))}
@@ -129,12 +146,7 @@ export default function AsistanScreen() {
         {error && <Text style={styles.error}>{error}</Text>}
       </ScrollView>
 
-      <View
-        style={[
-          styles.inputRow,
-          Platform.OS === 'android' && { paddingBottom: 16 + insets.bottom + keyboardHeight },
-        ]}
-      >
+      <View style={[styles.inputRow, { paddingBottom: inputBottomPadding }]}>
         <TextInput
           style={styles.input}
           placeholder={t('asistan.inputPlaceholder')}
@@ -153,11 +165,13 @@ export default function AsistanScreen() {
         </Pressable>
       </View>
     </Container>
+    </View>
   );
 }
 
 function getStyles(colors: ThemeColors) {
   return StyleSheet.create({
+    screen: { flex: 1, backgroundColor: colors.background },
     mockBanner: { backgroundColor: colors.surfaceAlt, padding: 12 },
     mockBannerText: { color: colors.gold, fontSize: fontSize.small, fontFamily: fontFamily.body },
     content: { padding: 20, paddingBottom: 20, flexGrow: 1 },
@@ -197,6 +211,7 @@ function getStyles(colors: ThemeColors) {
       maxWidth: '90%',
     },
     answerText: { color: colors.text, fontSize: fontSize.base, lineHeight: 21, fontFamily: fontFamily.body },
+    answerBold: { fontFamily: fontFamily.bodyBold },
     loadingRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 4 },
     loadingText: { color: colors.textMuted, fontSize: fontSize.small, fontFamily: fontFamily.body },
     error: { color: colors.danger, marginTop: 12, fontSize: fontSize.base, fontFamily: fontFamily.body },
