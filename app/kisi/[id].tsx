@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useDataLoader } from '../../src/services/dataEvents';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { getPerson, listFollowUpsByPerson, updatePersonPhone } from '../../src/db/queries';
@@ -10,10 +10,10 @@ import { followUpStatusLabel, followUpTypeLabel } from '../../src/i18n/labels';
 import { formatDueDate, isOverdue } from '../../src/utils/date';
 import { Avatar } from '../../src/components/Avatar';
 import { ContactOptions } from '../../src/components/ContactOptions';
+import { canPickFromContacts, pickPhoneNumbersFromContacts } from '../../src/services/contactPicker';
 import { LateSuggestionCard } from '../../src/components/LateSuggestionCard';
 import { Button } from '../../src/components/Button';
 import { ScreenHeader } from '../../src/components/ScreenHeader';
-import { buildReminderMessage } from '../../src/services/contact';
 import { buildPersonInsights, formatInsightText } from '../../src/services/personInsights';
 import { useIsPremium } from '../../src/services/subscription';
 import { CARD_MARGIN_BOTTOM, getCardSurface } from '../../src/constants/cardStyle';
@@ -35,7 +35,8 @@ function FollowUpRow({ item, phone }: { item: FollowUp; phone?: string | null })
   const router = useRouter();
   const { t } = useTranslation();
   const overdue = isOpenOverdue(item);
-  const showContactShortcut = overdue && item.type === 'waiting_on' && !!phone;
+  // Gecikmiş "birinden beklediğim" takiplerde: AI'nin yazdığı nazik mesajla hatırlatma.
+  const showRemindShortcut = overdue && item.type === 'waiting_on';
   const accessibilityLabel = [
     followUpTypeLabel(item.type, t),
     item.title,
@@ -66,9 +67,17 @@ function FollowUpRow({ item, phone }: { item: FollowUp; phone?: string | null })
       {item.dueAt !== null && (
         <Text style={[styles.rowMeta, overdue && styles.rowMetaOverdue]}>⏰ {formatDueDate(item.dueAt)}</Text>
       )}
-      {showContactShortcut && (
+      {showRemindShortcut && (
         <View style={styles.contactShortcutRow}>
-          <ContactOptions phone={phone!} message={buildReminderMessage(item.title)} compact />
+          <Pressable
+            style={styles.remindShortcut}
+            onPress={() => router.push(`/takip/${item.id}?remind=1`)}
+            accessibilityRole="button"
+            accessibilityLabel={t('remindMessage.button')}
+            hitSlop={4}
+          >
+            <Text style={styles.remindShortcutText}>{t('remindMessage.button')}</Text>
+          </Pressable>
         </View>
       )}
     </Pressable>
@@ -131,6 +140,24 @@ export default function KisiProfiliScreen() {
     );
   }
 
+  // iPhone'da sistemin kişi seçicisi: izin gerekmez, yalnızca seçilen kişinin numarası gelir.
+  async function pickPhoneFromContacts() {
+    const result = await pickPhoneNumbersFromContacts();
+    if (result.status === 'no_phone') {
+      Alert.alert(t('remindMessage.noPhoneOnContact'));
+      return;
+    }
+    if (result.status !== 'picked') return;
+    if (result.numbers.length === 1) {
+      setPhoneInput(result.numbers[0]);
+      return;
+    }
+    Alert.alert(t('remindMessage.chooseNumberTitle'), undefined, [
+      ...result.numbers.slice(0, 4).map((number) => ({ text: number, onPress: () => setPhoneInput(number) })),
+      { text: t('common.cancel'), style: 'cancel' as const },
+    ]);
+  }
+
   async function savePhone() {
     if (!person) return;
     await updatePersonPhone(db, person.id, phoneInput.trim() || null);
@@ -178,7 +205,13 @@ export default function KisiProfiliScreen() {
           <Button label={t('common.save')} onPress={savePhone} />
           <Button label={t('common.cancelShort')} variant="ghostDanger" onPress={() => setEditingPhone(false)} />
         </View>
-      ) : person.phone ? (
+      ) : null}
+      {editingPhone && canPickFromContacts() && (
+        <Pressable onPress={pickPhoneFromContacts} accessibilityRole="button" hitSlop={6}>
+          <Text style={styles.pickContactLink}>{t('remindMessage.pickFromContacts')}</Text>
+        </Pressable>
+      )}
+      {editingPhone ? null : person.phone ? (
         <View style={styles.contactRow}>
           <ContactOptions phone={person.phone} />
           <Pressable
@@ -330,5 +363,13 @@ function getStyles(colors: ThemeColors) {
     rowMeta: { fontSize: fontSize.small, color: colors.textMuted, marginTop: 6, fontFamily: fontFamily.body },
     rowMetaOverdue: { color: colors.danger, fontFamily: fontFamily.bodyBold },
     contactShortcutRow: { flexDirection: 'row', gap: 8, marginTop: 10 },
+    pickContactLink: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.primaryText, marginTop: 10 },
+    remindShortcut: {
+      borderRadius: 999,
+      paddingHorizontal: 12,
+      paddingVertical: 7,
+      backgroundColor: colors.primaryContainer,
+    },
+    remindShortcutText: { fontSize: fontSize.small, fontFamily: fontFamily.bodyBold, color: colors.onPrimaryContainer },
   });
 }

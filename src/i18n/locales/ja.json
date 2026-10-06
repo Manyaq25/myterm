@@ -394,5 +394,35 @@
     "errorNetwork": "接続できませんでした。もう一度お試しください。",
     "loadError": "招待情報を読み込めませんでした。",
     "bonusHint": "今月の回数を使い切りました。招待で獲得した追加クレジットが{{bonus}}回分あります。"
+  },
+  "dueDate": {
+    "today": "今日 {{time}}",
+    "tomorrow": "明日 {{time}}",
+    "none": "日付なし"
+  },
+  "remindMessage": {
+    "button": "💬 メッセージでリマインド",
+    "hint": "{{name}}さんに送る丁寧なリマインドメッセージをAIが作成します。WhatsAppかSMSで送信できます。",
+    "phoneTitle": "電話番号が必要です",
+    "phoneBody": "メッセージを送るために{{name}}さんの番号を一度だけ追加してください。連絡先カードに保存されます。",
+    "pickFromContacts": "連絡先から選ぶ",
+    "typeNumber": "番号を入力",
+    "phonePlaceholder": "例：090-1234-5678",
+    "savePhone": "保存して続ける",
+    "chooseNumberTitle": "どの番号にしますか？",
+    "noPhoneOnContact": "選んだ連絡先に電話番号がありません。",
+    "composeTitle": "{{name}}さんへのメッセージ",
+    "writing": "メッセージを作成中…",
+    "toneFriendly": "カジュアル",
+    "toneFormal": "丁寧",
+    "toneShort": "短く",
+    "editHint": "送信前にメッセージを編集できます。",
+    "creditNote": "新しいメッセージごとにAIクレジットを1回分使います。",
+    "sendWhatsApp": "WhatsAppで開く",
+    "sendSms": "SMSで送る",
+    "changeNumber": "番号を変更",
+    "error": "メッセージを作成できませんでした。",
+    "retry": "もう一度試す",
+    "openError": "メッセージアプリを開けませんでした。"
   }
 }

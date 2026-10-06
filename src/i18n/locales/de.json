@@ -394,5 +394,35 @@
     "errorNetwork": "Keine Verbindung. Bitte versuche es erneut.",
     "loadError": "Einladungsinfos konnten gerade nicht geladen werden.",
     "bonusHint": "Dein Monatskontingent ist aufgebraucht; du hast noch {{bonus}} zusätzliche Guthaben aus Einladungen."
+  },
+  "dueDate": {
+    "today": "Heute, {{time}}",
+    "tomorrow": "Morgen, {{time}}",
+    "none": "Kein Datum"
+  },
+  "remindMessage": {
+    "button": "💬 Per Nachricht erinnern",
+    "hint": "Die KI schreibt eine freundliche Erinnerung, die du {{name}} per WhatsApp oder SMS schickst.",
+    "phoneTitle": "Telefonnummer benötigt",
+    "phoneBody": "Füge die Nummer von {{name}} einmal hinzu, um die Nachricht zu senden; sie wird im Kontakt gespeichert.",
+    "pickFromContacts": "Aus Kontakten wählen",
+    "typeNumber": "Nummer eingeben",
+    "phonePlaceholder": "z. B. 0151 23456789",
+    "savePhone": "Speichern und weiter",
+    "chooseNumberTitle": "Welche Nummer?",
+    "noPhoneOnContact": "Der gewählte Kontakt hat keine Telefonnummer.",
+    "composeTitle": "Nachricht an {{name}}",
+    "writing": "Nachricht wird geschrieben…",
+    "toneFriendly": "Freundlich",
+    "toneFormal": "Förmlich",
+    "toneShort": "Kurz",
+    "editHint": "Du kannst die Nachricht vor dem Senden bearbeiten.",
+    "creditNote": "Jede neue Nachricht verbraucht 1 KI-Guthaben.",
+    "sendWhatsApp": "In WhatsApp öffnen",
+    "sendSms": "Per SMS senden",
+    "changeNumber": "Nummer ändern",
+    "error": "Die Nachricht konnte nicht geschrieben werden.",
+    "retry": "Erneut versuchen",
+    "openError": "Die Nachrichten-App konnte nicht geöffnet werden."
   }
 }

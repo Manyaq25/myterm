@@ -36,7 +36,7 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
   - Eski hatırlatmalar ilk açılışta bir kez yeniden kurulur ki onlarda da düğme çıksın.
 - [x] **3e** Değerlendirme penceresi (kod hazır, yayın: 2b ile birlikte). Kullanıcı 3 takibi kendisi tamamladığında, ilk kullanımdan en az 2 gün sonra, 120 günde en fazla bir kez sistem penceresi istenir. 3a'daki premium önerisiyle çakışmaz (o çıkarıma bağlı).
 
-- [x] **Dil düzeltmesi** (yol haritası dışı, 6 Ekim): AI çıktıları her dilde Türkçeydi. Artık başlık/not, asistan cevabı ve sesli not deşifresi uygulama dilinde (`X-App-Language`). Sunucu yayında; uygulama tarafı 2b ile aynı `eas update`'te.
+- [x] **Dil düzeltmesi** (yol haritası dışı, 6 Ekim): Tarih gösterimi ("Bugün, 10:00") de her dilde Türkçeydi, düzeltildi. AI çıktıları her dilde Türkçeydi. Artık başlık/not, asistan cevabı ve sesli not deşifresi uygulama dilinde (`X-App-Language`). Sunucu yayında; uygulama tarafı 2b ile aynı `eas update`'te.
 
 ### Faz 3 — Gelir
 - [ ] **3b** 7 gün ücretsiz deneme + indirimli yıllık plan.
@@ -62,8 +62,13 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
 - [ ] **1e** Yedekleme — **B seçeneği seçildi:** telefonun kendi gece yedeğine (iCloud / Google) dahil olmak; hesap gerekmez.
   - Android: yedek kuralları 1.1.1'de eklendi (veritabanı dahil, SecureStore hariç). Gerçek cihazda yedekten geri yükleme denenecek.
   - iOS: SQLite dosyasının iCloud yedeğine dahil olduğu doğrulanacak.
-- [ ] **2c** AI ile hatırlatma mesajı: rehber izni olmadan sistemin kişi seçicisiyle "Rehberden seç" (doğru kişiyi kullanıcı seçer, numara kişi kartına bir kez kaydedilir), AI mesaj yazar, WhatsApp hazır açılır. Yeni build gerekir.
-  - Kişi seçici, "Galeriden seç" gibi çalışır: pencereyi telefon gösterir, uygulama rehberin tamamını görmez, yalnızca seçilen kişinin numarası gelir. iOS'ta izin gerekmiyor (doğrulandı). Android'de expo-contacts seçilen kişiyi okumak için READ_CONTACTS istiyor; Android tarafı izinsiz bir seçiciyle (telefon numarası seçme ekranı) ya da izinle ayrıca tasarlanacak — Android üretim build'i zaten yeni yapılacak.
+- [x] **2c** "💬 Mesajla hatırlat" (kod hazır; sunucu yayında, uygulama aynı `eas update`'te).
+  - Yalnızca "birinden beklediğim" takiplerde, kişi atanmışsa: takip detayında düğme; kişi kartındaki gecikmiş satırlarda kısayol.
+  - Numara yoksa önce istenir: iPhone'da sistem kişi seçicisi (izin gerekmez) veya elle; kişi kartına bir kez kaydedilir. Kişi kartında numara düzenlerken de "Rehberden seç" var.
+  - AI mesajı uygulama dilinde yazar; ton: Samimi / Resmi / Kısa; gönderilmeden düzenlenebilir; WhatsApp veya SMS açılır, gönderme kullanıcıda.
+  - AI hakkına sayılır (ücretsiz 6/ay, premium sınırsız). Sunucu: `/api/reminder-message`, ölçüm anahtarı `reminder`.
+  - Android: seçici rehber izni istediği için şimdilik yalnızca elle numara. Android üretim build'inde izinsiz seçici ayrıca ele alınacak.
+  - Telefon numarası artık telefonun bölgesine göre ülke koduyla tamamlanıyor (önceden hep +90 varsayılıyordu).
 
 ### Faz 5 — Tanıtım
 - [ ] **Tanıtım videosunu güncellemek** (kaynak: `promo/video/`):

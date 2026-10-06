@@ -394,5 +394,35 @@
     "errorNetwork": "연결할 수 없어요. 다시 시도해 주세요.",
     "loadError": "지금은 초대 정보를 불러올 수 없어요.",
     "bonusHint": "이번 달 횟수를 다 썼어요. 초대로 받은 추가 크레딧이 {{bonus}}회 있어요."
+  },
+  "dueDate": {
+    "today": "오늘 {{time}}",
+    "tomorrow": "내일 {{time}}",
+    "none": "날짜 없음"
+  },
+  "remindMessage": {
+    "button": "💬 메시지로 알리기",
+    "hint": "{{name}}님에게 보낼 정중한 알림 메시지를 AI가 써 드려요. WhatsApp이나 문자로 보내면 돼요.",
+    "phoneTitle": "전화번호가 필요해요",
+    "phoneBody": "메시지를 보내려면 {{name}}님의 번호를 한 번만 추가하세요. 연락처 카드에 저장돼요.",
+    "pickFromContacts": "연락처에서 선택",
+    "typeNumber": "번호 입력",
+    "phonePlaceholder": "예: 010-1234-5678",
+    "savePhone": "저장하고 계속",
+    "chooseNumberTitle": "어떤 번호로 할까요?",
+    "noPhoneOnContact": "선택한 연락처에 전화번호가 없어요.",
+    "composeTitle": "{{name}}님에게 보낼 메시지",
+    "writing": "메시지를 쓰는 중…",
+    "toneFriendly": "친근하게",
+    "toneFormal": "격식 있게",
+    "toneShort": "짧게",
+    "editHint": "보내기 전에 메시지를 수정할 수 있어요.",
+    "creditNote": "새 메시지마다 AI 크레딧 1회를 사용해요.",
+    "sendWhatsApp": "WhatsApp에서 열기",
+    "sendSms": "문자로 보내기",
+    "changeNumber": "번호 변경",
+    "error": "메시지를 쓰지 못했어요.",
+    "retry": "다시 시도",
+    "openError": "메시지 앱을 열 수 없어요."
   }
 }

@@ -1,5 +1,11 @@
 import * as FileSystem from 'expo-file-system/legacy';
-import { AIRequestError, type AIProvider, type ExtractedFollowUp, type TranscriptionResult } from './types';
+import {
+  AIRequestError,
+  type AIProvider,
+  type ExtractedFollowUp,
+  type ReminderMessageInput,
+  type TranscriptionResult,
+} from './types';
 import { getDeviceId } from '../services/deviceId';
 import { getRevenueCatAppUserId, isPremiumNow } from '../services/subscription';
 import { reportServerAiUsage } from '../services/aiUsage';
@@ -156,5 +162,18 @@ export class AnthropicProvider implements AIProvider {
       body: JSON.stringify({ question, context }),
     });
     return (await readJsonResponse<{ answer: string }>(response)).answer;
+  }
+
+  async writeReminderMessage(input: ReminderMessageInput): Promise<string> {
+    const response = await fetchWithTimeout(`${this.backendUrl}/api/reminder-message`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(await identityHeaders()),
+        ...(this.appSecret ? { 'X-App-Secret': this.appSecret } : {}),
+      },
+      body: JSON.stringify(input),
+    });
+    return (await readJsonResponse<{ message: string }>(response)).message;
   }
 }

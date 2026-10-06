@@ -394,5 +394,35 @@
     "errorNetwork": "No se pudo conectar. Inténtalo de nuevo.",
     "loadError": "No se pudo cargar la información de invitaciones ahora.",
     "bonusHint": "Ya usaste los créditos de este mes; tienes {{bonus}} créditos extra por invitaciones."
+  },
+  "dueDate": {
+    "today": "Hoy, {{time}}",
+    "tomorrow": "Mañana, {{time}}",
+    "none": "Sin fecha"
+  },
+  "remindMessage": {
+    "button": "💬 Recordar por mensaje",
+    "hint": "La IA escribe un recordatorio amable para que se lo envíes a {{name}} por WhatsApp o SMS.",
+    "phoneTitle": "Se necesita el número",
+    "phoneBody": "Añade el número de {{name}} una vez para enviar el mensaje; se guardará en su ficha.",
+    "pickFromContacts": "Elegir de contactos",
+    "typeNumber": "Escribir el número",
+    "phonePlaceholder": "p. ej. 612 345 678",
+    "savePhone": "Guardar y continuar",
+    "chooseNumberTitle": "¿Qué número?",
+    "noPhoneOnContact": "El contacto elegido no tiene número de teléfono.",
+    "composeTitle": "Mensaje para {{name}}",
+    "writing": "Escribiendo el mensaje…",
+    "toneFriendly": "Cercano",
+    "toneFormal": "Formal",
+    "toneShort": "Breve",
+    "editHint": "Puedes editar el mensaje antes de enviarlo.",
+    "creditNote": "Cada mensaje nuevo usa 1 crédito de IA.",
+    "sendWhatsApp": "Abrir en WhatsApp",
+    "sendSms": "Enviar por SMS",
+    "changeNumber": "Cambiar número",
+    "error": "No se pudo escribir el mensaje.",
+    "retry": "Reintentar",
+    "openError": "No se pudo abrir la app de mensajes."
   }
 }

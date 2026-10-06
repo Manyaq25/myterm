@@ -394,5 +394,35 @@
     "errorNetwork": "Couldn't connect. Please try again.",
     "loadError": "Invite info couldn't be loaded right now.",
     "bonusHint": "You've used this month's credits; you have {{bonus}} extra credits from invites."
+  },
+  "dueDate": {
+    "today": "Today, {{time}}",
+    "tomorrow": "Tomorrow, {{time}}",
+    "none": "No date"
+  },
+  "remindMessage": {
+    "button": "💬 Remind by message",
+    "hint": "AI writes a polite reminder for you to send to {{name}} via WhatsApp or SMS.",
+    "phoneTitle": "Phone number needed",
+    "phoneBody": "Add {{name}}'s number once so you can send the message; it's saved to their contact card.",
+    "pickFromContacts": "Choose from contacts",
+    "typeNumber": "Type the number",
+    "phonePlaceholder": "e.g. +1 555 123 4567",
+    "savePhone": "Save and continue",
+    "chooseNumberTitle": "Which number?",
+    "noPhoneOnContact": "The contact you picked has no phone number.",
+    "composeTitle": "Message to {{name}}",
+    "writing": "Writing the message…",
+    "toneFriendly": "Friendly",
+    "toneFormal": "Formal",
+    "toneShort": "Short",
+    "editHint": "You can edit the message before sending.",
+    "creditNote": "Each new message uses 1 AI credit.",
+    "sendWhatsApp": "Open in WhatsApp",
+    "sendSms": "Send by SMS",
+    "changeNumber": "Change number",
+    "error": "Couldn't write the message.",
+    "retry": "Try again",
+    "openError": "Couldn't open the messaging app."
   }
 }

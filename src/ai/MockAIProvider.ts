@@ -1,4 +1,4 @@
-import type { AIProvider, ExtractedFollowUp, TranscriptionResult } from './types';
+import type { AIProvider, ExtractedFollowUp, ReminderMessageInput, TranscriptionResult } from './types';
 
 /**
  * Backend olmadan UI akışını test etmek için. Gerçek bir dil anlayışı yapmaz —
@@ -54,5 +54,9 @@ export class MockAIProvider implements AIProvider {
 
   async askAssistant(_question: string, _context: string): Promise<string> {
     return 'Mock AI (test modu) — gerçek asistan yanıtı için backend gerekli.';
+  }
+
+  async writeReminderMessage(input: ReminderMessageInput): Promise<string> {
+    return `Merhaba ${input.personName}, ${input.title} konusunu hatırlatmak istedim.`;
   }
 }

@@ -394,5 +394,35 @@
     "errorNetwork": "无法连接，请重试。",
     "loadError": "暂时无法加载邀请信息。",
     "bonusHint": "本月额度已用完；你还有 {{bonus}} 次邀请获得的额外额度。"
+  },
+  "dueDate": {
+    "today": "今天 {{time}}",
+    "tomorrow": "明天 {{time}}",
+    "none": "无日期"
+  },
+  "remindMessage": {
+    "button": "💬 发消息提醒",
+    "hint": "AI 会帮你写一条礼貌的提醒消息，你可以通过 WhatsApp 或短信发给 {{name}}。",
+    "phoneTitle": "需要电话号码",
+    "phoneBody": "添加一次 {{name}} 的号码即可发送消息，号码会保存在联系人卡片中。",
+    "pickFromContacts": "从通讯录选择",
+    "typeNumber": "输入号码",
+    "phonePlaceholder": "例如 138 0013 8000",
+    "savePhone": "保存并继续",
+    "chooseNumberTitle": "选择哪个号码？",
+    "noPhoneOnContact": "所选联系人没有电话号码。",
+    "composeTitle": "发给 {{name}} 的消息",
+    "writing": "正在撰写消息…",
+    "toneFriendly": "亲切",
+    "toneFormal": "正式",
+    "toneShort": "简短",
+    "editHint": "发送前可以编辑消息。",
+    "creditNote": "每条新消息使用 1 次 AI 额度。",
+    "sendWhatsApp": "在 WhatsApp 中打开",
+    "sendSms": "通过短信发送",
+    "changeNumber": "更换号码",
+    "error": "无法撰写消息。",
+    "retry": "重试",
+    "openError": "无法打开消息应用。"
   }
 }

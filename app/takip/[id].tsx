@@ -14,6 +14,7 @@ import { ScreenHeader, useSafeBack } from '../../src/components/ScreenHeader';
 import { Avatar } from '../../src/components/Avatar';
 import { Button } from '../../src/components/Button';
 import { TypeBadge } from '../../src/components/TypeBadge';
+import { RemindByMessage } from '../../src/components/RemindByMessage';
 import { getCardSurface } from '../../src/constants/cardStyle';
 import { useTheme, fontFamily, fontSize, type ThemeColors } from '../../src/theme';
 
@@ -21,7 +22,7 @@ export default function TakipDetayScreen() {
   const { colors } = useTheme();
   const styles = useMemo(() => getStyles(colors), [colors]);
   const { t } = useTranslation();
-  const { id, edit } = useLocalSearchParams<{ id: string; edit?: string }>();
+  const { id, edit, remind } = useLocalSearchParams<{ id: string; edit?: string; remind?: string }>();
   const db = useSQLiteContext();
   const router = useRouter();
   const [item, setItem] = useState<FollowUpWithPerson | null>(null);
@@ -165,6 +166,12 @@ export default function TakipDetayScreen() {
         {item.detail && <Text style={styles.detail}>{item.detail}</Text>}
       </View>
 
+      {canReschedule && item.type === 'waiting_on' && item.personId && (
+        <View style={styles.remindWrap}>
+          <RemindByMessage item={item} autoStart={remind === '1'} />
+        </View>
+      )}
+
       {item.status === 'open' && (
         <View style={styles.doneButtonWrap}>
           <Button label={t('takipDetay.markDone')} variant="success" onPress={markDone} />
@@ -194,6 +201,7 @@ function getStyles(colors: ThemeColors) {
       padding: 20,
     },
     badge: { marginBottom: 10 },
+    remindWrap: { marginTop: 16 },
     title: { fontSize: fontSize.title, fontFamily: fontFamily.displaySemiBold, color: colors.text, lineHeight: 28 },
     personRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 14 },
     personText: { fontSize: fontSize.small, fontFamily: fontFamily.bodySemiBold, color: colors.text },

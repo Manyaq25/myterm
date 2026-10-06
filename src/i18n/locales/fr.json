@@ -394,5 +394,35 @@
     "errorNetwork": "Connexion impossible. Réessaie.",
     "loadError": "Impossible de charger les infos d'invitation pour le moment.",
     "bonusHint": "Tu as utilisé tes crédits du mois ; il te reste {{bonus}} crédits en plus grâce aux invitations."
+  },
+  "dueDate": {
+    "today": "Aujourd'hui, {{time}}",
+    "tomorrow": "Demain, {{time}}",
+    "none": "Pas de date"
+  },
+  "remindMessage": {
+    "button": "💬 Relancer par message",
+    "hint": "L'IA rédige un rappel poli que tu envoies à {{name}} par WhatsApp ou SMS.",
+    "phoneTitle": "Numéro nécessaire",
+    "phoneBody": "Ajoute une fois le numéro de {{name}} pour envoyer le message ; il sera enregistré sur sa fiche.",
+    "pickFromContacts": "Choisir dans les contacts",
+    "typeNumber": "Saisir le numéro",
+    "phonePlaceholder": "ex. 06 12 34 56 78",
+    "savePhone": "Enregistrer et continuer",
+    "chooseNumberTitle": "Quel numéro ?",
+    "noPhoneOnContact": "Le contact choisi n'a pas de numéro de téléphone.",
+    "composeTitle": "Message pour {{name}}",
+    "writing": "Rédaction du message…",
+    "toneFriendly": "Amical",
+    "toneFormal": "Formel",
+    "toneShort": "Court",
+    "editHint": "Tu peux modifier le message avant de l'envoyer.",
+    "creditNote": "Chaque nouveau message utilise 1 crédit IA.",
+    "sendWhatsApp": "Ouvrir dans WhatsApp",
+    "sendSms": "Envoyer par SMS",
+    "changeNumber": "Changer de numéro",
+    "error": "Impossible de rédiger le message.",
+    "retry": "Réessayer",
+    "openError": "Impossible d'ouvrir l'app de messagerie."
   }
 }

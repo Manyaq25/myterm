@@ -394,5 +394,35 @@
     "errorNetwork": "Impossibile connettersi. Riprova.",
     "loadError": "Impossibile caricare le informazioni sugli inviti ora.",
     "bonusHint": "Hai usato i crediti di questo mese; hai {{bonus}} crediti extra dagli inviti."
+  },
+  "dueDate": {
+    "today": "Oggi, {{time}}",
+    "tomorrow": "Domani, {{time}}",
+    "none": "Nessuna data"
+  },
+  "remindMessage": {
+    "button": "💬 Ricorda con un messaggio",
+    "hint": "L'IA scrive un promemoria gentile da inviare a {{name}} su WhatsApp o via SMS.",
+    "phoneTitle": "Serve il numero",
+    "phoneBody": "Aggiungi una volta il numero di {{name}} per inviare il messaggio; verrà salvato nella sua scheda.",
+    "pickFromContacts": "Scegli dai contatti",
+    "typeNumber": "Scrivi il numero",
+    "phonePlaceholder": "es. 333 123 4567",
+    "savePhone": "Salva e continua",
+    "chooseNumberTitle": "Quale numero?",
+    "noPhoneOnContact": "Il contatto scelto non ha un numero di telefono.",
+    "composeTitle": "Messaggio per {{name}}",
+    "writing": "Scrittura del messaggio…",
+    "toneFriendly": "Amichevole",
+    "toneFormal": "Formale",
+    "toneShort": "Breve",
+    "editHint": "Puoi modificare il messaggio prima di inviarlo.",
+    "creditNote": "Ogni nuovo messaggio usa 1 credito IA.",
+    "sendWhatsApp": "Apri in WhatsApp",
+    "sendSms": "Invia via SMS",
+    "changeNumber": "Cambia numero",
+    "error": "Impossibile scrivere il messaggio.",
+    "retry": "Riprova",
+    "openError": "Impossibile aprire l'app dei messaggi."
   }
 }

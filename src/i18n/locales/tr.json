@@ -394,5 +394,35 @@
     "errorNetwork": "Bağlantı kurulamadı. Lütfen tekrar dene.",
     "loadError": "Davet bilgisi şu an yüklenemedi.",
     "bonusHint": "Aylık hakkın doldu; davetlerden kazandığın {{bonus}} ek hakkın var."
+  },
+  "dueDate": {
+    "today": "Bugün, {{time}}",
+    "tomorrow": "Yarın, {{time}}",
+    "none": "Tarih yok"
+  },
+  "remindMessage": {
+    "button": "💬 Mesajla hatırlat",
+    "hint": "AI, {{name}} kişisine göndermen için kibar bir hatırlatma mesajı yazar; sen WhatsApp veya SMS'ten gönderirsin.",
+    "phoneTitle": "Telefon numarası gerekli",
+    "phoneBody": "Mesajı {{name}} kişisine gönderebilmek için numarasını bir kez ekle; kişi kartına kaydedilir.",
+    "pickFromContacts": "Rehberden seç",
+    "typeNumber": "Numarayı yaz",
+    "phonePlaceholder": "Örn. 0532 123 45 67",
+    "savePhone": "Kaydet ve devam et",
+    "chooseNumberTitle": "Hangi numara?",
+    "noPhoneOnContact": "Seçtiğin kişide telefon numarası yok.",
+    "composeTitle": "{{name}} kişisine mesaj",
+    "writing": "Mesaj yazılıyor…",
+    "toneFriendly": "Samimi",
+    "toneFormal": "Resmi",
+    "toneShort": "Kısa",
+    "editHint": "Göndermeden önce mesajı düzenleyebilirsin.",
+    "creditNote": "Her yeni mesaj 1 AI hakkı kullanır.",
+    "sendWhatsApp": "WhatsApp'ta aç",
+    "sendSms": "SMS ile gönder",
+    "changeNumber": "Numarayı değiştir",
+    "error": "Mesaj yazılamadı.",
+    "retry": "Tekrar dene",
+    "openError": "Mesaj uygulaması açılamadı."
   }
 }

@@ -1,5 +1,7 @@
+import i18n from '../i18n';
+
 export function formatDueDate(timestamp: number | null): string {
-  if (timestamp === null) return 'Tarih yok';
+  if (timestamp === null) return i18n.t('dueDate.none');
   const date = new Date(timestamp);
   const now = new Date();
   const isToday = date.toDateString() === now.toDateString();
@@ -7,10 +9,11 @@ export function formatDueDate(timestamp: number | null): string {
   tomorrow.setDate(now.getDate() + 1);
   const isTomorrow = date.toDateString() === tomorrow.toDateString();
 
-  const time = date.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-  if (isToday) return `Bugün, ${time}`;
-  if (isTomorrow) return `Yarın, ${time}`;
-  return date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short', year: 'numeric' }) + `, ${time}`;
+  const locale = i18n.language || 'tr';
+  const time = date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+  if (isToday) return i18n.t('dueDate.today', { time });
+  if (isTomorrow) return i18n.t('dueDate.tomorrow', { time });
+  return date.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' }) + `, ${time}`;
 }
 
 export function isOverdue(timestamp: number | null): boolean {

@@ -80,9 +80,9 @@ function readBody(req) {
   const extract = require('./.build/api/extract.js').default;
   const assistant = require('./.build/api/assistant.js').default;
   const referral = require('./.build/api/referral.js').default;
-  const api = await listen((req, res) =>
-    (req.url === '/api/assistant' ? assistant : req.url === '/api/referral' ? referral : extract)(req, res)
-  );
+  const reminder = require('./.build/api/reminder-message.js').default;
+  const routes = { '/api/assistant': assistant, '/api/referral': referral, '/api/reminder-message': reminder };
+  const api = await listen((req, res) => (routes[req.url] ?? extract)(req, res));
 
   let ipCounter = 0;
   async function call(path, headers, body) {
@@ -208,6 +208,17 @@ function readBody(req) {
   assert.strictEqual(r.body.invites, 13); assert.strictEqual(r.body.rewardedInvites, 10);
   assert.strictEqual(r.body.bonus, 27, '10 davetten 30 hak, 3 tanesi kullanıldı');
   console.log('ok 10 davet ödülü 10 davetle sınırlı');
+
+  // 11) Mesajla hatırlat: mesaj döner ve aylık hakka sayılır; eksik bilgi 400.
+  const writer = { 'X-Device-Id': 'i:reminder-writer-0001', 'X-App-Language': 'en' };
+  r = await call('/api/reminder-message', writer, { title: 'Raporu gönder', personName: 'Ahmet', tone: 'formal' });
+  assert.strictEqual(r.status, 200, JSON.stringify(r.body));
+  assert.strictEqual(r.body.message, 'cevap');
+  assert.deepStrictEqual(r.body.usage, { used: 1, limit: 6, premium: false });
+  r = await call('/api/reminder-message', writer, { title: 'Raporu gönder' });
+  assert.strictEqual(r.status, 400);
+  assert.strictEqual(stats.get('reminder:requests') ?? store.get(`stats:${new Date().toISOString().slice(0, 10)}`).get('reminder:requests'), 1);
+  console.log('ok 11 mesajla hatırlat hakka sayılıyor');
 
   for (const s of [redis, rc, anthropic, api]) s.srv.close();
   console.log('TÜM TESTLER GEÇTİ');
