@@ -7,6 +7,8 @@ import Purchases, {
   type PurchasesPackage,
 } from 'react-native-purchases';
 
+import { REVENUECAT_ANDROID_KEY, REVENUECAT_IOS_KEY } from '../config/publicConfig';
+
 export const PREMIUM_ENTITLEMENT_ID = 'premium';
 
 export type SubscriptionStatus = 'free' | 'trial' | 'active' | 'expired';
@@ -16,8 +18,8 @@ interface SubscriptionSnapshot {
   status: SubscriptionStatus;
 }
 
-const iosApiKey = process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY;
-const androidApiKey = process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY;
+const iosApiKey = REVENUECAT_IOS_KEY;
+const androidApiKey = REVENUECAT_ANDROID_KEY;
 const apiKey = Platform.OS === 'ios' ? iosApiKey : Platform.OS === 'android' ? androidApiKey : undefined;
 
 export const isRevenueCatConfigured = !!apiKey;
