@@ -80,10 +80,24 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
   - Telefon numarası artık telefonun bölgesine göre ülke koduyla tamamlanıyor (önceden hep +90 varsayılıyordu).
 
 ### Faz 5 — Tanıtım
+- **Bekliyor (6 Ekim):** Video, yeni özellikler telefonlara gidip test edildikten ve Google Play üretim onayı geldikten sonra güncellenecek; yeni ekranların gerçek görüntüleri (bildirim düğmeleri, Mesajla hatırlat, tekrarlayan takip, davet) telefondan alınacak.
 - [ ] **Tanıtım videosunu güncellemek** (kaynak: `promo/video/`):
   - Kapanışta Google Play'in de yayında olduğu gösterilecek ("Çok yakında" yerine).
   - Yol haritasındaki yeni özellikler videoya eklenecek (erteleme, bildirimden işlem, tekrarlayan takipler, AI ile hatırlatma mesajı, 7 gün ücretsiz deneme vb.).
   - Sitedeki "Google Play — Yakında" düğmesi de gerçek bağlantıyla değiştirilecek.
+
+## 1.1.1 onayından sonra: tek `eas update` ve test listesi
+`git pull` → `eas update --branch production --message "Performans ve kararlılık iyileştirmeleri"` (yalnızca 1.1.1 build'lerine gider). Telefonda:
+1. Bildirim düğmeleri: Tamamlandı / 1 saat ertele / Yarın; bildirime dokununca detay açılıyor.
+2. AI dil: uygulamayı İngilizceye alıp metin çıkarımı ve asistan → İngilizce cevap; tarih "Today, 10:00".
+3. Davet: Ayarlar → kod, Davet et, başka cihazdan kod girme → davet edene +3.
+4. Mesajla hatırlat: numarasız kişide Rehberden seç → mesaj → WhatsApp/SMS.
+5. Tekrarlayan takip: Her gün kur, tamamla → yarına yenisi; kartta 🔁.
+6. İlk çıkarımdan sonra öneri kartı; ✕ ile kapanıyor, bir daha çıkmıyor.
+7. Değerlendirme penceresi: 3 tamamlama + 2 gün (TestFlight'ta Apple pencereyi göstermeyebilir).
+
+## Ölçüm (1b)
+Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:input`, `*:output`, `*:cache_read`, `*:cache_write` (rotalar: text, image, pdf, voice, assistant, reminder). Birkaç günlük değerlerle önbellek kararı ve kullanıcı başı maliyet hesabı yapılacak.
 
 ## Reddedilen / iptal edilenler
 - **1b (ilk hali):** Ucuz modele geçmek — kalite riski.
