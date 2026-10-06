@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react';
 import { Platform } from 'react-native';
 import Purchases, {
+  INTRO_ELIGIBILITY_STATUS,
   LOG_LEVEL,
   type CustomerInfo,
   type PurchasesOffering,
@@ -153,4 +154,50 @@ export async function getRevenueCatAppUserId(): Promise<string | null> {
   } catch {
     return null;
   }
+}
+
+/** Ücretsiz denemenin gün cinsinden süresi, paket kimliğine göre. */
+export type FreeTrialDays = Record<string, number>;
+
+function trialDaysFromPeriod(unit: string, count: number): number | null {
+  if (unit === 'DAY') return count;
+  if (unit === 'WEEK') return count * 7;
+  return null;
+}
+
+/**
+ * Kullanıcının gerçekten yararlanabileceği ücretsiz denemeleri bulur. Daha önce
+ * deneme kullanmış birine "ücretsiz" yazmak yanıltıcı olur ve satın alma hemen
+ * ücretlendirir; bu yüzden iOS'ta uygunluk sorulur, emin olunamazsa deneme
+ * gösterilmez. Google Play denemeyi zaten yalnızca uygun kullanıcıya sunar.
+ */
+export async function getEligibleFreeTrials(packages: PurchasesPackage[]): Promise<FreeTrialDays> {
+  const result: FreeTrialDays = {};
+  if (Platform.OS === 'android') {
+    for (const pkg of packages) {
+      const phase = pkg.product.defaultOption?.freePhase;
+      const days = phase ? trialDaysFromPeriod(phase.billingPeriod.unit, phase.billingPeriod.value) : null;
+      if (days) result[pkg.identifier] = days;
+    }
+    return result;
+  }
+
+  const withTrial = packages.filter((pkg) => pkg.product.introPrice?.price === 0);
+  if (withTrial.length === 0) return result;
+  try {
+    const eligibility = await Purchases.checkTrialOrIntroductoryPriceEligibility(
+      withTrial.map((pkg) => pkg.product.identifier)
+    );
+    for (const pkg of withTrial) {
+      if (eligibility[pkg.product.identifier]?.status !== INTRO_ELIGIBILITY_STATUS.INTRO_ELIGIBILITY_STATUS_ELIGIBLE) {
+        continue;
+      }
+      const intro = pkg.product.introPrice!;
+      const days = trialDaysFromPeriod(intro.periodUnit, intro.periodNumberOfUnits * Math.max(intro.cycles, 1));
+      if (days) result[pkg.identifier] = days;
+    }
+  } catch {
+    // Uygunluk öğrenilemezse deneme gösterilmez.
+  }
+  return result;
 }

@@ -6,6 +6,8 @@ import type { PurchasesPackage } from 'react-native-purchases';
 import { Button } from '../src/components/Button';
 import {
   getCurrentOffering,
+  getEligibleFreeTrials,
+  type FreeTrialDays,
   isRevenueCatConfigured,
   purchasePackage,
   restorePurchases,
@@ -40,16 +42,19 @@ export default function PremiumScreen() {
   const [yearlyPkg, setYearlyPkg] = useState<PurchasesPackage | null>(null);
   const [fallbackPkg, setFallbackPkg] = useState<PurchasesPackage | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState<'monthly' | 'yearly'>('monthly');
+  const [freeTrials, setFreeTrials] = useState<FreeTrialDays>({});
   const [purchasing, setPurchasing] = useState(false);
   const [restoring, setRestoring] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    getCurrentOffering().then((offering) => {
+    getCurrentOffering().then(async (offering) => {
+      const trials = offering ? await getEligibleFreeTrials(offering.availablePackages) : {};
       if (cancelled) return;
       setMonthlyPkg(offering?.monthly ?? null);
       setYearlyPkg(offering?.annual ?? null);
       setFallbackPkg(offering?.monthly ?? offering?.availablePackages[0] ?? null);
+      setFreeTrials(trials);
       setLoadingOffering(false);
     });
     return () => {
@@ -58,6 +63,12 @@ export default function PremiumScreen() {
   }, []);
 
   const pkg = (selectedPeriod === 'yearly' ? yearlyPkg : monthlyPkg) ?? fallbackPkg;
+  const trialDays = pkg ? freeTrials[pkg.identifier] : undefined;
+  const periodPrice = pkg
+    ? t(selectedPeriod === 'yearly' ? 'premium.priceSuffixYearly' : 'premium.priceSuffixMonthly', {
+        price: pkg.product.priceString,
+      })
+    : '';
 
   const yearlySavingsPercent = useMemo(() => {
     if (!monthlyPkg || !yearlyPkg) return null;
@@ -156,17 +167,29 @@ export default function PremiumScreen() {
                     </Pressable>
                   </View>
                 )}
-                <Text style={styles.price}>
-                  {t(selectedPeriod === 'yearly' ? 'premium.priceSuffixYearly' : 'premium.priceSuffixMonthly', {
-                    price: pkg.product.priceString,
-                  })}
-                </Text>
+                {trialDays ? (
+                  <>
+                    <Text style={styles.price}>{t('premium.trialHeadline', { count: trialDays })}</Text>
+                    <Text style={styles.trialThen}>
+                      {t('premium.trialThen', { price: periodPrice })}
+                    </Text>
+                  </>
+                ) : (
+                  <Text style={styles.price}>{periodPrice}</Text>
+                )}
                 <Button
-                  label={purchasing ? t('premium.purchasing') : t('premium.subscribeButton')}
+                  label={
+                    purchasing
+                      ? t('premium.purchasing')
+                      : trialDays
+                        ? t('premium.trialButton')
+                        : t('premium.subscribeButton')
+                  }
                   onPress={handlePurchase}
                   loading={purchasing}
                   disabled={purchasing}
                 />
+                {trialDays ? <Text style={styles.disclosure}>{t('premium.trialCancelNote')}</Text> : null}
                 <Text style={styles.disclosure}>{t('premium.disclosure')}</Text>
               </>
             ) : (
@@ -274,6 +297,7 @@ function getStyles(colors: ThemeColors) {
     },
     savingsBadgeText: { fontSize: fontSize.caption, fontFamily: fontFamily.bodySemiBold, color: colors.success },
     price: { fontSize: fontSize.title, fontFamily: fontFamily.displaySemiBold, color: colors.text },
+    trialThen: { fontSize: fontSize.small, fontFamily: fontFamily.bodyMedium, color: colors.textMuted, marginTop: -4 },
     disclosure: { fontSize: fontSize.caption, fontFamily: fontFamily.body, color: colors.textMuted, textAlign: 'center', lineHeight: 17 },
     hint: { fontSize: fontSize.small, fontFamily: fontFamily.body, color: colors.textMuted, textAlign: 'center' },
     devNotice: { fontSize: fontSize.caption, fontFamily: fontFamily.body, color: colors.gold, textAlign: 'center', marginTop: 16 },
