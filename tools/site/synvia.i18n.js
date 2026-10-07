@@ -7,7 +7,7 @@ module.exports = {
     path: '/synvia/',
     altLang: 'en',
     altPath: '/en/synvia/',
-    altLabel: 'EN',
+    altLabel: 'English',
     ogImage: 'og.png',
     title: 'Synvia AI — Söz ve iş takibi, yapay zekâ ile hatırlatıcı',
     description:
@@ -125,7 +125,7 @@ module.exports = {
     path: '/en/synvia/',
     altLang: 'tr',
     altPath: '/synvia/',
-    altLabel: 'TR',
+    altLabel: 'Türkçe',
     ogImage: 'og-en.png',
     title: 'Synvia AI — Track promises and tasks with an AI reminder app',
     description:

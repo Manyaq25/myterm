@@ -1,11 +1,14 @@
-// synvia.template.html + synvia.i18n.js → web/synvia/index.html ve web/en/synvia/index.html
-//   node tools/site/pages.js   (build.sh bunu CSS'ten önce çalıştırır)
+// Şablonlardan sayfa üretir (build.sh bunu CSS'ten önce çalıştırır):
+//   home.template.html   + home.i18n.js   → web/index.html, web/en/index.html
+//   synvia.template.html + synvia.i18n.js → web/synvia/index.html, web/en/synvia/index.html
 const fs = require('fs');
 const path = require('path');
 
 const ICONS = require('./icons.json');
-const I18N = require('./synvia.i18n.js');
-const TEMPLATE = fs.readFileSync(path.join(__dirname, 'synvia.template.html'), 'utf8');
+const PAGES = [
+  { template: 'home.template.html', i18n: require('./home.i18n.js') },
+  { template: 'synvia.template.html', i18n: require('./synvia.i18n.js') },
+];
 const APP_STORE = 'https://apps.apple.com/app/id6812456837';
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -19,6 +22,9 @@ const APPLE_LOGO = '<svg class="w-5 h-5 fill-surface shrink-0" viewBox="0 0 384 
 const PLAY_LOGO = '<svg class="w-5 h-5 fill-current opacity-70 shrink-0" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597zm-13.09-7.84L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"/></svg>';
 
 const components = {
+  // Sayfanın diğer dildeki karşılığına giden, belirgin dil düğmesi
+  langSwitch: (t) => `<a class="inline-flex items-center gap-1 px-space-sm py-1 rounded-full border border-outline-variant text-on-surface hover:border-primary hover:text-primary font-code-mono text-code-mono transition-colors" href="${t.altPath}" hreflang="${t.altLang}" lang="${t.altLang}">${icon('language', 'text-base')}<span>${esc(t.altLabel)}</span></a>`,
+
   storeButtons: (t) => `<a class="inline-flex items-center justify-center gap-space-sm px-space-lg py-space-md rounded-2xl bg-gradient-to-r from-primary-fixed-dim via-primary to-secondary text-surface font-headline-sm text-base sm:text-headline-sm font-bold whitespace-nowrap shadow-[0_0_28px_rgba(89,219,199,0.35)] hover:shadow-[0_0_36px_rgba(255,107,74,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all" href="${APP_STORE}" rel="noopener noreferrer" target="_blank">${APPLE_LOGO}<span>${esc(t.appStore)}</span>${icon('arrow_outward', 'text-lg')}</a>
 <a data-play-btn data-get-label="${esc(t.playGet)}" aria-disabled="true" title="${esc(t.androidSoon)}" class="inline-flex items-center justify-center gap-space-sm px-space-lg py-space-md rounded-2xl bg-surface-container-high/60 text-on-surface-variant font-headline-sm text-base sm:text-headline-sm font-bold whitespace-nowrap cursor-not-allowed select-none">${PLAY_LOGO}<span data-play-label>${esc(t.playSoon)}</span></a>`,
 
@@ -68,8 +74,8 @@ function jsonLd(t) {
   }).replace(/</g, '\\u003c');
 }
 
-function render(t) {
-  let html = TEMPLATE.replace(/\{\{(\w+):([^}]+)\}\}/g, (m, name, rest) => {
+function render(template, t) {
+  let html = template.replace(/\{\{(\w+):([^}]+)\}\}/g, (m, name, rest) => {
     if (name === 'icon') {
       const i = rest.indexOf(':');
       return i < 0 ? icon(rest) : icon(rest.slice(0, i), rest.slice(i + 1));
@@ -86,9 +92,12 @@ function render(t) {
   return html;
 }
 
-for (const t of Object.values(I18N)) {
-  const out = path.join(__dirname, '../../web', t.path, 'index.html');
-  fs.mkdirSync(path.dirname(out), { recursive: true });
-  fs.writeFileSync(out, render(t));
-  console.log('wrote', path.relative(path.join(__dirname, '../..'), out));
+for (const page of PAGES) {
+  const template = fs.readFileSync(path.join(__dirname, page.template), 'utf8');
+  for (const t of Object.values(page.i18n)) {
+    const out = path.join(__dirname, '../../web', t.path, 'index.html');
+    fs.mkdirSync(path.dirname(out), { recursive: true });
+    fs.writeFileSync(out, render(template, t));
+    console.log('wrote', path.relative(path.join(__dirname, '../..'), out));
+  }
 }

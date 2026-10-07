@@ -1,8 +1,8 @@
-<!DOCTYPE html><html class="dark" lang="tr"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport">
+<!DOCTYPE html><html class="dark" lang="{{lang}}"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport">
 <!-- Bu dosya tools/site/home.template.html şablonundan üretilir; doğrudan düzenleme. -->
-<title>aydinapp · Synvia AI — İbrahim Aydın'ın uygulamaları</title>
-<meta name="description" content="Synvia AI: konuşmalarını, ekran görüntülerini ve belgelerini yapay zekâ ile takip maddelerine dönüştürür, zamanı gelince hatırlatır. İbrahim Aydın'ın bağımsız, reklamsız uygulamaları.">
-<link rel="canonical" href="https://aydinapp.com.tr/">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<link rel="canonical" href="https://aydinapp.com.tr{{path}}">
 <link rel="alternate" hreflang="tr" href="https://aydinapp.com.tr/">
 <link rel="alternate" hreflang="en" href="https://aydinapp.com.tr/en/">
 <link rel="alternate" hreflang="x-default" href="https://aydinapp.com.tr/en/">
@@ -12,14 +12,14 @@
 <!-- WhatsApp, iMessage, X vb. link önizlemesi -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="aydinapp">
-<meta property="og:locale" content="tr_TR">
-<meta property="og:url" content="https://aydinapp.com.tr/">
-<meta property="og:title" content="Synvia AI — Her zaman, her şeyi hatırla">
-<meta property="og:description" content="Konuş, ekran görüntüsü at ya da PDF paylaş: yapay zekâ takip etsin, zamanı gelince hatırlatsın. Ücretsiz indir.">
-<meta property="og:image" content="https://aydinapp.com.tr/og.png">
+<meta property="og:locale" content="{{locale}}">
+<meta property="og:url" content="https://aydinapp.com.tr{{path}}">
+<meta property="og:title" content="{{ogTitle}}">
+<meta property="og:description" content="{{ogDescription}}">
+<meta property="og:image" content="https://aydinapp.com.tr/{{ogImage}}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Synvia AI — Her zaman, her şeyi hatırla">
+<meta property="og:image:alt" content="{{ogTitle}}">
 <meta name="twitter:card" content="summary_large_image">
 <link href="/favicon.svg" rel="icon" type="image/svg+xml">
 <link href="/apple-touch-icon.png" rel="apple-touch-icon">
@@ -38,24 +38,24 @@
 </div>
 <div class="flex flex-col">
 <span class="font-headline-sm text-headline-sm tracking-tighter text-on-surface group-hover:text-primary transition-colors">aydin<span class="text-primary">app</span></span>
-<span class="hidden sm:block font-label-caps text-label-caps text-on-surface-variant whitespace-nowrap">İBRAHİM AYDIN</span>
+<span class="hidden sm:block font-label-caps text-label-caps text-on-surface-variant whitespace-nowrap">{{brandName}}</span>
 </div>
 </a>
 <div class="flex items-center gap-space-md md:gap-space-lg md:order-2">
 <nav class="hidden md:flex items-center gap-space-xs sm:gap-space-sm md:gap-space-md">
-<a class="px-space-md py-space-xs transition-colors bg-surface-container-high text-primary font-headline-sm rounded-lg" href="#uygulamalar">Uygulamalar</a>
-<a class="font-body-md text-body-md px-space-md py-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="#hakkimda">Hakkımda</a>
+<a class="px-space-md py-space-xs transition-colors bg-surface-container-high text-primary font-headline-sm rounded-lg" href="#uygulamalar">{{navApps}}</a>
+<a class="font-body-md text-body-md px-space-md py-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="#hakkimda">{{navAbout}}</a>
 </nav>
-<a class="inline-flex items-center gap-1 px-space-sm py-1 rounded-full border border-outline-variant text-on-surface hover:border-primary hover:text-primary font-code-mono text-code-mono transition-colors" href="/en/" hreflang="en" lang="en"><svg class="ms text-base" viewBox="0 -960 960 960" aria-hidden="true"><path d="M323-111.5Q250-143 196-197t-85-127.5Q80-398 80-482t31-156.5Q142-711 196-765t127-84.5Q396-880 480-880t157 30.5Q710-819 764-765t85 126.5Q880-566 880-482t-31 157.5Q818-251 764-197t-127 85.5Q564-80 480-80t-157-31.5ZM480-138q35-36 58.5-82.5T577-331H384q14 60 37.5 108t58.5 85Zm-85-12q-25-38-43-82t-30-99H172q38 71 88 111.5T395-150Zm171-1q72-23 129.5-69T788-331H639q-13 54-30.5 98T566-151ZM152-391h159q-3-27-3.5-48.5T307-482q0-25 1-44.5t4-43.5H152q-7 24-9.5 43t-2.5 45q0 26 2.5 46.5T152-391Zm221 0h215q4-31 5-50.5t1-40.5q0-20-1-38.5t-5-49.5H373q-4 31-5 49.5t-1 38.5q0 21 1 40.5t5 50.5Zm275 0h160q7-24 9.5-44.5T820-482q0-26-2.5-45t-9.5-43H649q3 35 4 53.5t1 34.5q0 22-1.5 41.5T648-391Zm-10-239h150q-33-69-90.5-115T565-810q25 37 42.5 80T638-630Zm-254 0h194q-11-53-37-102.5T480-820q-32 27-54 71t-42 119Zm-212 0h151q11-54 28-96.5t43-82.5q-75 19-131 64t-91 115Z"/></svg><span>English</span></a>
+{{langSwitch}}
 <a class="group relative inline-flex items-center justify-center px-space-md py-space-xs rounded-full bg-surface-container/60 hover:bg-surface-container-high text-on-surface hover:text-primary shadow-[inset_0_1px_1px_rgba(255,255,255,0.12)] transition-all" href="#iletisim">
-<span class="font-code-mono text-code-mono font-medium">İletişim</span>
+<span class="font-code-mono text-code-mono font-medium">{{navContact}}</span>
 <span class="ml-space-xs w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
 </a>
 </div>
 </div>
 <nav class="flex md:hidden items-center justify-center gap-space-sm">
-<a class="px-space-md py-1.5 text-sm transition-colors bg-surface-container-high text-primary font-headline-sm rounded-lg" href="#uygulamalar">Uygulamalar</a>
-<a class="font-body-md text-sm px-space-md py-1.5 text-on-surface-variant hover:text-on-surface transition-colors" href="#hakkimda">Hakkımda</a>
+<a class="px-space-md py-1.5 text-sm transition-colors bg-surface-container-high text-primary font-headline-sm rounded-lg" href="#uygulamalar">{{navApps}}</a>
+<a class="font-body-md text-sm px-space-md py-1.5 text-on-surface-variant hover:text-on-surface transition-colors" href="#hakkimda">{{navAbout}}</a>
 </nav>
 </div>
 </header>
@@ -72,29 +72,29 @@
 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
 <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
 </span>
-<span class="font-label-caps text-label-caps text-on-surface-variant font-medium tracking-wider uppercase">Bağımsız iOS &amp; Android AI Geliştirici</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant font-medium tracking-wider uppercase">{{heroBadge}}</span>
 <span class="font-code-mono text-code-mono text-primary text-xs pl-space-xs font-semibold">2026</span>
 </div>
 <h1 class="font-display-hero text-display-hero text-on-surface tracking-tighter leading-none mb-space-md max-w-4xl selection:text-primary">
 İbrahim Aydın
 </h1>
 <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl font-light mb-space-xl leading-relaxed">
-Mobil uygulamalar geliştiriyorum — <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-fixed-dim to-secondary font-medium">yapay zekâ destekli</span>, zanaatkar hassasiyeti ve sade bir gizlilik anlayışıyla.
+{{heroTextA}}<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-fixed-dim to-secondary font-medium">{{heroTextB}}</span>{{heroTextC}}
 </p>
 <!-- Davet linkiyle gelen ziyaretçi ilk ekranda indirebilsin -->
 <div class="flex flex-col sm:flex-row items-center gap-space-sm mb-space-xl">
-<a class="inline-flex items-center gap-space-sm pl-1.5 pr-space-lg py-1.5 rounded-full bg-gradient-to-r from-primary-fixed-dim via-primary to-secondary text-surface font-bold shadow-[0_0_24px_rgba(89,219,199,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all" href="https://apps.apple.com/app/id6812456837" rel="noopener noreferrer" target="_blank" data-store-link data-android-href="#uygulamalar" data-android-label="Android sürümü çok yakında">
+<a class="inline-flex items-center gap-space-sm pl-1.5 pr-space-lg py-1.5 rounded-full bg-gradient-to-r from-primary-fixed-dim via-primary to-secondary text-surface font-bold shadow-[0_0_24px_rgba(89,219,199,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all" href="https://apps.apple.com/app/id6812456837" rel="noopener noreferrer" target="_blank" data-store-link data-android-href="#uygulamalar" data-android-label="{{androidSoon}}">
 <img src="/apps/synvia-ai/icon.png" alt="" class="w-9 h-9 rounded-full object-cover">
-<span class="text-left leading-tight"><span class="block text-[11px] font-semibold opacity-80">Yeni · Ücretsiz</span><span class="block text-base" data-store-label>Synvia AI'ı indir</span></span>
+<span class="text-left leading-tight"><span class="block text-[11px] font-semibold opacity-80">{{heroCtaKicker}}</span><span class="block text-base" data-store-label>{{heroCta}}</span></span>
 </a>
-<a class="inline-flex items-center gap-1 px-space-md py-space-xs text-on-surface-variant hover:text-primary transition-colors font-code-mono text-code-mono" href="/synvia/">Uygulamayı tanı
+<a class="inline-flex items-center gap-1 px-space-md py-space-xs text-on-surface-variant hover:text-primary transition-colors font-code-mono text-code-mono" href="{{synviaPath}}">{{heroLearn}}
 <svg class="ms text-base" viewBox="0 -960 960 960" aria-hidden="true"><path d="m242-246-42-42 412-412H234v-60h480v480h-60v-378L242-246Z"/></svg>
 </a>
 </div>
 <div class="w-full max-w-3xl rounded-2xl bg-surface-container-low/70 backdrop-blur-xl p-space-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.08)] flex flex-wrap items-center justify-around gap-space-md text-center">
 <div class="flex items-center gap-space-xs">
 <svg class="ms text-primary text-lg" viewBox="0 -960 960 960" aria-hidden="true"><path d="M450-85 150-258q-14.25-8.43-22.12-22.21Q120-294 120-310v-340q0-16 7.88-29.79Q135.75-693.57 150-702l300-173q14.33-8 30.16-8 15.84 0 29.84 8l300 173q14.25 8.43 22.13 22.21Q840-666 840-650v340q0 16-7.87 29.79Q824.25-266.43 810-258L510-85q-14.33 8-30.16 8Q464-77 450-85Zm0-378v309l30 17 30-17v-309.16L780-620v-30l-34-19-266 155-267-155-33 18.66V-619l270 156Z"/></svg>
-<span class="font-code-mono text-code-mono text-on-surface font-medium">Bağımsız Proje</span>
+<span class="font-code-mono text-code-mono text-on-surface font-medium">{{chipIndie}}</span>
 </div>
 <div class="hidden sm:block w-1 h-1 rounded-full bg-outline-variant"></div>
 <div class="flex items-center gap-space-xs">
@@ -104,7 +104,7 @@ Mobil uygulamalar geliştiriyorum — <span class="text-transparent bg-clip-text
 <div class="hidden sm:block w-1 h-1 rounded-full bg-outline-variant"></div>
 <div class="flex items-center gap-space-xs">
 <svg class="ms text-primary-fixed-dim text-lg" viewBox="0 -960 960 960" aria-hidden="true"><path d="M480-338q89-81 114.5-113.5t25.5-65.45q0-32.05-22.75-54.55T543-594q-19 0-35.5 7.5T480-566q-10.56-13.13-27.27-20.56-16.71-7.44-36.06-7.44-31.67 0-54.17 22.75T340-517q0 16 4.43 30.29 4.43 14.3 19.5 33.5Q379-434 406.43-406.95 433.85-379.89 480-338Zm0 257q-140-35-230-162.5T160-523v-238l320-120 320 120v238q0 152-90 279.5T480-81Z"/></svg>
-<span class="font-code-mono text-code-mono text-on-surface font-medium">Reklamsız &amp; Takipsiz</span>
+<span class="font-code-mono text-code-mono text-on-surface font-medium">{{chipNoAds}}</span>
 </div>
 </div>
 </div>
@@ -116,13 +116,13 @@ Mobil uygulamalar geliştiriyorum — <span class="text-transparent bg-clip-text
 <div class="flex flex-col gap-space-xs">
 <div class="flex items-center gap-space-xs">
 <span class="w-2 h-2 rounded-full bg-gradient-to-r from-primary to-secondary"></span>
-<span class="font-label-caps text-label-caps text-secondary uppercase font-semibold">Öne Çıkan Uygulama</span>
+<span class="font-label-caps text-label-caps text-secondary uppercase font-semibold">{{appKicker}}</span>
 </div>
-<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Unuttuğun hiçbir şey kalmasın</h2>
+<h2 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">{{appTitle}}</h2>
 </div>
 <div class="font-code-mono text-code-mono text-on-surface-variant flex items-center gap-space-xs">
 <span class="inline-block w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-<span>App Store'da • Canlı</span>
+<span>{{appLive}}</span>
 </div>
 </div>
 <div class="relative w-full rounded-3xl bg-surface-container/60 backdrop-blur-2xl shadow-2xl shadow-surface-container-lowest/80 overflow-hidden group">
@@ -134,69 +134,69 @@ Mobil uygulamalar geliştiriyorum — <span class="text-transparent bg-clip-text
 <div class="flex items-start gap-space-md">
 <div class="relative shrink-0">
 <div class="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-primary to-secondary opacity-30 blur-md group-hover:opacity-50 transition-opacity"></div>
-<img alt="Synvia AI uygulama ikonu" class="relative w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-lg object-cover" src="/apps/synvia-ai/icon.png">
+<img alt="{{iconAlt}}" class="relative w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-lg object-cover" src="/apps/synvia-ai/icon.png">
 </div>
 <div class="flex flex-col gap-space-xs">
 <div class="flex flex-wrap items-center gap-space-xs">
 <h3 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Synvia AI</h3>
-<span class="inline-flex items-center px-space-xs py-0.5 rounded-full bg-primary/15 text-primary font-code-mono text-xs font-semibold">Ücretsiz</span>
+<span class="inline-flex items-center px-space-xs py-0.5 rounded-full bg-primary/15 text-primary font-code-mono text-xs font-semibold">{{freeBadge}}</span>
 </div>
-<p class="font-headline-sm text-headline-sm text-on-surface-variant font-normal">Kişisel hatırlatma ve takip asistanı</p>
+<p class="font-headline-sm text-headline-sm text-on-surface-variant font-normal">{{appSubtitle}}</p>
 </div>
 </div>
 <p class="font-body-lg text-body-lg text-on-surface font-light leading-relaxed">
-Konuşarak, ekran görüntüsü ya da PDF paylaşarak eklediğin her şeyi yapay zekâ takip maddesine dönüştürür ve zamanı gelince hatırlatır. Karşı taraf unuttuysa kibar bir hatırlatma mesajını tek dokunuşla gönderirsin. Kayıtların yalnızca kendi cihazında saklanır.
+{{appText}}
 </p>
 <div class="flex flex-wrap gap-space-xs">
 <div class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-high/70 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
-<span class="text-sm">🎤</span><span class="font-code-mono text-code-mono text-on-surface font-medium">Sesle ekle</span>
+<span class="text-sm">🎤</span><span class="font-code-mono text-code-mono text-on-surface font-medium">{{chip1}}</span>
 </div>
 <div class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-high/70 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
-<span class="text-sm">📷</span><span class="font-code-mono text-code-mono text-on-surface font-medium">Ekran görüntüsünden</span>
+<span class="text-sm">📷</span><span class="font-code-mono text-code-mono text-on-surface font-medium">{{chip2}}</span>
 </div>
 <div class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-high/70 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
-<span class="text-sm">📄</span><span class="font-code-mono text-code-mono text-on-surface font-medium">PDF'ten</span>
+<span class="text-sm">📄</span><span class="font-code-mono text-code-mono text-on-surface font-medium">{{chip3}}</span>
 </div>
 <div class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-high/70 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
-<span class="text-sm">💬</span><span class="font-code-mono text-code-mono text-on-surface font-medium">Mesajla hatırlat</span>
+<span class="text-sm">💬</span><span class="font-code-mono text-code-mono text-on-surface font-medium">{{chip4}}</span>
 </div>
 <div class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-high/70 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
-<span class="text-sm">🔁</span><span class="font-code-mono text-code-mono text-on-surface font-medium">Tekrarlayan takipler</span>
+<span class="text-sm">🔁</span><span class="font-code-mono text-code-mono text-on-surface font-medium">{{chip5}}</span>
 </div>
 <div class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container-high/70 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]">
-<span class="text-sm">🔒</span><span class="font-code-mono text-code-mono text-on-surface font-medium">Veriler cihazında</span>
+<span class="text-sm">🔒</span><span class="font-code-mono text-code-mono text-on-surface font-medium">{{chip6}}</span>
 </div>
 </div>
 <div class="flex flex-col items-stretch gap-space-md pt-space-xs">
 <a class="group/btn relative inline-flex items-center justify-center gap-space-sm px-space-lg py-space-md rounded-2xl bg-gradient-to-r from-primary-fixed-dim via-primary to-secondary text-surface font-headline-sm text-base sm:text-headline-sm font-bold whitespace-nowrap shadow-[0_0_28px_rgba(89,219,199,0.35)] hover:shadow-[0_0_36px_rgba(255,107,74,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all" href="https://apps.apple.com/app/id6812456837" rel="noopener noreferrer" target="_blank">
 <svg class="w-5 h-5 fill-surface shrink-0 transition-transform group-hover/btn:-translate-y-0.5" viewBox="0 0 384 512"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path></svg>
-<span>App Store'dan İndirin</span>
+<span>{{appStore}}</span>
 <svg class="ms text-surface text-lg shrink-0" viewBox="0 -960 960 960" aria-hidden="true"><path d="m242-246-42-42 412-412H234v-60h480v480h-60v-378L242-246Z"/></svg>
 </a>
-<a data-play-btn data-get-label="Google Play'den İndirin" aria-disabled="true" class="relative inline-flex items-center justify-center gap-space-sm px-space-lg py-space-md rounded-2xl bg-surface-container-high/60 text-on-surface-variant font-headline-sm text-base sm:text-headline-sm font-bold whitespace-nowrap cursor-not-allowed select-none" title="Android sürümü çok yakında">
+<a data-play-btn data-get-label="{{playGet}}" aria-disabled="true" class="relative inline-flex items-center justify-center gap-space-sm px-space-lg py-space-md rounded-2xl bg-surface-container-high/60 text-on-surface-variant font-headline-sm text-base sm:text-headline-sm font-bold whitespace-nowrap cursor-not-allowed select-none" title="{{androidSoon}}">
 <svg class="w-5 h-5 fill-on-surface-variant opacity-70 shrink-0" viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597zm-13.09-7.84L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"></path></svg>
-<span data-play-label>Google Play — Yakında</span>
+<span data-play-label>{{playSoon}}</span>
 </a>
 </div>
 <div class="flex flex-wrap items-center gap-space-xs pt-space-xs">
-<a class="group/btn inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-primary/15 hover:bg-primary/25 text-primary transition-all text-sm" href="/synvia/">
-<svg class="ms text-base" viewBox="0 -960 960 960" aria-hidden="true"><path d="m320-240 160-122 160 122-64-197 160-113H541l-61-203-62 203H223l160 113-63 197ZM480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-156t86-127Q252-817 325-848.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 82-31.5 155T763-197.5q-54 54.5-127 86T480-80Zm0-60q142 0 241-99.5T820-480q0-142-99-241t-241-99q-141 0-240.5 99T140-480q0 141 99.5 240.5T480-140Zm0-340Z"/></svg><span class="font-code-mono text-code-mono">Tüm özellikler</span>
+<a class="group/btn inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-primary/15 hover:bg-primary/25 text-primary transition-all text-sm" href="{{synviaPath}}">
+<svg class="ms text-base" viewBox="0 -960 960 960" aria-hidden="true"><path d="m320-240 160-122 160 122-64-197 160-113H541l-61-203-62 203H223l160 113-63 197ZM480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-156t86-127Q252-817 325-848.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 82-31.5 155T763-197.5q-54 54.5-127 86T480-80Zm0-60q142 0 241-99.5T820-480q0-142-99-241t-241-99q-141 0-240.5 99T140-480q0 141 99.5 240.5T480-140Zm0-340Z"/></svg><span class="font-code-mono text-code-mono">{{allFeatures}}</span>
 </a>
-<a class="group/btn inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-low/80 hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all text-sm" href="/apps/synvia-ai/support.html">
-<svg class="ms text-base" viewBox="0 -960 960 960" aria-hidden="true"><path d="M440-120v-60h340v-304q0-123.69-87.32-209.84Q605.36-780 480-780q-125.36 0-212.68 86.16Q180-607.69 180-484v244h-20q-33 0-56.5-23.5T80-320v-80q0-21 10.5-39.5T120-469l3-53q8-68 39.5-126t79-101q47.5-43 109-67T480-840q68 0 129 24t109 66.5Q766-707 797-649t40 126l3 52q19 9 29.5 27t10.5 38v92q0 20-10.5 38T840-249v69q0 24.75-17.62 42.37Q804.75-120 780-120H440ZM338.5-418.68q-8.5-8.67-8.5-21.5 0-12.82 8.68-21.32 8.67-8.5 21.5-8.5 12.82 0 21.32 8.68 8.5 8.67 8.5 21.5 0 12.82-8.68 21.32-8.67 8.5-21.5 8.5-12.82 0-21.32-8.68Zm240 0q-8.5-8.67-8.5-21.5 0-12.82 8.68-21.32 8.67-8.5 21.5-8.5 12.82 0 21.32 8.68 8.5 8.67 8.5 21.5 0 12.82-8.68 21.32-8.67 8.5-21.5 8.5-12.82 0-21.32-8.68ZM241-462q-7-106 64-182t177-76q87 0 151 57.5T711-519q-89-1-162.5-50T434.72-698Q419-618 367.5-555.5T241-462Z"/></svg><span class="font-code-mono text-code-mono">Destek</span>
+<a class="group/btn inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-low/80 hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all text-sm" href="{{supportHref}}">
+<svg class="ms text-base" viewBox="0 -960 960 960" aria-hidden="true"><path d="M440-120v-60h340v-304q0-123.69-87.32-209.84Q605.36-780 480-780q-125.36 0-212.68 86.16Q180-607.69 180-484v244h-20q-33 0-56.5-23.5T80-320v-80q0-21 10.5-39.5T120-469l3-53q8-68 39.5-126t79-101q47.5-43 109-67T480-840q68 0 129 24t109 66.5Q766-707 797-649t40 126l3 52q19 9 29.5 27t10.5 38v92q0 20-10.5 38T840-249v69q0 24.75-17.62 42.37Q804.75-120 780-120H440ZM338.5-418.68q-8.5-8.67-8.5-21.5 0-12.82 8.68-21.32 8.67-8.5 21.5-8.5 12.82 0 21.32 8.68 8.5 8.67 8.5 21.5 0 12.82-8.68 21.32-8.67 8.5-21.5 8.5-12.82 0-21.32-8.68Zm240 0q-8.5-8.67-8.5-21.5 0-12.82 8.68-21.32 8.67-8.5 21.5-8.5 12.82 0 21.32 8.68 8.5 8.67 8.5 21.5 0 12.82-8.68 21.32-8.67 8.5-21.5 8.5-12.82 0-21.32-8.68ZM241-462q-7-106 64-182t177-76q87 0 151 57.5T711-519q-89-1-162.5-50T434.72-698Q419-618 367.5-555.5T241-462Z"/></svg><span class="font-code-mono text-code-mono">{{support}}</span>
 </a>
-<a class="group/btn inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-low/80 hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all text-sm" href="/apps/synvia-ai/privacy-policy.html">
-<svg class="ms text-base" viewBox="0 -960 960 960" aria-hidden="true"><path d="M480-80q-140-35-230-162.5T160-522v-238l320-120 320 120v238q0 152-90 279.5T480-80Zm0-62q106-35 175.5-128.5T737-480H480v-335l-260 97v196q0 12 .5 20.5T223-480h257v338Z"/></svg><span class="font-code-mono text-code-mono">Gizlilik Politikası</span>
+<a class="group/btn inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-low/80 hover:bg-surface-container text-on-surface-variant hover:text-primary transition-all text-sm" href="{{privacyHref}}">
+<svg class="ms text-base" viewBox="0 -960 960 960" aria-hidden="true"><path d="M480-80q-140-35-230-162.5T160-522v-238l320-120 320 120v238q0 152-90 279.5T480-80Zm0-62q106-35 175.5-128.5T737-480H480v-335l-260 97v196q0 12 .5 20.5T223-480h257v338Z"/></svg><span class="font-code-mono text-code-mono">{{privacy}}</span>
 </a>
-<a class="group/btn inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-low/80 hover:bg-secondary-container/30 text-on-surface-variant hover:text-secondary transition-all text-sm" href="/apps/synvia-ai/delete-data.html">
-<svg class="ms text-base" viewBox="0 -960 960 960" aria-hidden="true"><path d="M600-230v-60h145v60H600Zm0-368v-60h280v60H600Zm0 184v-60h235v60H600ZM125-675H80v-60h170v-45h135v45h170v60h-45v415q0 24-18 42t-42 18H185q-24 0-42-18t-18-42v-415Zm60 0v415h265v-415H185Zm0 0v415-415Z"/></svg><span class="font-code-mono text-code-mono">Veri Silme</span>
+<a class="group/btn inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-xl bg-surface-container-low/80 hover:bg-secondary-container/30 text-on-surface-variant hover:text-secondary transition-all text-sm" href="{{deleteHref}}">
+<svg class="ms text-base" viewBox="0 -960 960 960" aria-hidden="true"><path d="M600-230v-60h145v60H600Zm0-368v-60h280v60H600Zm0 184v-60h235v60H600ZM125-675H80v-60h170v-45h135v45h170v60h-45v415q0 24-18 42t-42 18H185q-24 0-42-18t-18-42v-415Zm60 0v415h265v-415H185Zm0 0v415-415Z"/></svg><span class="font-code-mono text-code-mono">{{deleteData}}</span>
 </a>
 </div>
 </div>
 <!-- SAĞ SÜTUN: uygulamanın gerçek ekran görüntüsü -->
 <div class="lg:col-span-5 flex justify-center lg:justify-end">
 <div class="relative w-[270px] sm:w-[300px] aspect-[660/1434] rounded-[44px] p-2.5 bg-gradient-to-b from-surface-bright via-surface-container-highest to-surface-container-low shadow-2xl shadow-black/80 ring-1 ring-white/10 rotate-[2deg] group-hover:rotate-0 transition-transform duration-500">
-<div class="w-full h-full rounded-[36px] overflow-hidden bg-[#F4F7F6]"><img src="/apps/synvia-ai/screens/home.webp" alt="Synvia AI ana ekranı: geciken takipler" width="660" height="1434" loading="lazy" class="w-full h-full object-cover object-top"></div>
+<div class="w-full h-full rounded-[36px] overflow-hidden bg-[#F4F7F6]"><img src="/apps/synvia-ai/screens/home.webp" alt="{{phoneAlt}}" width="660" height="1434" loading="lazy" class="w-full h-full object-cover object-top"></div>
 </div>
 </div>
 </div>
@@ -212,20 +212,20 @@ Konuşarak, ekran görüntüsü ya da PDF paylaşarak eklediğin her şeyi yapay
 </div>
 <div class="flex flex-col gap-space-md flex-1">
 <div class="flex items-center gap-space-sm">
-<span class="font-headline-md text-headline-md text-on-surface">Hakkımda &amp; Vizyon</span>
+<span class="font-headline-md text-headline-md text-on-surface">{{aboutTitle}}</span>
 </div>
 <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed font-light">
-Merhaba, ben İbrahim Aydın. Günlük hayatın karmaşasını sadeleştiren, yapay zekâyı kullanıcı deneyiminin merkezine koyan bağımsız mobil uygulamalar geliştiriyorum. Reklamsız, gereksiz veri toplamayan ve kullanıcı gizliliğine önem veren bir yaklaşımla üretiyorum.
+{{aboutText}}
 </p>
 <div class="flex flex-wrap gap-space-xs pt-space-xs">
 <div class="flex items-center gap-1.5 px-space-md py-1 rounded-lg bg-surface-container text-on-surface font-code-mono text-code-mono">
 <svg class="ms text-primary text-sm" viewBox="0 -960 960 960" aria-hidden="true"><path d="M320-242 80-482l242-242 43 43-199 199 197 197-43 43Zm318 2-43-43 199-199-197-197 43-43 240 240-242 242Z"/></svg><span>Expo / React Native</span>
 </div>
 <div class="flex items-center gap-1.5 px-space-md py-1 rounded-lg bg-surface-container text-on-surface font-code-mono text-code-mono">
-<svg class="ms text-secondary text-sm" viewBox="0 -960 960 960" aria-hidden="true"><path d="M377-377v-205h205v205H377Zm60-60h85v-85h-85v85Zm-77 317v-80H260q-24 0-42-18t-18-42v-100h-80v-60h80v-124h-80v-60h80v-100q0-24 18-42t42-18h100v-76h60v76h124v-76h60v76h100q24 0 42 18t18 42v100h76v60h-76v124h76v60h-76v100q0 24-18 42t-42 18H604v80h-60v-80H420v80h-60Zm344-140v-444H260v444h444ZM480-480Z"/></svg><span>Claude &amp; Whisper API Entegrasyonu</span>
+<svg class="ms text-secondary text-sm" viewBox="0 -960 960 960" aria-hidden="true"><path d="M377-377v-205h205v205H377Zm60-60h85v-85h-85v85Zm-77 317v-80H260q-24 0-42-18t-18-42v-100h-80v-60h80v-124h-80v-60h80v-100q0-24 18-42t42-18h100v-76h60v76h124v-76h60v76h100q24 0 42 18t18 42v100h76v60h-76v124h76v60h-76v100q0 24-18 42t-42 18H604v80h-60v-80H420v80h-60Zm344-140v-444H260v444h444ZM480-480Z"/></svg><span>{{aboutChip2}}</span>
 </div>
 <div class="flex items-center gap-1.5 px-space-md py-1 rounded-lg bg-surface-container text-on-surface font-code-mono text-code-mono">
-<svg class="ms text-primary-fixed-dim text-sm" viewBox="0 -960 960 960" aria-hidden="true"><path d="M220-80q-24.75 0-42.37-17.63Q160-115.25 160-140v-434q0-24.75 17.63-42.38Q195.25-634 220-634h70v-96q0-78.85 55.61-134.42Q401.21-920 480.11-920q78.89 0 134.39 55.58Q670-808.85 670-730v96h70q24.75 0 42.38 17.62Q800-598.75 800-574v434q0 24.75-17.62 42.37Q764.75-80 740-80H220Zm0-60h520v-434H220v434Zm314.5-162.03Q557-324.06 557-355q0-30-22.67-54.5t-54.5-24.5q-31.83 0-54.33 24.5t-22.5 55q0 30.5 22.67 52.5t54.5 22q31.83 0 54.33-22.03ZM350-634h260v-96q0-54.17-37.88-92.08-37.88-37.92-92-37.92T388-822.08q-38 37.91-38 92.08v96ZM220-140v-434 434Z"/></svg><span>Gizlilik Odaklı Tasarım</span>
+<svg class="ms text-primary-fixed-dim text-sm" viewBox="0 -960 960 960" aria-hidden="true"><path d="M220-80q-24.75 0-42.37-17.63Q160-115.25 160-140v-434q0-24.75 17.63-42.38Q195.25-634 220-634h70v-96q0-78.85 55.61-134.42Q401.21-920 480.11-920q78.89 0 134.39 55.58Q670-808.85 670-730v96h70q24.75 0 42.38 17.62Q800-598.75 800-574v434q0 24.75-17.62 42.37Q764.75-80 740-80H220Zm0-60h520v-434H220v434Zm314.5-162.03Q557-324.06 557-355q0-30-22.67-54.5t-54.5-24.5q-31.83 0-54.33 24.5t-22.5 55q0 30.5 22.67 52.5t54.5 22q31.83 0 54.33-22.03ZM350-634h260v-96q0-54.17-37.88-92.08-37.88-37.92-92-37.92T388-822.08q-38 37.91-38 92.08v96ZM220-140v-434 434Z"/></svg><span>{{aboutChip3}}</span>
 </div>
 </div>
 </div>
@@ -236,13 +236,13 @@ Merhaba, ben İbrahim Aydın. Günlük hayatın karmaşasını sadeleştiren, ya
 <section class="relative z-10 w-full py-space-xl pb-space-2xl max-w-6xl mx-auto px-margin md:px-margin-md lg:px-margin-lg" id="iletisim">
 <div class="rounded-3xl bg-gradient-to-r from-surface-container/90 via-surface-container-high/90 to-surface-container/90 backdrop-blur-2xl p-space-lg md:p-space-xl flex flex-col md:flex-row items-center justify-between gap-space-lg shadow-xl shadow-surface-container-lowest/60">
 <div class="flex flex-col gap-space-xs text-center md:text-left">
-<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase font-semibold">Doğrudan İletişim</span>
-<h3 class="font-headline-md text-headline-md text-on-surface">Bir sonraki projenizi veya geri bildiriminizi paylaşın</h3>
-<p class="font-body-md text-body-md text-on-surface-variant">Yeni fikirler, teknik sorular veya iş birlikleri için her zaman açığım.</p>
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase font-semibold">{{contactKicker}}</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">{{contactTitle}}</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">{{contactText}}</p>
 </div>
 <div class="shrink-0 flex items-center gap-space-md">
 <a class="inline-flex items-center gap-space-sm px-space-xl py-space-md rounded-2xl bg-primary text-on-primary font-headline-sm text-headline-sm font-bold shadow-[0_0_24px_rgba(89,219,199,0.3)] hover:scale-105 active:scale-95 transition-all" href="mailto:aydinibrahim25@gmail.com">
-<svg class="ms text-xl" viewBox="0 -960 960 960" aria-hidden="true"><path d="M120-160v-640l760 320-760 320Zm60-93 544-227-544-230v168l242 62-242 60v167Zm0 0v-457 457Z"/></svg><span>E-posta Gönder</span>
+<svg class="ms text-xl" viewBox="0 -960 960 960" aria-hidden="true"><path d="M120-160v-640l760 320-760 320Zm60-93 544-227-544-230v168l242 62-242 60v167Zm0 0v-457 457Z"/></svg><span>{{contactButton}}</span>
 </a>
 </div>
 </div>
@@ -254,7 +254,7 @@ Merhaba, ben İbrahim Aydın. Günlük hayatın karmaşasını sadeleştiren, ya
 <div class="max-w-7xl mx-auto px-margin md:px-margin-md lg:px-margin-lg flex flex-col md:flex-row items-center justify-between gap-space-lg">
 <div class="flex flex-col items-center md:items-start gap-space-xs">
 <div class="flex items-center gap-space-xs"><img src="/favicon.svg" alt="" class="w-6 h-6 rounded-full"><span class="font-headline-sm text-headline-sm text-on-surface">aydin<span class="text-primary">app</span></span></div>
-<p class="font-body-sm text-body-sm text-on-surface-variant text-center md:text-left">© 2026 İbrahim Aydın. Tüm hakları saklıdır.</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-center md:text-left">{{footerRights}}</p>
 </div>
 <div class="flex items-center gap-space-lg">
 <a class="flex items-center gap-space-xs font-code-mono text-code-mono text-on-surface-variant hover:text-primary transition-colors" href="mailto:aydinibrahim25@gmail.com">

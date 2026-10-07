@@ -3,6 +3,7 @@
 Son güncelleme: 6 Ekim 2026 (1.1.1: kalan yerel modüller tek build'de)
 
 ## Kalıcı kurallar
+- **Yeni kullanıcı gözüyle yaz (7 Ekim):** Site, mağaza ve uygulama metinleri uygulamayı hiç bilmeyen biri için yazılır. Kısaltma ve iç terim kullanılmaz ("takip maddesi", "çıkarım", "içgörü", geliştirici terimleri); her özellik "bu ne, bana ne faydası var" sorusunu örnekle cevaplar.
 
 - **Güncelleme notları:** Belirgin bir yenilik yoksa genel ifade kullanılır ("Performans ve kararlılık iyileştirmeleri yapıldı"). Düzeltilen hatalar tek tek sayılmaz.
 - **Yerel modül içeren değişiklikler** asla yalnızca `eas update` ile gönderilmez; yeni build gerekir. Her güncellemeden önce paketin derlendiği kontrol edilir.
@@ -94,7 +95,7 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
 
 ### Site (aydinapp.com.tr)
 Vercel'de, `main`'e push edilince yayına girer (Root Directory: `web`). Kaynak araçları `tools/site/` (README yerine dosya başlarındaki notlar):
-- `build.sh`: Synvia sayfalarını şablondan üretir (`synvia.template.html` + `synvia.i18n.js` → `web/synvia/`, `web/en/synvia/`) ve `web/assets/site.css`'i derler. HTML'de yeni Tailwind sınıfı kullanınca çalıştırılmalı.
+- `build.sh`: sayfaları şablondan üretir (`home.*` → `web/index.html`, `web/en/`; `synvia.*` → `web/synvia/`, `web/en/synvia/`) ve `web/assets/site.css`'i derler. HTML'de yeni Tailwind sınıfı kullanınca çalıştırılmalı.
 - `render.js`: link önizleme görselleri (`og.png`, `og-en.png`) ve `apple-touch-icon.png`.
 - [x] 1. aşama (7 Ekim, yayında): WhatsApp/iMessage önizlemesi, iPhone App Store şeridi, ilk ekranda indirme butonu, Android'de Google Play öne alınır, CDN'siz hazır CSS ve yerel fontlar, robots/sitemap/404.
 - [x] 2. aşama (7 Ekim): `/synvia/` (TR) ve `/en/synvia/` (EN) tanıtım sayfası: üç tür takip, nasıl çalışır, özellikler, kişi kartları, gizlilik, Ücretsiz/Premium, SSS. Davet linki bu sayfaya gidiyor (OTA ile).
