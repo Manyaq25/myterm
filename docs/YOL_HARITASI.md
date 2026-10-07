@@ -104,7 +104,7 @@ Vercel'de, `main`'e push edilince yayına girer (Root Directory: `web`). Kaynak 
 - [ ] Kurumsal e-posta (destek@aydinapp.com.tr) — **ertelendi (7 Ekim), kullanım artınca.** Seçilen yol: Natro e-posta (~$0,99/ay) + Natro'dan Gmail'e otomatik yönlendirme + Gmail'de "farklı adresten gönder" (SMTP). Gmail'in POP ile mail çekme özelliği 2026'da kalktığı için yönlendirme kullanılacak. Kurulunca site, mağaza ve uygulamadaki adresler güncellenecek.
 - [x] Google Search Console (7 Ekim): Alan adı mülkü, Natro DNS'te TXT doğrulama kaydı (silinmemeli), sitemap.xml gönderildi → Başarılı, 12 sayfa.
 - [ ] www.aydinapp.com.tr Natro'nun yönlendirme servisine gidiyor (CNAME redirect.natrocdn.com); Vercel'e bağlanıp kök adrese yönlendirilmeli.
-- [ ] Çerezsiz ziyaretçi sayacı (Vercel Web Analytics, panelden açılır) ve gizlilik politikasına bir satır.
+- [x] Ziyaretçi sayacı (7 Ekim): Vercel Web Analytics (Hobby, ücretsiz; ayda 50.000 ölçüm, 30 gün geçmiş, özel olay sayımı yok). Vercel'de proje adı `myterm`. Gizlilik politikasına "Web Sitesi" bölümü eklendi.
 - [ ] İngilizce sayfa için İngilizce ekran görüntüleri (şimdilik Türkçe görüntüler kullanılıyor); yeni özellik ekranları telefondan alınınca sayfaya eklenecek.
 - [x] Gizlilik/destek/veri silme sayfalarının İngilizcesi (`web/en/apps/synvia-ai/`, 7 Ekim). Gizlilik politikasına rehber erişimi ve "Mesajla hatırlat"ın yapay zekâya gönderdikleri eklendi. Bu sayfalar şablonsuz; değişiklik iki dilde elle yapılır.
 
