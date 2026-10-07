@@ -35,7 +35,7 @@ SEN UNUTSAN BİLE O UNUTMAZ
 • Tarihi ve saati istediğin an değiştirebilirsin
 • Kime söz verdiğini, kimden ne beklediğini kişi bazında gruplar
 • Her ay sınırlı sayıda AI çıkarımı ücretsiz, sınırsız kullanım Premium'da
-• Akıllı hatırlatma önerileri, ilişki içgörüsü özetleri, ana ekran widget'ı ve Siri kısayolları (Premium)
+• Akıllı hatırlatma önerileri ve ilişki içgörüsü özetleri
 
 GİZLİLİK ÖNCELİKLİ
 Tüm verilerin yalnızca telefonunda kalır, hesap açmana gerek yok. AI özelliklerini kullandığında gönderdiğin içerik yalnızca o an işlenir, kalıcı olarak saklanmaz.
@@ -85,7 +85,7 @@ EVEN IF YOU FORGET, IT WON'T
 • Change the date and time whenever you like
 • Groups everything by person: what you promised and what you're waiting for
 • A limited number of AI extractions free every month, unlimited with Premium
-• Smart reminder suggestions, relationship insight summaries, home screen widget and Siri shortcuts (Premium)
+• Smart reminder suggestions and relationship insight summaries
 
 PRIVACY FIRST
 All your data stays on your phone, no account needed. When you use AI features, the content you send is processed only at that moment and never stored.
@@ -135,7 +135,7 @@ AUCH WENN DU ES VERGISST — SIE NICHT
 • Datum und Uhrzeit jederzeit änderbar
 • Gruppiert alles nach Personen: was du versprochen hast und worauf du wartest
 • Eine begrenzte Anzahl KI-Extraktionen pro Monat kostenlos, unbegrenzt mit Premium
-• Intelligente Erinnerungsvorschläge, Zusammenfassungen zu Beziehungsmustern, Widget und Siri-Kurzbefehle (Premium)
+• Intelligente Erinnerungsvorschläge und Zusammenfassungen zu Beziehungsmustern
 
 DATENSCHUTZ ZUERST
 Alle Daten bleiben nur auf deinem Handy, kein Konto nötig. Wenn du KI-Funktionen nutzt, werden die gesendeten Inhalte nur in diesem Moment verarbeitet und nicht gespeichert.
@@ -185,7 +185,7 @@ AUNQUE TÚ LO OLVIDES, ÉL NO
 • Cambia la fecha y la hora cuando quieras
 • Agrupa todo por persona: lo que prometiste y lo que esperas
 • Un número limitado de extracciones de IA gratis cada mes, ilimitadas con Premium
-• Sugerencias de recordatorio inteligentes, resúmenes de relación, widget y accesos directos de Siri (Premium)
+• Sugerencias de recordatorio inteligentes y resúmenes de relación
 
 PRIVACIDAD ANTE TODO
 Todos tus datos se quedan en tu teléfono, sin necesidad de cuenta. Cuando usas funciones de IA, el contenido que envías solo se procesa en ese momento y no se guarda.
@@ -235,7 +235,7 @@ MÊME SI TU OUBLIES, ELLE N'OUBLIE PAS
 • Modifie la date et l'heure quand tu veux
 • Regroupe tout par personne : ce que tu as promis et ce que tu attends
 • Un nombre limité d'extractions IA gratuites chaque mois, illimitées avec Premium
-• Suggestions de rappels intelligents, résumés relationnels, widget et raccourcis Siri (Premium)
+• Suggestions de rappels intelligents et résumés relationnels
 
 LA CONFIDENTIALITÉ D'ABORD
 Toutes tes données restent sur ton téléphone, aucun compte nécessaire. Quand tu utilises les fonctions IA, le contenu envoyé est traité uniquement à ce moment-là et n'est jamais conservé.
@@ -285,7 +285,7 @@ ANCHE SE TU DIMENTICHI, LEI NO
 • Cambia data e ora quando vuoi
 • Raggruppa tutto per persona: cosa hai promesso e cosa stai aspettando
 • Un numero limitato di estrazioni IA gratis ogni mese, illimitate con Premium
-• Suggerimenti di promemoria intelligenti, riepiloghi sulle relazioni, widget e scorciatoie Siri (Premium)
+• Suggerimenti di promemoria intelligenti e riepiloghi sulle relazioni
 
 PRIVACY AL PRIMO POSTO
 Tutti i tuoi dati restano sul telefono, nessun account necessario. Quando usi le funzioni IA, i contenuti inviati vengono elaborati solo in quel momento e non vengono conservati.
@@ -335,7 +335,7 @@ MESMO QUE VOCÊ ESQUEÇA, ELE NÃO ESQUECE
 • Mude a data e a hora quando quiser
 • Agrupa tudo por pessoa: o que você prometeu e o que está esperando
 • Um número limitado de extrações de IA grátis por mês, ilimitadas no Premium
-• Sugestões de lembrete inteligentes, resumos de relacionamento, widget e atalhos da Siri (Premium)
+• Sugestões de lembrete inteligentes e resumos de relacionamento
 
 PRIVACIDADE EM PRIMEIRO LUGAR
 Todos os seus dados ficam só no seu celular, sem precisar de conta. Quando você usa recursos de IA, o conteúdo enviado é processado apenas naquele momento e não é armazenado.
@@ -385,7 +385,7 @@ Melhorias de desempenho e estabilidade.
 • Дату и время можно изменить в любой момент
 • Группирует всё по людям: что вы обещали и чего ждёте
 • Ограниченное число AI-извлечений бесплатно каждый месяц, без ограничений с Premium
-• Умные напоминания, сводки по отношениям, виджет и ярлыки Siri (Premium)
+• Умные напоминания и сводки по отношениям
 
 КОНФИДЕНЦИАЛЬНОСТЬ ПРЕЖДЕ ВСЕГО
 Все данные хранятся только на вашем телефоне, аккаунт не нужен. Когда вы используете функции ИИ, отправленные данные обрабатываются только в этот момент и не сохраняются.
@@ -435,7 +435,7 @@ Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/st
 • غيّر التاريخ والوقت متى شئت
 • يجمع كل شيء حسب الشخص: ما وعدت به وما تنتظره
 • عدد محدود من عمليات الاستخراج بالذكاء الاصطناعي مجانًا كل شهر، وغير محدود مع Premium
-• اقتراحات تذكير ذكية، ملخصات رؤى العلاقات، الودجت واختصارات Siri (Premium)
+• اقتراحات تذكير ذكية وملخصات رؤى العلاقات
 
 الخصوصية أولًا
 تبقى كل بياناتك على هاتفك فقط، ولا حاجة إلى حساب. عند استخدام ميزات الذكاء الاصطناعي، يُعالَج المحتوى الذي ترسله في تلك اللحظة فقط ولا يُحفظ.
@@ -485,7 +485,7 @@ Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/st
 • 日付と時刻はいつでも変更可能
 • 約束したこと・待っていることを人ごとにまとめて表示
 • 毎月一定回数のAI抽出が無料、Premiumなら無制限
-• スマートリマインダー提案、関係性インサイトの要約、ホーム画面ウィジェット、Siriショートカット（Premium）
+• スマートリマインダー提案と関係性インサイトの要約
 
 プライバシー優先
 データはすべてあなたの端末内だけに保存され、アカウント登録は不要です。AI機能を使うときに送信した内容は、その場で処理されるだけで保存されません。
@@ -535,7 +535,7 @@ Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/st
 • 날짜와 시간은 언제든 변경 가능
 • 내가 약속한 일과 기다리는 일을 사람별로 묶어 보여 줍니다
 • 매월 일정 횟수의 AI 추출 무료, Premium은 무제한
-• 스마트 리마인더 제안, 관계 인사이트 요약, 홈 화면 위젯 및 Siri 단축어 (Premium)
+• 스마트 리마인더 제안 및 관계 인사이트 요약
 
 프라이버시 우선
 모든 데이터는 내 휴대폰에만 저장되며 계정이 필요 없습니다. AI 기능을 사용할 때 보낸 내용은 그 순간에만 처리되고 저장되지 않습니다.
@@ -585,7 +585,7 @@ Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/st
 • 随时修改日期和时间
 • 按人分组：你答应了什么、在等什么，一目了然
 • 每月可免费使用有限次数的 AI 提取，Premium 无限次
-• 智能提醒建议、关系洞察摘要、主屏幕小组件和 Siri 快捷指令（Premium）
+• 智能提醒建议和关系洞察摘要
 
 隐私优先
 所有数据只保存在你的手机上，无需注册账号。使用 AI 功能时，你发送的内容只在当时处理，不会被保存。
@@ -635,7 +635,7 @@ OOK ALS JIJ HET VERGEET, DE APP NIET
 • Datum en tijd kun je altijd aanpassen
 • Groepeert alles per persoon: wat je hebt beloofd en waar je op wacht
 • Elke maand een beperkt aantal AI-extracties gratis, onbeperkt met Premium
-• Slimme herinneringssuggesties, relatie-inzichten, widget en Siri-opdrachten (Premium)
+• Slimme herinneringssuggesties en relatie-inzichten
 
 PRIVACY VOOROP
 Al je gegevens blijven alleen op je telefoon, geen account nodig. Als je AI-functies gebruikt, wordt de verstuurde inhoud alleen op dat moment verwerkt en niet bewaard.

@@ -27,7 +27,7 @@ const ROWS: ComparisonRow[] = [
   { key: 'aiExtractionUnlimited', free: false, premium: true },
   { key: 'smartReminders', free: false, premium: true },
   { key: 'personInsights', free: false, premium: true },
-  { key: 'widgetSiri', free: false, premium: true },
+  // widgetSiri: widget/Siri eklentileri build'den çıkarıldı (targets/, YOL_HARITASI); geri gelince satır eklenecek.
 ];
 
 export default function PremiumScreen() {
