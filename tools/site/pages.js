@@ -1,6 +1,7 @@
 // Şablonlardan sayfa üretir (build.sh bunu CSS'ten önce çalıştırır):
 //   home.template.html   + home.i18n.js   → web/index.html, web/en/index.html
 //   synvia.template.html + synvia.i18n.js → web/synvia/index.html, web/en/synvia/index.html
+//   changelog.template.html + changelog.i18n.js → web/synvia/yenilikler/, web/en/synvia/whats-new/
 const fs = require('fs');
 const path = require('path');
 
@@ -8,6 +9,7 @@ const ICONS = require('./icons.json');
 const PAGES = [
   { template: 'home.template.html', i18n: require('./home.i18n.js') },
   { template: 'synvia.template.html', i18n: require('./synvia.i18n.js') },
+  { template: 'changelog.template.html', i18n: require('./changelog.i18n.js') },
 ];
 const APP_STORE = 'https://apps.apple.com/app/id6812456837';
 
@@ -49,6 +51,21 @@ const components = {
 <p class="font-body-sm text-body-sm text-on-surface-variant">${esc(t[text])}</p>
 </div>`,
 
+  // Yenilikler sayfasındaki sürüm kartları (changelog.i18n.js → entries)
+  changelogEntries: (t) => t.entries.map((e) => `<li class="relative rounded-3xl ${e.latest ? 'p-[1.5px] bg-gradient-to-br from-primary via-primary-fixed-dim to-secondary shadow-[0_0_40px_rgba(89,219,199,0.15)]' : 'bg-surface-container/60'}">
+<div class="${e.latest ? 'rounded-[calc(1.5rem-1.5px)] bg-surface-container-low' : ''} p-space-lg md:p-space-xl flex flex-col gap-space-md">
+<div class="flex flex-wrap items-center gap-space-sm">
+<span class="font-code-mono text-code-mono font-semibold px-space-sm py-0.5 rounded-full bg-primary/15 text-primary">${esc(t.versionLabel)} ${esc(e.version)}</span>
+<span class="font-code-mono text-code-mono text-on-surface-variant">${esc(e.date)}</span>
+${e.latest ? `<span class="font-code-mono text-[12px] font-semibold px-space-sm py-0.5 rounded-full bg-secondary/15 text-secondary">${esc(t.latestBadge)}</span>` : ''}
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">${esc(e.title)}</h2>
+<ul class="flex flex-col gap-space-md">
+${e.items.map(([emoji, title, text]) => `<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">${emoji}</span><div><h3 class="font-semibold text-on-surface">${esc(title)}</h3><p class="text-on-surface-variant">${esc(text)}</p></div></li>`).join('\n')}
+</ul>
+</div>
+</li>`).join('\n'),
+
   check: (t, key) => `<li class="flex items-start gap-space-sm text-on-surface">${icon('check', 'text-xl text-primary mt-0.5')}<span>${esc(t[key])}</span></li>`,
 
   faq: (t, q, a) => `<details class="group rounded-2xl bg-surface-container/60 px-space-lg py-space-md">
@@ -75,6 +92,10 @@ function jsonLd(t) {
 }
 
 function render(template, t) {
+  // Ortak parçalar (partials/*.html) önce yerleştirilir, sonra onların içindeki yer tutucular da doldurulur.
+  template = template.replace(/\{\{partial:([\w-]+)\}\}/g, (m, name) =>
+    fs.readFileSync(path.join(__dirname, 'partials', `${name}.html`), 'utf8').trimEnd()
+  );
   let html = template.replace(/\{\{(\w+):([^}]+)\}\}/g, (m, name, rest) => {
     if (name === 'icon') {
       const i = rest.indexOf(':');
@@ -93,6 +114,10 @@ function render(template, t) {
 }
 
 for (const page of PAGES) {
+  for (const t of Object.values(page.i18n)) {
+    const clash = Object.keys(t).filter((k) => k in components);
+    if (clash.length) throw new Error(`metin anahtarı bir bileşen adıyla çakışıyor: ${clash.join(', ')}`);
+  }
   const template = fs.readFileSync(path.join(__dirname, page.template), 'utf8');
   for (const t of Object.values(page.i18n)) {
     const out = path.join(__dirname, '../../web', t.path, 'index.html');

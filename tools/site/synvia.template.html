@@ -29,24 +29,7 @@
 <div class="pointer-events-none fixed -top-40 -left-40 w-96 h-96 rounded-full bg-primary opacity-15 blur-[120px] z-0"></div>
 <div class="pointer-events-none fixed top-1/3 -right-40 w-96 h-96 rounded-full bg-secondary opacity-10 blur-[140px] z-0"></div>
 
-<!-- HEADER -->
-<header class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.45)]">
-<div class="max-w-6xl mx-auto px-margin md:px-margin-md flex items-center justify-between gap-space-md py-3">
-<a class="flex items-center gap-space-sm shrink-0" href="{{homePath}}" title="{{backHome}}">
-<img src="/apps/synvia-ai/icon-96.webp" width="96" height="96" alt="" class="w-9 h-9 rounded-xl">
-<span class="font-headline-sm text-headline-sm tracking-tighter text-on-surface">Synvia <span class="text-primary">AI</span></span>
-</a>
-<nav class="hidden md:flex items-center gap-space-xs">
-<a class="px-space-md py-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="#how">{{navHow}}</a>
-<a class="px-space-md py-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="#features">{{navFeatures}}</a>
-<a class="px-space-md py-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="#faq">{{navFaq}}</a>
-</nav>
-<div class="flex items-center gap-space-sm">
-{{langSwitch}}
-<a class="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full bg-primary text-on-primary font-bold text-sm hover:scale-105 active:scale-95 transition-all" href="https://apps.apple.com/app/id6812456837" rel="noopener noreferrer" target="_blank" data-store-link data-android-href="#download"><span data-store-label>{{navDownload}}</span></a>
-</div>
-</div>
-</header>
+{{partial:synvia-header}}
 
 <main class="relative z-10 w-full pt-24 overflow-x-clip">
 
@@ -213,17 +196,6 @@
 
 </main>
 
-<footer class="relative z-10 w-full bg-surface-container-lowest/80 backdrop-blur-md shadow-[0_-1px_12px_rgba(0,0,0,0.35)] py-space-xl mt-space-xl">
-<div class="max-w-6xl mx-auto px-margin md:px-margin-md flex flex-col md:flex-row items-center justify-between gap-space-lg">
-<a class="flex items-center gap-space-xs" href="/"><img src="/favicon.svg" alt="" class="w-6 h-6 rounded-full"><span class="font-headline-sm text-headline-sm text-on-surface">aydin<span class="text-primary">app</span></span></a>
-<nav class="flex flex-wrap items-center justify-center gap-x-space-lg gap-y-space-xs font-code-mono text-code-mono text-on-surface-variant">
-<a class="hover:text-primary transition-colors" href="{{supportHref}}">{{footerSupport}}</a>
-<a class="hover:text-primary transition-colors" href="{{privacyHref}}">{{footerPrivacy}}</a>
-<a class="hover:text-primary transition-colors" href="{{deleteHref}}">{{footerDelete}}</a>
-<a class="hover:text-primary transition-colors inline-flex items-center gap-1" href="mailto:aydinibrahim25@gmail.com">{{icon:mail:text-base}}aydinibrahim25@gmail.com</a>
-</nav>
-</div>
-<p class="mt-space-md text-center font-body-sm text-body-sm text-on-surface-variant">{{footerRights}}</p>
-</footer>
+{{partial:synvia-footer}}
 <script src="/assets/store.js" defer></script>
 </body></html>

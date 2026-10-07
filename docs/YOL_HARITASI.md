@@ -95,11 +95,12 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
 
 ### Site (aydinapp.com.tr)
 Vercel'de, `main`'e push edilince yayına girer (Root Directory: `web`). Kaynak araçları `tools/site/` (README yerine dosya başlarındaki notlar):
-- `build.sh`: sayfaları şablondan üretir (`home.*` → `web/index.html`, `web/en/`; `synvia.*` → `web/synvia/`, `web/en/synvia/`) ve `web/assets/site.css`'i derler. HTML'de yeni Tailwind sınıfı kullanınca çalıştırılmalı.
+- `build.sh`: sayfaları şablondan üretir (`home.*` → `web/index.html`, `web/en/`; `synvia.*` → `web/synvia/`, `web/en/synvia/`; `changelog.*` → yenilikler sayfaları; ortak menü/alt bilgi `partials/`) ve `web/assets/site.css`'i derler. HTML'de yeni Tailwind sınıfı kullanınca çalıştırılmalı.
 - `render.js`: link önizleme görselleri (`og.png`, `og-en.png`) ve `apple-touch-icon.png`.
 - [x] 1. aşama (7 Ekim, yayında): WhatsApp/iMessage önizlemesi, iPhone App Store şeridi, ilk ekranda indirme butonu, Android'de Google Play öne alınır, CDN'siz hazır CSS ve yerel fontlar, robots/sitemap/404.
 - [x] 2. aşama (7 Ekim): `/synvia/` (TR) ve `/en/synvia/` (EN) tanıtım sayfası: üç tür takip, nasıl çalışır, özellikler, kişi kartları, gizlilik, Ücretsiz/Premium, SSS. Davet linki bu sayfaya gidiyor (OTA ile).
 - [x] Güvenlik ve hız (7 Ekim): `web/vercel.json` güvenlik başlıkları (CSP: yalnızca kendi dosyalarımız; dış betik eklenecekse buraya izin yazılmalı) ve önbellek süreleri; CSS/JS bağlantılarında içerik özetiyle sürüm etiketi (`version-assets.js`); ikon 945 KB PNG yerine 1–3 KB WebP. Lighthouse (mobil): hız 73 → 99, erişilebilirlik/en iyi uygulamalar/SEO 100.
+- [x] Yenilikler sayfası (7 Ekim): `/synvia/yenilikler/` ve `/en/synvia/whats-new/`. Her yeni sürümde `tools/site/changelog.i18n.js` listesinin başına iki dilde madde eklenir (önceki `latest: true` kaldırılır), sonra `build.sh`. Kullanıcı kararıyla 1.1 maddeleri OTA'dan önce yayınlandı.
 - [ ] Kurumsal e-posta (ör. destek@aydinapp.com.tr) — kullanıcı kurulumu gerekir.
 - [ ] Google Search Console'a site ve sitemap kaydı — kullanıcı girişi gerekir.
 - [ ] Çerezsiz ziyaretçi sayacı (Vercel Web Analytics, panelden açılır) ve gizlilik politikasına bir satır.

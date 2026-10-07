@@ -1,0 +1,146 @@
+<!DOCTYPE html><html class="dark" lang="tr"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport">
+<!-- Bu dosya tools/site/changelog.template.html şablonundan üretilir; doğrudan düzenleme. -->
+<title>Synvia AI — Yenilikler</title>
+<meta name="description" content="Synvia AI’a gelen yeni özellikler ve iyileştirmeler, sürüm sürüm.">
+<link rel="canonical" href="https://aydinapp.com.tr/synvia/yenilikler/">
+<link rel="alternate" hreflang="tr" href="https://aydinapp.com.tr/synvia/yenilikler/">
+<link rel="alternate" hreflang="en" href="https://aydinapp.com.tr/en/synvia/whats-new/">
+<link rel="alternate" hreflang="x-default" href="https://aydinapp.com.tr/en/synvia/whats-new/">
+<meta name="theme-color" content="#0a1513">
+<meta name="apple-itunes-app" content="app-id=6812456837">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="aydinapp">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:url" content="https://aydinapp.com.tr/synvia/yenilikler/">
+<meta property="og:title" content="Synvia AI — Yenilikler">
+<meta property="og:description" content="Synvia AI’a gelen yeni özellikler: bildirimden hallet, karşı tarafa hatırlat, tekrar eden işler ve daha fazlası.">
+<meta property="og:image" content="https://aydinapp.com.tr/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Synvia AI — Yenilikler">
+<meta name="twitter:card" content="summary_large_image">
+<link href="/favicon.svg" rel="icon" type="image/svg+xml">
+<link href="/apple-touch-icon.png" rel="apple-touch-icon">
+<link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css?v=482e38d0ff">
+</head>
+<body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen relative overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<div class="pointer-events-none fixed -top-40 -left-40 w-96 h-96 rounded-full bg-primary opacity-15 blur-[120px] z-0"></div>
+<div class="pointer-events-none fixed top-1/3 -right-40 w-96 h-96 rounded-full bg-secondary opacity-10 blur-[140px] z-0"></div>
+
+<!-- Synvia sayfalarının ortak üst menüsü (synvia ve yenilikler şablonları) -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.45)]">
+<div class="max-w-6xl mx-auto px-margin md:px-margin-md flex items-center justify-between gap-space-md py-3">
+<a class="flex items-center gap-space-sm shrink-0" href="/" title="aydinapp ana sayfa">
+<img src="/apps/synvia-ai/icon-96.webp" width="96" height="96" alt="" class="w-9 h-9 rounded-xl">
+<span class="font-headline-sm text-headline-sm tracking-tighter text-on-surface">Synvia <span class="text-primary">AI</span></span>
+</a>
+<nav class="hidden md:flex items-center gap-space-xs">
+<a class="px-space-md py-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="/synvia/#how">Nasıl çalışır</a>
+<a class="px-space-md py-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="/synvia/#features">Özellikler</a>
+<a class="px-space-md py-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="/synvia/#faq">Sorular</a>
+<a class="px-space-md py-space-xs text-on-surface-variant hover:text-on-surface transition-colors" href="/synvia/yenilikler/">Yenilikler</a>
+</nav>
+<div class="flex items-center gap-space-sm">
+<a class="inline-flex items-center gap-1 px-space-sm py-1 rounded-full border border-outline-variant text-on-surface hover:border-primary hover:text-primary font-code-mono text-code-mono transition-colors" href="/en/synvia/whats-new/" hreflang="en" lang="en"><svg class="ms text-base" viewBox="0 -960 960 960" aria-hidden="true"><path d="M323-111.5Q250-143 196-197t-85-127.5Q80-398 80-482t31-156.5Q142-711 196-765t127-84.5Q396-880 480-880t157 30.5Q710-819 764-765t85 126.5Q880-566 880-482t-31 157.5Q818-251 764-197t-127 85.5Q564-80 480-80t-157-31.5ZM480-138q35-36 58.5-82.5T577-331H384q14 60 37.5 108t58.5 85Zm-85-12q-25-38-43-82t-30-99H172q38 71 88 111.5T395-150Zm171-1q72-23 129.5-69T788-331H639q-13 54-30.5 98T566-151ZM152-391h159q-3-27-3.5-48.5T307-482q0-25 1-44.5t4-43.5H152q-7 24-9.5 43t-2.5 45q0 26 2.5 46.5T152-391Zm221 0h215q4-31 5-50.5t1-40.5q0-20-1-38.5t-5-49.5H373q-4 31-5 49.5t-1 38.5q0 21 1 40.5t5 50.5Zm275 0h160q7-24 9.5-44.5T820-482q0-26-2.5-45t-9.5-43H649q3 35 4 53.5t1 34.5q0 22-1.5 41.5T648-391Zm-10-239h150q-33-69-90.5-115T565-810q25 37 42.5 80T638-630Zm-254 0h194q-11-53-37-102.5T480-820q-32 27-54 71t-42 119Zm-212 0h151q11-54 28-96.5t43-82.5q-75 19-131 64t-91 115Z"/></svg><span>English</span></a>
+<a class="inline-flex items-center gap-1 px-space-md py-1.5 rounded-full bg-primary text-on-primary font-bold text-sm hover:scale-105 active:scale-95 transition-all" href="https://apps.apple.com/app/id6812456837" rel="noopener noreferrer" target="_blank" data-store-link data-android-href="/synvia/#download"><span data-store-label>İndir</span></a>
+</div>
+</div>
+</header>
+
+<main class="relative z-10 w-full pt-24 overflow-x-clip">
+<section class="max-w-3xl mx-auto px-margin md:px-margin-md pt-space-xl pb-space-lg flex flex-col items-center text-center gap-space-md">
+<span class="font-label-caps text-label-caps text-secondary uppercase">Yenilikler</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface tracking-tight">Synvia AI’da neler yeni?</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant font-light max-w-xl">Uygulamaya gelen yeni özellikler burada. Hepsini kullanmak için Synvia AI’ı App Store’dan güncel tut.</p>
+</section>
+
+<section class="max-w-3xl mx-auto px-margin md:px-margin-md pb-space-2xl">
+<ol class="relative flex flex-col gap-space-lg">
+<li class="relative rounded-3xl p-[1.5px] bg-gradient-to-br from-primary via-primary-fixed-dim to-secondary shadow-[0_0_40px_rgba(89,219,199,0.15)]">
+<div class="rounded-[calc(1.5rem-1.5px)] bg-surface-container-low p-space-lg md:p-space-xl flex flex-col gap-space-md">
+<div class="flex flex-wrap items-center gap-space-sm">
+<span class="font-code-mono text-code-mono font-semibold px-space-sm py-0.5 rounded-full bg-primary/15 text-primary">Sürüm 1.1</span>
+<span class="font-code-mono text-code-mono text-on-surface-variant">Ekim 2026</span>
+<span class="font-code-mono text-[12px] font-semibold px-space-sm py-0.5 rounded-full bg-secondary/15 text-secondary">En yeni</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Hatırlatmaları uygulamayı açmadan hallet</h2>
+<ul class="flex flex-col gap-space-md">
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">🔔</span><div><h3 class="font-semibold text-on-surface">Bildirimden hallet</h3><p class="text-on-surface-variant">Hatırlatma geldiğinde uygulamayı açmadan “Tamamlandı”, “1 saat ertele” ya da “Yarın” seçebilirsin.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">💬</span><div><h3 class="font-semibold text-on-surface">Karşı tarafa hatırlat</h3><p class="text-on-surface-variant">Biri sana verdiği sözü unuttuysa yapay zekâ ona kibar bir hatırlatma mesajı yazar (samimi, resmi ya da kısa). Sen de WhatsApp veya SMS ile gönderirsin.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">📇</span><div><h3 class="font-semibold text-on-surface">Rehberden seç</h3><p class="text-on-surface-variant">Kişinin telefon numarasını yazmak yerine telefon rehberinden seçebilirsin. Uygulama sadece seçtiğin kişiyi görür.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">🔁</span><div><h3 class="font-semibold text-on-surface">Tekrar eden işler</h3><p class="text-on-surface-variant">Kira her ay, ilaç her gün… Bir kez kur; işi bitirdiğinde bir sonrakini uygulama kendisi oluşturur.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">🎁</span><div><h3 class="font-semibold text-on-surface">Arkadaşını davet et</h3><p class="text-on-surface-variant">Davet kodunla uygulamaya katılan her arkadaşın için 3 ek yapay zekâ hakkı kazanırsın.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">🌍</span><div><h3 class="font-semibold text-on-surface">Yapay zekâ senin dilinde</h3><p class="text-on-surface-variant">Uygulamayı hangi dilde kullanıyorsan yapay zekâ da sana o dilde cevap verir; sesli notlarında da dilini kendisi tanır.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">🤖</span><div><h3 class="font-semibold text-on-surface">Asistan tam ekran</h3><p class="text-on-surface-variant">Yapay zekâ asistanı artık tam ekran açılıyor; cevaplar daha rahat okunuyor.</p></div></li>
+</ul>
+</div>
+</li>
+<li class="relative rounded-3xl bg-surface-container/60">
+<div class=" p-space-lg md:p-space-xl flex flex-col gap-space-md">
+<div class="flex flex-wrap items-center gap-space-sm">
+<span class="font-code-mono text-code-mono font-semibold px-space-sm py-0.5 rounded-full bg-primary/15 text-primary">Sürüm 1.0.2</span>
+<span class="font-code-mono text-code-mono text-on-surface-variant">Ekim 2026</span>
+
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Saatler senin kontrolünde</h2>
+<ul class="flex flex-col gap-space-md">
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">⏰</span><div><h3 class="font-semibold text-on-surface">Hatırlatma saatini değiştir</h3><p class="text-on-surface-variant">Bir işi kaydettikten sonra da hatırlatma saatini istediğin zaman değiştirebilirsin.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">🕒</span><div><h3 class="font-semibold text-on-surface">Saatler yazıldığı gibi</h3><p class="text-on-surface-variant">Yapay zekânın bulduğu saatler mesajda yazıldığı gibi korunur; beğenmezsen kaydetmeden önce düzeltebilirsin.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">📷</span><div><h3 class="font-semibold text-on-surface">Daha iyi görsel okuma</h3><p class="text-on-surface-variant">Büyük ekran görüntüleri ve iPhone fotoğrafları (HEIC) artık sorunsuz okunuyor.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">🗣️</span><div><h3 class="font-semibold text-on-surface">12 dil</h3><p class="text-on-surface-variant">Uygulama Türkçe, İngilizce, Almanca, İspanyolca, Fransızca, İtalyanca, Portekizce, Rusça, Arapça, Japonca, Korece ve Çince kullanılabiliyor.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">🛠️</span><div><h3 class="font-semibold text-on-surface">Daha sağlam</h3><p class="text-on-surface-variant">Çeşitli hatalar giderildi; uygulama daha hızlı ve kararlı.</p></div></li>
+</ul>
+</div>
+</li>
+<li class="relative rounded-3xl bg-surface-container/60">
+<div class=" p-space-lg md:p-space-xl flex flex-col gap-space-md">
+<div class="flex flex-wrap items-center gap-space-sm">
+<span class="font-code-mono text-code-mono font-semibold px-space-sm py-0.5 rounded-full bg-primary/15 text-primary">Sürüm 1.0</span>
+<span class="font-code-mono text-code-mono text-on-surface-variant">Eylül 2026</span>
+
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Synvia AI App Store’da!</h2>
+<ul class="flex flex-col gap-space-md">
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">✍️</span><div><h3 class="font-semibold text-on-surface">Her yoldan ekle</h3><p class="text-on-surface-variant">İşlerini ve sözlerini yazarak, konuşarak, bir ekran görüntüsünden ya da PDF’ten ekle; içindekileri yapay zekâ bulsun.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">🗂️</span><div><h3 class="font-semibold text-on-surface">Üç liste</h3><p class="text-on-surface-variant">Verdiğin sözler, başkalarından beklediklerin ve yapacağın işler ayrı ayrı görünür.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">🔔</span><div><h3 class="font-semibold text-on-surface">Zamanında hatırlatma</h3><p class="text-on-surface-variant">Saati gelen ve geciken işler için bildirim alırsın.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">👥</span><div><h3 class="font-semibold text-on-surface">Kişi sayfaları</h3><p class="text-on-surface-variant">Her kişiyle ilgili sözler ve işler tek sayfada; oradan tek dokunuşla arayabilir ya da mesaj atabilirsin.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">📸</span><div><h3 class="font-semibold text-on-surface">Ekran görüntüsü önerisi</h3><p class="text-on-surface-variant">Ekran görüntüsü aldığında, içindeki işleri eklemek isteyip istemediğini soran bir bildirim gelir.</p></div></li>
+<li class="flex items-start gap-space-sm"><span class="text-xl leading-7 shrink-0" aria-hidden="true">🤖</span><div><h3 class="font-semibold text-on-surface">Yapay zekâ asistanı</h3><p class="text-on-surface-variant">“Bugün ne yapmam lazım?” gibi sorular sor, listene bakıp cevap versin.</p></div></li>
+</ul>
+</div>
+</li>
+</ol>
+</section>
+
+<section class="max-w-3xl mx-auto px-margin md:px-margin-md pb-space-2xl">
+<div class="rounded-3xl bg-gradient-to-br from-surface-container-high via-surface-container to-surface-container-low p-space-lg md:p-space-xl flex flex-col items-center text-center gap-space-md">
+<img src="/apps/synvia-ai/icon-192.webp" width="192" height="192" alt="" loading="lazy" class="w-16 h-16 rounded-2xl shadow-lg">
+<h2 class="font-headline-md text-headline-md text-on-surface">Henüz denemedin mi?</h2>
+<p class="text-on-surface-variant">Ücretsiz indir, ilk işini bir dakikada ekle.</p>
+<div class="w-full max-w-md flex flex-col gap-space-sm">
+<a class="inline-flex items-center justify-center gap-space-sm px-space-lg py-space-md rounded-2xl bg-gradient-to-r from-primary-fixed-dim via-primary to-secondary text-surface font-headline-sm text-base sm:text-headline-sm font-bold whitespace-nowrap shadow-[0_0_28px_rgba(89,219,199,0.35)] hover:shadow-[0_0_36px_rgba(255,107,74,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all" href="https://apps.apple.com/app/id6812456837" rel="noopener noreferrer" target="_blank"><svg class="w-5 h-5 fill-surface shrink-0" viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span>App Store'dan İndirin</span><svg class="ms text-lg" viewBox="0 -960 960 960" aria-hidden="true"><path d="m242-246-42-42 412-412H234v-60h480v480h-60v-378L242-246Z"/></svg></a>
+<a data-play-btn data-get-label="Google Play'den İndirin" aria-disabled="true" title="Android sürümü çok yakında" class="inline-flex items-center justify-center gap-space-sm px-space-lg py-space-md rounded-2xl bg-surface-container-high/60 text-on-surface-variant font-headline-sm text-base sm:text-headline-sm font-bold whitespace-nowrap cursor-not-allowed select-none"><svg class="w-5 h-5 fill-current opacity-70 shrink-0" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597zm-13.09-7.84L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"/></svg><span data-play-label>Google Play — Yakında</span></a>
+</div>
+</div>
+</section>
+</main>
+
+<!-- Synvia sayfalarının ortak alt bilgisi -->
+<footer class="relative z-10 w-full bg-surface-container-lowest/80 backdrop-blur-md shadow-[0_-1px_12px_rgba(0,0,0,0.35)] py-space-xl mt-space-xl">
+<div class="max-w-6xl mx-auto px-margin md:px-margin-md flex flex-col md:flex-row items-center justify-between gap-space-lg">
+<a class="flex items-center gap-space-xs" href="/"><img src="/favicon.svg" alt="" class="w-6 h-6 rounded-full"><span class="font-headline-sm text-headline-sm text-on-surface">aydin<span class="text-primary">app</span></span></a>
+<nav class="flex flex-wrap items-center justify-center gap-x-space-lg gap-y-space-xs font-code-mono text-code-mono text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="/synvia/yenilikler/">Yenilikler</a>
+<a class="hover:text-primary transition-colors" href="/apps/synvia-ai/support.html">Destek</a>
+<a class="hover:text-primary transition-colors" href="/apps/synvia-ai/privacy-policy.html">Gizlilik Politikası</a>
+<a class="hover:text-primary transition-colors" href="/apps/synvia-ai/delete-data.html">Veri Silme</a>
+<a class="hover:text-primary transition-colors inline-flex items-center gap-1" href="mailto:aydinibrahim25@gmail.com"><svg class="ms text-base" viewBox="0 -960 960 960" aria-hidden="true"><path d="M140-160q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H140Zm340-302L140-685v465h680v-465L480-462Zm0-60 336-218H145l335 218ZM140-685v-55 520-465Z"/></svg>aydinibrahim25@gmail.com</a>
+</nav>
+</div>
+<p class="mt-space-md text-center font-body-sm text-body-sm text-on-surface-variant">© 2026 İbrahim Aydın. Tüm hakları saklıdır.</p>
+</footer>
+<script src="/assets/store.js?v=81d4185637" defer></script>
+</body></html>
