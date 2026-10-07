@@ -92,7 +92,7 @@ module.exports = {
     androidSoon: 'Android version coming soon',
     heroCtaKicker: 'New · Free',
     heroCta: 'Get Synvia AI',
-    heroLearn: 'Learn more',
+    heroLearn: 'Explore Synvia AI',
     chipIndie: 'Independent developer',
     chipNoAds: 'No ads, no tracking',
     appKicker: 'Featured app',

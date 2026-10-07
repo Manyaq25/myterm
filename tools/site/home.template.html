@@ -24,6 +24,7 @@
 <link href="/favicon.svg" rel="icon" type="image/svg+xml">
 <link href="/apple-touch-icon.png" rel="apple-touch-icon">
 <link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 </head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen relative overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
 <div class="pointer-events-none fixed -top-40 -left-40 w-96 h-96 rounded-full bg-primary opacity-15 blur-[120px] z-0"></div>
@@ -64,7 +65,7 @@
 
 <!-- HERO SECTION -->
 <section class="relative w-full pt-space-xl pb-space-2xl overflow-hidden">
-<div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-gradient-to-tr from-primary/15 via-primary-container/10 to-secondary/10 blur-[130px] rounded-full z-0"></div>
+<div class="pointer-events-none absolute top-[340px] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[450px] bg-gradient-to-tr from-primary/15 via-primary-container/10 to-secondary/10 blur-[130px] rounded-full z-0"></div>
 <div class="pointer-events-none absolute -top-12 right-1/4 w-[320px] h-[320px] bg-secondary-container/20 blur-[120px] rounded-full z-0"></div>
 <div class="relative z-10 max-w-6xl mx-auto px-margin md:px-margin-md lg:px-margin-lg flex flex-col items-center text-center">
 <div class="inline-flex items-center gap-space-xs px-space-md py-1.5 rounded-full bg-surface-container/70 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] mb-space-lg hover:bg-surface-container-high transition-all">
@@ -84,7 +85,7 @@
 <!-- Davet linkiyle gelen ziyaretçi ilk ekranda indirebilsin -->
 <div class="flex flex-col sm:flex-row items-center gap-space-sm mb-space-xl">
 <a class="inline-flex items-center gap-space-sm pl-1.5 pr-space-lg py-1.5 rounded-full bg-gradient-to-r from-primary-fixed-dim via-primary to-secondary text-surface font-bold shadow-[0_0_24px_rgba(89,219,199,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all" href="https://apps.apple.com/app/id6812456837" rel="noopener noreferrer" target="_blank" data-store-link data-android-href="#uygulamalar" data-android-label="{{androidSoon}}">
-<img src="/apps/synvia-ai/icon.png" alt="" class="w-9 h-9 rounded-full object-cover">
+<img src="/apps/synvia-ai/icon-96.webp" width="96" height="96" alt="" class="w-9 h-9 rounded-full object-cover">
 <span class="text-left leading-tight"><span class="block text-[11px] font-semibold opacity-80">{{heroCtaKicker}}</span><span class="block text-base" data-store-label>{{heroCta}}</span></span>
 </a>
 <a class="inline-flex items-center gap-space-xs pl-space-lg pr-space-md py-3 rounded-full bg-primary/15 border border-primary/40 text-primary font-bold text-base hover:bg-primary/25 hover:border-primary active:scale-[0.98] transition-all" href="{{synviaPath}}">{{heroLearn}}
@@ -98,7 +99,7 @@
 </div>
 <div class="hidden sm:block w-1 h-1 rounded-full bg-outline-variant"></div>
 <div class="flex items-center gap-space-xs">
-<svg class="ms text-secondary text-lg" viewBox="0 -960 960 960" aria-hidden="true"><path d="M140-160q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H140Zm0-60h680v-436H140v436Zm160-72-42-42 103-104-104-104 43-42 146 146-146 146Zm190 4v-60h220v60H490Z"/></svg>
+{{icon:smartphone:text-secondary text-lg}}
 <span class="font-code-mono text-code-mono text-on-surface font-medium">{{chipTech}}</span>
 </div>
 <div class="hidden sm:block w-1 h-1 rounded-full bg-outline-variant"></div>
@@ -134,7 +135,7 @@
 <div class="flex items-start gap-space-md">
 <div class="relative shrink-0">
 <div class="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-primary to-secondary opacity-30 blur-md group-hover:opacity-50 transition-opacity"></div>
-<img alt="{{iconAlt}}" class="relative w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-lg object-cover" src="/apps/synvia-ai/icon.png">
+<img alt="{{iconAlt}}" class="relative w-20 h-20 md:w-24 md:h-24 rounded-2xl shadow-lg object-cover" src="/apps/synvia-ai/icon-192.webp" width="192" height="192">
 </div>
 <div class="flex flex-col gap-space-xs">
 <div class="flex flex-wrap items-center gap-space-xs">
@@ -208,7 +209,7 @@
 <div class="rounded-3xl bg-surface-container-low/80 backdrop-blur-xl p-space-lg md:p-space-xl shadow-xl flex flex-col md:flex-row items-start gap-space-xl relative overflow-hidden">
 <div class="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent"></div>
 <div class="shrink-0 flex items-center justify-center w-14 h-14 rounded-2xl bg-surface-container-high text-primary shadow-inner">
-<svg class="ms text-3xl" viewBox="0 -960 960 960" aria-hidden="true"><path d="M140-160q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H140Zm0-60h680v-436H140v436Zm160-72-42-42 103-104-104-104 43-42 146 146-146 146Zm190 4v-60h220v60H490Z"/></svg>
+{{icon:person:text-3xl}}
 </div>
 <div class="flex flex-col gap-space-md flex-1">
 <div class="flex items-center gap-space-sm">
@@ -219,7 +220,7 @@
 </p>
 <div class="flex flex-wrap gap-space-xs pt-space-xs">
 <div class="flex items-center gap-1.5 px-space-md py-1 rounded-lg bg-surface-container text-on-surface font-code-mono text-code-mono">
-<svg class="ms text-primary text-sm" viewBox="0 -960 960 960" aria-hidden="true"><path d="M320-242 80-482l242-242 43 43-199 199 197 197-43 43Zm318 2-43-43 199-199-197-197 43-43 240 240-242 242Z"/></svg><span>{{aboutChip1}}</span>
+{{icon:smartphone:text-primary text-sm}}<span>{{aboutChip1}}</span>
 </div>
 <div class="flex items-center gap-1.5 px-space-md py-1 rounded-lg bg-surface-container text-on-surface font-code-mono text-code-mono">
 <svg class="ms text-secondary text-sm" viewBox="0 -960 960 960" aria-hidden="true"><path d="M377-377v-205h205v205H377Zm60-60h85v-85h-85v85Zm-77 317v-80H260q-24 0-42-18t-18-42v-100h-80v-60h80v-124h-80v-60h80v-100q0-24 18-42t42-18h100v-76h60v76h124v-76h60v76h100q24 0 42 18t18 42v100h76v60h-76v124h76v60h-76v100q0 24-18 42t-42 18H604v80h-60v-80H420v80h-60Zm344-140v-444H260v444h444ZM480-480Z"/></svg><span>{{aboutChip2}}</span>

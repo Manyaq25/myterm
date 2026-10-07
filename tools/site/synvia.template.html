@@ -22,6 +22,7 @@
 <link href="/favicon.svg" rel="icon" type="image/svg+xml">
 <link href="/apple-touch-icon.png" rel="apple-touch-icon">
 <link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 <script type="application/ld+json">{{jsonLd}}</script>
 </head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased min-h-screen relative overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
@@ -31,8 +32,8 @@
 <!-- HEADER -->
 <header class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.45)]">
 <div class="max-w-6xl mx-auto px-margin md:px-margin-md flex items-center justify-between gap-space-md py-3">
-<a class="flex items-center gap-space-sm shrink-0" href="/" aria-label="{{backHome}}">
-<img src="/apps/synvia-ai/icon.png" alt="" class="w-9 h-9 rounded-xl">
+<a class="flex items-center gap-space-sm shrink-0" href="{{homePath}}" title="{{backHome}}">
+<img src="/apps/synvia-ai/icon-96.webp" width="96" height="96" alt="" class="w-9 h-9 rounded-xl">
 <span class="font-headline-sm text-headline-sm tracking-tighter text-on-surface">Synvia <span class="text-primary">AI</span></span>
 </a>
 <nav class="hidden md:flex items-center gap-space-xs">
@@ -201,7 +202,7 @@
 <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-surface-container-high via-surface-container to-surface-container-low p-space-lg md:p-space-2xl flex flex-col items-center text-center gap-space-md">
 <div class="pointer-events-none absolute -top-24 left-1/4 w-80 h-80 bg-primary/15 blur-[100px] rounded-full"></div>
 <div class="pointer-events-none absolute -bottom-24 right-1/4 w-80 h-80 bg-secondary/15 blur-[100px] rounded-full"></div>
-<img src="/apps/synvia-ai/icon.png" alt="" class="relative w-20 h-20 rounded-2xl shadow-lg">
+<img src="/apps/synvia-ai/icon-192.webp" width="192" height="192" alt="" loading="lazy" class="relative w-20 h-20 rounded-2xl shadow-lg">
 <h2 class="relative font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-on-surface tracking-tight max-w-2xl">{{ctaTitle}}</h2>
 <p class="relative font-body-lg text-body-lg text-on-surface-variant font-light">{{ctaText}}</p>
 <div class="relative w-full max-w-md flex flex-col gap-space-sm">
