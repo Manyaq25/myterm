@@ -108,7 +108,7 @@ Vercel'de, `main`'e push edilince yayına girer (Root Directory: `web`). Kaynak 
 - [ ] İngilizce sayfa için İngilizce ekran görüntüleri (şimdilik Türkçe görüntüler kullanılıyor); yeni özellik ekranları telefondan alınınca sayfaya eklenecek.
 - [x] Gizlilik/destek/veri silme sayfalarının İngilizcesi (`web/en/apps/synvia-ai/`, 7 Ekim). Gizlilik politikasına rehber erişimi ve "Mesajla hatırlat"ın yapay zekâya gönderdikleri eklendi. Bu sayfalar şablonsuz; değişiklik iki dilde elle yapılır.
 
-## 1.1.1 onayından sonra: tek `eas update` ve test listesi
+## 1.1.1 onayından sonra: tek `eas update` ve test listesi (7 Ekim: yapıldı, 7/7 geçti)
 `git pull` → `eas update --branch production --message "Performans ve kararlılık iyileştirmeleri"` (yalnızca 1.1.1 build'lerine gider). Telefonda:
 1. Bildirim düğmeleri: Tamamlandı / 1 saat ertele / Yarın; bildirime dokununca detay açılıyor.
 2. AI dil: uygulamayı İngilizceye alıp metin çıkarımı ve asistan → İngilizce cevap; tarih "Today, 10:00".
@@ -131,7 +131,7 @@ Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:i
 ## Bekleyen dış işler
 - **Widget ve Siri (7 Ekim):** Kodu hazır (`targets/widget`, `targets/siri`, `src/services/widget.ts`) ama 17 Eylül'den beri build'de yok (`@bacons/apple-targets` eklentisi app.json'dan çıkarıldı; EAS, Apple Developer Portal'da eklenti bundle ID'lerini oluştururken 403 alıyordu). Premium tablosundan, siteden ve mağaza metinlerinden çıkarıldı. Geri getirmek için: bundle ID'leri (`….TakipWidget`, `….TakipSiri`) portalda elle oluşturup App Group'u bağlamak, eklentiyi geri eklemek, yeni native build. Gelince Premium satırı ve metinler geri eklenecek.
 - **Karar (7 Ekim):** Widget ve Siri, Android üretim build'iyle birlikte geri getirilecek (portalda iki bundle ID'yi kullanıcı oluşturacak).
-- App Store 1.1.1 (15) 6 Ekim 2026'da incelemeye gönderildi.
+- **App Store 1.1.1 (15) 7 Ekim 2026'da onaylandı** ("Pending Developer Release"). Önce `eas update --branch production` gönderildi, TestFlight 1.1.1'de 7 maddelik test geçti, ardından "Release This Version".
 - Mağaza açıklaması güncellendi (widget/Siri satırı çıktı, `docs/magaza/app-store-metinleri.md`); açıklama ancak bir sonraki sürüm hazırlanırken App Store Connect'te değiştirilebilir.
 - Mağaza sayfası 16 dilde (metinler: `docs/magaza/app-store-metinleri.md`): tr, en-US/GB/CA/AU, de, fr, it, es-MX/ES, pt-BR/PT, ru, ar, ja, ko, zh-Hans, nl. Ana dil Türkçe kaldı (kullanıcı kararı); İngilizceye geçmek için önce English (U.S.) ekran görüntüleri gerekir.
 - Android üretim build'i (`eas build --platform android --profile production`): telefon numarası seçici modülünü içerecek. İlk build'de derlemenin geçtiği ve "Rehberden seç"in izin istemeden çalıştığı kontrol edilecek.
