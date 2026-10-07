@@ -1,7 +1,9 @@
 import * as Sentry from '@sentry/react-native';
 
 // DSN gizli değil: yalnızca bu projeye hata raporu göndermeye yarar.
-const SENTRY_DSN = 'https://d2fa22531ccfca32659cf0da1faf606e@o4512203970379776.ingest.de.sentry.io/4512203983880272';
+// Sentry → aydinapp → react-native → Client Keys (DSN) ile aynı olmalı. 7 Ekim'e kadar
+// var olmayan eski bir projenin adresi duruyordu ve hiçbir rapor Sentry'ye ulaşmıyordu.
+const SENTRY_DSN = 'https://ca574e265c4d04e8ae0ec68d0e84a05d@o4512203970379776.ingest.de.sentry.io/4512203992268880';
 
 /**
  * Yalnızca çökme ve hata raporu: performans izleme, oturum kaydı, ekran

@@ -129,6 +129,7 @@ Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:i
 - **2e:** Takvim bağlantısı — uygulama tek başına yeterli olmalı.
 
 ## Bekleyen dış işler
+- **Sentry düzeltmesi (7 Ekim):** Uygulamadaki DSN var olmayan eski bir Sentry projesini gösteriyordu; hiçbir rapor ulaşmıyordu ("0 hata" bu yüzdendi). Doğru DSN (`react-native` projesi) konuldu, OTA ile gidecek. OTA sonrası Sentry → Releases'te `1.1.1` görünmesi, raporların ulaştığını gösterir.
 - **Widget ve Siri (7 Ekim):** Kodu hazır (`targets/widget`, `targets/siri`, `src/services/widget.ts`) ama 17 Eylül'den beri build'de yok (`@bacons/apple-targets` eklentisi app.json'dan çıkarıldı; EAS, Apple Developer Portal'da eklenti bundle ID'lerini oluştururken 403 alıyordu). Premium tablosundan, siteden ve mağaza metinlerinden çıkarıldı. Geri getirmek için: bundle ID'leri (`….TakipWidget`, `….TakipSiri`) portalda elle oluşturup App Group'u bağlamak, eklentiyi geri eklemek, yeni native build. Gelince Premium satırı ve metinler geri eklenecek.
 - **Karar (7 Ekim):** Widget ve Siri, Android üretim build'iyle birlikte geri getirilecek (portalda iki bundle ID'yi kullanıcı oluşturacak).
 - **App Store 1.1.1 (15) 7 Ekim 2026'da onaylandı** ("Pending Developer Release"). Önce `eas update --branch production` gönderildi, TestFlight 1.1.1'de 7 maddelik test geçti, ardından "Release This Version".
