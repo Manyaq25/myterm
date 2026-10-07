@@ -244,7 +244,7 @@
     "privacyText": "모든 데이터(팔로우업, 사람, 메모)는 이 기기에만 로컬로 저장되며 서버와 동기화되지 않습니다. 텍스트/음성/이미지에서 추출하거나 AI 어시스턴트에게 질문할 때, 그 순간 보낸 내용만 AI 제공업체로 전송됩니다. 그 외 어떤 데이터도 백그라운드에서 공유되지 않습니다.",
     "aiProvidersLabel": "AI 제공업체",
     "aiProvidersText": "텍스트/이미지 분석과 AI 어시스턴트에는 Anthropic(Claude)이, 음성 메모 변환에는 OpenAI(Whisper)가 사용됩니다.",
-    "version": "Synvia AI — v0.1 (MVP)",
+    "version": "Synvia AI — v{{version}}",
     "sectionLanguage": "언어",
     "languageSystemDefault": "시스템 언어",
     "sectionSubscription": "구독",

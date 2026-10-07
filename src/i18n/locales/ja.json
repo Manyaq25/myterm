@@ -244,7 +244,7 @@
     "privacyText": "すべてのデータ（フォローアップ、人物、メモ）はこの端末にのみローカルに保存され、サーバーと同期されることはありません。テキスト/音声/画像から抽出したり、AIアシスタントに質問したりする際、その時点で送信した内容のみがAIプロバイダーに送られます。それ以外のデータがバックグラウンドで共有されることは一切ありません。",
     "aiProvidersLabel": "AIプロバイダー",
     "aiProvidersText": "テキスト/画像解析とAIアシスタントにはAnthropic（Claude）を、音声メモの文字起こしにはOpenAI（Whisper）を使用しています。",
-    "version": "Synvia AI — v0.1（MVP）",
+    "version": "Synvia AI — v{{version}}",
     "sectionLanguage": "言語",
     "languageSystemDefault": "システム言語",
     "sectionSubscription": "サブスクリプション",

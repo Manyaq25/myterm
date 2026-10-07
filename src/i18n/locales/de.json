@@ -244,7 +244,7 @@
     "privacyText": "Alle deine Daten (Vorgänge, Personen, Notizen) werden nur lokal auf diesem Gerät gespeichert — nie mit einem Server synchronisiert. Wenn du aus Text/Sprache/Bild extrahierst oder dem KI-Assistenten eine Frage stellst, wird nur der in diesem Moment gesendete Inhalt an den KI-Anbieter übermittelt; keine anderen Daten werden im Hintergrund geteilt.",
     "aiProvidersLabel": "KI-Anbieter",
     "aiProvidersText": "Anthropic (Claude) wird für Text-/Bildanalyse und den KI-Assistenten verwendet; OpenAI (Whisper) wird zur Transkription von Sprachnotizen verwendet.",
-    "version": "Synvia AI — v0.1 (MVP)",
+    "version": "Synvia AI — v{{version}}",
     "sectionLanguage": "Sprache",
     "languageSystemDefault": "Systemsprache",
     "sectionSubscription": "Abonnement",

@@ -244,7 +244,7 @@
     "privacyText": "你的所有数据（跟进事项、联系人、备注）都只保存在本设备本地——绝不会同步到服务器。当你从文本/语音/图片中提取内容，或向 AI 助手提问时，仅有你当时发送的内容会被传送给 AI 服务商；不会有任何其他数据在后台被共享。",
     "aiProvidersLabel": "AI 服务商",
     "aiProvidersText": "文本/图片分析和 AI 助手使用 Anthropic（Claude），语音备注转录使用 OpenAI（Whisper）。",
-    "version": "Synvia AI — v0.1（MVP）",
+    "version": "Synvia AI — v{{version}}",
     "sectionLanguage": "语言",
     "languageSystemDefault": "系统语言",
     "sectionSubscription": "订阅",

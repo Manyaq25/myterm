@@ -244,7 +244,7 @@
     "privacyText": "Todos tus datos (seguimientos, personas, notas) se guardan solo localmente en este dispositivo — nunca se sincronizan con un servidor. Cuando extraes de texto/voz/imagen o le haces una pregunta al Asistente IA, solo el contenido que envías en ese momento se comparte con el proveedor de IA; ningún otro dato se comparte en segundo plano.",
     "aiProvidersLabel": "Proveedores de IA",
     "aiProvidersText": "Se usa Anthropic (Claude) para el análisis de texto/imagen y el Asistente IA, y OpenAI (Whisper) para transcribir notas de voz.",
-    "version": "Synvia AI — v0.1 (MVP)",
+    "version": "Synvia AI — v{{version}}",
     "sectionLanguage": "Idioma",
     "languageSystemDefault": "Idioma del sistema",
     "sectionSubscription": "Suscripción",

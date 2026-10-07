@@ -244,7 +244,7 @@
     "privacyText": "Tutti i tuoi dati (promemoria, persone, note) sono memorizzati solo localmente su questo dispositivo — mai sincronizzati con un server. Quando estrai da testo/voce/immagine o fai una domanda all'Assistente IA, solo il contenuto che invii in quel momento viene condiviso con il provider IA; nessun altro dato viene mai condiviso in background.",
     "aiProvidersLabel": "Provider IA",
     "aiProvidersText": "Anthropic (Claude) è usato per l'analisi di testo/immagini e l'Assistente IA; OpenAI (Whisper) è usato per trascrivere le note vocali.",
-    "version": "Synvia AI — v0.1 (MVP)",
+    "version": "Synvia AI — v{{version}}",
     "sectionLanguage": "Lingua",
     "languageSystemDefault": "Lingua di sistema",
     "sectionSubscription": "Abbonamento",

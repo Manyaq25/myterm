@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, Image, Modal, Pressable, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ChevronRight } from 'lucide-react-native';
@@ -10,6 +10,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
+import * as Updates from 'expo-updates';
+import { sendTestReport } from '../../src/services/crashReporting';
+import { showToast } from '../../src/components/Toast';
 import { ensureNotificationPermission } from '../../src/services/notifications';
 import {
   isScreenshotSuggestionEnabled,
@@ -48,6 +52,19 @@ export default function AyarlarScreen() {
   const [deleting, setDeleting] = useState(false);
   // Destek taleplerinde kullanıcının RevenueCat kaydını bulabilmek için.
   const [supportId, setSupportId] = useState<string | null>(null);
+  const versionTaps = useRef<{ count: number; last: number }>({ count: 0, last: 0 });
+
+  async function handleVersionTap() {
+    const now = Date.now();
+    const taps = versionTaps.current;
+    taps.count = now - taps.last < 1500 ? taps.count + 1 : 1;
+    taps.last = now;
+    if (taps.count < 7) return;
+    taps.count = 0;
+    const updateId = Updates.updateId?.slice(0, 8) ?? 'gömülü';
+    const sent = await sendTestReport(updateId);
+    showToast(sent ? `Deneme raporu gönderildi · ${updateId}` : `Deneme raporu gönderilemedi · ${updateId}`);
+  }
 
   useEffect(() => {
     getRevenueCatAppUserId().then(setSupportId);
@@ -314,7 +331,10 @@ export default function AyarlarScreen() {
         <Text style={styles.aboutLabel}>{t('ayarlar.aiProvidersLabel')}</Text>
         <Text style={styles.aboutText}>{t('ayarlar.aiProvidersText')}</Text>
 
-        <Text style={styles.aboutVersion}>{t('ayarlar.version')}</Text>
+        {/* Sürüm yazısına art arda 7 dokunuş Sentry'ye deneme raporu gönderir (geliştirici testi). */}
+        <Pressable onPress={handleVersionTap} accessibilityRole="text">
+          <Text style={styles.aboutVersion}>{t('ayarlar.version', { version: Constants.expoConfig?.version ?? '' })}</Text>
+        </Pressable>
       </View>
       </ScrollView>
 

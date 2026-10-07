@@ -244,7 +244,7 @@
     "privacyText": "Tüm verilerin (takipler, kişiler, notlar) yalnızca bu cihazda, yerel olarak saklanır — bir sunucuya senkronize edilmez. Metin/sesli not/görsel çıkarımı yaptığında veya AI Asistan'a bir soru sorduğunda, yalnızca o an gönderdiğin içerik AI sağlayıcısına iletilir; başka hiçbir veri arka planda paylaşılmaz.",
     "aiProvidersLabel": "AI sağlayıcıları",
     "aiProvidersText": "Metin/görsel analizi ve AI Asistan için Anthropic (Claude), sesli not deşifresi için OpenAI (Whisper) kullanılıyor.",
-    "version": "Synvia AI — v0.1 (MVP)",
+    "version": "Synvia AI — v{{version}}",
     "sectionLanguage": "Dil",
     "languageSystemDefault": "Sistem Dili",
     "sectionSubscription": "Abonelik",

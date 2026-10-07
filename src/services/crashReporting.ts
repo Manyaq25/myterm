@@ -28,3 +28,12 @@ export function initCrashReporting(): void {
 }
 
 export const wrapWithCrashReporting = Sentry.wrap;
+
+/**
+ * Raporların Sentry'ye ulaştığını doğrulamak için tek bir deneme hatası gönderir
+ * (Ayarlar'da sürüm yazısına 7 kez dokununca). Gönderim bitince true döner.
+ */
+export async function sendTestReport(updateId: string): Promise<boolean> {
+  Sentry.captureException(new Error('Sentry deneme raporu (Ayarlar)'), { tags: { test: 'true', update: updateId } });
+  return Sentry.flush();
+}

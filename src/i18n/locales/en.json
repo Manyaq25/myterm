@@ -244,7 +244,7 @@
     "privacyText": "All your data (follow-ups, people, notes) is stored locally on this device only — it's never synced to a server. When you extract from text/voice/image or ask the AI Assistant a question, only the content you send at that moment is sent to the AI provider; nothing else is ever shared in the background.",
     "aiProvidersLabel": "AI providers",
     "aiProvidersText": "Anthropic (Claude) is used for text/image analysis and the AI Assistant; OpenAI (Whisper) is used to transcribe voice notes.",
-    "version": "Synvia AI — v0.1 (MVP)",
+    "version": "Synvia AI — v{{version}}",
     "sectionLanguage": "Language",
     "languageSystemDefault": "System Language",
     "sectionSubscription": "Subscription",
