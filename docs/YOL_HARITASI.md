@@ -102,7 +102,8 @@ Vercel'de, `main`'e push edilince yayına girer (Root Directory: `web`). Kaynak 
 - [x] Güvenlik ve hız (7 Ekim): `web/vercel.json` güvenlik başlıkları (CSP: yalnızca kendi dosyalarımız; dış betik eklenecekse buraya izin yazılmalı) ve önbellek süreleri; CSS/JS bağlantılarında içerik özetiyle sürüm etiketi (`version-assets.js`); ikon 945 KB PNG yerine 1–3 KB WebP. Lighthouse (mobil): hız 73 → 99, erişilebilirlik/en iyi uygulamalar/SEO 100.
 - [x] Yenilikler sayfası (7 Ekim): `/synvia/yenilikler/` ve `/en/synvia/whats-new/`. Her yeni sürümde `tools/site/changelog.i18n.js` listesinin başına iki dilde madde eklenir (önceki `latest: true` kaldırılır), sonra `build.sh`. Kullanıcı kararıyla 1.1 maddeleri OTA'dan önce yayınlandı.
 - [ ] Kurumsal e-posta (ör. destek@aydinapp.com.tr) — kullanıcı kurulumu gerekir.
-- [ ] Google Search Console'a site ve sitemap kaydı — kullanıcı girişi gerekir.
+- [x] Google Search Console (7 Ekim): Alan adı mülkü, Natro DNS'te TXT doğrulama kaydı (silinmemeli), sitemap.xml gönderildi → Başarılı, 12 sayfa.
+- [ ] www.aydinapp.com.tr Natro'nun yönlendirme servisine gidiyor (CNAME redirect.natrocdn.com); Vercel'e bağlanıp kök adrese yönlendirilmeli.
 - [ ] Çerezsiz ziyaretçi sayacı (Vercel Web Analytics, panelden açılır) ve gizlilik politikasına bir satır.
 - [ ] İngilizce sayfa için İngilizce ekran görüntüleri (şimdilik Türkçe görüntüler kullanılıyor); yeni özellik ekranları telefondan alınınca sayfaya eklenecek.
 - [x] Gizlilik/destek/veri silme sayfalarının İngilizcesi (`web/en/apps/synvia-ai/`, 7 Ekim). Gizlilik politikasına rehber erişimi ve "Mesajla hatırlat"ın yapay zekâya gönderdikleri eklendi. Bu sayfalar şablonsuz; değişiklik iki dilde elle yapılır.
