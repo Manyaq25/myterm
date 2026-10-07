@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Synvia AI Data Deletion</title>
+<style>
+  :root {
+    --primary: #00A896; --primary-text: #006B5F; --bg: #F4F7F6; --surface: #FFFFFF;
+    --text: #132228; --text-muted: rgba(19, 34, 40, 0.64); --border: rgba(19, 34, 40, 0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --primary: #59DBC7; --primary-text: #79F7E3; --bg: #0B1614; --surface: #132228;
+      --text: #E3F3FC; --text-muted: rgba(227, 243, 252, 0.66); --border: rgba(227, 243, 252, 0.14); }
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 40px 20px 80px; line-height: 1.7; margin: 0; }
+  .page { max-width: 720px; margin-inline: auto; display: flex; flex-direction: column; gap: 28px; }
+  .back { color: var(--text-muted); font-size: 14px; text-decoration: none; }
+  .back:hover { text-decoration: underline; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; }
+  .brand img { width: 28px; height: 28px; border-radius: 7px; }
+  h1 { font-size: clamp(24px, 5vw, 32px); line-height: 1.15; margin: 0; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 24px 26px; display: flex; flex-direction: column; gap: 12px; }
+  h2 { font-size: 18px; margin: 0; }
+  p { margin: 0; }
+  ol, ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+  a { color: var(--primary-text); }
+  a.contact { font-weight: 700; text-decoration: none; }
+  a.contact:hover { text-decoration: underline; }
+  footer { border-top: 1px solid var(--border); padding-top: 20px; font-size: 13px; color: var(--text-muted); }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .lang { font-size: 14px; font-weight: 600; color: var(--text); text-decoration: none; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; white-space: nowrap; }
+  .lang:hover { border-color: var(--primary); color: var(--primary-text); }
+</style>
+<link rel="alternate" hreflang="tr" href="https://aydinapp.com.tr/apps/synvia-ai/delete-data.html">
+<link rel="alternate" hreflang="en" href="https://aydinapp.com.tr/en/apps/synvia-ai/delete-data.html">
+<link href="/favicon.svg" rel="icon" type="image/svg+xml">
+</head>
+<body>
+<div class="page">
+  <div class="top"><a class="back" href="/en/">&larr; aydinapp.com.tr</a><a class="lang" href="/apps/synvia-ai/delete-data.html" hreflang="tr" lang="tr">🌐 Türkçe</a></div>
+  <div class="brand"><img src="/apps/synvia-ai/icon.png" alt=""> Synvia AI</div>
+  <h1>Data Deletion Request</h1>
+  <p>Synvia AI is a mobile app developed by İbrahim AYDIN. This page explains how you can delete the data you create while using the app.</p>
+
+  <div class="card">
+    <h2>Delete in the App (Recommended)</h2>
+    <p>Because all your data is stored locally on your phone, the fastest and most complete way to delete it is from within the app:</p>
+    <ol>
+      <li>Open the Synvia AI app.</li>
+      <li>Go to the <strong>Settings</strong> tab.</li>
+      <li>Find the <strong>Data</strong> section.</li>
+      <li>Tap <strong>"Delete My Account and All Data"</strong>.</li>
+      <li>Confirm the deletion in the warning that appears.</li>
+    </ol>
+    <p>This cannot be undone and happens immediately. Since there's no sign-up, "My Account" here covers all Synvia AI records on your phone.</p>
+  </div>
+
+  <div class="card">
+    <h2>Request by Email</h2>
+    <p>If you can't access the app, or want the limited data we keep on our server (see below) deleted, write to us:</p>
+    <a class="contact" href="mailto:aydinibrahim25@gmail.com">aydinibrahim25@gmail.com</a>
+    <p>We will process your request within 30 days at the latest.</p>
+  </div>
+
+  <div class="card">
+    <h2>What Gets Deleted?</h2>
+    <ul>
+      <li><strong>People and task/promise records:</strong> Deleted from your phone immediately and permanently when you delete in the app. This data is never kept on our servers.</li>
+      <li><strong>Subscription/purchase ID (RevenueCat):</strong> Deleted from our RevenueCat system on request by email; the App Store/Google Play's own transaction records are outside this scope and subject to the store's policies.</li>
+      <li><strong>Usage counter and invite records (server):</strong> The monthly counters used to count your free AI uses are deleted automatically after 40 days at most. Your invite code and the extra uses you earned are deleted on request by email.</li>
+      <li><strong>AI processing data (screenshots, audio, text, PDFs):</strong> This content is used only during processing and is not stored on any server, so no further deletion is needed.</li>
+    </ul>
+  </div>
+
+  <footer>© 2026 Synvia AI · İbrahim AYDIN · <a href="privacy-policy.html" style="color:inherit">Privacy Policy</a> · <a href="support.html" style="color:inherit">Support</a></footer>
+</div>
+</body></html>

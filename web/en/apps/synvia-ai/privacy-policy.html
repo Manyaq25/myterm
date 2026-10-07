@@ -1,0 +1,117 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Synvia AI Privacy Policy</title>
+<style>
+  :root {
+    --primary: #00A896; --primary-text: #006B5F; --bg: #F4F7F6; --surface: #FFFFFF;
+    --text: #132228; --text-muted: rgba(19, 34, 40, 0.64); --border: rgba(19, 34, 40, 0.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --primary: #59DBC7; --primary-text: #79F7E3; --bg: #0B1614; --surface: #132228;
+      --text: #E3F3FC; --text-muted: rgba(227, 243, 252, 0.66); --border: rgba(227, 243, 252, 0.14); }
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    padding: 40px 20px 80px; line-height: 1.7; margin: 0; }
+  .page { max-width: 720px; margin-inline: auto; display: flex; flex-direction: column; gap: 28px; }
+  .back { color: var(--text-muted); font-size: 14px; text-decoration: none; }
+  .back:hover { text-decoration: underline; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; }
+  .brand img { width: 28px; height: 28px; border-radius: 7px; }
+  h1 { font-size: clamp(24px, 5vw, 32px); line-height: 1.15; margin: 0; }
+  .updated { color: var(--text-muted); font-size: 14px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 24px 26px; display: flex; flex-direction: column; gap: 12px; }
+  h2 { font-size: 18px; margin: 0; }
+  p { margin: 0; }
+  ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+  a { color: var(--primary-text); }
+  footer { border-top: 1px solid var(--border); padding-top: 20px; font-size: 13px; color: var(--text-muted); }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .lang { font-size: 14px; font-weight: 600; color: var(--text); text-decoration: none; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; white-space: nowrap; }
+  .lang:hover { border-color: var(--primary); color: var(--primary-text); }
+</style>
+<link rel="alternate" hreflang="tr" href="https://aydinapp.com.tr/apps/synvia-ai/privacy-policy.html">
+<link rel="alternate" hreflang="en" href="https://aydinapp.com.tr/en/apps/synvia-ai/privacy-policy.html">
+<link href="/favicon.svg" rel="icon" type="image/svg+xml">
+</head>
+<body>
+<div class="page">
+  <div class="top"><a class="back" href="/en/">&larr; aydinapp.com.tr</a><a class="lang" href="/apps/synvia-ai/privacy-policy.html" hreflang="tr" lang="tr">🌐 Türkçe</a></div>
+  <div class="brand"><img src="/apps/synvia-ai/icon.png" alt=""> Synvia AI</div>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: October 7, 2026</p>
+
+  <div class="card">
+    <h2>Overview</h2>
+    <p>Synvia AI ("the app") is a mobile app developed by İbrahim AYDIN that reminds you of the promises you make and the tasks you need to do. This policy explains what data is collected when you use the app, how it is processed and how it is protected.</p>
+  </div>
+
+  <div class="card">
+    <h2>No Account</h2>
+    <p>Synvia AI has no user account or sign-in. Your people and your task/promise records are stored only on your own phone, in the app's local database. This data is not sent to or backed up on our servers.</p>
+  </div>
+
+  <div class="card">
+    <h2>Data Processed by AI</h2>
+    <p>The app uses third-party AI providers to find the tasks (who, what, when) in content you give it and to write reminder messages:</p>
+    <ul>
+      <li><strong>Text, screenshots and PDF documents</strong> — sent to the Anthropic (Claude) API for processing.</li>
+      <li><strong>Voice notes</strong> — first sent to the OpenAI (Whisper) API to be transcribed, then to the Anthropic API to find the tasks in them.</li>
+      <li><strong>Remind by message</strong> — to write a polite reminder message, the task title, the person's name, any note and the date are sent to the Anthropic API. The person's phone number is not sent.</li>
+    </ul>
+    <p>This content is processed only at that moment to perform the requested action and is not stored on our servers. For how Anthropic and OpenAI handle data, please see their own privacy policies.</p>
+  </div>
+
+  <div class="card">
+    <h2>Contacts Access</h2>
+    <p>When you use "Pick from contacts", your phone's own contact picker opens and only the name and phone number of the contact you choose are passed to the app. The rest of your contacts are not read. The number you choose is added only to the person record on your phone; it is not sent to our servers or to AI providers.</p>
+  </div>
+
+  <div class="card">
+    <h2>Subscription and Purchase Information</h2>
+    <p>We use RevenueCat to manage Premium subscriptions. An anonymous user ID assigned via the App Store/Google Play and your purchase history are shared with RevenueCat. This information is used to verify your subscription status and unlock Premium features.</p>
+  </div>
+
+  <div class="card">
+    <h2>Crash Reports</h2>
+    <p>When the app crashes or an error occurs, a technical error report is sent to Sentry so we can find and fix the problem. The report contains only technical details of the error (error message, the relevant line of code, app and operating system version, device model). Screenshots, screen recordings, your task/promise and people records or any other personal information are not included. Reports are stored in Sentry's European Union (Germany) region and are not used for advertising or marketing.</p>
+  </div>
+
+  <div class="card">
+    <h2>Free Usage Allowance</h2>
+    <p>To apply the monthly AI allowance of the free version, each AI request sends our server a random device ID that contains no personal information, along with the anonymous user ID assigned by RevenueCat. Our server uses these IDs only to keep that month's request count and your subscription status; these records are deleted automatically after 40 days at most. To prevent abuse, the connection's IP address is also used for up to 2 days to limit the number of requests. This information is not used for advertising, profiling or any other purpose and is not shared with third parties.</p>
+  </div>
+
+  <div class="card">
+    <h2>Invite a Friend</h2>
+    <p>When you use the invite feature, our server keeps your invite code, how many people joined with it and the extra AI uses you earned, linked to your device ID. When you enter an invite code, we only store that a code was entered on that device. No names, phone numbers or contacts about who invited whom are collected. These records are used only to grant invite rewards; if you want them deleted, write to us at the address on the support page.</p>
+  </div>
+
+  <div class="card">
+    <h2>Ads and Third-Party Tracking</h2>
+    <p>The app has no ads, and no third-party tools that track what you do for advertising or marketing are used.</p>
+  </div>
+
+  <div class="card">
+    <h2>Deleting Your Data</h2>
+    <p>In the app, go to Settings → Data → "Delete My Account and All Data" to permanently erase all data on your phone (since there's no sign-up, this erases all your records on the phone). See our <a href="delete-data.html">data deletion page</a> for details.</p>
+  </div>
+
+  <div class="card">
+    <h2>Children's Privacy</h2>
+    <p>Synvia AI is not designed for children under 13 and does not knowingly collect data from them.</p>
+  </div>
+
+  <div class="card">
+    <h2>Changes to This Policy</h2>
+    <p>This policy may be updated from time to time. Significant changes will be published on this page.</p>
+  </div>
+
+  <div class="card">
+    <h2>Contact</h2>
+    <p>For privacy questions: <a href="mailto:aydinibrahim25@gmail.com">aydinibrahim25@gmail.com</a></p>
+  </div>
+
+  <p class="updated">This is an English translation; the Turkish version is the original.</p>
+  <footer>© 2026 Synvia AI · İbrahim AYDIN · <a href="support.html" style="color:inherit">Support</a></footer>
+</div>
+</body></html>

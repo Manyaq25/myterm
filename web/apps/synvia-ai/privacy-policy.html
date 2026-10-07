@@ -25,32 +25,45 @@
   ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
   a { color: var(--primary-text); }
   footer { border-top: 1px solid var(--border); padding-top: 20px; font-size: 13px; color: var(--text-muted); }
-</style></head>
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .lang { font-size: 14px; font-weight: 600; color: var(--text); text-decoration: none; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; white-space: nowrap; }
+  .lang:hover { border-color: var(--primary); color: var(--primary-text); }
+</style>
+<link rel="alternate" hreflang="tr" href="https://aydinapp.com.tr/apps/synvia-ai/privacy-policy.html">
+<link rel="alternate" hreflang="en" href="https://aydinapp.com.tr/en/apps/synvia-ai/privacy-policy.html">
+<link href="/favicon.svg" rel="icon" type="image/svg+xml">
+</head>
 <body>
 <div class="page">
-  <a class="back" href="../../index.html">&larr; aydinapp.com.tr</a>
+  <div class="top"><a class="back" href="/">&larr; aydinapp.com.tr</a><a class="lang" href="/en/apps/synvia-ai/privacy-policy.html" hreflang="en" lang="en">🌐 English</a></div>
   <div class="brand"><img src="icon.png" alt=""> Synvia AI</div>
   <h1>Gizlilik Politikası</h1>
-  <p class="updated">Son güncelleme: 6 Ekim 2026</p>
+  <p class="updated">Son güncelleme: 7 Ekim 2026</p>
 
   <div class="card">
     <h2>Genel Bakış</h2>
-    <p>Synvia AI ("uygulama"), kişisel hatırlatma ve takip yönetimi sağlayan, İbrahim AYDIN tarafından geliştirilen bir mobil uygulamadır. Bu politika, uygulamayı kullanırken hangi verilerin toplandığını, nasıl işlendiğini ve nasıl korunduğunu açıklar.</p>
+    <p>Synvia AI ("uygulama"), verdiğin sözleri ve yapacağın işleri hatırlatan, İbrahim AYDIN tarafından geliştirilen bir mobil uygulamadır. Bu politika, uygulamayı kullanırken hangi verilerin toplandığını, nasıl işlendiğini ve nasıl korunduğunu açıklar.</p>
   </div>
 
   <div class="card">
     <h2>Hesap Sistemi</h2>
-    <p>Synvia AI'da bir kullanıcı hesabı/giriş sistemi bulunmaz. Kişi ve takip kayıtların yalnızca kendi cihazında, yerel olarak (SQLite veritabanı) saklanır. Bu veriler bizim sunucularımıza otomatik olarak gönderilmez veya yedeklenmez.</p>
+    <p>Synvia AI'da bir kullanıcı hesabı/giriş sistemi bulunmaz. Kişilerin ve iş/söz kayıtların yalnızca kendi telefonunda, uygulamanın yerel veritabanında saklanır. Bu veriler bizim sunucularımıza otomatik olarak gönderilmez veya yedeklenmez.</p>
   </div>
 
   <div class="card">
     <h2>Yapay Zeka ile İşlenen Veriler</h2>
-    <p>Uygulama, aşağıdaki içerik türlerinden takip maddesi (kişi, tarih, görev) çıkarmak için üçüncü taraf yapay zeka sağlayıcılarını kullanır:</p>
+    <p>Uygulama, verdiğin içeriklerdeki işleri (kim, ne, ne zaman) bulmak ve hatırlatma mesajı yazmak için üçüncü taraf yapay zeka sağlayıcılarını kullanır:</p>
     <ul>
       <li><strong>Metin, ekran görüntüsü ve PDF belgeleri</strong> — Anthropic (Claude) API'sine işlenmek üzere gönderilir.</li>
-      <li><strong>Sesli notlar</strong> — önce metne çevrilmek üzere OpenAI (Whisper) API'sine, ardından madde çıkarımı için Anthropic API'sine gönderilir.</li>
+      <li><strong>Sesli notlar</strong> — önce metne çevrilmek üzere OpenAI (Whisper) API'sine, ardından içindeki işlerin bulunması için Anthropic API'sine gönderilir.</li>
+      <li><strong>Mesajla hatırlat</strong> — kibar bir hatırlatma mesajı yazılabilmesi için işin başlığı, kişinin adı, varsa notu ve tarihi Anthropic API'sine gönderilir. Kişinin telefon numarası gönderilmez.</li>
     </ul>
-    <p>Bu içerikler yalnızca istenen çıkarımı yapmak amacıyla anlık olarak işlenir; sunucularımızda kalıcı olarak saklanmaz. Anthropic ve OpenAI'nin kendi veri işleme politikaları için ilgili sağlayıcıların gizlilik politikalarına bakabilirsin.</p>
+    <p>Bu içerikler yalnızca istenen işlemi yapmak amacıyla anlık olarak işlenir; sunucularımızda kalıcı olarak saklanmaz. Anthropic ve OpenAI'nin kendi veri işleme politikaları için ilgili sağlayıcıların gizlilik politikalarına bakabilirsin.</p>
+  </div>
+
+  <div class="card">
+    <h2>Rehber Erişimi</h2>
+    <p>"Rehberden seç" özelliğini kullandığında telefonunun kendi kişi seçme ekranı açılır ve uygulamaya yalnızca senin seçtiğin kişinin adı ve telefon numarası aktarılır. Rehberinin geri kalanı okunmaz. Seçtiğin numara yalnızca telefonundaki kişi kaydına eklenir; sunucularımıza veya yapay zeka sağlayıcılarına gönderilmez.</p>
   </div>
 
   <div class="card">
@@ -60,7 +73,7 @@
 
   <div class="card">
     <h2>Hata Raporları</h2>
-    <p>Uygulama çöktüğünde veya bir hata oluştuğunda, sorunu bulup düzeltebilmemiz için teknik bir hata raporu Sentry hizmetine gönderilir. Bu rapor yalnızca hatanın teknik ayrıntılarını (hata mesajı, kodun ilgili satırı, uygulama ve işletim sistemi sürümü, cihaz modeli) içerir. Ekran görüntüsü, ekran kaydı, takip ve kişi kayıtların ya da başka kişisel bilgiler rapora eklenmez. Raporlar Sentry'nin Avrupa Birliği (Almanya) bölgesinde saklanır ve reklam veya pazarlama amacıyla kullanılmaz.</p>
+    <p>Uygulama çöktüğünde veya bir hata oluştuğunda, sorunu bulup düzeltebilmemiz için teknik bir hata raporu Sentry hizmetine gönderilir. Bu rapor yalnızca hatanın teknik ayrıntılarını (hata mesajı, kodun ilgili satırı, uygulama ve işletim sistemi sürümü, cihaz modeli) içerir. Ekran görüntüsü, ekran kaydı, iş/söz ve kişi kayıtların ya da başka kişisel bilgiler rapora eklenmez. Raporlar Sentry'nin Avrupa Birliği (Almanya) bölgesinde saklanır ve reklam veya pazarlama amacıyla kullanılmaz.</p>
   </div>
 
   <div class="card">
@@ -74,13 +87,13 @@
   </div>
 
   <div class="card">
-    <h2>Reklam ve Üçüncü Taraf Takip</h2>
-    <p>Uygulamada reklam bulunmaz ve pazarlama amaçlı üçüncü taraf takip/analitik SDK'ları kullanılmaz.</p>
+    <h2>Reklam ve İzleme</h2>
+    <p>Uygulamada reklam bulunmaz; ne yaptığını reklam veya pazarlama amacıyla izleyen üçüncü taraf araçlar kullanılmaz.</p>
   </div>
 
   <div class="card">
     <h2>Verilerini Silme</h2>
-    <p>Uygulama içinde Ayarlar → Veri → "Hesabımı ve Tüm Verilerimi Sil" seçeneğiyle tüm yerel verilerini kalıcı olarak silebilirsin. Detaylı bilgi için <a href="delete-data.html">veri silme sayfamıza</a> bakabilirsin.</p>
+    <p>Uygulama içinde Ayarlar → Veri → "Hesabımı ve Tüm Verilerimi Sil" seçeneğiyle telefonundaki tüm verilerini kalıcı olarak silebilirsin (uygulamada üyelik olmadığı için bu, telefondaki bütün kayıtlarını siler). Detaylı bilgi için <a href="delete-data.html">veri silme sayfamıza</a> bakabilirsin.</p>
   </div>
 
   <div class="card">

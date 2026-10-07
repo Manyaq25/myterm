@@ -26,10 +26,17 @@
   a.contact { font-weight: 700; text-decoration: none; }
   a.contact:hover { text-decoration: underline; }
   footer { border-top: 1px solid var(--border); padding-top: 20px; font-size: 13px; color: var(--text-muted); }
-</style></head>
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .lang { font-size: 14px; font-weight: 600; color: var(--text); text-decoration: none; border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; white-space: nowrap; }
+  .lang:hover { border-color: var(--primary); color: var(--primary-text); }
+</style>
+<link rel="alternate" hreflang="tr" href="https://aydinapp.com.tr/apps/synvia-ai/delete-data.html">
+<link rel="alternate" hreflang="en" href="https://aydinapp.com.tr/en/apps/synvia-ai/delete-data.html">
+<link href="/favicon.svg" rel="icon" type="image/svg+xml">
+</head>
 <body>
 <div class="page">
-  <a class="back" href="../../index.html">&larr; aydinapp.com.tr</a>
+  <div class="top"><a class="back" href="/">&larr; aydinapp.com.tr</a><a class="lang" href="/en/apps/synvia-ai/delete-data.html" hreflang="en" lang="en">🌐 English</a></div>
   <div class="brand"><img src="icon.png" alt=""> Synvia AI</div>
   <h1>Veri Silme Talebi</h1>
   <p>Synvia AI, İbrahim AYDIN tarafından geliştirilen bir mobil uygulamadır. Bu sayfa, uygulamayı kullanırken oluşturduğun verileri nasıl silebileceğini açıklar.</p>
@@ -44,7 +51,7 @@
       <li><strong>"Hesabımı ve Tüm Verilerimi Sil"</strong> seçeneğine dokun.</li>
       <li>Onay isteyen uyarıda silme işlemini onayla.</li>
     </ol>
-    <p>Bu işlem geri alınamaz ve anında gerçekleşir.</p>
+    <p>Bu işlem geri alınamaz ve anında gerçekleşir. Uygulamada üyelik olmadığı için "Hesabımı" ifadesi, telefonundaki tüm Synvia AI kayıtlarını kapsar.</p>
   </div>
 
   <div class="card">
@@ -57,8 +64,9 @@
   <div class="card">
     <h2>Hangi Veriler Silinir?</h2>
     <ul>
-      <li><strong>Kişi ve takip kayıtları:</strong> Uygulama içi silme ile cihazından anında ve kalıcı olarak silinir. Bu veriler zaten bizim sunucularımızda tutulmaz.</li>
+      <li><strong>Kişi ve iş/söz kayıtları:</strong> Uygulama içi silme ile cihazından anında ve kalıcı olarak silinir. Bu veriler zaten bizim sunucularımızda tutulmaz.</li>
       <li><strong>Abonelik/satın alma kimliği (RevenueCat):</strong> E-posta ile talep edilirse RevenueCat sistemimizden silinir; App Store/Google Play'in kendi işlem kayıtları bu kapsamın dışındadır ve ilgili mağazanın politikalarına tabidir.</li>
+      <li><strong>Kullanım sayacı ve davet kayıtları (sunucu):</strong> Ücretsiz yapay zeka hakkını saymak için tutulan aylık sayaçlar en geç 40 gün sonra kendiliğinden silinir. Davet kodun ve davetlerle kazandığın ek haklar, e-posta ile istersen silinir.</li>
       <li><strong>Yapay zeka işleme verileri (ekran görüntüsü, ses, metin, PDF):</strong> Bu içerikler yalnızca anlık işleme sırasında kullanılır, herhangi bir sunucuda kalıcı olarak saklanmaz; bu nedenle ek bir silme işlemi gerekmez.</li>
     </ul>
   </div>

@@ -103,7 +103,7 @@ Vercel'de, `main`'e push edilince yayına girer (Root Directory: `web`). Kaynak 
 - [ ] Google Search Console'a site ve sitemap kaydı — kullanıcı girişi gerekir.
 - [ ] Çerezsiz ziyaretçi sayacı (Vercel Web Analytics, panelden açılır) ve gizlilik politikasına bir satır.
 - [ ] İngilizce sayfa için İngilizce ekran görüntüleri (şimdilik Türkçe görüntüler kullanılıyor); yeni özellik ekranları telefondan alınınca sayfaya eklenecek.
-- [ ] Gizlilik/destek/veri silme sayfalarının İngilizcesi.
+- [x] Gizlilik/destek/veri silme sayfalarının İngilizcesi (`web/en/apps/synvia-ai/`, 7 Ekim). Gizlilik politikasına rehber erişimi ve "Mesajla hatırlat"ın yapay zekâya gönderdikleri eklendi. Bu sayfalar şablonsuz; değişiklik iki dilde elle yapılır.
 
 ## 1.1.1 onayından sonra: tek `eas update` ve test listesi
 `git pull` → `eas update --branch production --message "Performans ve kararlılık iyileştirmeleri"` (yalnızca 1.1.1 build'lerine gider). Telefonda:
