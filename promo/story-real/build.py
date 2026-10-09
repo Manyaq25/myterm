@@ -3,15 +3,16 @@
 import json, subprocess, os
 B = 'build'
 # (kaynak, başlangıç, süre)
-SEGS = [('s1b', 0.0, 6.8), ('s2', 0.0, 7.0), ('s3', 0.8, 6.2), ('app', 0, 5.0),
-        ('s4a', 0.6, 5.2), ('s4c', 0.0, 3.6), ('s5b', 0.0, 5.6), ('s6', 0.8, 5.6), ('end', 0, 5.5)]
+SEGS = [('s1b', 0.0, 2.4), ('s1can', 0.0, 2.5), ('s1off', 0.1, 2.9),
+        ('s2can', 1.0, 3.0), ('s2deniz', 0.9, 5.4), ('s3', 0.8, 6.2), ('app', 0, 5.0),
+        ('s4a', 0.6, 3.8), ('s4c', 0.0, 3.6), ('s5b', 0.0, 5.6), ('s6', 0.8, 5.6), ('end', 0, 5.5)]
 # s6'nın kendi sesinde ritim (bas davul) var: alçak frekansları kesiyoruz.
 AUDIO = {'s6': 'highpass=f=260,',
          # s4a'nın başında kime ait olduğu belli olmayan bir ses var: replikten önce kısıyoruz.
-         's4a': "volume='if(lt(t,2.3),0.1,1)':eval=frame,"}
+         's4a': "volume='if(lt(t,2.3)+gt(t,3.75),0.08,1)':eval=frame,"}
 caps = json.load(open('caps.json'))
 # Bazı sahnelerde üstte/altta siyah bant var (cropdetect): kırpıp dikey kareyi dolduruyoruz.
-BARS = {'s2': (1056, 112), 's3': (1092, 94), 's5': (1058, 102), 's5b': (1054, 112), 's4a': (1074, 98)}
+BARS = {'s2': (1056, 112), 's3': (1092, 94), 's5': (1058, 102), 's5b': (1054, 112), 's4a': (1074, 98), 's1can': (1104, 88), 's2deniz': (1084, 98), 's2can': (1080, 100)}
 def run(cmd): subprocess.run(cmd, check=True)
 parts = []
 for name, ss, dur in SEGS:

@@ -39,3 +39,12 @@ kestane saç, hardal sarısı kazak). Yüzler sahneden sahneye biraz değişebil
 - s6: telefon ekranı yeşil (chroma) üretildi; `screen_replace.py` kare kare izleyip `screen.png`yi
   (`screen.html`: logo + "Synvia AI") yerleştiriyor: `python3 screen_replace.py shots/s6g.mp4 shots/s6.mp4`.
   OpenCV gerekir (`pip install opencv-python-headless`).
+
+## 3. tur düzeltmeleri (9 Ekim)
+- Kural: **her sahnede tek konuşmacı**, konuşan kıyafetiyle tarif edilir ("Only the man in the NAVY SUIT speaks").
+  Aynı karede iki konuşmacı olunca Veo tüm replikleri tek kişiye söyletiyordu.
+- Açılış üçe bölündü: s1b'nin ilk 2,4 sn'si (Mert'in girişi, beğenildi) + s1can ("Eyvah... unuttum") + s1off (Mert, "Offff").
+- Mutfak ikiye bölündü: s2can + s2deniz (Deniz uzun saçlı, daha sempatik).
+- s4a, "Daha istememiştim bile!"den hemen sonra kesiliyor (ardından anlamsız bir ses geliyordu).
+- s6 ekran yerleştirme: köşeler minAreaRect + zamanda Gauss yumuşatma (kayma yok), maske takip edilen
+  dikdörtgenle sınırlı, despill, hafif bulanıklık/gren/yansıma.

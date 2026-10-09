@@ -2,35 +2,35 @@
  {
   "seg": "s1b",
   "a": 0.0,
-  "b": 2.35,
+  "b": 2.4,
   "who": "Mert",
   "text": "Can, rapor nerede? Müşteri bekliyor!"
  },
  {
-  "seg": "s1b",
-  "a": 2.4,
-  "b": 3.9,
+  "seg": "s1can",
+  "a": 0.15,
+  "b": 2.4,
   "who": "Can",
   "text": "Eyvah... unuttum."
  },
  {
-  "seg": "s1b",
-  "a": 4.2,
-  "b": 5.6,
+  "seg": "s1off",
+  "a": 0.25,
+  "b": 1.6,
   "who": "Mert",
   "text": "Offff..."
  },
  {
-  "seg": "s2",
-  "a": 0.1,
-  "b": 3.7,
+  "seg": "s2can",
+  "a": 1.4,
+  "b": 3.95,
   "who": "Can",
   "text": "Yine unuttum... Her şeyi unutuyorum."
  },
  {
-  "seg": "s2",
-  "a": 3.9,
-  "b": 6.6,
+  "seg": "s2deniz",
+  "a": 1.1,
+  "b": 6.2,
   "who": "Deniz",
   "text": "Synvia AI'yı dene. Söz verdiğin her işi o hatırlatıyor."
  },
@@ -44,7 +44,7 @@
  {
   "seg": "s4a",
   "a": 3.0,
-  "b": 4.8,
+  "b": 4.4,
   "who": "Mert",
   "text": "Daha istememiştim bile!"
  },
