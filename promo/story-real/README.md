@@ -19,13 +19,23 @@ Altyazı zamanları (`caps.json`) ses enerjisine göre ayarlandı; sahne değiş
 ## Sahneler (9 Ekim 2026)
 | # | Kim | Replik |
 |---|---|---|
-| s1 | Mert / Can / Mert | "Can, rapor nerede? Müşteri bekliyor!" / "Eyvah... unuttum." / "Offff..." |
+| s1b | Mert / Can / Mert | "Can, rapor nerede? Müşteri bekliyor!" / "Eyvah... unuttum." / "Offff..." |
 | s2 | Can / Deniz | "Yine unuttum... Her şeyi unutuyorum." / "Synvia AI'yı dene. Söz verdiğin her işi o hatırlatıyor." |
 | s3 | Can | "Vay... Hepsini kendisi çıkardı!" |
-| s4 | Mert / Can | "Rapor hazır mı? Daha istemedim bile!" / "Dün hallettim." |
-| s5 | Ayşe / Emre | "Can'a ne oldu? Hiçbir şeyi unutmuyor!" / "Hafızası bilgisayar gibi!" |
+| s4a | Mert | (Can raporu uzatır) "Daha istememiştim bile!" |
+| s4c | Can | "Dün hallettim." |
+| s5b | Ayşe / Emre | "Can'a ne oldu? Hiçbir şeyi unutmuyor!" / "Hafızası bilgisayar gibi!" |
 | s6 | Can | "Sır değil... Synvia AI." |
 
 Karakterler her istemde aynı tarifle yazıldı (Can: 20'lerinin sonunda, koyu kahve kısa saç, hafif sakal, petrol mavisi gömlek;
 Mert: 50'lerinin ortası, geriye taranmış gri saç, ince metal gözlük, lacivert takım, bordo kravat; Deniz: omuz hizası dalgalı
 kestane saç, hardal sarısı kazak). Yüzler sahneden sahneye biraz değişebiliyor (referans görsel kullanılmadı).
+
+## 2. tur düzeltmeleri (9 Ekim)
+- s1b: müdürün "Offff"u şaşkın değil, belli belirsiz morali bozuk.
+- s4 ikiye bölündü (s4a müdür, s4c Can): iki konuşmacı aynı sahnedeyken Veo replikleri karıştırıyordu.
+  s4a'nın başındaki sahipsiz ses `build.py` içinde kısılıyor.
+- s5b: Can arka planda masasında oturuyor (dosya kaybolma bozulması yok).
+- s6: telefon ekranı yeşil (chroma) üretildi; `screen_replace.py` kare kare izleyip `screen.png`yi
+  (`screen.html`: logo + "Synvia AI") yerleştiriyor: `python3 screen_replace.py shots/s6g.mp4 shots/s6.mp4`.
+  OpenCV gerekir (`pip install opencv-python-headless`).

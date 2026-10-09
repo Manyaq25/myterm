@@ -3,11 +3,15 @@
 import json, subprocess, os
 B = 'build'
 # (kaynak, başlangıç, süre)
-SEGS = [('s1', 0.0, 7.2), ('s2', 0.0, 7.0), ('s3', 0.8, 6.2), ('app', 0, 5.0),
-        ('s4', 0.0, 7.6), ('s5', 0.0, 6.0), ('s6', 0.8, 5.4), ('end', 0, 5.5)]
+SEGS = [('s1b', 0.0, 6.8), ('s2', 0.0, 7.0), ('s3', 0.8, 6.2), ('app', 0, 5.0),
+        ('s4a', 0.6, 5.2), ('s4c', 0.0, 3.6), ('s5b', 0.0, 5.6), ('s6', 0.8, 5.6), ('end', 0, 5.5)]
+# s6'nın kendi sesinde ritim (bas davul) var: alçak frekansları kesiyoruz.
+AUDIO = {'s6': 'highpass=f=260,',
+         # s4a'nın başında kime ait olduğu belli olmayan bir ses var: replikten önce kısıyoruz.
+         's4a': "volume='if(lt(t,2.3),0.1,1)':eval=frame,"}
 caps = json.load(open('caps.json'))
 # Bazı sahnelerde üstte/altta siyah bant var (cropdetect): kırpıp dikey kareyi dolduruyoruz.
-BARS = {'s2': (1056, 112), 's3': (1092, 94), 's5': (1058, 102)}
+BARS = {'s2': (1056, 112), 's3': (1092, 94), 's5': (1058, 102), 's5b': (1054, 112), 's4a': (1074, 98)}
 def run(cmd): subprocess.run(cmd, check=True)
 parts = []
 for name, ss, dur in SEGS:
@@ -30,7 +34,7 @@ for name, ss, dur in SEGS:
             a, b = c['a'] - ss, c['b'] - ss
             fc += f';[{last}][{k+1}:v]overlay=0:0:enable=\'between(t,{max(a,0):.2f},{b:.2f})\'[v{k+1}]'
             last = f'v{k+1}'
-        fc += f';[0:a]aresample=48000,afade=t=in:d=0.05,afade=t=out:st={dur-0.12:.2f}:d=0.12[a]'
+        fc += f';[0:a]{AUDIO.get(name, "")}aresample=48000,afade=t=in:d=0.05,afade=t=out:st={dur-0.12:.2f}:d=0.12[a]'
         run(['ffmpeg', '-v', 'error', '-y', *inputs, '-filter_complex', fc, '-map', f'[{last}]', '-map', '[a]',
              '-c:v', 'libx264', '-crf', '18', '-pix_fmt', 'yuv420p', '-r', '30', '-c:a', 'aac', '-b:a', '192k', '-ac', '2', out])
     parts.append(out)
