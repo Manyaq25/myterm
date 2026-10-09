@@ -1,0 +1,14 @@
+[
+ {"seg":"s1","a":0.15,"b":2.8,"who":"Mert","text":"Can, rapor nerede? Müşteri bekliyor!"},
+ {"seg":"s1","a":2.9,"b":4.4,"who":"Can","text":"Eyvah... unuttum."},
+ {"seg":"s1","a":4.5,"b":6.2,"who":"Mert","text":"Offff..."},
+ {"seg":"s2","a":0.1,"b":3.7,"who":"Can","text":"Yine unuttum... Her şeyi unutuyorum."},
+ {"seg":"s2","a":3.9,"b":6.6,"who":"Deniz","text":"Synvia AI'yı dene. Söz verdiğin her işi o hatırlatıyor."},
+ {"seg":"s3","a":2.1,"b":4.9,"who":"Can","text":"Vay... Hepsini kendisi çıkardı!"},
+ {"seg":"s4","a":2.7,"b":5.2,"who":"Mert","text":"Rapor hazır mı? Daha istemedim bile!"},
+ {"seg":"s4","a":5.4,"b":7.2,"who":"Can","text":"Dün hallettim."},
+ {"seg":"s5","a":0.0,"b":2.5,"who":"Ayşe","text":"Can'a ne oldu? Hiçbir şeyi unutmuyor!"},
+ {"seg":"s5","a":2.6,"b":5.4,"who":"Emre","text":"Hafızası bilgisayar gibi!"},
+ {"seg":"s6","a":1.5,"b":3.3,"who":"","text":"Sır değil..."},
+ {"seg":"s6","a":3.5,"b":5.6,"who":"","text":"Synvia AI."}
+]

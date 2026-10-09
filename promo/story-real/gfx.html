@@ -1,0 +1,104 @@
+<!doctype html>
+<!-- Gerçek insanlı reklamın grafik bölümleri: ?seg=app (uygulama ara bölümü), ?seg=end (kapanış), ?seg=cap&t=... (şeffaf altyazı).
+     1080x1920, window.render(t) + window.DURATION; kareler render.js ile alınır. -->
+<html lang="tr"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../video/node_modules/@fontsource/plus-jakarta-sans/500.css">
+<link rel="stylesheet" href="../video/node_modules/@fontsource/plus-jakarta-sans/700.css">
+<link rel="stylesheet" href="../video/node_modules/@fontsource/plus-jakarta-sans/800.css">
+<link rel="stylesheet" href="../video/node_modules/@fontsource/jetbrains-mono/700.css">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:transparent;font-family:'Plus Jakarta Sans','Noto Color Emoji',sans-serif;-webkit-font-smoothing:antialiased}
+.abs{position:absolute}
+.scene{position:absolute;inset:0;overflow:hidden;display:none}
+.cam{position:absolute;inset:0}
+.layer{position:absolute;inset:0;pointer-events:none}
+.acc{background:linear-gradient(90deg,#9BFFEF 0%,#59DBC7 45%,#FF9A7A 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.badge{position:absolute;height:120px;border-radius:28px;background:#000;border:2px solid rgba(255,255,255,.28);display:flex;align-items:center;gap:18px;padding:0 30px;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.kick{position:absolute;left:0;right:0;text-align:center;font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;letter-spacing:7px;color:#79F8E3}
+.head{position:absolute;left:60px;right:60px;text-align:center;font-size:64px;font-weight:800;color:#fff;line-height:1.1;letter-spacing:-1.8px}
+.phone{position:absolute;width:560px;height:1217px;border-radius:78px;padding:14px;background:linear-gradient(150deg,#59625f 0%,#262d2c 18%,#141918 50%,#2b3331 82%,#4a5350 100%);box-shadow:0 60px 120px rgba(0,0,0,.6)}
+.phone .scr{position:absolute;inset:14px;border-radius:64px;overflow:hidden;background:#f4f7f6}
+.phone .scr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.chip{position:absolute;display:flex;align-items:center;gap:18px;padding:20px 32px 20px 20px;border-radius:32px;background:rgba(250,252,251,.97);box-shadow:0 20px 50px rgba(0,0,0,.4);white-space:nowrap;font-size:32px;font-weight:800;color:#132228}
+.chip .ic{width:58px;height:58px;border-radius:50%;background:#00A896;color:#fff;display:flex;align-items:center;justify-content:center;font-size:32px}
+.chip.src .ic{background:#132228;border-radius:18px;font-size:30px}
+#cap{position:absolute;left:70px;right:70px;bottom:250px;text-align:center}
+#cap span{display:inline;background:rgba(6,17,16,.78);color:#fff;font-size:50px;font-weight:800;line-height:1.5;padding:8px 22px;border-radius:18px;-webkit-box-decoration-break:clone;box-decoration-break:clone;letter-spacing:-.5px}
+#cap .who{color:#79F8E3}
+</style></head>
+<body>
+<div class="scene" id="sApp"><div class="cam">
+  <div class="layer" style="background:radial-gradient(1100px 1000px at 50% 45%,#12403a 0%,#0a201d 60%,#050d0c 100%)"></div>
+  <div class="kick" id="aKick" style="top:150px">NASIL ÇALIŞIYOR?</div>
+  <div class="head" id="aHead" style="top:205px">Ekran görüntüsü, sesli not<br>ya da <span class="acc">PDF ver</span></div>
+  <div class="phone" id="aPhone" style="left:260px;top:440px"><div class="scr">
+    <img id="aImg1" src="../video/assets/metin.png"><img id="aImg2" src="../video/assets/home.png"></div></div>
+  <div class="chip src" id="aSrc1" style="left:40px;top:640px"><div class="ic">📸</div>Ekran görüntüsü</div>
+  <div class="chip src" id="aSrc2" style="left:600px;top:820px"><div class="ic">🎙️</div>Sesli not</div>
+  <div class="chip src" id="aSrc3" style="left:70px;top:1000px"><div class="ic">📄</div>PDF</div>
+  <div class="chip" id="aOk" style="left:150px;top:1560px"><div class="ic">✓</div>AI işleri ve sözleri çıkardı</div>
+  <div class="chip" id="aBell" style="left:200px;top:1680px"><div class="ic" style="background:#FF8A6B">🔔</div>Zamanı gelince hatırlatır</div>
+</div></div>
+<div class="scene" id="sEndWrap">
+  <div class="scene" id="sEnd"><div class="cam" id="camEnd">
+    <div class="layer" style="background:radial-gradient(1100px 900px at 50% 40%,#0f2e2a 0%,#081816 65%,#040b0a 100%)"></div>
+    <div class="abs" id="eRays" style="left:-260px;top:-300px;width:1600px;height:1600px;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(121,248,227,.10) 0deg 6deg,rgba(0,0,0,0) 6deg 18deg);-webkit-mask:radial-gradient(circle,#000 0%,rgba(0,0,0,0) 65%)"></div>
+    <div class="abs" id="eIcon" style="left:405px;top:360px;width:270px;height:270px;border-radius:24%;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.5),0 0 140px rgba(89,219,199,.45)"><img src="../video/assets/icon.png" style="width:100%;height:100%"></div>
+    <div class="abs" id="eTitle" style="left:0;right:0;top:670px;text-align:center;color:#fff;font-size:84px;font-weight:800;letter-spacing:-2px">Synvia AI</div>
+    <div class="abs" id="eSlogan" style="left:60px;right:60px;top:790px;text-align:center;font-size:58px;font-weight:800;line-height:1.1;letter-spacing:-1.5px"><span class="acc">Hiçbir şeyi unutma.</span></div>
+    <div class="badge" id="eApple" style="left:70px;top:1000px;width:452px">
+      <svg width="54" height="64" viewBox="0 0 384 512"><path fill="#fff" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+      <div><div style="font-size:22px;font-weight:500;opacity:.9">İndir</div><div style="font-size:42px;font-weight:800;letter-spacing:-1px;line-height:1.05">App Store</div></div></div>
+    <div class="badge" id="ePlay" style="left:558px;top:1000px;width:452px">
+      <svg width="52" height="58" viewBox="0 0 24 24"><path fill="#32BBFF" d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471z"/><path fill="#00F076" d="M14.499 12.707l2.302 2.302-10.937 6.333 8.635-8.635z"/><path fill="#FFD400" d="M17.698 9.509l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597z"/><path fill="#FF3A44" d="M4.608 1.669L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"/></svg>
+      <div><div style="font-size:22px;font-weight:500;opacity:.9">Hemen indir</div><div style="font-size:42px;font-weight:800;letter-spacing:-1px;line-height:1.05">Google Play</div></div></div>
+    
+    <div class="abs" id="eSite" style="left:0;right:0;top:1180px;text-align:center;font-family:'JetBrains Mono';font-size:30px;letter-spacing:3px;color:rgba(155,255,239,.8)">aydinapp.com.tr</div>
+    
+  </div></div>
+
+  <div id="caps"></div>
+
+</div>
+<div id="cap"></div>
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const lerp=(a,b,x)=>a+(b-a)*x;
+const pr=(t,s,d)=>clamp((t-s)/d);
+const eOut=x=>1-Math.pow(1-x,3);
+const eBack=x=>{const c1=1.6,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+function vis(el,op){el.style.opacity=op;el.style.visibility=op>0.002?'visible':'hidden';}
+const Q=new URLSearchParams(location.search), SEG=Q.get('seg')||'app';
+const DUR={app:5.0,end:5.5,cap:0.04};
+window.DURATION=DUR[SEG];
+if(SEG==='app'){ $('sApp').style.display='block'; document.body.style.background='#050d0c'; }
+if(SEG==='end'){ $('sEndWrap').style.display='block'; $('sEnd').style.display='block'; document.body.style.background='#040b0a'; }
+if(SEG==='cap'){ const who=Q.get('who'), txt=Q.get('text');
+  $('cap').innerHTML='<span>'+(who?'<b class="who">'+who+':</b> ':'')+txt.replace(/</g,'&lt;')+'</span>'; }
+else $('cap').style.display='none';
+function render(t){
+  if(SEG==='app'){
+    const fi=eOut(pr(t,0,.5)); document.querySelector('#sApp .cam').style.opacity=clamp(t/.3)*clamp((DUR.app-t)/.35);
+    vis($('aKick'),fi); vis($('aHead'),eOut(pr(t,.15,.5))); $('aHead').style.transform=`translateY(${lerp(30,0,eOut(pr(t,.15,.5)))}px)`;
+    const p=eOut(pr(t,.2,.7)); vis($('aPhone'),p); $('aPhone').style.transform=`translateY(${lerp(500,0,p)}px) rotate(${lerp(6,0,p)}deg)`;
+    ['aSrc1','aSrc2','aSrc3'].forEach((id,i)=>{const s=t-(.7+i*.3); const b=eBack(clamp(s/.45)); vis($(id),clamp(s/.2)*clamp((2.9-t)/.3)); $(id).style.transform=`scale(${lerp(.6,1,b)}) translateY(${Math.sin(t*2+i)*6}px)`;});
+    vis($('aImg2'),eOut(pr(t,2.6,.5)));
+    const o=eBack(pr(t,3.0,.45)); vis($('aOk'),pr(t,3.0,.15)); $('aOk').style.transform=`scale(${lerp(.6,1,o)})`;
+    const b=eBack(pr(t,3.45,.45)); vis($('aBell'),pr(t,3.45,.15)); $('aBell').style.transform=`scale(${lerp(.6,1,b)})`;
+  }
+  if(SEG==='end'){
+    const T=t+36.5;
+    const q=eBack(pr(T,36.65,.62)); vis($('eIcon'),pr(T,36.65,.15)); $('eIcon').style.transform=`translateY(${Math.sin(T*1.6)*8}px) scale(${lerp(.25,1,q)})`;
+    vis($('eRays'),.8*pr(T,36.7,.6)); $('eRays').style.transform=`rotate(${T*12}deg)`;
+    const a1=eOut(pr(T,37.0,.5)); vis($('eTitle'),a1); $('eTitle').style.transform=`translateY(${lerp(40,0,a1)}px)`;
+    const a2=eOut(pr(T,37.4,.55)); vis($('eSlogan'),a2); $('eSlogan').style.transform=`translateY(${lerp(50,0,a2)}px)`;
+    const b1=eBack(pr(T,37.9,.5)); vis($('eApple'),pr(T,37.9,.2)); $('eApple').style.transform=`scale(${lerp(.8,1,b1)})`;
+    const b2=eBack(pr(T,38.15,.5)); vis($('ePlay'),pr(T,38.15,.2)); $('ePlay').style.transform=`scale(${lerp(.8,1,b2)})`;
+    vis($('eSite'),eOut(pr(T,38.6,.6)));
+    document.querySelector('#sEnd').style.opacity=clamp(t/.3);
+  }
+}
+window.render=render;
+</script></body></html>

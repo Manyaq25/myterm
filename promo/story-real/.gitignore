@@ -1,0 +1,6 @@
+shots/
+build/
+frames/
+refs/
+*.mp4
+*.wav
