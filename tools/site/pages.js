@@ -66,6 +66,12 @@ ${e.items.map(([emoji, title, text]) => `<li class="flex items-start gap-space-s
 </div>
 </li>`).join('\n'),
 
+  // Ana sayfadaki sohbet mesajı: [metin, grup] parçaları; grup verilen parçalar yapay zekânın vurguladığı kelimeler
+  chatMessage: (t) => t.chatParts.map(([text, g]) => (g == null ? esc(text) : `<span class="k${g === 1 ? ' t' : ''}" data-g="${g}">${esc(text)}</span>`)).join(''),
+
+  // Betiğe verilen metin listeleri (data-* özniteliği içinde JSON)
+  json: (t, key) => esc(JSON.stringify(t[key])),
+
   check: (t, key) => `<li class="flex items-start gap-space-sm text-on-surface">${icon('check', 'text-xl text-primary mt-0.5')}<span>${esc(t[key])}</span></li>`,
 
   faq: (t, q, a) => `<details class="group rounded-2xl bg-surface-container/60 px-space-lg py-space-md">

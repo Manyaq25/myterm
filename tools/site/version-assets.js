@@ -1,4 +1,4 @@
-// site.css ve store.js bağlantılarına içerik özetinden bir sürüm etiketi ekler (?v=…).
+// site.css, store.js, home.css ve home.js bağlantılarına içerik özetinden bir sürüm etiketi ekler (?v=…).
 // Dosya değişince adres de değişir; böylece tarayıcılar bu dosyaları uzun süre
 // önbellekte tutabilir (vercel.json) ve güncellemeyi yine de hemen görür.
 // build.sh en son adım olarak çalıştırır.
@@ -7,7 +7,7 @@ const path = require('path');
 const crypto = require('crypto');
 
 const web = path.join(__dirname, '../../web');
-const assets = ['site.css', 'store.js'];
+const assets = ['site.css', 'store.js', 'home.css', 'home.js'];
 const hashes = Object.fromEntries(
   assets.map((f) => [f, crypto.createHash('sha256').update(fs.readFileSync(path.join(web, 'assets', f))).digest('hex').slice(0, 10)])
 );
