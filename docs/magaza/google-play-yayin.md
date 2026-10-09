@@ -1,7 +1,21 @@
 # Google Play: ilk üretim yayını (1.1.1)
 
 8 Ekim 2026: Google Play üretim erişimi onaylandı (com.manyaq25.benimyerimetakipet).
-Son Android derlemesi 1.0.0 (3), 18 Eylül'de yapıldı; kapalı teste elle yüklendi. Yeni derleme 1.1.1 olacak; derleme numarası EAS'te otomatik artar (4).
+Son Android derlemesi 1.0.0 (3), 18 Eylül'de yapıldı; kapalı teste elle yüklendi.
+
+## Durum (9 Ekim 2026)
+- Derleme **1.1.1 (5)** (EAS `fb9e0a69…`, commit e331fd2). 4 numaralı derleme iptal edildi: Play Console "Ön plan hizmeti izinleri" beyanı istiyordu; sebebi expo-audio'nun manifestine eklediği FOREGROUND_SERVICE_MEDIA_PLAYBACK ve iki hizmetti. Eski eklenti bunları etkisiz biçimde süzüyordu, artık `tools:node="remove"` ile kaldırılıyor. Yüklenen paketin izin listesinde artık yok. "Beyanı başlat"a basılmadı; yeni sürümle uyarının kalkması bekleniyor.
+- Yönetilen yayınlama açıldı.
+- Veri güvenliği güncellendi: kilitlenme günlükleri + teşhisler (Sentry; Analiz, zorunlu), cihaz kimliği (Android ID; uygulama işlevselliği + güvenlik, isteğe bağlı), kullanıcı tarafından oluşturulan diğer içerik (kısa süreli). Videolar çıkarıldı. Hizmet sağlayıcılara (Anthropic, RevenueCat, Sentry) giden veriler "paylaşılmıyor" olarak işaretlendi → mağazada "Üçüncü taraflarla veri paylaşımı yok". Veri silme bağlantısı site sayfası oldu.
+- Gizlilik politikası adresi `https://aydinapp.com.tr/apps/synvia-ai/privacy-policy.html` oldu (eski backend sayfası Eylül'den kalmaydı).
+- Dahili test: 5 (1.1.1) yayında, test listesi "rıza" (test telefonu arkadaşa ait: rizasimsek05@gmail.com). Katılma bağlantısı: Dahili test → Test kullanıcıları → "Bağlantıyı kopyala".
+- Üretim: 5 (1.1.1), 177 ülke + dünyanın geri kalanı, **9 Ekim'de incelemeye gönderildi** (5 değişiklik birlikte). Onaydan sonra Yayın özeti → "Değişiklikleri yayınla" ile elle yayınlanacak (önce test).
+
+## Play Console önerileri (engelleyici değil, sonra)
+- DEX kod optimizasyonu (R8/küçültme kapalı): son tarih Şubat 2027. Açılınca eşleme (mapping) dosyası da yüklenmeli; sürüm ekranındaki "kod gösterme dosyası yok" uyarısı da o zaman kalkar.
+- Android 15 uçtan uca ekran: desteği kaldırılan API/parametreler.
+- Büyük ekranlar: yön ve yeniden boyutlandırma kısıtlamaları (Android 16'da yok sayılacak).
+- İzinlerde SYSTEM_ALERT_WINDOW var; hangi kütüphaneden geldiği incelenip gereksizse kaldırılabilir.
 
 ## Sıra
 
