@@ -50,11 +50,10 @@ export async function isScreenshotSuggestionEnabled(): Promise<boolean> {
  * ekran görüntüsü olayları hiç dinlenmez, hiçbir görsel otomatik taranmaz.
  */
 export async function setScreenshotSuggestionEnabled(enabled: boolean): Promise<boolean> {
+  // Yalnızca iPhone: Android'de galeri izni yok (Google Play Fotoğraf ve Video İzinleri politikası),
+  // ayar da Ayarlar ekranında gösterilmiyor.
+  if (Platform.OS === 'android') return false;
   if (enabled) {
-    if (Platform.OS === 'android') {
-      const permission = await ScreenCapture.requestPermissionsAsync();
-      if (!permission.granted) return false;
-    }
     const notifGranted = await ensureNotificationPermission();
     if (!notifGranted) return false;
     // Arka planda alınan ekran görüntülerini yakalamak (aşağıya bakınız) galeri
@@ -79,6 +78,7 @@ export async function setScreenshotSuggestionEnabled(enabled: boolean): Promise<
 }
 
 export async function initScreenshotSuggestions(): Promise<void> {
+  if (Platform.OS === 'android') return;
   const enabled = await isScreenshotSuggestionEnabled();
   if (!enabled) return;
   startListening();

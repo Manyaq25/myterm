@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, Image, Modal, Pressable, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, Modal, Platform, Pressable, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ChevronRight } from 'lucide-react-native';
 import { ThemedSwitch } from '../../src/components/ThemedSwitch';
@@ -179,6 +179,8 @@ export default function AyarlarScreen() {
         <Text style={styles.hint}>{t('ayarlar.notificationsHint')}</Text>
       </View>
 
+      {/* Yalnızca iPhone: Android'de galeri izni yok (Google Play Fotoğraf ve Video İzinleri politikası). */}
+      {Platform.OS !== 'android' && (
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('ayarlar.sectionImageSuggestions')}</Text>
         <View style={styles.row}>
@@ -197,6 +199,7 @@ export default function AyarlarScreen() {
         </View>
         <Text style={styles.hint}>{t('ayarlar.screenshotHint')}</Text>
       </View>
+      )}
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>{t('ayarlar.sectionLanguage')}</Text>

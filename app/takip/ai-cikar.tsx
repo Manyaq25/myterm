@@ -266,10 +266,13 @@ export default function AiCikarScreen() {
 
   async function handlePickImage() {
     setError(null);
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) {
-      setError(t('aiCikar.galleryPermissionError'));
-      return;
+    // Android'de sistemin fotoğraf seçicisi açılır; izin gerekmez (uygulamada galeri izni yok).
+    if (Platform.OS !== 'android') {
+      const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (!permission.granted) {
+        setError(t('aiCikar.galleryPermissionError'));
+        return;
+      }
     }
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
@@ -289,6 +292,11 @@ export default function AiCikarScreen() {
 
   /** Bildirimden gelindiyse o ekran görüntüsünü, değilse en yenisini yükler. */
   async function handleLoadLastScreenshot(assetId?: string) {
+    // Android'de galeriye erişim izni yok (Google Play politikası): kullanıcı ekran görüntüsünü seçicide seçer.
+    if (Platform.OS === 'android') {
+      await handlePickImage();
+      return;
+    }
     setImageLoading(true);
     setError(null);
     try {

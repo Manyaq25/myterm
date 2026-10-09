@@ -89,6 +89,7 @@
       ],
       "./plugins/withAdjustNothingKeyboard",
       "./plugins/withoutMediaPlaybackForegroundService",
+      "./plugins/withoutBroadMediaPermissions",
       "./plugins/withAndroidBackupRules"
     ],
     "ios": {
