@@ -221,6 +221,46 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#061110
           <div style="width:46px;height:46px;border-radius:50%;background:#00A896;color:#fff;font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center">✓</div>
         </div>
       </div>
+      <div class="grp" id="g_bildirim">
+        <div class="abs" style="inset:0;background:radial-gradient(700px 600px at 15% 5%,#1c8f80 0%,rgba(28,143,128,0) 60%),radial-gradient(700px 700px at 95% 95%,#d9785f 0%,rgba(217,120,95,0) 60%),#0b1f1d"></div>
+        <div class="ldate" style="top:118px">Cuma 10 Ekim</div>
+        <div class="lclock" style="top:150px">16:55</div>
+        <div class="abs" id="bnCard" style="left:18px;right:18px;top:430px;border-radius:32px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.16);padding:22px;color:#fff">
+          <div style="display:flex;gap:18px;align-items:center">
+            <div class="nicon"><img src="assets/icon.png"></div>
+            <div class="nbody"><div class="nrow"><span>SYNVIA AI</span><span>şimdi</span></div>
+              <div class="ntitle">⏰ Haftalık rapor · 17:00</div><div class="ntext">Mert'e verdiğin söz</div></div>
+          </div>
+          <div id="bnActs" style="display:flex;gap:10px;margin-top:20px">
+            <div class="bnA" id="bnDone" style="flex:1;height:64px;border-radius:20px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:700">Tamamlandı</div>
+            <div class="bnA" style="flex:1.15;height:64px;border-radius:20px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:700">1 saat ertele</div>
+            <div class="bnA" style="flex:.8;height:64px;border-radius:20px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:700">Yarın</div>
+          </div>
+        </div>
+        <div class="abs" id="bnOk" style="left:18px;right:18px;top:430px;height:120px;border-radius:32px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;gap:16px;font-size:30px;font-weight:800;color:#0E7C70">
+          <span style="width:52px;height:52px;border-radius:50%;background:#00A896;color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px">✓</span>Tamamlandı</div>
+      </div>
+      <div class="grp" id="g_mesaj" style="background:#F2F8F6">
+        <div class="abs" style="left:0;right:0;top:0;height:200px;background:#fff;border-bottom:1px solid rgba(19,34,40,.08)"></div>
+        <div class="abs" style="left:30px;top:100px;font-size:34px;font-weight:800;color:#132228;letter-spacing:-.5px">💬 Mesajla hatırlat</div>
+        <div class="abs" style="left:30px;top:150px;font-size:21px;color:rgba(19,34,40,.6);font-weight:500">Mert Demir · Haftalık rapor</div>
+        <div class="abs" style="left:30px;top:240px;display:flex;gap:12px">
+          <span class="tone on" style="padding:12px 22px;border-radius:999px;background:#00A896;color:#fff;font-size:22px;font-weight:700">Samimi</span>
+          <span class="tone" style="padding:12px 22px;border-radius:999px;background:#fff;color:#132228;font-size:22px;font-weight:600;border:1.5px solid rgba(19,34,40,.12)">Resmi</span>
+          <span class="tone" style="padding:12px 22px;border-radius:999px;background:#fff;color:#132228;font-size:22px;font-weight:600;border:1.5px solid rgba(19,34,40,.12)">Kısa</span>
+        </div>
+        <div class="abs" style="left:30px;top:330px;font-family:'JetBrains Mono';font-size:16px;font-weight:700;letter-spacing:2px;color:#0E7C70">✦ YAPAY ZEKÂNIN YAZDIĞI MESAJ</div>
+        <div class="abs" style="left:30px;right:30px;top:370px;min-height:190px;border-radius:26px 26px 8px 26px;background:#D9FDD3;padding:24px 26px;font-size:27px;line-height:1.4;color:#111;box-shadow:0 8px 22px rgba(16,40,36,.09)"><span id="msgTxt"></span><span id="msgCaret" style="display:inline-block;width:3px;height:30px;background:#0E7C70;vertical-align:-5px;margin-left:2px"></span></div>
+        <div class="abs" id="waBtn" style="left:30px;right:30px;top:620px;height:84px;border-radius:28px;background:#25D366;color:#fff;font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 14px 30px rgba(37,211,102,.35)">WhatsApp ile gönder</div>
+        <div class="abs" style="left:30px;right:30px;top:722px;height:84px;border-radius:28px;background:#fff;color:#132228;font-size:28px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(19,34,40,.12)">SMS ile gönder</div>
+      </div>
+      <div class="grp" id="g_tekrar" style="background:linear-gradient(180deg,#EEF8F9,#E8F5F5)">
+        <div class="abs" style="left:30px;top:100px;font-size:40px;font-weight:800;color:#132228;letter-spacing:-.8px">Takipler</div>
+        <div class="abs" style="left:30px;top:160px;font-size:22px;color:rgba(19,34,40,.6);font-weight:600">🔁 Tekrar eden işler</div>
+        <div class="abs" id="rpOld" style="left:22px;right:22px;top:220px"></div>
+        <div class="abs" id="rpNew" style="left:22px;right:22px;top:220px"></div>
+        <div class="abs" id="rpOther" style="left:22px;right:22px;top:440px"></div>
+      </div>
       <div class="grp" id="g_kisi">
         <img class="scr" src="assets/kisi.png">
         <div class="abs" id="toast" style="left:110px;right:110px;top:1080px;height:70px;border-radius:35px;background:rgba(19,34,40,.88);color:#fff;font-size:22px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px">💬 WhatsApp açılıyor…</div>
@@ -251,14 +291,14 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#061110
     <div class="ring" id="oRing"></div>
     <div class="bigicon" id="oIcon" style="width:270px;height:270px;left:405px;top:360px"><img src="assets/icon.png"></div>
     <div class="ttl" id="oTitle" style="top:672px;font-size:78px">Synvia AI</div>
-    <div class="ttl" id="oNow" style="top:850px;font-size:92px;line-height:1.05"><span class="acc" id="oNowTxt" style="background-image:linear-gradient(90deg,#9BFFEF 0%,#59DBC7 30%,#ffffff 45%,#59DBC7 60%,#FF9A7A 100%);background-size:250% 100%">Şimdi App Store'da</span></div>
-    <div class="store" id="oBadge" style="top:1010px;width:520px;margin-left:-260px">
+    <div class="ttl" id="oNow" style="top:830px;font-size:74px;line-height:1.05"><span class="acc" id="oNowTxt" style="background-image:linear-gradient(90deg,#9BFFEF 0%,#59DBC7 30%,#ffffff 45%,#59DBC7 60%,#FF9A7A 100%);background-size:250% 100%">App Store ve Google Play'de</span></div>
+    <div class="store" id="oBadge" style="top:1010px;width:452px;margin-left:-470px;padding:0 30px 0 32px">
       <svg width="58" height="70" viewBox="0 0 384 512"><path fill="#fff" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
-      <div><div style="font-size:24px;font-weight:500;opacity:.9">Hemen indir</div><div style="font-size:46px;font-weight:800;letter-spacing:-1px;line-height:1.05">App Store</div></div>
+      <div><div style="font-size:22px;font-weight:500;opacity:.9">İndir</div><div style="font-size:42px;font-weight:800;letter-spacing:-1px;line-height:1.05">App Store</div></div>
     </div>
-    <div class="sub" id="oPlay" style="top:1225px;font-size:44px;font-weight:700;color:#C9DAD5;display:flex;align-items:center;justify-content:center;gap:18px">
-      <svg width="44" height="48" viewBox="0 0 24 24"><defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#59DBC7"/><stop offset="1" stop-color="#FF8A6B"/></linearGradient></defs><path fill="url(#pg)" d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597zm-13.09-7.84L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"/></svg>
-      Çok yakında Google Play'de
+    <div class="store" id="oPlay" style="top:1010px;width:452px;margin-left:18px;padding:0 30px 0 32px">
+      <svg width="54" height="60" viewBox="0 0 24 24"><path fill="#32BBFF" d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471z"/><path fill="#00F076" d="M14.499 12.707l2.302 2.302-10.937 6.333 8.635-8.635z"/><path fill="#FFD400" d="M17.698 9.509l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597z"/><path fill="#FF3A44" d="M4.608 1.669L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"/></svg>
+      <div><div style="font-size:22px;font-weight:500;opacity:.9">Hemen indir</div><div style="font-size:42px;font-weight:800;letter-spacing:-1px;line-height:1.05">Google Play</div></div>
     </div>
     <div class="sub" id="oSite" style="top:1770px;font-size:30px;font-family:'JetBrains Mono';letter-spacing:3px;color:rgba(155,255,239,.75)">aydinapp.com.tr</div>
   </div>
@@ -308,9 +348,9 @@ const NA=[
  {t:3.15,icon:'💬',ib:'#34C759',app:'MESAJLAR',title:'Mert',text:'Raporu dün gönderecektin? 😕'},
 ];
 const NF=[
- {t:35.55,icon:'IMG',app:'SYNVIA AI',title:'⏰ Müşteri sunumu 30 dk sonra',text:'Selin Hanım · 10:00 — Hazırsın 💪'},
- {t:36.25,icon:'💬',ib:'#34C759',app:'MESAJLAR',title:'Selin Hanım',text:'Harika sunumdu Elif, tebrikler! 👏'},
- {t:36.95,icon:'IMG',app:'SYNVIA AI',title:'✓ Haftalık rapor gönderildi',text:'Mert\'e verdiğin söz zamanında tamamlandı'},
+ {t:41.25,icon:'IMG',app:'SYNVIA AI',title:'⏰ Müşteri sunumu 30 dk sonra',text:'Selin Hanım · 10:00 — Hazırsın 💪'},
+ {t:41.95,icon:'💬',ib:'#34C759',app:'MESAJLAR',title:'Selin Hanım',text:'Harika sunumdu Elif, tebrikler! 👏'},
+ {t:42.65,icon:'IMG',app:'SYNVIA AI',title:'✓ Haftalık rapor gönderildi',text:'Mert\'e verdiğin söz zamanında tamamlandı'},
 ];
 function notifHTML(n){
   const ic=n.icon==='IMG'?`<div class="nicon"><img src="assets/icon.png"></div>`:`<div class="nicon" style="background:${n.ib}">${n.icon}</div>`;
@@ -319,7 +359,8 @@ function notifHTML(n){
 
 const KICK=[
  [0.25,5.4,'PAZARTESİ · 09:47'],[10.6,13.5,'SYNVIA AI'],[13.6,23.55,'01 · GÖRSELDEN ÇIKARIM'],[23.6,27.1,'AKILLI HATIRLATMA'],
- [27.45,29.25,'02 · SESLİ NOT'],[29.35,31.15,'03 · PDF BELGE'],[31.25,33.05,'04 · KİŞİLER'],[33.15,34.95,'05 · PREMIUM'],[35.15,38.0,'BİR HAFTA SONRA']];
+ [27.45,29.25,'02 · SESLİ NOT'],[29.35,31.15,'03 · PDF BELGE'],[31.25,33.05,'04 · BİLDİRİMDEN HALLET'],[33.15,34.95,'05 · KARŞI TARAFA HATIRLAT'],
+ [35.05,36.85,'06 · TEKRAR EDEN İŞLER'],[36.95,38.75,'07 · KİŞİLER'],[38.85,40.65,'08 · PREMIUM'],[40.85,43.7,'BİR HAFTA SONRA']];
 const HEAD=[
  [0.5,3.5,'Elif\'in yoğun bir<br>pazartesi sabahı'],
  [3.6,5.4,'<span class="red">Yine mi</span> unuttun?'],
@@ -332,14 +373,17 @@ const HEAD=[
  [23.7,27.1,'Zamanı gelince<br><span class="acc">o hatırlatır</span>'],
  [27.55,29.25,'Konuş,<br><span class="acc">o not alsın</span>'],
  [29.45,31.15,'PDF\'teki tarihleri<br><span class="acc">yakalasın</span>'],
- [31.35,33.05,'Tek dokunuşla<br><span class="acc">ara, yaz, WhatsApp</span>'],
- [33.25,34.95,'<span class="acc">Sınırsız</span><br>yapay zekâ'],
- [35.3,38.0,'Elif artık <span class="acc">hiçbir<br>şeyi</span> unutmuyor.'],
+ [31.35,33.05,'Uygulamayı açmadan<br><span class="acc">tamamla, ertele</span>'],
+ [33.25,34.95,'Unutana <span class="acc">kibarca</span><br>hatırlatsın'],
+ [35.15,36.85,'Bir kez kur,<br><span class="acc">her ay</span> hatırlatsın'],
+ [37.05,38.75,'Tek dokunuşla<br><span class="acc">ara, yaz, WhatsApp</span>'],
+ [38.95,40.65,'<span class="acc">Sınırsız</span><br>yapay zekâ'],
+ [41.0,43.7,'Elif artık <span class="acc">hiçbir<br>şeyi</span> unutmuyor.'],
 ];
 
 const THX=.5, THY=.292;
-const ES=[27.4,29.3,31.2,33.1]; // E sub-scene starts (1.9s each)
-const ETAP=[[.5,.40],[.5,.3415],[.592,.2365],[.5,.775]];
+const ES=[27.4,29.3,31.2,33.1,35.0,36.9,38.8]; // E sub-scene starts (1.9s each)
+const ETAP=[[.5,.40],[.5,.3415],[.205,.409],[.5,.48],[.896,.191],[.592,.2365],[.5,.775]];
 const TAPS=[
  {appear:12.25,hide:13.3,pts:[{x:.679,y:.925,at:12.9}]},
  {appear:13.75,hide:18.35,pts:[{x:.610,y:.2225,at:14.3},{x:.5,y:.3415,at:15.3},{x:THX,y:THY,at:16.6},{x:.5,y:.8375,at:18.0}]},
@@ -347,7 +391,7 @@ const TAPS=[
  ...ES.map((s,k)=>({appear:s+.4,hide:s+1.25,pts:[{x:ETAP[k][0],y:ETAP[k][1],at:s+.85}]})),
 ];
 const ALLTAPS=TAPS.flatMap(g=>g.pts);
-const LEAKS=[7.35,9.5,13.0,23.45,27.0,34.85,37.85];
+const LEAKS=[7.35,9.5,13.0,23.45,27.0,40.55,43.55];
 
 /* ---------- build ---------- */
 $('chatBig').innerHTML=CHAT;
@@ -355,6 +399,17 @@ $('nA').innerHTML=NA.map(notifHTML).join('');
 $('nF').innerHTML=NF.map(notifHTML).join('');
 $('resCards').innerHTML=ITEMS.map(it=>`<div class="rc">${cardHTML(it,false)}</div>`).join('');
 $('takCards').innerHTML=ITEMS.map(it=>`<div class="tc">${cardHTML(it,true)}</div>`).join('');
+const RPC=`<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0E7C70" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 013-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 01-3 3H3"/></svg>`;
+const repCard=(t,d,b,isNew)=>`<div class="fcard">${isNew?'<div class="newtag">SIRADAKİ</div>':''}<div class="ftitle">${t}</div>
+ <div class="fperson"><span class="av" style="background:#8B6FD6">BN</span>Ben</div><div class="fsep"></div>
+ <div class="frow"><span class="fdate">${RPC}${d}</span><span class="badge" style="background:#EEF0F2;color:#3D4A47">● ${b}</span></div>
+ <div class="abs rpChk" style="right:22px;top:22px;width:44px;height:44px;border-radius:50%;border:3px solid #00A896;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:24px">✓</div></div>`;
+$('rpOld').innerHTML=repCard('Kira ödemesi','1 Ekim · Her ay','Yapacağım iş',false);
+$('rpNew').innerHTML=repCard('Kira ödemesi','1 Kasım · Her ay','Yapacağım iş',true);
+$('rpOther').innerHTML=repCard('İlacını al','Her gün · 09:00','Yapacağım iş',false);
+$('rpNew').querySelector('.rpChk').style.display='none';
+$('rpOther').querySelector('.rpChk').style.display='none';
+const MSGT="Selam Mert, haftalık raporu bugün gönderebilir misin? Şimdiden teşekkürler 🙏";
 const NAel=[...document.querySelectorAll('#nA .notif')], NFel=[...document.querySelectorAll('#nF .notif')];
 const RC=[...document.querySelectorAll('#resCards .rc')], TC=[...document.querySelectorAll('#takCards .tc')];
 
@@ -401,7 +456,7 @@ function capAnim(el,t,s,e){const i=eOut(pr(t,s,.42)),o=eIn(pr(t,e-.28,.28));cons
   vis(el,op);el.style.transform=`translateY(${lerp(38,0,i)+lerp(0,-26,o)}px)`;}
 
 function renderBG(t){
-  const a=1-pr(t,7.15,.8), f=pr(t,34.9,.6)*(1-pr(t,37.9,.6));
+  const a=1-pr(t,7.15,.8), f=pr(t,40.6,.6)*(1-pr(t,43.6,.6));
   $('bgA').style.opacity=a; $('bgF').style.opacity=f;
   $('b1').style.transform=`translate(${Math.sin(t*.23)*160}px,${Math.cos(t*.19)*120}px)`;
   $('b2').style.transform=`translate(${Math.cos(t*.21)*-170}px,${Math.sin(t*.17)*140}px)`;
@@ -412,7 +467,7 @@ function renderBG(t){
   $('bR').style.opacity=clamp(a*(.35+stress)); $('bR').style.transform=`translate(${Math.sin(t*.4)*60}px,0)`;
   vis($('redtint'),clamp(stress*(t<5.6?1:0)*.9));
   // flash
-  let fl=0; [[7.55,.22,.9],[38.15,.25,.75]].forEach(([c,w,m])=>{fl=Math.max(fl,m*clamp(1-Math.abs(t-c)/w));});
+  let fl=0; [[7.55,.22,.9],[43.85,.25,.75]].forEach(([c,w,m])=>{fl=Math.max(fl,m*clamp(1-Math.abs(t-c)/w));});
   vis($('flash'),fl);
   // light leak
   let lx=null; for(const s of LEAKS){const q=pr(t,s,.75); if(q>0&&q<1){lx=lerp(-300,2700,eIO(q));}}
@@ -453,13 +508,13 @@ function grp(id,{op=1,tx=0,sc=1}={}){const el=$(id); disp(el,1); vis(el,op); el.
 
 function renderPhone(t){
   const ph=$('phone');
-  if(t<9.6||t>=35.0){disp(ph,0);return;} disp(ph,1);
+  if(t<9.6||t>=40.7){disp(ph,0);return;} disp(ph,1);
   let tx=0,ty=0,sc=1,rx=1.5,ry=0,op=1;
   const r=eOut(pr(t,9.6,.85)); ty=lerp(1350,0,r); sc*=lerp(.84,1,r); rx+=lerp(22,0,r);
   ty+=Math.sin(t*1.1)*7; ry+=Math.sin(t*.55)*3.5;
   const z=eIO(pr(t,17.9,.5))*(1-eIO(pr(t,20.15,.5))); sc*=1+.09*z;
   if(t>=27.05&&t<27.4){const e=eIn(pr(t,27.05,.35)); tx=-760*e; ry+=35*e; sc*=lerp(1,.85,e); op=1-e;}
-  if(t>=27.4){const k=Math.min(3,Math.floor((t-27.4)/1.9)),s=ES[k];
+  if(t>=27.4){const k=Math.min(ES.length-1,Math.floor((t-27.4)/1.9)),s=ES[k];
     const q=eOut(pr(t,s,.42)); tx=760*(1-q); ry+=-35*(1-q); sc*=lerp(.85,1,q); op=clamp(q*1.5);
     const e=eIn(pr(t,s+1.55,.35)); tx+=-760*e; ry+=35*e; sc*=lerp(1,.85,e); op*=1-e;}
   ph.style.opacity=op;
@@ -467,7 +522,7 @@ function renderPhone(t){
 
   // screens
   const hide=id=>disp($(id),0);
-  ['g_splash','g_home','g_metin','g_gorsel','g_takip','g_sesli','g_belge','g_kisi','g_premium'].forEach(hide);
+  ['g_splash','g_home','g_metin','g_gorsel','g_takip','g_sesli','g_belge','g_bildirim','g_mesaj','g_tekrar','g_kisi','g_premium'].forEach(hide);
   if(t<10.9) grp('g_splash',{op:1-pr(t,10.45,.4)});
   if(t>=10.45&&t<13.45){const q=eIO(pr(t,13.05,.4)); grp('g_home',{op:t<10.85?pr(t,10.45,.4):1,tx:-.3*q}); $('homeDim').style.opacity=.4*q;}
   if(t>=13.05&&t<14.6){const q=eIO(pr(t,13.05,.4)); grp('g_metin',{tx:1-q,op:1-pr(t,14.35,.22)});}
@@ -475,8 +530,11 @@ function renderPhone(t){
   if(t>=23.5&&t<27.4){const q=eIO(pr(t,23.5,.4)); grp('g_takip',{op:q,sc:lerp(1.05,1,q)}); renderTakip(t);}
   if(t>=27.4&&t<29.3){grp('g_sesli'); renderSesli(t);}
   if(t>=29.3&&t<31.2){grp('g_belge'); const q=eBack(pr(t,30.3,.45)); vis($('pdf'),pr(t,30.3,.2)); $('pdf').style.transform=`scale(${lerp(.9,1,q)})`;}
-  if(t>=31.2&&t<33.1){grp('g_kisi'); const q=pr(t,32.25,.25)*(1-pr(t,32.85,.2)); vis($('toast'),q); $('toast').style.transform=`translateY(${lerp(30,0,eOut(pr(t,32.25,.3)))}px)`;}
-  if(t>=33.1&&t<35.0){grp('g_premium'); renderPSpark(t);}
+  if(t>=31.2&&t<33.1){grp('g_bildirim'); renderBildirim(t);}
+  if(t>=33.1&&t<35.0){grp('g_mesaj'); renderMesaj(t);}
+  if(t>=35.0&&t<36.9){grp('g_tekrar'); renderTekrar(t);}
+  if(t>=36.9&&t<38.8){grp('g_kisi'); const q=pr(t,37.95,.25)*(1-pr(t,38.55,.2)); vis($('toast'),q); $('toast').style.transform=`translateY(${lerp(30,0,eOut(pr(t,37.95,.3)))}px)`;}
+  if(t>=38.8&&t<40.7){grp('g_premium'); renderPSpark(t);}
 
   // banner
   const bin=eBack(pr(t,24.7,.55)), bout=eIn(pr(t,26.75,.3));
@@ -534,8 +592,25 @@ function renderSesli(t){
   BARS.forEach((b,i)=>{const h=10+58*Math.abs(Math.sin(i*.9+t*11)*Math.sin(i*.37+t*5.3))*q; b.style.height=h+'px';});
 }
 
+function renderBildirim(t){
+  const s=ES[2]; const q=eBack(pr(t,s+.3,.45)); vis($('bnCard'),pr(t,s+.3,.2)*(1-pr(t,s+.92,.12)));
+  $('bnCard').style.transform=`translateY(${lerp(-60,0,q)}px) scale(${lerp(.92,1,q)})`;
+  const ok=eBack(pr(t,s+.92,.4)); vis($('bnOk'),pr(t,s+.92,.15)); $('bnOk').style.transform=`scale(${lerp(.85,1,ok)})`;
+  $('bnDone').style.background=t>s+.8?'rgba(89,219,199,.55)':'rgba(255,255,255,.22)';
+}
+function renderMesaj(t){
+  const s=ES[3]; const n=Math.round(MSGT.length*pr(t,s+.25,.55));
+  $('msgTxt').textContent=[...MSGT].slice(0,n).join(''); vis($('msgCaret'),n<[...MSGT].length?(Math.sin(t*20)>0?1:.2):0);
+  let press=0; const d=t-(s+.85); if(d>-.08&&d<.2) press=d<0?(d+.08)/.08:1-d/.2; $('waBtn').style.transform=`scale(${1-.04*press})`;
+}
+function renderTekrar(t){
+  const s=ES[4]; const chk=pr(t,s+.85,.12), old=$('rpOld').querySelector('.rpChk');
+  old.style.background=chk>.5?'#00A896':'transparent';
+  const out=eIn(pr(t,s+1.0,.25)); vis($('rpOld'),1-out); $('rpOld').style.transform=`translateX(${-120*out}px)`;
+  const inq=eBack(pr(t,s+1.1,.4)); vis($('rpNew'),pr(t,s+1.1,.2)); $('rpNew').style.transform=`translateY(${lerp(40,0,inq)}px) scale(${lerp(.95,1,inq)})`;
+}
 function renderPSpark(t){
-  const s=ES[3]+.9; const d=t-s;
+  const s=ES[6]+.9; const d=t-s;
   PSP.forEach((el,i)=>{ if(d<0||d>.9){vis(el,0);return;} const a=i/PSP.length*Math.PI*2, r=lerp(30,170,eOut(d/.9));
     vis(el,1-d/.9); el.style.left=(.5*SW+Math.cos(a)*r*1.4-12)+'px'; el.style.top=(.775*SH+Math.sin(a)*r*.7-18)+'px'; });
 }
@@ -556,19 +631,19 @@ function renderTap(t){
 }
 
 function renderOutro(t){
-  const el=$('outro'); if(t<38.05){disp(el,0);return;} disp(el,1);
-  el.style.opacity=pr(t,38.05,.3);
-  const q=eBack(pr(t,38.2,.62)); vis($('oIcon'),pr(t,38.2,.15));
-  $('oIcon').style.transform=`translateY(${Math.sin(t*1.6)*8}px) scale(${lerp(.25,1,q)}) rotate(${lerp(12,0,eOut(pr(t,38.2,.7)))}deg)`;
-  const r=pr(t,38.25,1.0), rs=lerp(240,1500,eOut(r)); vis($('oRing'),(1-r)*.85*(r>0?1:0));
+  const el=$('outro'); if(t<43.75){disp(el,0);return;} disp(el,1);
+  el.style.opacity=pr(t,43.75,.3);
+  const q=eBack(pr(t,43.9,.62)); vis($('oIcon'),pr(t,43.9,.15));
+  $('oIcon').style.transform=`translateY(${Math.sin(t*1.6)*8}px) scale(${lerp(.25,1,q)}) rotate(${lerp(12,0,eOut(pr(t,43.9,.7)))}deg)`;
+  const r=pr(t,43.95,1.0), rs=lerp(240,1500,eOut(r)); vis($('oRing'),(1-r)*.85*(r>0?1:0));
   css($('oRing'),{width:rs+'px',height:rs+'px',left:(540-rs/2)+'px',top:(495-rs/2)+'px'});
-  vis($('oRays'),.8*pr(t,38.3,.6)); $('oRays').style.transform=`rotate(${t*12}deg)`;
-  const a1=eOut(pr(t,38.6,.5)); vis($('oTitle'),a1); $('oTitle').style.transform=`translateY(${lerp(40,0,a1)}px)`;
-  const a2=eOut(pr(t,39.05,.55)); vis($('oNow'),a2); $('oNow').style.transform=`translateY(${lerp(60,0,a2)}px) scale(${lerp(.92,1,a2)})`;
-  $('oNowTxt').style.backgroundPosition=`${lerp(0,100,pr(t,40.6,1.4))}% 0`;
-  const a3=eBack(pr(t,39.5,.55)); vis($('oBadge'),pr(t,39.5,.25)); $('oBadge').style.transform=`scale(${lerp(.85,1,a3)})`;
-  const a4=eOut(pr(t,40.0,.55)); vis($('oPlay'),a4); $('oPlay').style.transform=`translateY(${lerp(40,0,a4)}px)`;
-  const a5=eOut(pr(t,40.5,.6)); vis($('oSite'),a5);
+  vis($('oRays'),.8*pr(t,44,.6)); $('oRays').style.transform=`rotate(${t*12}deg)`;
+  const a1=eOut(pr(t,44.3,.5)); vis($('oTitle'),a1); $('oTitle').style.transform=`translateY(${lerp(40,0,a1)}px)`;
+  const a2=eOut(pr(t,44.75,.55)); vis($('oNow'),a2); $('oNow').style.transform=`translateY(${lerp(60,0,a2)}px) scale(${lerp(.92,1,a2)})`;
+  $('oNowTxt').style.backgroundPosition=`${lerp(0,100,pr(t,46.3,1.4))}% 0`;
+  const a3=eBack(pr(t,45.2,.55)); vis($('oBadge'),pr(t,45.2,.25)); $('oBadge').style.transform=`scale(${lerp(.85,1,a3)})`;
+  const a4=eOut(pr(t,45.7,.55)); vis($('oPlay'),a4); $('oPlay').style.transform=`translateY(${lerp(40,0,a4)}px)`;
+  const a5=eOut(pr(t,46.2,.6)); vis($('oSite'),a5);
 }
 
 function render(t){
@@ -576,13 +651,13 @@ function render(t){
   renderLock($('lockA'),NA,t,0,7.15,'fade');
   renderBrand(t);
   renderPhone(t);
-  renderLock($('lockF'),NF,t,35.0,37.85,'swipe');
+  renderLock($('lockF'),NF,t,40.7,43.55,'swipe');
   renderOutro(t);
   KICK.forEach((k,i)=>capAnim(KEL[i],t,k[0],k[1]));
   HEAD.forEach((h,i)=>capAnim(HEL[i],t,h[0],h[1]));
 }
 window.render=render;
-window.DURATION=44.0;
+window.DURATION=49.7;
 render(0);
 </script>
 </body></html>

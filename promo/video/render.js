@@ -6,7 +6,7 @@ const path = require('path');
 
 (async () => {
   const [mode, ...args] = process.argv.slice(2);
-  const browser = await chromium.launch({ args: ['--disable-web-security', '--allow-file-access-from-files'] });
+  const browser = await chromium.launch({ executablePath: process.env.CHROME_PATH || undefined, args: ['--disable-web-security', '--allow-file-access-from-files'] });
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
   await page.goto('file://' + path.join(__dirname, 'index.html'));
   await page.evaluate(async () => {

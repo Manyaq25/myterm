@@ -1,7 +1,7 @@
 import numpy as np, wave
 
 SR = 44100
-DUR = 44.0
+DUR = 49.7
 N = int(SR * DUR)
 L = np.zeros(N); R = np.zeros(N)
 rng = np.random.default_rng(3)
@@ -128,17 +128,17 @@ while tb < end:
         if tn >= end - 0.2: break
         n = c[ARP[i]] + 12
         add(pluck(n), tn, 0.075 if tb > 10.5 else 0.04, pan=(-0.35 if i % 2 else 0.35))
-    if 27.4 <= tb < 35.0 or tb >= 38.2:
+    if 27.4 <= tb < 40.7 or tb >= 43.9:
         for b in range(4):
             add(kick(), tb + b * BEAT, 0.22)
     bar += 1; tb += BAR
 
 # ---------- taps & UI ----------
-for at in (12.9, 14.3, 15.3, 16.6, 18.0, 22.6, 28.25, 30.15, 32.05, 33.95):
+for at in (12.9, 14.3, 15.3, 16.6, 18.0, 22.6, 28.25, 30.15, 32.05, 33.95, 35.85, 37.75, 39.65):
     add(tap(), at - 0.01, 0.55)
-for w in (9.6, 13.05, 15.4, 20.4, 23.5, 27.05, 27.4, 29.3, 31.2, 33.1, 35.0):
+for w in (9.6, 13.05, 15.4, 20.4, 23.5, 27.05, 27.4, 29.3, 31.2, 33.1, 35.0, 36.9, 38.8, 40.7):
     add(whoosh(0.5, True), w - 0.08, 0.16)
-for w in (16.85, 37.85):
+for w in (16.85, 43.55):
     add(whoosh(0.5, False), w - 0.05, 0.16)
 # scan shimmer
 t = tt(2.25); sh = sum(np.sin(2 * np.pi * f * t) for f in (1320, 1980, 2640)) * (0.5 + 0.5 * np.sin(2 * np.pi * 12 * t))
@@ -150,12 +150,14 @@ for i, n in enumerate((84, 88, 91, 96)):
     add(bell([n], 1.2, 0.4), 22.65 + 0.06 * i, 0.12)
 add(ding(), 24.72, 0.22)
 add(bell([81], 0.4, 0.08), 28.3, 0.12)  # rec start beep
-for nt in (35.55, 36.25, 36.95):
+add(ding(), 32.12, 0.18)  # bildirimden tamamlandı
+add(ding(79, 84), 36.12, 0.14)  # sıradaki tekrar oluştu
+for nt in (41.25, 41.95, 42.65):
     add(ding(79, 84), nt, 0.14)
-add(boom(1.2), 38.1, 0.55)
-add(bell([72, 76, 79, 84, 88], 3.0, 1.1), 38.22, 0.18)
+add(boom(1.2), 43.8, 0.55)
+add(bell([72, 76, 79, 84, 88], 3.0, 1.1), 43.92, 0.18)
 t = tt(1.6); sp = sum(np.sin(2 * np.pi * f * t) for f in (2093, 2637, 3136)) * np.exp(-t / 0.5) * (0.5 + 0.5 * np.sin(2 * np.pi * 9 * t))
-add(sp, 39.05, 0.03)
+add(sp, 44.75, 0.03)
 
 # ---------- master ----------
 mix = np.stack([L, R], 1)

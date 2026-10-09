@@ -18,5 +18,9 @@ node render.js full video_silent.mp4 30
 ffmpeg -i video_silent.mp4 -i audio.wav -c:v copy -c:a aac -shortest synvia-ai-reklam.mp4
 ```
 
-Güncelleme bekleyenler (yol haritasındaki işler bitince): kapanışta Google Play'in yayında
-olduğunun gösterilmesi ve yeni özelliklerin eklenmesi.
+Not: render.js tarayıcı yolunu `CHROME_PATH` ortam değişkeninden alabilir (ör. `/opt/pw-browsers/...`).
+
+9 Ekim 2026 güncellemesi (49,7 sn): üç yeni özellik sahnesi (bildirimden hallet, karşı tarafa
+hatırlat, tekrar eden işler; uygulama arayüzü HTML ile çizildi), kapanışta App Store + Google Play
+rozetleri, Premium ekranından widget/Siri satırı çıkarıldı. Google Play yayına girmeden
+paylaşılmamalı (kapanış "App Store ve Google Play'de" diyor).
