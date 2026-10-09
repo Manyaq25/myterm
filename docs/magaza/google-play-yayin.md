@@ -9,7 +9,8 @@ Son Android derlemesi 1.0.0 (3), 18 Eylül'de yapıldı; kapalı teste elle yük
 - Veri güvenliği güncellendi: kilitlenme günlükleri + teşhisler (Sentry; Analiz, zorunlu), cihaz kimliği (Android ID; uygulama işlevselliği + güvenlik, isteğe bağlı), kullanıcı tarafından oluşturulan diğer içerik (kısa süreli). Videolar çıkarıldı. Hizmet sağlayıcılara (Anthropic, RevenueCat, Sentry) giden veriler "paylaşılmıyor" olarak işaretlendi → mağazada "Üçüncü taraflarla veri paylaşımı yok". Veri silme bağlantısı site sayfası oldu.
 - Gizlilik politikası adresi `https://aydinapp.com.tr/apps/synvia-ai/privacy-policy.html` oldu (eski backend sayfası Eylül'den kalmaydı).
 - Dahili test: 5 (1.1.1) yayında, test listesi "rıza" (test telefonu arkadaşa ait: rizasimsek05@gmail.com). Katılma bağlantısı: Dahili test → Test kullanıcıları → "Bağlantıyı kopyala".
-- Üretim: 5 (1.1.1), 177 ülke + dünyanın geri kalanı, **9 Ekim'de incelemeye gönderildi** (5 değişiklik birlikte). Onaydan sonra Yayın özeti → "Değişiklikleri yayınla" ile elle yayınlanacak (önce test).
+- Üretim (ilk deneme): 5 (1.1.1) gönderilirken ön kontrol "Fotoğraf ve video izinleri" sorunu buldu (READ_MEDIA_IMAGES/VIDEO). Taslak silindi.
+- **Derleme 1.1.1 (6)** (EAS `b9c9b4af…`, commit 53a1f7f): Android'de geniş galeri izinleri `plugins/withoutBroadMediaPermissions.js` ile kaldırıldı; görsel sistem fotoğraf seçicisiyle alınıyor, ekran görüntüsü önerisi yalnızca iPhone'da (Android'de ayar gizli). Dahili teste yüklendi, üretim taslağı 6 ile yeniden oluşturuldu; 5 değişiklik (sürüm, ülkeler ×2, gizlilik, veri güvenliği) incelemeye gönderilmeye hazır (9 Ekim, kullanıcı elektrik/şarj durumuna göre gönderecek). Onaydan sonra Yayın özeti → "Değişiklikleri yayınla" ile elle yayınlanacak (önce test).
 
 ## Play Console önerileri (engelleyici değil, sonra)
 - DEX kod optimizasyonu (R8/küçültme kapalı): son tarih Şubat 2027. Açılınca eşleme (mapping) dosyası da yüklenmeli; sürüm ekranındaki "kod gösterme dosyası yok" uyarısı da o zaman kalkar.
@@ -73,7 +74,8 @@ Uygulama adı: `Synvia AI`
 2. **Ekran görüntüsünden ekle:** Bir sohbet ekran görüntüsü seç → işler bulunuyor → kaydet.
 3. **Sesli not ve PDF:** Kısa bir sesli not ve bir PDF dene. İkisi de iş çıkarıyor.
 4. **Bildirim düğmeleri:** 2 dakika sonrası için bir hatırlatma kur. Bildirim gelince "1 saat ertele" ve "Tamamlandı" çalışıyor.
-5. **Rehberden seç (Android'e özel):** "Birinden beklediğim" bir takipte "Mesajla hatırlat" → "Rehberden seç". **İzin sormadan** numara seçme ekranı açılıyor, seçilen numara geliyor. Mesaj WhatsApp/SMS'te açılıyor.
+5. **Fotoğraf seçici (Android):** "Ekran görüntüsü" düğmesi ve Görsel sekmesi izin istemeden Android'in fotoğraf seçicisini açıyor; Ayarlar'da "Ekran görüntüsü önerisi" görünmüyor.
+5b. **Rehberden seç (Android'e özel):** "Birinden beklediğim" bir takipte "Mesajla hatırlat" → "Rehberden seç". **İzin sormadan** numara seçme ekranı açılıyor, seçilen numara geliyor. Mesaj WhatsApp/SMS'te açılıyor.
 6. **Ekran görüntüsü önerisi:** İzin verdikten sonra telefonla ekran görüntüsü al. "Takip listesine ekleyelim mi?" bildirimi geliyor.
 7. **Premium ekranı:** Fiyatlar Google Play'den geliyor (TL). Satın alma penceresi açılıyor; satın almadan kapat.
 8. **Davet:** Ayarlar → Arkadaşını davet et → paylaşım metni ve aydinapp.com.tr/synvia/ bağlantısı.
