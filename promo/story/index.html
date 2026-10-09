@@ -1,0 +1,449 @@
+<!doctype html>
+<!-- Hikâyeli reklam videosu: Can işleri unutuyor → Deniz Synvia AI'ı öneriyor → ikisi indiriyor → ofiste herkes Can'ın hafızasına şaşırıyor.
+     1080x1920, window.render(t) zaman çizelgesi; kareler ../video/render.js ile alınır (README). -->
+<html lang="tr"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../video/node_modules/@fontsource/plus-jakarta-sans/500.css">
+<link rel="stylesheet" href="../video/node_modules/@fontsource/plus-jakarta-sans/600.css">
+<link rel="stylesheet" href="../video/node_modules/@fontsource/plus-jakarta-sans/700.css">
+<link rel="stylesheet" href="../video/node_modules/@fontsource/plus-jakarta-sans/800.css">
+<link rel="stylesheet" href="../video/node_modules/@fontsource/jetbrains-mono/700.css">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#061110;font-family:'Plus Jakarta Sans','Noto Color Emoji',sans-serif;-webkit-font-smoothing:antialiased}
+.abs{position:absolute}
+#stage{position:absolute;inset:0;overflow:hidden}
+.scene{position:absolute;inset:0;overflow:hidden;display:none}
+.cam{position:absolute;inset:0;transform-origin:50% 55%}
+.person{position:absolute;overflow:visible}
+
+/* ofis */
+.wall{position:absolute;inset:0;background:linear-gradient(180deg,#1b3a36 0%,#14302c 60%,#0f2622 100%)}
+.window{position:absolute;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#ffb38a 0%,#f08a6a 35%,#5b4a7a 75%,#2b2f55 100%);box-shadow:inset 0 0 0 14px #2a4a45}
+.sky{position:absolute;left:0;right:0;bottom:0}
+.sky i{position:absolute;bottom:0;background:#1f2747;display:block}
+.sky i::after{content:'';position:absolute;inset:14px 10px auto 10px;height:60%;background:repeating-linear-gradient(180deg,rgba(255,214,140,.55) 0 8px,transparent 8px 22px);opacity:.55}
+.desk{position:absolute;left:-40px;right:-40px;height:520px;background:linear-gradient(180deg,#e8d9c4 0 34px,#c9b59a 34px 44px,#3a2f28 44px 100%)}
+.monitor{position:absolute;width:420px;height:270px;border-radius:18px;background:#0d1b19;border:12px solid #263a37;box-shadow:0 20px 40px rgba(0,0,0,.4)}
+.monitor .glow{position:absolute;inset:0;background:linear-gradient(135deg,#2a5d56,#163a35);}
+.monitor .bar{position:absolute;height:12px;border-radius:6px;background:rgba(255,255,255,.18)}
+.stand{position:absolute;width:40px;height:90px;background:#263a37}
+.mug{position:absolute;width:86px;height:100px;border-radius:10px 10px 22px 22px;background:#ff6b4a}
+.mug::after{content:'';position:absolute;right:-30px;top:20px;width:34px;height:46px;border:10px solid #ff6b4a;border-left:0;border-radius:0 26px 26px 0}
+.plant{position:absolute;width:140px;height:240px}
+.plant .pot{position:absolute;bottom:0;left:25px;width:90px;height:90px;border-radius:0 0 22px 22px;background:#59dbc7}
+.plant .lf{position:absolute;width:70px;height:130px;border-radius:70px 0;background:#2f8f6e;transform-origin:bottom center}
+.sticky{position:absolute;width:150px;height:140px;background:#ffe27a;box-shadow:0 10px 18px rgba(0,0,0,.25);padding:14px 12px;font-size:23px;line-height:1.15;font-weight:700;color:#5a4a10;font-family:'Plus Jakarta Sans'}
+.chipn{position:absolute;display:flex;align-items:center;gap:16px;padding:16px 24px 16px 16px;border-radius:26px;background:rgba(250,252,251,.95);box-shadow:0 18px 40px rgba(0,0,0,.35);white-space:nowrap}
+.chipn .ic{width:58px;height:58px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:32px}
+.chipn b{display:block;font-size:26px;color:#132228}
+.chipn span{font-size:21px;color:#53625e}
+
+/* balonlar */
+.bubble{position:absolute;background:#fff;color:#132228;border-radius:38px;padding:30px 36px;font-size:40px;font-weight:700;line-height:1.22;box-shadow:0 24px 50px rgba(0,0,0,.35);letter-spacing:-.5px}
+.bubble::after{content:'';position:absolute;width:44px;height:44px;background:#fff;transform:rotate(45deg);border-radius:6px}
+.bubble.tl::after{left:70px;bottom:-16px}.bubble.tr::after{right:70px;bottom:-16px}
+.bubble.warn{background:#ffe9e6;color:#8f1d12}.bubble.warn::after{background:#ffe9e6}
+.think{position:absolute;background:#fff;color:#132228;border-radius:60px;padding:28px 36px;font-size:38px;font-weight:800;box-shadow:0 24px 50px rgba(0,0,0,.35)}
+.think i{position:absolute;border-radius:50%;background:#fff}
+
+/* yazılar */
+.kick{position:absolute;left:0;right:0;top:118px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:27px;font-weight:700;letter-spacing:7px;color:#79F8E3;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.head{position:absolute;left:60px;right:60px;top:168px;text-align:center;font-size:66px;font-weight:800;color:#fff;line-height:1.08;letter-spacing:-1.8px;text-shadow:0 4px 24px rgba(0,0,0,.55)}
+.acc{background:linear-gradient(90deg,#9BFFEF 0%,#59DBC7 45%,#FF9A7A 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+.red{color:#FF8A7D}
+
+/* telefonlar */
+.phone{position:absolute;width:470px;height:1000px;border-radius:66px;padding:12px;background:linear-gradient(150deg,#59625f 0%,#262d2c 18%,#141918 50%,#2b3331 82%,#4a5350 100%);box-shadow:0 60px 110px rgba(0,0,0,.6)}
+.phone .scr{position:absolute;inset:12px;border-radius:54px;overflow:hidden;background:#f4f7f6}
+.phone .isl{position:absolute;left:50%;top:14px;width:120px;height:34px;margin-left:-60px;border-radius:20px;background:#000;z-index:9}
+.store-scr{position:absolute;inset:0;padding:110px 30px 0;font-family:'Plus Jakarta Sans'}
+.ring{position:absolute;border-radius:50%}
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;font-weight:800}
+.badge{position:absolute;height:120px;border-radius:28px;background:#000;border:2px solid rgba(255,255,255,.28);display:flex;align-items:center;gap:18px;padding:0 30px;color:#fff;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.fcard{background:#fff;border-radius:24px;padding:20px 22px;box-shadow:0 8px 22px rgba(16,40,36,.1);border:1.5px solid rgba(0,168,150,.18);margin-bottom:16px;position:relative}
+.ftitle{font-size:25px;font-weight:700;color:#132228;line-height:1.22}
+.fdate{font-size:20px;font-weight:700;color:#0E7C70;margin-top:10px}
+.newtag{position:absolute;top:14px;right:16px;font-family:'JetBrains Mono';font-size:14px;font-weight:700;color:#fff;background:linear-gradient(90deg,#00A896,#59DBC7);padding:5px 10px;border-radius:999px;letter-spacing:1px}
+.check{position:absolute;display:flex;align-items:center;gap:16px;padding:18px 28px 18px 18px;border-radius:30px;background:rgba(250,252,251,.96);box-shadow:0 18px 40px rgba(0,0,0,.35);font-size:30px;font-weight:800;color:#132228;white-space:nowrap}
+.check .ok{width:52px;height:52px;border-radius:50%;background:#00A896;color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px}
+.star{position:absolute;color:#FFE27A;font-size:54px;text-shadow:0 0 18px rgba(255,226,122,.9)}
+.conf{position:absolute;width:16px;height:26px;border-radius:3px}
+
+.layer{position:absolute;inset:0;pointer-events:none}
+#vig{background:radial-gradient(1000px 1500px at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.5) 100%)}
+#redtint{background:radial-gradient(900px 1300px at 50% 50%,rgba(0,0,0,0) 45%,rgba(220,30,60,.5) 100%)}
+#flash{background:#fff}
+#wipe{background:linear-gradient(105deg,#59DBC7,#0b1f1d 30%,#0b1f1d 70%,#FF8A6B);}
+</style></head>
+<body>
+<div id="stage">
+
+  <!-- S1 + S2: ofis -->
+  <div class="scene" id="sOffice"><div class="cam" id="camOffice">
+    <div class="wall"></div>
+    <div class="window" style="left:90px;top:330px;width:560px;height:620px"><div class="sky" id="sky1" style="height:380px"></div></div>
+    <div class="plant" style="left:880px;top:1170px"><i class="lf" style="left:20px;top:10px;transform:rotate(-28deg)"></i><i class="lf" style="left:60px;top:0;transform:rotate(10deg)"></i><i class="lf" style="left:40px;top:30px;transform:rotate(-5deg)"></i><div class="pot"></div></div>
+    <div id="canDesk"></div>
+    <div id="boss1"></div>
+    <div class="desk" style="top:1400px"></div>
+    <div class="stand" style="left:200px;top:1300px"></div>
+    <div class="monitor" style="left:20px;top:1060px;width:380px;height:250px"><div class="glow"></div><div class="bar" style="left:30px;top:40px;width:220px"></div><div class="bar" style="left:30px;top:70px;width:300px"></div><div class="bar" style="left:30px;top:100px;width:180px"></div></div>
+    <div id="stickies"></div>
+    <div class="mug" style="left:690px;top:1310px"></div>
+    <div id="notifs"></div>
+    <div class="bubble tr warn" id="bossSay" style="left:430px;top:600px;width:560px">Can, rapor nerede?<br>Müşteri bekliyor! 😠</div>
+    <div class="bubble tr" id="canOops" style="left:20px;top:640px;width:360px;font-size:46px">Unuttum… 😰</div>
+  </div></div>
+
+  <!-- S3: kahve köşesi -->
+  <div class="scene" id="sCoffee"><div class="cam" id="camCoffee">
+    <div class="wall" style="background:linear-gradient(180deg,#24453f 0%,#1a3833 70%,#132d29 100%)"></div>
+    <div class="window" style="left:600px;top:300px;width:380px;height:560px"><div class="sky" id="sky2" style="height:330px"></div></div>
+    <div class="abs" style="left:60px;top:560px;width:300px;height:560px;border-radius:28px;background:#2b2f33;box-shadow:inset 0 0 0 10px #3b4146">
+      <div class="abs" style="left:40px;top:50px;width:220px;height:120px;border-radius:16px;background:#111;box-shadow:inset 0 0 0 4px #59dbc7"></div>
+      <div class="abs" style="left:110px;top:300px;width:80px;height:70px;border-radius:12px;background:#555"></div>
+    </div>
+    <div class="abs" style="left:-40px;right:-40px;top:1500px;height:520px;background:linear-gradient(180deg,#f2e6d4 0 30px,#cdbb9f 30px 40px,#4a3c32 40px)"></div>
+    <div id="canCoffee"></div>
+    <div id="denizCoffee"></div>
+    <div class="abs" style="left:-40px;right:-40px;top:1640px;height:400px;background:linear-gradient(180deg,#f2e6d4 0 30px,#cdbb9f 30px 40px,#4a3c32 40px)"></div>
+    <div class="bubble tr" id="dz1" style="left:420px;top:560px;width:600px">Hâlâ her şeyi aklında tutmaya mı çalışıyorsun? 😅</div>
+    <div class="bubble tr" id="dz2" style="left:400px;top:560px;width:620px">Synvia AI'ı duydun mu? Hadi ikimiz de indirelim! 📲</div>
+    <div class="bubble tl" id="cz1" style="left:70px;top:700px;width:380px">O ne? 🤔</div>
+  </div></div>
+
+  <!-- S4: ikisi de indiriyor -->
+  <div class="scene" id="sDownload"><div class="cam" id="camDownload">
+    <div class="layer" style="background:radial-gradient(1100px 900px at 50% 45%,#123733 0%,#081816 65%,#040b0a 100%)"></div>
+    <div class="phone" id="phA" style="left:50px;top:520px"><div class="scr"><div class="isl"></div>
+      <div class="store-scr">
+        <div style="display:flex;gap:22px;align-items:center"><img src="../video/assets/icon.png" style="width:150px;height:150px;border-radius:34px;box-shadow:0 10px 24px rgba(0,0,0,.15)">
+          <div><div style="font-size:34px;font-weight:800;color:#111">Synvia AI</div><div style="font-size:20px;color:#666;margin-top:4px">Hatırlatıcı &amp; Takip</div>
+          <div class="abs" id="getA" style="margin-top:14px;position:relative"></div></div></div>
+        <div style="margin-top:40px;font-size:22px;color:#888;font-weight:600">App Store</div>
+        <div style="margin-top:12px;height:400px;border-radius:24px;background:linear-gradient(160deg,#dff7f2,#ffe6dd)"></div>
+      </div></div></div>
+    <div class="phone" id="phB" style="left:560px;top:520px"><div class="scr"><div class="isl"></div>
+      <div class="store-scr">
+        <div style="display:flex;gap:22px;align-items:center"><img src="../video/assets/icon.png" style="width:150px;height:150px;border-radius:34px;box-shadow:0 10px 24px rgba(0,0,0,.15)">
+          <div><div style="font-size:34px;font-weight:800;color:#111">Synvia AI</div><div style="font-size:20px;color:#666;margin-top:4px">aydinapp</div>
+          <div class="abs" id="getB" style="margin-top:14px;position:relative"></div></div></div>
+        <div style="margin-top:40px;font-size:22px;color:#888;font-weight:600">Google Play</div>
+        <div style="margin-top:12px;height:400px;border-radius:24px;background:linear-gradient(160deg,#ffe6dd,#dff7f2)"></div>
+      </div></div></div>
+    <div class="abs" id="tagA" style="left:50px;width:470px;top:1560px;text-align:center;color:#cfe;font-size:36px;font-weight:800">Can · iPhone</div>
+    <div class="abs" id="tagB" style="left:560px;width:470px;top:1560px;text-align:center;color:#cfe;font-size:36px;font-weight:800">Deniz · Android</div>
+  </div></div>
+
+  <!-- S5: nasıl çalışıyor -->
+  <div class="scene" id="sApp"><div class="cam" id="camApp">
+    <div class="layer" style="background:radial-gradient(1100px 900px at 50% 45%,#0f2e2a 0%,#081816 65%,#040b0a 100%)"></div>
+    <div class="phone" id="phApp" style="left:305px;top:470px"><div class="scr"><div class="isl"></div>
+      <div class="abs" id="appChat" style="inset:0;background:#ECE5DD;padding:90px 18px 0">
+        <div style="height:70px;margin:0 -18px 14px;background:#008069;color:#fff;display:flex;align-items:center;gap:12px;padding:0 18px;font-size:24px;font-weight:700"><span style="width:44px;height:44px;border-radius:50%;background:#FFB4A3;display:flex;align-items:center;justify-content:center;color:#7a2a17;font-size:17px;font-weight:800">MD</span>Mert (Müdür)</div>
+        <div style="max-width:86%;background:#fff;border-radius:16px;padding:12px 16px;font-size:23px;line-height:1.35;color:#111;margin-bottom:12px">Can, <span class="hl">raporu Cuma 17:00'ye kadar</span> gönder lütfen.</div>
+        <div style="max-width:86%;background:#fff;border-radius:16px;padding:12px 16px;font-size:23px;line-height:1.35;color:#111;margin-bottom:12px"><span class="hl">Salı 10:00</span>'da müşteri <span class="hl">sunumu</span> var, unutma 🙏</div>
+        <div style="max-width:70%;margin-left:auto;background:#D9FDD3;border-radius:16px;padding:12px 16px;font-size:23px;color:#111">Tamam 👍</div>
+        <div class="abs" id="appScan" style="left:0;right:0;top:0;height:6px;background:#59DBC7;box-shadow:0 0 20px 6px rgba(89,219,199,.85)"></div>
+      </div>
+      <div class="abs" id="appList" style="inset:0;background:linear-gradient(180deg,#EEF8F9,#E8F5F5);padding:96px 22px 0">
+        <div style="font-size:34px;font-weight:800;color:#132228;margin-bottom:6px">✨ 3 iş bulundu</div>
+        <div style="font-size:19px;color:#5b6b67;margin-bottom:18px;font-weight:600">Ekran görüntüsünden · Yapay zekâ</div>
+        <div class="fcard ap"><div class="newtag">YENİ</div><div class="ftitle">Raporu Mert'e gönder</div><div class="fdate">⏰ Cuma, 17:00</div></div>
+        <div class="fcard ap"><div class="newtag">YENİ</div><div class="ftitle">Müşteri sunumu</div><div class="fdate">⏰ Salı, 10:00</div></div>
+        <div class="fcard ap"><div class="newtag">YENİ</div><div class="ftitle">Annemi ara</div><div class="fdate">⏰ Pazar, 12:00</div></div>
+      </div>
+      <div class="abs" id="appBanner" style="left:12px;right:12px;top:0;height:118px;border-radius:28px;background:rgba(252,253,253,.97);box-shadow:0 18px 40px rgba(10,30,28,.3);display:flex;align-items:center;gap:14px;padding:0 18px">
+        <img src="../video/assets/icon.png" style="width:58px;height:58px;border-radius:14px">
+        <div><div style="font-size:16px;font-weight:700;color:#7a8a86;letter-spacing:.8px">SYNVIA AI · ŞİMDİ</div><div style="font-size:23px;font-weight:800;color:#132228">⏰ Rapor 30 dk sonra</div><div style="font-size:19px;color:#4a5a56">Mert'e verdiğin söz · Cuma 17:00</div></div>
+      </div>
+    </div></div>
+  </div></div>
+
+  <!-- S6: bir hafta sonra, toplantı -->
+  <div class="scene" id="sMeet"><div class="cam" id="camMeet">
+    <div class="wall" style="background:linear-gradient(180deg,#1e3d39 0%,#16332f 70%,#102824 100%)"></div>
+    <div class="abs" style="left:80px;top:330px;width:520px;height:360px;border-radius:16px;background:#f4f7f6;box-shadow:inset 0 0 0 10px #c8d3d0">
+      <div class="abs" style="left:50px;bottom:50px;width:60px;height:110px;background:#59dbc7;border-radius:8px"></div>
+      <div class="abs" style="left:140px;bottom:50px;width:60px;height:170px;background:#59dbc7;border-radius:8px"></div>
+      <div class="abs" style="left:230px;bottom:50px;width:60px;height:230px;background:#ff8a6b;border-radius:8px"></div>
+      <div class="abs" style="left:330px;top:40px;font-size:30px;font-weight:800;color:#132228">Haftalık<br>sonuçlar ↑</div>
+    </div>
+    <div id="meetPeople"></div>
+    <div class="abs" style="left:-60px;right:-60px;top:1430px;height:600px;background:linear-gradient(180deg,#f1e7d8 0 36px,#cdbb9f 36px 48px,#3a2f28 48px);border-radius:40px 40px 0 0"></div>
+    <div id="canMeet"></div>
+    <div id="checks"></div>
+    <div id="stars"></div>
+    <div class="think" id="bossThink" style="left:60px;top:520px">Bu hafıza nereden?! 🤯<i style="width:40px;height:40px;left:120px;bottom:-50px"></i><i style="width:24px;height:24px;left:100px;bottom:-86px"></i></div>
+    <div class="bubble tl" id="colSay" style="left:80px;top:740px;width:520px;font-size:38px">Hiçbir şeyi unutmuyor! 😮</div>
+    <div class="bubble tr" id="canWink" style="left:560px;top:600px;width:410px;font-size:38px">Sırrım bu 😉📱</div>
+  </div></div>
+
+  <!-- S7: kapanış -->
+  <div class="scene" id="sEnd"><div class="cam" id="camEnd">
+    <div class="layer" style="background:radial-gradient(1100px 900px at 50% 40%,#0f2e2a 0%,#081816 65%,#040b0a 100%)"></div>
+    <div class="abs" id="eRays" style="left:-260px;top:-300px;width:1600px;height:1600px;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(121,248,227,.10) 0deg 6deg,rgba(0,0,0,0) 6deg 18deg);-webkit-mask:radial-gradient(circle,#000 0%,rgba(0,0,0,0) 65%)"></div>
+    <div class="abs" id="eIcon" style="left:405px;top:360px;width:270px;height:270px;border-radius:24%;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.5),0 0 140px rgba(89,219,199,.45)"><img src="../video/assets/icon.png" style="width:100%;height:100%"></div>
+    <div class="abs" id="eTitle" style="left:0;right:0;top:670px;text-align:center;color:#fff;font-size:84px;font-weight:800;letter-spacing:-2px">Synvia AI</div>
+    <div class="abs" id="eSlogan" style="left:60px;right:60px;top:790px;text-align:center;font-size:58px;font-weight:800;line-height:1.1;letter-spacing:-1.5px"><span class="acc">Unuttuğun hiçbir şey kalmasın.</span></div>
+    <div class="badge" id="eApple" style="left:70px;top:1000px;width:452px">
+      <svg width="54" height="64" viewBox="0 0 384 512"><path fill="#fff" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+      <div><div style="font-size:22px;font-weight:500;opacity:.9">İndir</div><div style="font-size:42px;font-weight:800;letter-spacing:-1px;line-height:1.05">App Store</div></div></div>
+    <div class="badge" id="ePlay" style="left:558px;top:1000px;width:452px">
+      <svg width="52" height="58" viewBox="0 0 24 24"><path fill="#32BBFF" d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471z"/><path fill="#00F076" d="M14.499 12.707l2.302 2.302-10.937 6.333 8.635-8.635z"/><path fill="#FFD400" d="M17.698 9.509l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597z"/><path fill="#FF3A44" d="M4.608 1.669L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"/></svg>
+      <div><div style="font-size:22px;font-weight:500;opacity:.9">Hemen indir</div><div style="font-size:42px;font-weight:800;letter-spacing:-1px;line-height:1.05">Google Play</div></div></div>
+    <div id="endDuo"></div>
+    <div class="abs" id="eSite" style="left:0;right:0;top:1180px;text-align:center;font-family:'JetBrains Mono';font-size:30px;letter-spacing:3px;color:rgba(155,255,239,.8)">aydinapp.com.tr</div>
+    <div id="confLayer"></div>
+  </div></div>
+
+  <div id="caps"></div>
+  <div class="layer" id="redtint"></div>
+  <div class="layer" id="vig"></div>
+  <div class="layer" id="wipe"></div>
+  <div class="layer" id="flash"></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const lerp=(a,b,x)=>a+(b-a)*x;
+const pr=(t,s,d)=>clamp((t-s)/d);
+const eOut=x=>1-Math.pow(1-x,3), eIn=x=>x*x*x, eIO=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const eBack=x=>{const c1=1.6,c3=c1+1;return 1+c3*Math.pow(x-1,3)+c1*Math.pow(x-1,2)};
+function vis(el,op){el.style.opacity=op;el.style.visibility=op>0.002?'visible':'hidden';}
+let seed=11; const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647;};
+
+/* ---------- karakterler (SVG) ---------- */
+const LOOK={
+  can:{skin:'#f1c7a3',shade:'#d9a984',hair:'#2b1d17',shirt:'#59dbc7',collar:'#e9fffb',style:'short'},
+  deniz:{skin:'#e9b48e',shade:'#cc946f',hair:'#5a2e1c',shirt:'#ff8a6b',collar:'#fff1ec',style:'long'},
+  boss:{skin:'#efc4a0',shade:'#d4a37f',hair:'#9aa3a6',shirt:'#2f3d5c',collar:'#ffffff',style:'boss',glasses:true,tie:'#c0392b'},
+  ayse:{skin:'#c98e6a',shade:'#ad7353',hair:'#1b1212',shirt:'#8b6fd6',collar:'#f2edff',style:'bun'},
+  emre:{skin:'#f3d0b1',shade:'#dbb08c',hair:'#b8762f',shirt:'#5b8def',collar:'#eaf1ff',style:'curly'},
+};
+function personSVG(k){
+  const L=LOOK[k];
+  const hairBack=L.style==='long'?`<path d="M88 250 Q80 118 200 112 Q320 118 312 250 L322 470 Q200 500 78 470 Z" fill="${L.hair}"/>`:
+                 L.style==='bun'?`<circle cx="200" cy="120" r="52" fill="${L.hair}"/>`:'';
+  const hairFront={
+    short:`<path d="M106 238 Q96 128 200 120 Q306 128 294 238 Q282 178 236 170 Q176 162 146 188 Q120 206 106 238 Z" fill="${L.hair}"/><path d="M150 168 Q200 140 262 170 Q230 150 200 152 Q170 152 150 168Z" fill="${L.hair}"/>`,
+    long:`<path d="M104 250 Q96 130 200 124 Q304 130 296 250 Q290 190 250 172 Q190 150 150 180 Q118 205 104 250 Z" fill="${L.hair}"/>`,
+    boss:`<path d="M106 262 Q102 196 128 176 L140 236 Q124 240 116 266Z" fill="${L.hair}"/><path d="M294 262 Q298 196 272 176 L260 236 Q276 240 284 266Z" fill="${L.hair}"/><path d="M170 300 Q200 290 230 300 Q215 312 200 308 Q185 312 170 300Z" fill="${L.hair}"/>`,
+    bun:`<path d="M104 246 Q98 140 200 134 Q302 140 296 246 Q284 186 200 176 Q120 186 104 246Z" fill="${L.hair}"/>`,
+    curly:[...Array(9)].map((_,i)=>{const a=Math.PI*(1.05+i*.11);return `<circle cx="${200+Math.cos(a)*92}" cy="${236+Math.sin(a)*96}" r="40" fill="${L.hair}"/>`}).join(''),
+  }[L.style];
+  return `<svg viewBox="0 0 400 760" width="100%" height="100%" style="overflow:visible">
+  ${hairBack}
+  <path d="M60 760 L74 520 Q86 428 200 418 Q314 428 326 520 L340 760 Z" fill="${L.shirt}"/>
+  <path d="M160 420 L200 480 L240 420 Z" fill="${L.collar}"/>
+  ${L.tie?`<path d="M190 470 L210 470 L222 600 L200 630 L178 600 Z" fill="${L.tie}"/>`:''}
+  <rect x="168" y="330" width="64" height="104" rx="26" fill="${L.shade}"/>
+  <ellipse cx="108" cy="262" rx="20" ry="28" fill="${L.shade}"/><ellipse cx="292" cy="262" rx="20" ry="28" fill="${L.shade}"/>
+  <ellipse cx="200" cy="250" rx="94" ry="108" fill="${L.skin}"/>
+  ${hairFront}
+  <g class="f brows-normal"><path d="M146 214 Q166 204 186 212" stroke="#2a1d17" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M214 212 Q234 204 254 214" stroke="#2a1d17" stroke-width="8" fill="none" stroke-linecap="round"/></g>
+  <g class="f brows-up"><path d="M146 196 Q166 184 186 194" stroke="#2a1d17" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M214 194 Q234 184 254 196" stroke="#2a1d17" stroke-width="8" fill="none" stroke-linecap="round"/></g>
+  <g class="f brows-worry"><path d="M148 206 Q168 210 186 198" stroke="#2a1d17" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M214 198 Q232 210 252 206" stroke="#2a1d17" stroke-width="8" fill="none" stroke-linecap="round"/></g>
+  <g class="f eyes-normal"><ellipse cx="166" cy="250" rx="10" ry="13" fill="#1b1411"/><ellipse cx="234" cy="250" rx="10" ry="13" fill="#1b1411"/><circle cx="169" cy="246" r="3" fill="#fff"/><circle cx="237" cy="246" r="3" fill="#fff"/></g>
+  <g class="f eyes-wide"><circle cx="166" cy="248" r="20" fill="#fff"/><circle cx="234" cy="248" r="20" fill="#fff"/><circle cx="166" cy="250" r="9" fill="#1b1411"/><circle cx="234" cy="250" r="9" fill="#1b1411"/></g>
+  <g class="f eyes-happy"><path d="M152 254 Q166 238 180 254" stroke="#1b1411" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M220 254 Q234 238 248 254" stroke="#1b1411" stroke-width="7" fill="none" stroke-linecap="round"/></g>
+  <g class="f eyes-wink"><ellipse cx="166" cy="250" rx="10" ry="13" fill="#1b1411"/><path d="M220 252 Q234 242 248 252" stroke="#1b1411" stroke-width="7" fill="none" stroke-linecap="round"/></g>
+  <g class="f eyes-closed"><path d="M154 252 L178 252" stroke="#1b1411" stroke-width="6" stroke-linecap="round"/><path d="M222 252 L246 252" stroke="#1b1411" stroke-width="6" stroke-linecap="round"/></g>
+  ${L.glasses?`<g fill="none" stroke="#1d2a3a" stroke-width="6"><circle cx="166" cy="250" r="28"/><circle cx="234" cy="250" r="28"/><path d="M194 250 L206 250"/></g>`:''}
+  <path d="M200 262 Q190 288 200 292" stroke="${L.shade}" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <circle cx="140" cy="292" r="16" fill="#ff8f8f" opacity=".28"/><circle cx="260" cy="292" r="16" fill="#ff8f8f" opacity=".28"/>
+  <g class="f mouth-smile"><path d="M174 316 Q200 336 226 316" stroke="#7a2e2e" stroke-width="7" fill="none" stroke-linecap="round"/></g>
+  <g class="f mouth-grin"><path d="M166 308 Q200 352 234 308 Z" fill="#6b1f24"/><path d="M174 310 L226 310 L222 320 L178 320 Z" fill="#fff"/></g>
+  <g class="f mouth-o"><ellipse cx="200" cy="322" rx="15" ry="19" fill="#6b1f24"/></g>
+  <g class="f mouth-talk"><ellipse cx="200" cy="320" rx="20" ry="11" fill="#6b1f24"/></g>
+  <g class="f mouth-frown"><path d="M176 328 Q200 310 224 328" stroke="#7a2e2e" stroke-width="7" fill="none" stroke-linecap="round"/></g>
+  <g class="f sweat"><path d="M300 190 Q316 220 300 232 Q284 220 300 190Z" fill="#7fd3ff"/><path d="M96 210 Q108 232 96 242 Q84 232 96 210Z" fill="#7fd3ff"/></g>
+  <g class="f phone-hand"><rect x="236" y="560" width="88" height="160" rx="16" fill="#1a1f1e" stroke="#59dbc7" stroke-width="5"/><rect x="246" y="574" width="68" height="120" rx="8" fill="#59dbc7" opacity=".8"/><ellipse cx="280" cy="720" rx="44" ry="30" fill="${L.skin}"/></g>
+  <g class="f cup-hand"><rect x="80" y="580" width="80" height="96" rx="12" fill="#fff"/><rect x="80" y="604" width="80" height="18" fill="#ff8a6b"/><ellipse cx="120" cy="690" rx="46" ry="28" fill="${L.skin}"/></g>
+  </svg>`;
+}
+const PEOPLE={};
+function mkPerson(holder,k,x,y,w){
+  const d=document.createElement('div'); d.className='person'; d.style.left=x+'px'; d.style.top=y+'px'; d.style.width=w+'px'; d.style.height=(w*1.9)+'px';
+  d.innerHTML=personSVG(k); $(holder).appendChild(d); return d;
+}
+function mood(el,o){
+  const want={brows:o.brows||'normal',eyes:o.eyes||'normal',mouth:o.mouth||'smile'};
+  el.querySelectorAll('.f').forEach(g=>{
+    const c=g.getAttribute('class').split(' ')[1]; const [part,val]=c.split('-');
+    let on;
+    if(part==='brows') on=val===want.brows; else if(part==='eyes') on=val===want.eyes; else if(part==='mouth') on=val===want.mouth;
+    else if(c==='sweat') on=!!o.sweat; else if(c==='phone-hand') on=!!o.phone; else if(c==='cup-hand') on=!!o.cup;
+    g.style.display=on?'':'none';
+  });
+}
+const talk=(t,on)=>on&&Math.floor(t*8)%2===0?'talk':null;
+const blink=(t,ph=0)=>((t+ph)%3.1)<.12;
+
+const can1=mkPerson('canDesk','can',330,560,470);
+const boss1=mkPerson('boss1','boss',650,620,460);
+const canC=mkPerson('canCoffee','can',40,860,470);
+const denC=mkPerson('denizCoffee','deniz',540,840,480);
+const ayse=mkPerson('meetPeople','ayse',60,1010,330);
+const bossM=mkPerson('meetPeople','boss',330,960,340);
+const emre=mkPerson('meetPeople','emre',540,1010,320);
+const canM=mkPerson('canMeet','can',700,700,460);
+const duoC=mkPerson('endDuo','can',150,1340,300);
+const duoD=mkPerson('endDuo','deniz',630,1330,310);
+
+/* skyline */
+function sky(id,w){let h='';let x=0;while(x<w){const bw=50+rnd()*90,bh=120+rnd()*240;h+=`<i style="left:${x}px;width:${bw}px;height:${bh}px"></i>`;x+=bw+6;}$(id).innerHTML=h;}
+sky('sky1',560); sky('sky2',380);
+
+/* S1 bildirimleri ve yapışkan notlar */
+const NOTIFS=[
+ {t:.8,x:30,y:450,ic:'📅',bg:'#e8f0ff',b:'Toplantı · 10:00',s:'5 dakika sonra'},
+ {t:1.5,x:600,y:520,ic:'✉️',bg:'#e3f2ff',b:'12 yeni e-posta',s:'Satış, İK, Muhasebe…'},
+ {t:2.2,x:20,y:640,ic:'💬',bg:'#e6faea',b:'Mert: Rapor ne oldu?',s:'WhatsApp'},
+ {t:2.9,x:640,y:760,ic:'📞',bg:'#ffeaea',b:'3 cevapsız arama',s:'Annem'},
+ {t:3.6,x:40,y:840,ic:'🔔',bg:'#fff4d6',b:'Fatura son gün!',s:'Elektrik'},
+];
+$('notifs').innerHTML=NOTIFS.map(n=>`<div class="chipn" style="left:${n.x}px;top:${n.y}px"><span class="ic" style="background:${n.bg}">${n.ic}</span><div><b>${n.b}</b><span>${n.s}</span></div></div>`).join('');
+const NEL=[...$('notifs').children];
+const STK=[['Rapor!',30,1000,-8],['Sunum ?',250,990,6],['Annemi ara',830,1160,-3],['Fatura!!',140,1180,9]];
+$('stickies').innerHTML=STK.map(s=>`<div class="sticky" style="left:${s[1]}px;top:${s[2]}px;transform:rotate(${s[3]}deg)">${s[0]}</div>`).join('');
+const SEL=[...$('stickies').children];
+
+/* S6 başarı listesi + yıldızlar */
+const CHK=[['Rapor gönderildi',70,760],['Sunum hazır',70,880],['Annesini aradı',70,1000]];
+$('checks').innerHTML=CHK.map(c=>`<div class="check" style="left:${c[1]}px;top:${c[2]}px"><span class="ok">✓</span>${c[0]}</div>`).join('');
+const CEL=[...$('checks').children];
+$('stars').innerHTML=Array.from({length:7},()=>'<span class="star">✦</span>').join('');
+const STARS=[...$('stars').children];
+const CCOL=['#00A896','#59DBC7','#FF6B4A','#FFC857','#79F8E3','#FF9A7A'];
+const CONF=Array.from({length:48},(_,i)=>({x:rnd()*1080,vy:300+rnd()*500,vx:(rnd()-.5)*200,r0:rnd()*360,vr:(rnd()-.5)*700,c:CCOL[i%6],d:rnd()*.6}));
+$('confLayer').innerHTML=CONF.map(c=>`<span class="conf" style="background:${c.c}"></span>`).join('');
+const CFL=[...$('confLayer').children];
+
+/* indirme düğmesi */
+function getBtn(id,kind){ $(id).innerHTML=`<div class="btn" style="width:150px;height:56px;background:${kind==='a'?'#0a84ff':'#01875f'};color:#fff;font-size:24px;position:relative"><span class="lbl">${kind==='a'?'AL':'Yükle'}</span>
+  <svg class="rg" width="56" height="56" viewBox="0 0 56 56" style="position:absolute;left:47px;top:0"><circle cx="28" cy="28" r="22" stroke="#d6dde0" stroke-width="6" fill="none"/><circle class="pg" cx="28" cy="28" r="22" stroke="${kind==='a'?'#0a84ff':'#01875f'}" stroke-width="6" fill="none" stroke-dasharray="138" stroke-dashoffset="138" transform="rotate(-90 28 28)" stroke-linecap="round"/></svg></div>`; }
+getBtn('getA','a'); getBtn('getB','b');
+
+/* yazılar */
+const KICK=[[0.3,5.9,'PAZARTESİ · 09:58'],[6.1,10.4,'10:30 · TOPLANTI ÇIKIŞI'],[10.6,16.9,'ÖĞLE ARASI'],[17.1,20.9,'2 DAKİKA SONRA'],[21.1,28.4,'SYNVIA AI NASIL ÇALIŞIR?'],[28.6,36.4,'BİR HAFTA SONRA']];
+const HEAD=[
+ [0.5,5.9,'Can\'ın günleri hep böyle:<br>toplantı, mesaj, e-posta…'],
+ [6.25,10.4,'Ve yine bir şey<br><span class="red">unutuldu.</span>'],
+ [10.75,16.9,'Ta ki Deniz ona<br><span class="acc">Synvia AI</span>\'ı önerene kadar.'],
+ [17.25,20.9,'İkisi de hemen<br><span class="acc">indirdi.</span>'],
+ [21.25,24.4,'Mesajın ekran görüntüsünü ver,<br><span class="acc">işleri o bulsun</span>'],
+ [24.5,28.4,'Zamanı gelince<br><span class="acc">o hatırlatsın</span>'],
+ [28.75,36.4,'Ofiste herkes Can\'ın<br><span class="acc">hafızasını</span> konuşuyor.'],
+];
+$('caps').innerHTML=KICK.map(k=>`<div class="kick">${k[2]}</div>`).join('')+HEAD.map(h=>`<div class="head">${h[2]}</div>`).join('');
+const KEL=[...document.querySelectorAll('#caps .kick')], HEL=[...document.querySelectorAll('#caps .head')];
+function capAnim(el,t,s,e){const i=eOut(pr(t,s,.42)),o=eIn(pr(t,e-.28,.28));const op=(t<s||t>e)?0:i*(1-o);vis(el,op);el.style.transform=`translateY(${lerp(38,0,i)+lerp(0,-26,o)}px)`;}
+function pop(el,t,s,e,from=.6){const i=eBack(pr(t,s,.45)),o=eIn(pr(t,e,.25));const op=t<s||t>e+.25?0:clamp(pr(t,s,.15))*(1-o);vis(el,op);el.style.transform=`scale(${lerp(from,1,i)*(1-.1*o)})`;}
+
+/* sahne zamanları */
+const SC=[['sOffice',0,10.5],['sCoffee',10.5,17.0],['sDownload',17.0,21.0],['sApp',21.0,28.5],['sMeet',28.5,36.5],['sEnd',36.5,42.0]];
+const CUTS=[10.5,17.0,21.0,28.5,36.5];
+
+function render(t){
+  SC.forEach(([id,s,e])=>{ $(id).style.display=(t>=s-.001&&t<e)?'block':'none'; });
+  // geçiş: kısa beyaz parlama + sıçrayan şerit
+  let fl=0; CUTS.forEach(c=>{fl=Math.max(fl,.85*clamp(1-Math.abs(t-c)/.18));}); vis($('flash'),fl);
+  let wp=null; CUTS.forEach(c=>{const q=pr(t,c-.35,.7); if(q>0&&q<1) wp=q;});
+  if(wp===null) vis($('wipe'),0); else {vis($('wipe'),.9*Math.sin(wp*Math.PI)); $('wipe').style.transform=`translateX(${lerp(-1100,1100,eIO(wp))}px) skewX(-12deg)`;}
+  vis($('vig'),1);
+
+  /* S1-S2 ofis */
+  if(t<10.5){
+    const cz=1+.06*pr(t,0,10.5); const shake=t>6.6&&t<7.2?Math.sin(t*90)*10*(1-pr(t,6.6,.6)):0;
+    $('camOffice').style.transform=`translateX(${shake}px) scale(${cz})`;
+    NEL.forEach((el,i)=>{const n=NOTIFS[i];const a=eBack(pr(t,n.t,.4));const out=eIn(pr(t,6.0,.4));vis(el,clamp(pr(t,n.t,.15))*(1-out));
+      el.style.transform=`translateY(${lerp(-40,0,a)+Math.sin(t*2+i)*6-out*60}px) scale(${lerp(.7,1,a)}) rotate(${Math.sin(t*1.5+i)*1.5}deg)`;});
+    SEL.forEach((el,i)=>{const a=eBack(pr(t,1.2+i*.7,.35));const fall=eIn(pr(t,6.7+i*.08,.7));vis(el,clamp(pr(t,1.2+i*.7,.1)));
+      el.style.transform=`rotate(${STK[i][3]+fall*40*(i%2?1:-1)}deg) translateY(${fall*700}px) scale(${lerp(.5,1,a)})`;});
+    // Can: önce stresli yazıyor, patron gelince şok
+    const stressed=t<6.4, shocked=t>=6.9;
+    mood(can1,{eyes:blink(t)?'closed':shocked?'wide':'normal',brows:shocked?'up':'worry',mouth:shocked?'o':(t>8.4&&t<10.2?(talk(t,true)||'frown'):'frown'),sweat:t>2.5});
+    can1.style.transform=`translateY(${Math.sin(t*9)*(stressed?4:0)}px) rotate(${stressed?Math.sin(t*3)*1.2:0}deg)`;
+    // patron
+    const bin=eOut(pr(t,6.1,.5)); vis(boss1,pr(t,6.1,.2)); boss1.style.transform=`translateX(${lerp(500,0,bin)}px)`;
+    mood(boss1,{eyes:blink(t,1)?'closed':'normal',brows:'worry',mouth:(t>6.5&&t<8.2)?(talk(t,true)||'frown'):'frown'});
+    pop($('bossSay'),t,6.5,8.6,.5); pop($('canOops'),t,8.5,10.2,.5);
+    vis($('redtint'),t>6.5?.75*pr(t,6.6,.4)*(1-pr(t,10.1,.3)):0);
+  } else vis($('redtint'),0);
+
+  /* S3 kahve */
+  if(t>=10.5&&t<17){
+    $('camCoffee').style.transform=`scale(${1+.04*pr(t,10.5,6.5)})`;
+    const din=eOut(pr(t,10.7,.6)); denC.style.transform=`translateX(${lerp(520,0,din)}px)`;
+    mood(canC,{eyes:blink(t,.5)?'closed':(t>14.6?'wide':'normal'),brows:t>14.6?'up':'worry',mouth:(t>13.6&&t<14.5)?(talk(t,true)||'smile'):(t>14.6?'grin':'frown'),cup:true});
+    mood(denC,{eyes:blink(t,2)?'closed':'happy',mouth:((t>11.2&&t<13.4)||(t>14.6&&t<16.6))?(talk(t,true)||'grin'):'grin',phone:t>14.6});
+    pop($('dz1'),t,11.2,13.4,.5); pop($('cz1'),t,13.5,14.5,.5); pop($('dz2'),t,14.6,16.7,.5);
+    canC.style.transform=`translateY(${Math.sin(t*1.6)*4}px)`;
+  }
+
+  /* S4 indirme */
+  if(t>=17&&t<21){
+    const a=eOut(pr(t,17.05,.6)), b=eOut(pr(t,17.25,.6));
+    $('phA').style.transform=`translateY(${lerp(900,0,a)}px) rotate(${lerp(-12,-4,a)}deg)`;
+    $('phB').style.transform=`translateY(${lerp(900,0,b)}px) rotate(${lerp(12,4,b)}deg)`;
+    vis($('tagA'),pr(t,17.6,.3)); vis($('tagB'),pr(t,17.8,.3));
+    [['getA',17.9,'AÇ'],['getB',18.1,'Aç']].forEach(([id,s,done])=>{const el=$(id); const p=pr(t,s+.25,1.4);
+      const lbl=el.querySelector('.lbl'), rg=el.querySelector('.rg'), btn=el.firstChild, pg=el.querySelector('.pg');
+      const loading=t>=s+.25&&p<1; lbl.textContent=p>=1?done:lbl.textContent.length>3?lbl.textContent:(id==='getA'?'AL':'Yükle');
+      if(p>=1) lbl.textContent=done;
+      vis(lbl,loading?0:1); vis(rg,loading?1:0); btn.style.background=loading?'transparent':(id==='getA'?'#0a84ff':'#01875f');
+      pg.setAttribute('stroke-dashoffset',138*(1-p)); btn.style.transform=`scale(${1-.06*clamp(1-Math.abs(t-(s+.2))/.12)})`;});
+  }
+
+  /* S5 uygulama */
+  if(t>=21&&t<28.5){
+    const pin=eOut(pr(t,21.05,.7)); $('phApp').style.transform=`translateY(${lerp(1000,0,pin)}px) rotateX(${lerp(20,0,pin)}deg)`;
+    $('camApp').style.transform=`scale(${1+.03*Math.sin(t*.5)})`;
+    const scan=pr(t,22.1,1.4); const showList=t>=23.6;
+    vis($('appChat'),showList?1-pr(t,23.6,.3):1); $('appScan').style.top=(scan*700+80)+'px'; vis($('appScan'),scan>0&&scan<1?1:0);
+    document.querySelectorAll('#appChat .hl').forEach((h,i)=>{const lit=pr(t,22.3+i*.35,.25);h.style.background=`rgba(0,168,150,${.28*lit})`;h.style.boxShadow=`inset 0 -3px 0 rgba(0,168,150,${lit})`;});
+    vis($('appList'),pr(t,23.6,.3));
+    document.querySelectorAll('#appList .ap').forEach((c,i)=>{const q=eBack(pr(t,23.9+i*.25,.45));vis(c,pr(t,23.9+i*.25,.2));c.style.transform=`translateY(${lerp(50,0,q)}px)`;});
+    const bin=eBack(pr(t,25.2,.55)); vis($('appBanner'),t>=25.2?1:0); $('appBanner').style.transform=`translateY(${lerp(-150,30,bin)}px)`;
+    const g=pr(t,25.4,.3); const first=document.querySelector('#appList .ap'); first.style.boxShadow=`0 8px 22px rgba(16,40,36,.1),0 0 0 ${5*g}px rgba(0,168,150,${.5*g*(.6+.4*Math.sin(t*7))})`;
+  }
+
+  /* S6 toplantı */
+  if(t>=28.5&&t<36.5){
+    $('camMeet').style.transform=`scale(${1.08-.08*eOut(pr(t,28.5,1.2))})`;
+    const cin=eOut(pr(t,28.6,.6)); canM.style.transform=`translateX(${lerp(500,0,cin)}px)`;
+    mood(canM,{eyes:t>34.1&&t<35.6?'wink':(blink(t,.3)?'closed':'happy'),mouth:(t>29.2&&t<31.4)?(talk(t,true)||'grin'):'grin',phone:t>34.0});
+    CEL.forEach((el,i)=>{const s=29.4+i*.65;const q=eBack(pr(t,s,.45));vis(el,clamp(pr(t,s,.15))*(1-pr(t,31.3,.3)));el.style.transform=`translateX(${lerp(-60,0,q)}px) scale(${lerp(.7,1,q)})`;});
+    const amazed=t>31.4;
+    [[ayse,.2],[bossM,1.1],[emre,2.3]].forEach(([p,ph])=>{mood(p,{eyes:amazed?'wide':(blink(t,ph)?'closed':'normal'),brows:amazed?'up':'normal',mouth:amazed?'o':'smile'});
+      p.style.transform=`translateY(${amazed?-Math.abs(Math.sin((t-31.4)*6))*14*(1-pr(t,32.4,.8)):0}px)`;});
+    pop($('bossThink'),t,31.6,34.0,.5); pop($('colSay'),t,32.4,34.0,.5); pop($('canWink'),t,34.2,36.2,.5);
+    STARS.forEach((s,i)=>{const a=i/STARS.length*Math.PI*2+t*1.2;const r=150+20*Math.sin(t*3+i);const on=t>31.6?clamp(pr(t,31.6,.4)):0;
+      vis(s,on*(.5+.5*Math.abs(Math.sin(t*4+i))));s.style.left=(910+Math.cos(a)*r*1.1)+'px';s.style.top=(1010+Math.sin(a)*r*.55-280)+'px';s.style.transform=`scale(${.6+.5*Math.abs(Math.sin(t*3+i))})`;});
+  }
+
+  /* S7 kapanış */
+  if(t>=36.5){
+    const q=eBack(pr(t,36.65,.62)); vis($('eIcon'),pr(t,36.65,.15)); $('eIcon').style.transform=`translateY(${Math.sin(t*1.6)*8}px) scale(${lerp(.25,1,q)})`;
+    vis($('eRays'),.8*pr(t,36.7,.6)); $('eRays').style.transform=`rotate(${t*12}deg)`;
+    const a1=eOut(pr(t,37.0,.5)); vis($('eTitle'),a1); $('eTitle').style.transform=`translateY(${lerp(40,0,a1)}px)`;
+    const a2=eOut(pr(t,37.4,.55)); vis($('eSlogan'),a2); $('eSlogan').style.transform=`translateY(${lerp(50,0,a2)}px)`;
+    const b1=eBack(pr(t,37.9,.5)); vis($('eApple'),pr(t,37.9,.2)); $('eApple').style.transform=`scale(${lerp(.8,1,b1)})`;
+    const b2=eBack(pr(t,38.15,.5)); vis($('ePlay'),pr(t,38.15,.2)); $('ePlay').style.transform=`scale(${lerp(.8,1,b2)})`;
+    const d=eOut(pr(t,38.5,.6)); vis(duoC,d); vis(duoD,d); duoC.style.transform=`translateY(${lerp(300,0,d)}px)`; duoD.style.transform=`translateY(${lerp(300,0,d)}px)`;
+    mood(duoC,{eyes:blink(t)?'closed':'happy',mouth:'grin',phone:true}); mood(duoD,{eyes:blink(t,1.4)?'closed':'happy',mouth:'grin',phone:true});
+    vis($('eSite'),eOut(pr(t,39.0,.6)));
+    CFL.forEach((el,i)=>{const c=CONF[i];const ct=t-36.8-c.d; if(ct<0||ct>4){vis(el,0);return;} vis(el,clamp((4-ct)/.6));
+      el.style.transform=`translate(${c.x+c.vx*ct}px,${-60+c.vy*ct+120*ct*ct}px) rotate(${c.r0+c.vr*ct}deg)`;});
+  }
+
+  KICK.forEach((k,i)=>capAnim(KEL[i],t,k[0],k[1]));
+  HEAD.forEach((h,i)=>capAnim(HEL[i],t,h[0],h[1]));
+}
+window.render=render;
+window.DURATION=42.0;
+render(0);
+</script>
+</body></html>
