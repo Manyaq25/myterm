@@ -96,6 +96,8 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
 
 - **Karar (10 Ekim):** Mağaza ekran görüntüleri ve kalan küçük işler 12 Ekim'den sonra. Kurumsal e-posta, uygulama sayfası/sosyal medya hesabı (belki yalnızca X/Twitter) uygulama tutarsa ya da uygulama sayısı artarsa. Reklam: önce 2–3 hafta organik veri (indirme, 7 gün sonra kullanmaya devam eden oranı, Premium'a geçiş), sonra küçük bütçeli ölçülebilir deneme (Apple Search Ads / Google uygulama kampanyası; Google Ads'in 17 Eylül'deki 8.000 TL kredi teklifinin şartlarına bakılacak). YouTube/sosyal medya reklamı bu tür bir araç için pahalı ve niyeti düşük; en son.
 
+- **Fikir (10 Ekim, kullanıcı): Akıllı saat.** Bildirimler ve "Tamamlandı / 1 saat ertele / Yarın" düğmeleri (bildirim kategorisi) saatte zaten görünmeli; önce gerçek saatte doğrulanacak. Gerçek saat uygulaması React Native/Expo ile yapılamaz: Apple Watch için Swift/SwiftUI watchOS hedefi (Expo config plugin + WatchConnectivity ile telefondaki SQLite verisini paylaşma), Wear OS için ayrı Kotlin uygulaması. Önerilen sıra: Widget (App Group/paylaşılan veri altyapısı) → Siri/App Intents → Apple Watch mini uygulama (bugünün listesi, tamamla, sesle ekle, kadran komplikasyonu; WidgetKit kodu ortak) → Wear OS (Android kullanım verisine göre).
+
 ### Site (aydinapp.com.tr)
 Vercel'de, `main`'e push edilince yayına girer (Root Directory: `web`). Kaynak araçları `tools/site/` (README yerine dosya başlarındaki notlar):
 - `build.sh`: sayfaları şablondan üretir (`home.*` → `web/index.html`, `web/en/`; `synvia.*` → `web/synvia/`, `web/en/synvia/`; `changelog.*` → yenilikler sayfaları; ortak menü/alt bilgi `partials/`) ve `web/assets/site.css`'i derler. HTML'de yeni Tailwind sınıfı kullanınca çalıştırılmalı.
