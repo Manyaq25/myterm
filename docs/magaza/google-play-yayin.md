@@ -3,6 +3,10 @@
 8 Ekim 2026: Google Play üretim erişimi onaylandı (com.manyaq25.benimyerimetakipet).
 Son Android derlemesi 1.0.0 (3), 18 Eylül'de yapıldı; kapalı teste elle yüklendi.
 
+## Durum (10 Ekim 2026)
+- **10 Ekim: onaylandı ve yayınlandı** (Yayın özeti → 5 değişikliği yayınla). Mağaza sayfası açık, 177 ülke. Site Google Play düğmesi gerçek bağlantıya geçti.
+- Sonra: mağaza ekran görüntüleri eski (Ayarlar'da Android'de artık görünmeyen "Ekran görüntüsü önerisi" var); yeni özelliklerle güncellenmeli.
+
 ## Durum (9 Ekim 2026)
 - Derleme **1.1.1 (5)** (EAS `fb9e0a69…`, commit e331fd2). 4 numaralı derleme iptal edildi: Play Console "Ön plan hizmeti izinleri" beyanı istiyordu; sebebi expo-audio'nun manifestine eklediği FOREGROUND_SERVICE_MEDIA_PLAYBACK ve iki hizmetti. Eski eklenti bunları etkisiz biçimde süzüyordu, artık `tools:node="remove"` ile kaldırılıyor. Yüklenen paketin izin listesinde artık yok. "Beyanı başlat"a basılmadı; yeni sürümle uyarının kalkması bekleniyor.
 - Yönetilen yayınlama açıldı.

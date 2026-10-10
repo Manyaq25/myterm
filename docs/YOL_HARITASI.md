@@ -89,7 +89,7 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
   - A/B testi (Product Page Optimization): trafik artınca.
 - **Bekliyor (6 Ekim):** Video, yeni özellikler telefonlara gidip test edildikten ve Google Play üretim onayı geldikten sonra güncellenecek; yeni ekranların gerçek görüntüleri (bildirim düğmeleri, Mesajla hatırlat, tekrarlayan takip, davet) telefondan alınacak.
 - [x] **Videolar (9–10 Ekim):** Tanıtım videosu güncellendi (`promo/video/`, 49,7 sn, iki mağaza kapanışı); çizgi film reklam (`promo/story/`); **gerçek insanlı sesli reklam** (`promo/story-real/`, ~50 sn, vidIQ/Veo, kullanıcı onayladı). Paylaşım: Google Play yayına girince.
-- [ ] **Tanıtım videosunu güncellemek** (kaynak: `promo/video/`; video kısmı yapıldı, kalan: site düğmesi):
+- [x] **Tanıtım videosunu güncellemek** (kaynak: `promo/video/`; 10 Ekim: Google Play yayında, site düğmesi güncellendi):
   - Kapanışta Google Play'in de yayında olduğu gösterilecek ("Çok yakında" yerine).
   - Yol haritasındaki yeni özellikler videoya eklenecek (erteleme, bildirimden işlem, tekrarlayan takipler, AI ile hatırlatma mesajı, 7 gün ücretsiz deneme vb.).
   - Sitedeki "Google Play — Yakında" düğmesi de gerçek bağlantıyla değiştirilecek (`web/assets/store.js` → `PLAY_URL`).
