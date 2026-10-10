@@ -1,0 +1,52 @@
+# Yeni uygulama fikirleri (10 Ekim 2026)
+
+Kaynak: Sonar ile Türkiye App Store verisi (genel ve kategori bazında en çok kazananlar, anahtar kelime zorluğu, rakip araması). Altyapı hepsinde Synvia ile aynı: Expo + EAS, RevenueCat, Sentry, AI sunucusu, 12 dil, site (aydinapp.com.tr).
+
+## Strateji (kullanıcı kararı)
+- Kalabalık pazarlara da girilir; önce rakipler analiz edilir: ekran görüntüleri, içerik, çalışma mantığı, kullanıcı yorumlarındaki şikâyetler. Eksik olanlar bizde olur.
+- **Daha ucuz + daha kaliteli.** Türkiye'de fiyat belirleyici. Kâr marjı düşük tutulabilir, hacim kazandırır. Kullanıcı alıştığı ve sevdiği şeye sonra birkaç TL fazlasını verir.
+- Fiyat tabanı için birim maliyet hesabı şart: kullanıcı başına AI maliyeti + mağaza payı (%15) + KDV. "Kuruşluk kâr" olabilir, zarar olmamalı.
+- Sonradan zam: mevcut abonelere zam mağaza onay akışı gerektirir. Yeni kullanıcılara yeni fiyat, eskiler eski fiyatta kalabilir (sadakat de olur).
+
+## Veriden çıkanlar
+- Türkiye genel kazanç listesi: oyunlar, AI sohbet, flört, dizi/film, foto AI. Tek kişilik iş değil.
+- Kategori bazında tek kişilik Türk geliştiriciler de ilk 25'te: Astrology Master (Yaşam Tarzı 25.), 2026 Ehliyet Sınav Soruları (Eğitim 19.), Peersona sohbet analizi (Yaşam Tarzı 24., 2026'da çıktı). Learna (Codeway) Eğitim 2.
+- Anahtar kelime zorluğu (0–100, iOS TR): kahve falı 65, soru çözme 37, araç muayene 29, garanti takip 12, abonelik takip 7. Apple popülerlik değerleri TR'de kaba (hepsi 5), talep ayrıca doğrulanmalı.
+
+## Fikirler
+
+### 1. Hayat Evrakı Asistanı (öncelik adayı)
+Fotoğraf → AI tarih/tutar okur → süresi dolmadan hatırlatır: garanti belgesi, fatura, sigorta/kasko, araç muayenesi, MTV, kimlik/pasaport/ehliyet bitişi, kira sözleşmesi, abonelikler ("kullanmadığın 3 abonelik ayda 450 TL").
+- Artı: düşük rakipli üç niş (garanti, abonelik, araç) tek uygulamada; "şu kadar TL kurtardın" ile Premium; Synvia altyapısının ~%80'i hazır; ileride sigorta/kasko yönlendirme geliri.
+- Risk: günlük kullanım değil, geri getiren şey hatırlatmalar.
+- Sonraki adım: anahtar kelimeler (poliçe, MTV, pasaport, fatura hatırlatma, kasko hatırlatma) ve rakipler.
+
+### 2. Sohbet analizi (hızlı deneme)
+WhatsApp dışa aktarma / ekran görüntüsü → ilişki dinamiği, ilgi, kim daha çok yazıyor, ne cevap vermeli; paylaşılabilir "Sohbet Özeti" kartı (viral döngü).
+- Kanıt: Peersona TR Yaşam Tarzı kazançta ilk 25. Rakipler: Relationship AI, Flört Uzmanı, Aynen AI, Chat Wrapped, WaRecap, ChatScope (çoğu 2025–26, az yorum).
+- Fark: Türkçe incelikleri, gizlilik (mümkünse cihazda istatistik, yalnız özet AI'a), grup sohbetleri, uygun fiyat.
+- Dikkat: "eğlence amaçlı" konumlandırma; üçüncü kişilerin mesajları, gizlilik metni net olmalı.
+- Süre: ~2–3 hafta (ekran görüntüsü AI'ı Synvia'da var).
+
+### 3. Ehliyet sınavı (kalabalık)
+Rakipler: ehliyetCepte (136 bin yorum, "geçemezsen para iade"), Ehliyet Sınav Soruları 2026 #1 (39 bin), 2026 Ehliyet Sınav Soruları (15 bin, Eğitim kazanç 19.), Ehliyet 2026 Çıkmış Sorular (12 bin), Cenk Hoca, Ehliyet360.
+- Fark fikirleri: AI öğretmen (her yanlışı açıklar, kişiye özel tekrar planı, "sınavı geçme ihtimalin"), sesli anlatım, animasyonlu soru pratiği, en ucuz fiyat.
+- Dikkat: içerik MEB'in kamuya açık sorularından; "resmi değildir" uyarısı zorunlu. Benzer şekilde az rakipli meslek sınavları araştırılacak: SRC, İSG, SPK/emlak, SMMM, YDS.
+
+### 4. Fal ve astroloji (kalabalık)
+Rakipler: Astromatik (Yaşam Tarzı 13.), Astrology Master (25., tek kişi), Ms Astro; kahve falında yerleşik büyük uygulamalar (zorluk 65).
+- Fark fikirleri: kahve fincanı fotoğrafından AI fal, günlük burç bildirimi, uygun fiyat, Türk kültürüne uygun dil.
+- **Önemli risk:** Apple kuralı 4.3(b) "fal" uygulamalarını doymuş kategori sayar; sıradan bir kopya reddedilebilir. Gerçekten farklı ve kaliteli olmalı. "Eğlence amaçlıdır" uyarısı şart.
+
+### 5. Öğretmen evrak/plan (kalabalık, not)
+Öğretmen Evrak (5,4 bin yorum, Eğitim kazanç 15.), KazanımCepte (10,7 bin), 2026'da AI'lı yeni rakipler (Öğretmen Asistanı Pro 299,99 ₺/ay). Talep ve ödeme isteği gerçek; şimdilik listede, öncelikte değil.
+
+## Rakip analizi yöntemi (her fikir için)
+1. İlk 10 rakibin mağaza sayfası: ekran görüntüleri, açıklama, fiyatlar, güncelleme sıklığı.
+2. Kullanıcı yorumları (özellikle 1–3 yıldız): şikâyetler = bizim özellik listemiz.
+3. Rakipleri indirip deneme: akış, paywall, AI kalitesi (kullanıcı telefonda, ben yorum ve sayfa analizi).
+4. Anahtar kelime boşlukları (Sonar; ücretsiz kota günde 5 kelime).
+5. Birim maliyet ve fiyat: rakiplerden ucuz, kâr ≥ 0.
+
+## Sıra önerisi
+Synvia verisi (2–3 hafta) → Hayat Evrakı Asistanı'nın kelime/rakip analizi → ilk sürüm (~3–4 hafta). Sohbet analizi hızlı deneme olarak araya girebilir. Kalabalık olanlar (ehliyet, fal) rakip analizinden sonra.
