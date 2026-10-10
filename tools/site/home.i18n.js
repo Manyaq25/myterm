@@ -36,7 +36,7 @@ module.exports = {
 
     // Açılış
     statusA: 'Synvia AI',
-    statusB: 'App Store’da',
+    statusB: 'App Store ve Google Play’de',
     heroL1: 'Unuttuğun',
     heroL2: 'hiçbir şey',
     heroL3: 'kalmasın.',
@@ -170,7 +170,7 @@ module.exports = {
     ghostWord: 'UYGULAMALAR',
     appsTitle: 'Bir uygulama yayında, yenileri yolda.',
     iconAlt: 'Synvia AI uygulama ikonu',
-    appLive: 'App Store’da yayında',
+    appLive: 'App Store ve Google Play’de yayında',
     appText: 'Verdiğin sözleri ve yapacağın işleri senin yerine hatırlayan, yapay zekâ destekli hatırlatıcı.',
     playGet: 'Google Play',
     playSoon: 'Google Play · Yakında',
@@ -236,7 +236,7 @@ module.exports = {
     railWays: 'Four ways',
 
     statusA: 'Synvia AI',
-    statusB: 'on the App Store',
+    statusB: 'on the App Store & Google Play',
     heroL1: 'Never let',
     heroL2: 'anything',
     heroL3: 'slip again.',
@@ -365,7 +365,7 @@ module.exports = {
     ghostWord: 'APPS',
     appsTitle: 'One app is live, more are on the way.',
     iconAlt: 'Synvia AI app icon',
-    appLive: 'Live on the App Store',
+    appLive: 'Live on the App Store & Google Play',
     appText: 'An AI-powered reminder that remembers your promises and tasks for you.',
     playGet: 'Google Play',
     playSoon: 'Google Play · Soon',

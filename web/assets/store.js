@@ -1,7 +1,7 @@
 // İndirme butonları. Google Play'de yayına girince PLAY_URL'yi doldur ve tools/site/build.sh'ı çalıştır:
 // "Yakında" kutuları indirme butonuna dönüşür, Android'den gelenlerin "indir" linkleri Google Play'e gider.
 (function () {
-  var PLAY_URL = '';
+  var PLAY_URL = 'https://play.google.com/store/apps/details?id=com.manyaq25.benimyerimetakipet';
   var android = /android/i.test(navigator.userAgent);
 
   document.querySelectorAll('[data-play-btn]').forEach(function (play) {
