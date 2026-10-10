@@ -98,6 +98,14 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
 
 - **Fikir (10 Ekim, kullanıcı): Akıllı saat.** Bildirimler ve "Tamamlandı / 1 saat ertele / Yarın" düğmeleri (bildirim kategorisi) saatte zaten görünmeli; önce gerçek saatte doğrulanacak. Gerçek saat uygulaması React Native/Expo ile yapılamaz: Apple Watch için Swift/SwiftUI watchOS hedefi (Expo config plugin + WatchConnectivity ile telefondaki SQLite verisini paylaşma), Wear OS için ayrı Kotlin uygulaması. Önerilen sıra: Widget (App Group/paylaşılan veri altyapısı) → Siri/App Intents → Apple Watch mini uygulama (bugünün listesi, tamamla, sesle ekle, kadran komplikasyonu; WidgetKit kodu ortak) → Wear OS (Android kullanım verisine göre).
 
+- **Yapılacak (12 Ekim'den sonra): Derleme ve gönderimi Claude'un yapabilmesi için tek seferlik kurulum** (bilgisayarda `git pull` + `eas build` köprüsü kalksın):
+  1. expo.dev → proje → GitHub: depoyu bağla (Expo MCP `build_run` "No repository found" hatası bundandı).
+  2. expo.dev → Access tokens → yeni anahtar → Claude ortamı (Edit → Network secrets / ortam değişkeni) `EXPO_TOKEN`. Sohbete yazılmaz.
+  3. App Store Connect → Kullanıcılar ve Erişim → Entegrasyonlar → Anahtarlar (App Manager) → .p8 dosyası expo.dev kimlik bilgilerine (EAS Submit → TestFlight).
+  4. Google Play hizmet hesabı, sürüm yayınlama izniyle → JSON expo.dev'e (EAS Submit → dahili test).
+  5. İzin kuralı kararı: derleme/test gönderimi sormadan mı, yoksa her seferinde sorarak mı (EAS ücretsiz kota). Mağazada son "Yayınla/İncelemeye gönder" kullanıcıda kalır.
+  Yeni uygulamalarda bu kurulum en başta yapılır.
+
 ### Site (aydinapp.com.tr)
 Vercel'de, `main`'e push edilince yayına girer (Root Directory: `web`). Kaynak araçları `tools/site/` (README yerine dosya başlarındaki notlar):
 - `build.sh`: sayfaları şablondan üretir (`home.*` → `web/index.html`, `web/en/`; `synvia.*` → `web/synvia/`, `web/en/synvia/`; `changelog.*` → yenilikler sayfaları; ortak menü/alt bilgi `partials/`) ve `web/assets/site.css`'i derler. HTML'de yeni Tailwind sınıfı kullanınca çalıştırılmalı.
