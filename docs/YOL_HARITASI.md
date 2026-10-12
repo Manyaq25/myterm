@@ -100,6 +100,11 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
 
 - **Yapılacak (12 Ekim'den sonra): Derleme ve gönderimi Claude'un yapabilmesi için tek seferlik kurulum** (bilgisayarda `git pull` + `eas build` köprüsü kalksın):
   Durum (12 Ekim): 1 ✅ bağlandı; 2 ✅ Claude ortamında **Network secret** olarak eklendi (ad: Expo, `*.expo.dev`, Authorization: Bearer). Ortam değişkeni olarak eklenmez, herkese görünür. Yeni oturumda test edilecek. 3 ✅ App Store Connect API anahtarı zaten Expo'da ([Expo] EAS Submit, 3DXS6K8R9U). 4 ✅ Google hizmet hesabı `eas-submit@synvia-ai.iam.gserviceaccount.com` (yalnızca test kanalları izni; üretime yayınlama yok) Expo'ya yüklendi; eas.json `submit.production.android.track = internal`. 5 ✅ Karar A: derleme ve test gönderimi sormadan (kural AGENTS.md'de).
+- **Mağaza işlerini Claude'a devretme (12 Ekim kararı, bilgisayar açılınca tek seferde kurulacak):** Kullanıcı mağaza işlerinin de bende olmasını istiyor; sabah ikiye bölünmesi tekrar iş çıkardı, bu sefer hepsi birden. Yol: anahtarlar GitHub gizli değişkeni, işler GitHub Actions (elle başlatılır, önce deneme modu).
+  - Kapsam: Play ekran görüntüleri/metinler/sürüm notları/test taslakları; App Store ekran görüntüleri/açıklama/anahtar kelimeler/Yenilikler/sürüm taslağı. Canlıya yayınlama ve fiyatlar kullanıcıda kalır.
+  - Kullanıcı adımları: (1) Play Console'da `eas-submit` hesabına "Mağaza varlığını yönet" izni; (2) App Store Connect'te yeni API anahtarı (App Manager), .p8 indir; (3) GitHub'a gizli değişkenler: `PLAY_SERVICE_ACCOUNT_JSON`, `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_KEY_P8`.
+  - Kullanıcı açık onay verecek ("kur"); iş akışı eklemeyi otomatik güvenlik kontrolü onaysız engelledi.
+  - İlk iş: `promo/screenshots/out/play` görsellerini Play'e yüklemek (out/play depoya eklenecek).
   1. expo.dev → proje → GitHub: depoyu bağla (Expo MCP `build_run` "No repository found" hatası bundandı).
   2. expo.dev → Access tokens → yeni anahtar → Claude ortamı (Edit → Network secrets / ortam değişkeni) `EXPO_TOKEN`. Sohbete yazılmaz.
   3. App Store Connect → Kullanıcılar ve Erişim → Entegrasyonlar → Anahtarlar (App Manager) → .p8 dosyası expo.dev kimlik bilgilerine (EAS Submit → TestFlight).
