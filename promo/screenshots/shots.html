@@ -2,6 +2,7 @@
 <html><head><meta charset="utf-8">
 <link rel="stylesheet" href="../store-assets/node_modules/@fontsource/plus-jakarta-sans/600.css">
 <link rel="stylesheet" href="../store-assets/node_modules/@fontsource/plus-jakarta-sans/800.css">
+<link rel="stylesheet" href="node_modules/@fontsource/caveat/700.css">
 <style>
 *{box-sizing:border-box;margin:0}
 html,body{overflow:hidden;background:#061110;font-family:'Plus Jakarta Sans','Noto Color Emoji',sans-serif;-webkit-font-smoothing:antialiased}
@@ -19,6 +20,8 @@ html,body{overflow:hidden;background:#061110;font-family:'Plus Jakarta Sans','No
 .sbar{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;font-weight:800;color:#132228;z-index:2}
 .bat{display:inline-block;border:2px solid #132228;border-radius:5px;position:relative;opacity:.85}
 .bat::after{content:'';position:absolute;left:2px;top:2px;bottom:2px;width:70%;background:#132228;border-radius:2px}
+.note{position:absolute;z-index:5;font-family:'Caveat',cursive;font-weight:700;color:#0E5F56;background:#fffdf7;white-space:nowrap;line-height:1;box-shadow:0 10px 26px rgba(4,30,26,.28);border:2px solid rgba(255,122,89,.55);transform:translate(-50%,-50%) rotate(var(--r))}
+.arrows{position:absolute;left:0;top:0;z-index:4;pointer-events:none;overflow:visible}
 </style></head><body><div id="stage"></div>
 <script>
 // Ham ekran görüntüleri 1320x2868 (iPhone). Üstteki 165 px (operatör/saat çubuğu) kırpılır,
@@ -34,6 +37,21 @@ const SHOTS = {
     ['06-kaydir',   'Tek kaydırmayla', '<span class="acc">bitir ya da sil</span>', 'Sağa kaydır tamamlandı, sola kaydır sil'],
     ['07-kisi',     'Her kişiyle', '<span class="acc">geçmişin bir arada</span>', 'Ara, mesaj at, WhatsApp’tan yaz'],
     ['08-yeni',     'Elle eklemek de', '<span class="acc">saniyeler sürer</span>', 'Hesap yok, verilerin telefonunda kalır'],
+  ],
+};
+
+// Ekran üstündeki el yazısı notlar: [etiketX, etiketY, hedefX, hedefY, metin, eğim°]
+// Koordinatlar ham görüntünün 921 px genişliğe küçültülmüş hâline göredir.
+const NOTES = {
+  tr: [
+    [[190, 640, 345, 700, 'WhatsApp sohbeti', -4], [640, 1163, 125, 1290, 'AI buldu, sen onayla', 3]],
+    [[600, 470, 250, 470, 'Gecikenler en üstte', -3], [725, 300, 600, 362, 'Tek dokunuşla sor', 3]],
+    [[700, 600, 640, 700, 'Sesini kaydet', -3], [730, 1042, 640, 975, 'Yazıya döker', 3], [660, 1142, 450, 1315, 'Tarih ve kişi otomatik', -2]],
+    [[210, 350, 390, 350, 'Sen sor', -4], [600, 1460, 560, 1380, 'AI cevaplasın', 3]],
+    [[650, 680, 560, 745, 'Tek dokunuşla ertele', -3], [560, 853, 470, 905, 'Düzenli işler için', 2], [640, 1092, 365, 1092, 'Mesajı AI yazar', -3]],
+    [[440, 840, 140, 960, 'Sağa kaydır: bitti', -3], [470, 1545, 790, 1450, 'Sola kaydır: sil', 3]],
+    [[580, 600, 560, 535, 'Tek dokunuşla ulaş', -3], [520, 1190, 460, 1075, 'Kiminle neler oldu', 2]],
+    [[620, 440, 500, 515, 'Türünü seç', -3], [700, 1160, 640, 1240, 'İstersen saat kur', 3]],
   ],
 };
 
@@ -56,7 +74,7 @@ const t = add('div', 'title', `${l1}<br>${l2}`, { fontSize: (tall ? 118 : 92) * 
 const s = add('div', 'sub', sub, { fontSize: (tall ? 50 : 40) * u + 'px', marginTop: 30*u + 'px' }); hd.appendChild(s);
 
 // Telefon: başlığın altına, alttan biraz taşacak şekilde
-setTimeout(() => {
+Promise.all([document.fonts.load('700 50px Caveat'), document.fonts.load('800 50px "Plus Jakarta Sans"')]).then(() => document.fonts.ready).then(() => {
   // satır sığmazsa yazıyı küçült; telefon her görselde aynı yükseklikte başlasın
   const maxW = W - 120 * u;
   for (const e of [t, s]) { let f = parseFloat(e.style.fontSize); while (e.scrollWidth > maxW && f > 10) { f -= 2; e.style.fontSize = f + 'px'; } }
@@ -82,6 +100,29 @@ setTimeout(() => {
   scr.appendChild(img);
   // görselin kırpılan üst kısmı çubuğun altında kalır
   img.style.zIndex = 1; bar.style.zIndex = 2;
+  // notlar
+  const k = sw / 921, ox = left + bezel, oy = headBottom + bezel + sbarH - CROP * sw / RAW_W;
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg'); svg.setAttribute('class', 'arrows');
+  svg.setAttribute('width', W); svg.setAttribute('height', H);
+  svg.innerHTML = `<defs><marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#FF7A59"/></marker></defs>`;
+  st.appendChild(svg);
+  for (const [lx, ly, tx, ty, text, r] of (NOTES[lang][idx] || [])) {
+    const fs = (tall ? 60 : 50) * u;
+    const n = add('div', 'note', text, { left: ox + lx * k + 'px', top: oy + ly * k * 1320 / 1320 + 'px', fontSize: fs + 'px', padding: `${fs*0.18}px ${fs*0.42}px ${fs*0.24}px`, borderRadius: fs + 'px' });
+    n.style.setProperty('--r', r + 'deg');
+    // ok: etiket kenarından hedefe hafif kavisli çizgi
+    const bw = n.offsetWidth / 2, bh = n.offsetHeight / 2;
+    const cx = ox + lx * k, cy = oy + ly * k, x2 = ox + tx * k, y2 = oy + ty * k;
+    const dx = x2 - cx, dy = y2 - cy;
+    const tt = Math.min(Math.abs(dx) > 0.01 ? bw / Math.abs(dx) : 1e9, Math.abs(dy) > 0.01 ? bh / Math.abs(dy) : 1e9);
+    const x1 = cx + dx * tt * 1.08, y1 = cy + dy * tt * 1.08;
+    const mx = (x1 + x2) / 2 - (y2 - y1) * 0.22, my = (y1 + y2) / 2 + (x2 - x1) * 0.22;
+    const path = document.createElementNS(svgNS, 'path');
+    path.setAttribute('d', `M${x1},${y1} Q${mx},${my} ${x2},${y2}`);
+    Object.entries({ fill: 'none', stroke: '#FF7A59', 'stroke-width': 6 * u, 'stroke-linecap': 'round', 'marker-end': 'url(#ah)' }).forEach(([a, v]) => path.setAttribute(a, v));
+    svg.appendChild(path);
+  }
   img.decode().catch((e) => console.log("img", e.message)).then(() => { window.READY = true; });
-}, 0);
+});
 </script></body></html>

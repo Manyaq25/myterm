@@ -1,0 +1,7 @@
+{
+  "name": "synvia-screenshots",
+  "private": true,
+  "dependencies": {
+    "@fontsource/caveat": "^5.3.0"
+  }
+}

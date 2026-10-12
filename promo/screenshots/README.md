@@ -1,7 +1,7 @@
 # Mağaza ekran görüntüleri
 
 Kaynak: `raw/` (iPhone 16 Pro Max'ten alınmış ham görüntüler, kurgusal demo verisi),
-`shots.html` (çerçeve + başlık tasarımı, metinler `SHOTS` içinde), `render.js`.
+`shots.html` (çerçeve + başlık tasarımı; başlıklar `SHOTS`, el yazısı notlar ve oklar `NOTES` içinde), `render.js`.
 
 | Klasör | Nereye | Ölçü |
 |---|---|---|
@@ -15,6 +15,7 @@ platforma göre farklı göründüğü için sete konmadı.
 ## Yeniden üretme
 
 ```
-cd ../store-assets && npm install && cd ../screenshots
+(cd ../video && npm install)   # Playwright + Plus Jakarta Sans (store-assets ile ortak)
+npm install                     # Caveat el yazısı fontu
 node render.js tr
 ```
