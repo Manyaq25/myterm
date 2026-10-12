@@ -99,6 +99,7 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
 - **Fikir (10 Ekim, kullanıcı): Akıllı saat.** Bildirimler ve "Tamamlandı / 1 saat ertele / Yarın" düğmeleri (bildirim kategorisi) saatte zaten görünmeli; önce gerçek saatte doğrulanacak. Gerçek saat uygulaması React Native/Expo ile yapılamaz: Apple Watch için Swift/SwiftUI watchOS hedefi (Expo config plugin + WatchConnectivity ile telefondaki SQLite verisini paylaşma), Wear OS için ayrı Kotlin uygulaması. Önerilen sıra: Widget (App Group/paylaşılan veri altyapısı) → Siri/App Intents → Apple Watch mini uygulama (bugünün listesi, tamamla, sesle ekle, kadran komplikasyonu; WidgetKit kodu ortak) → Wear OS (Android kullanım verisine göre).
 
 - **Yapılacak (12 Ekim'den sonra): Derleme ve gönderimi Claude'un yapabilmesi için tek seferlik kurulum** (bilgisayarda `git pull` + `eas build` köprüsü kalksın):
+  Durum (12 Ekim): 1 ✅ bağlandı; 2 ✅ Claude ortamında **Network secret** olarak eklendi (ad: Expo, `*.expo.dev`, Authorization: Bearer). Ortam değişkeni olarak eklenmez, herkese görünür. Yeni oturumda test edilecek.
   1. expo.dev → proje → GitHub: depoyu bağla (Expo MCP `build_run` "No repository found" hatası bundandı).
   2. expo.dev → Access tokens → yeni anahtar → Claude ortamı (Edit → Network secrets / ortam değişkeni) `EXPO_TOKEN`. Sohbete yazılmaz.
   3. App Store Connect → Kullanıcılar ve Erişim → Entegrasyonlar → Anahtarlar (App Manager) → .p8 dosyası expo.dev kimlik bilgilerine (EAS Submit → TestFlight).
