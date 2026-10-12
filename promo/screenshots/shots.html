@@ -1,0 +1,87 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../store-assets/node_modules/@fontsource/plus-jakarta-sans/600.css">
+<link rel="stylesheet" href="../store-assets/node_modules/@fontsource/plus-jakarta-sans/800.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{overflow:hidden;background:#061110;font-family:'Plus Jakarta Sans','Noto Color Emoji',sans-serif;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;left:0;top:0;overflow:hidden;background:radial-gradient(120% 70% at 50% 18%,#123a35 0%,#0a1f1d 55%,#050d0c 100%)}
+.blob{position:absolute;border-radius:50%}
+.head{position:absolute;left:0;right:0;text-align:center;color:#fff}
+.title,.sub{white-space:nowrap}
+.title{font-weight:800;letter-spacing:-.02em;line-height:1.08}
+.acc{background:linear-gradient(90deg,#9BFFEF 0%,#59DBC7 45%,#FF9A7A 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-weight:600;color:rgba(225,245,240,.72);line-height:1.3}
+/* Markasız, sade telefon çerçevesi (iki mağazada da kullanılabilir) */
+.phone{position:absolute;background:linear-gradient(150deg,#59625f 0%,#262d2c 18%,#141918 50%,#2b3331 82%,#4a5350 100%);box-shadow:0 60px 140px rgba(0,0,0,.55)}
+.screen{position:absolute;overflow:hidden;background:#f4f7f6}
+.screen img{position:absolute;left:0;width:100%}
+.sbar{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;font-weight:800;color:#132228;z-index:2}
+.bat{display:inline-block;border:2px solid #132228;border-radius:5px;position:relative;opacity:.85}
+.bat::after{content:'';position:absolute;left:2px;top:2px;bottom:2px;width:70%;background:#132228;border-radius:2px}
+</style></head><body><div id="stage"></div>
+<script>
+// Ham ekran görüntüleri 1320x2868 (iPhone). Üstteki 165 px (operatör/saat çubuğu) kırpılır,
+// yerine sade bir saat + pil çubuğu çizilir.
+const RAW_W = 1320, RAW_H = 2868, CROP = 165;
+const SHOTS = {
+  tr: [
+    ['01-gorsel',   'Ekran görüntüsünden', '<span class="acc">sözleri bulur</span>', 'Sohbeti seç, kim kime ne söz verdi AI bulsun'],
+    ['02-anasayfa', '<span class="acc">Neyi unuttun?</span>', 'Tek bakışta gör', 'Geciken işler en üstte, kimseyi bekletme'],
+    ['03-sesli',    'Konuş,', '<span class="acc">gerisini AI yazsın</span>', 'Sesli nottan tarih, saat ve kişiyi kendisi bulur'],
+    ['04-asistan',  'Takiplerine', '<span class="acc">soru sor</span>', '“Geciken işim var mı?” demen yeterli'],
+    ['05-detay',    'Ertele, tekrarla,', '<span class="acc">mesajla hatırlat</span>', 'AI kibar bir hatırlatma mesajı hazırlar'],
+    ['06-kaydir',   'Tek kaydırmayla', '<span class="acc">bitir ya da sil</span>', 'Sağa kaydır tamamlandı, sola kaydır sil'],
+    ['07-kisi',     'Her kişiyle', '<span class="acc">geçmişin bir arada</span>', 'Ara, mesaj at, WhatsApp’tan yaz'],
+    ['08-yeni',     'Elle eklemek de', '<span class="acc">saniyeler sürer</span>', 'Hesap yok, verilerin telefonunda kalır'],
+  ],
+};
+
+const q = new URLSearchParams(location.search);
+const W = +q.get('w'), H = +q.get('h'), lang = q.get('lang') || 'tr', idx = +q.get('i');
+const [file, l1, l2, sub] = SHOTS[lang][idx];
+const st = document.getElementById('stage');
+st.style.width = W + 'px'; st.style.height = H + 'px';
+const u = W / 1320; // ölçek birimi (App Store genişliği temel)
+
+function add(tag, cls, html, css) { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; Object.assign(e.style, css || {}); st.appendChild(e); return e; }
+add('div', 'blob', null, { width: 1500*u+'px', height: 1500*u+'px', left: -700*u+'px', top: -800*u+'px', background: 'radial-gradient(circle,rgba(89,219,199,.30) 0%,rgba(89,219,199,0) 62%)' });
+add('div', 'blob', null, { width: 1500*u+'px', height: 1500*u+'px', right: -760*u+'px', top: 300*u+'px', background: 'radial-gradient(circle,rgba(255,107,74,.16) 0%,rgba(255,107,74,0) 62%)' });
+
+// Başlık
+const tall = H / W > 1.9;            // App Store (2.17) mı, Play (1.78) mi
+const topY = (tall ? 170 : 90) * u;
+const hd = add('div', 'head', null, { top: topY + 'px', padding: `0 ${70*u}px` });
+const t = add('div', 'title', `${l1}<br>${l2}`, { fontSize: (tall ? 118 : 92) * u + 'px' }); hd.appendChild(t);
+const s = add('div', 'sub', sub, { fontSize: (tall ? 50 : 40) * u + 'px', marginTop: 30*u + 'px' }); hd.appendChild(s);
+
+// Telefon: başlığın altına, alttan biraz taşacak şekilde
+setTimeout(() => {
+  // satır sığmazsa yazıyı küçült; telefon her görselde aynı yükseklikte başlasın
+  const maxW = W - 120 * u;
+  for (const e of [t, s]) { let f = parseFloat(e.style.fontSize); while (e.scrollWidth > maxW && f > 10) { f -= 2; e.style.fontSize = f + 'px'; } }
+  const headBottom = topY + (tall ? 520 : 400) * u;
+  const bezel = 22 * u, sbarH = 110 * u;
+  const visH = RAW_H - CROP;
+  // ekran genişliği: Play'de alanı aşmasın (alt kenardan en fazla %6 taşsın)
+  let sw = (tall ? 1000 : 860) * u;
+  const avail = H - headBottom - 2 * bezel + H * 0.06;
+  const need = sw * (sbarH / sw + visH / RAW_W);
+  if (need > avail && !tall) sw *= avail / need;
+  const sh = sbarH + sw * visH / RAW_W;
+  const pw = sw + 2 * bezel, ph = sh + 2 * bezel;
+  const left = (W - pw) / 2;
+  const phone = add('div', 'phone', null, { left: left + 'px', top: headBottom + 'px', width: pw + 'px', height: ph + 'px', borderRadius: 120 * u + 'px' });
+  const scr = add('div', 'screen', null, { left: bezel + 'px', top: bezel + 'px', width: sw + 'px', height: sh + 'px', borderRadius: (120 * u - bezel) + 'px' });
+  phone.appendChild(scr);
+  const bar = add('div', 'sbar', `<span>9:41</span><span class="bat" style="width:${64*u}px;height:${32*u}px"></span>`,
+    { height: sbarH + 'px', padding: `${18*u}px ${80*u}px 0`, fontSize: 44 * u + 'px', background: 'linear-gradient(180deg,#e3f6f1,#e9f7f3)' });
+  scr.appendChild(bar);
+  const img = new Image(); img.src = `raw/${file}.png`;
+  img.style.top = (sbarH - CROP * sw / RAW_W) + 'px';
+  scr.appendChild(img);
+  // görselin kırpılan üst kısmı çubuğun altında kalır
+  img.style.zIndex = 1; bar.style.zIndex = 2;
+  img.decode().catch((e) => console.log("img", e.message)).then(() => { window.READY = true; });
+}, 0);
+</script></body></html>
