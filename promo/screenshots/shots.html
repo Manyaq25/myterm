@@ -3,9 +3,11 @@
 <link rel="stylesheet" href="../store-assets/node_modules/@fontsource/plus-jakarta-sans/600.css">
 <link rel="stylesheet" href="../store-assets/node_modules/@fontsource/plus-jakarta-sans/800.css">
 <link rel="stylesheet" href="node_modules/@fontsource/caveat/700.css">
+<script src="web/i18n.js"></script>
+<script>{ const l = new URLSearchParams(location.search).get('lang'); if (l && l !== 'tr') document.write(`<script src="raw-web/${l}/notes.js"><\/script>`); }</script>
 <style>
 *{box-sizing:border-box;margin:0}
-html,body{overflow:hidden;background:#061110;font-family:'Plus Jakarta Sans','Noto Color Emoji',sans-serif;-webkit-font-smoothing:antialiased}
+html,body{overflow:hidden;background:#061110;font-family:'Plus Jakarta Sans','Noto Sans JP','Noto Sans KR','Noto Sans SC','Noto Sans Arabic','Noto Color Emoji',sans-serif;-webkit-font-smoothing:antialiased}
 #stage{position:absolute;left:0;top:0;overflow:hidden;background:radial-gradient(120% 70% at 50% 18%,#123a35 0%,#0a1f1d 55%,#050d0c 100%)}
 .blob{position:absolute;border-radius:50%}
 .head{position:absolute;left:0;right:0;text-align:center;color:#fff}
@@ -20,13 +22,13 @@ html,body{overflow:hidden;background:#061110;font-family:'Plus Jakarta Sans','No
 .sbar{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;font-weight:800;color:#132228;z-index:2}
 .bat{display:inline-block;border:2px solid #132228;border-radius:5px;position:relative;opacity:.85}
 .bat::after{content:'';position:absolute;left:2px;top:2px;bottom:2px;width:70%;background:#132228;border-radius:2px}
-.note{position:absolute;z-index:5;font-family:'Caveat',cursive;font-weight:700;color:#0E5F56;background:#fffdf7;white-space:nowrap;line-height:1;box-shadow:0 10px 26px rgba(4,30,26,.28);border:2px solid rgba(255,122,89,.55);transform:translate(-50%,-50%) rotate(var(--r))}
+.note{position:absolute;z-index:5;font-family:'Caveat','Noto Sans KR','Noto Sans SC','Noto Sans JP','Noto Sans Arabic',cursive;font-weight:700;color:#0E5F56;background:#fffdf7;white-space:nowrap;line-height:1;box-shadow:0 10px 26px rgba(4,30,26,.28);border:2px solid rgba(255,122,89,.55);transform:translate(-50%,-50%) rotate(var(--r))}
 .arrows{position:absolute;left:0;top:0;z-index:4;pointer-events:none;overflow:visible}
 </style></head><body><div id="stage"></div>
 <script>
 // Ham ekran görüntüleri 1320x2868 (iPhone). Üstteki 165 px (operatör/saat çubuğu) kırpılır,
 // yerine sade bir saat + pil çubuğu çizilir.
-const RAW_W = 1320, RAW_H = 2868, CROP = 165;
+let RAW_W = 1320, RAW_H = 2868, CROP = 165;
 const SHOTS = {
   tr: [
     ['01-gorsel',   'Ekran görüntüsünden', '<span class="acc">sözleri bulur</span>', 'Sohbeti seç, kim kime ne söz verdi AI bulsun'],
@@ -55,9 +57,35 @@ const NOTES = {
   ],
 };
 
+// Diğer diller: ekranlar uygulamanın web sürümünden çekildi (raw-web/<dil>, 1206x2622, durum çubuğu yok).
+// Başlık ve not metinleri web/content.js'ten (web/i18n.js) gelir; not konumları CSS px (402 genişlik).
+const NOTES_WEB = [
+  [[95, 292, 150, 322, -4], [285, 566, 48, 612, 3]],
+  [[300, 160, 200, 160, -3], [335, 85, 300, 112, 3]],
+  [[318, 262, 262, 316, -3], [300, 404, 230, 440, 3], [285, 688, 232, 614, -2]],
+  [[62, 104, 112, 104, -4], [230, 540, 200, 505, 3]],
+  [[300, 340, 250, 305, -3], [275, 370, 235, 404, 2], [300, 500, 205, 522, -3]],
+  [[190, 338, 62, 398, -3], [200, 672, 343, 622, 3]],
+  [[250, 225, 200, 190, -3], [290, 413, 150, 413, 2]],
+  [[240, 163, 150, 200, -3], [290, 518, 220, 545, 3]],
+];
+const FILES = ['01-gorsel', '02-anasayfa', '03-sesli', '04-asistan', '05-detay', '06-kaydir', '07-kisi', '08-yeni'];
 const q = new URLSearchParams(location.search);
 const W = +q.get('w'), H = +q.get('h'), lang = q.get('lang') || 'tr', idx = +q.get('i');
-const [file, l1, l2, sub] = SHOTS[lang][idx];
+const WEB = lang !== 'tr';
+let file, l1, l2, sub;
+if (WEB) {
+  const L = window.I18N[lang];
+  [l1, l2, sub] = L.caps[idx]; l2 = `<span class="acc">${l2}</span>`; file = `raw-web/${lang}/${FILES[idx]}`;
+  // konumlar capture.js'in ekrandaki öğelerden ölçtüğü değerler (raw-web/<dil>/notes.js)
+  const P = window.NOTEPOS || {};
+  NOTES[lang] = NOTES_WEB.map((row, i) => row.map(([a, b, c, d, r], j) => { const m = P[i] && P[i][j]; return m ? [...m, L.notes[i][j], r] : null; }).filter(Boolean));
+  if (L.rtl) document.documentElement.dir = 'rtl';
+} else {
+  [file, l1, l2, sub] = SHOTS[lang][idx]; file = `raw/${file}`;
+}
+if (WEB) { RAW_W = 1206; RAW_H = 2622; CROP = 0; }
+const NOTE_BASE = WEB ? 402 : 921;
 const st = document.getElementById('stage');
 st.style.width = W + 'px'; st.style.height = H + 'px';
 const u = W / 1320; // ölçek birimi (App Store genişliği temel)
@@ -95,13 +123,13 @@ Promise.all([document.fonts.load('700 50px Caveat'), document.fonts.load('800 50
   const bar = add('div', 'sbar', `<span>9:41</span><span class="bat" style="width:${64*u}px;height:${32*u}px"></span>`,
     { height: sbarH + 'px', padding: `${18*u}px ${80*u}px 0`, fontSize: 44 * u + 'px', background: 'linear-gradient(180deg,#e3f6f1,#e9f7f3)' });
   scr.appendChild(bar);
-  const img = new Image(); img.src = `raw/${file}.png`;
+  const img = new Image(); img.src = `${file}.png`;
   img.style.top = (sbarH - CROP * sw / RAW_W) + 'px';
   scr.appendChild(img);
   // görselin kırpılan üst kısmı çubuğun altında kalır
   img.style.zIndex = 1; bar.style.zIndex = 2;
   // notlar
-  const k = sw / 921, ox = left + bezel, oy = headBottom + bezel + sbarH - CROP * sw / RAW_W;
+  const k = sw / NOTE_BASE, ox = left + bezel, oy = headBottom + bezel + sbarH - CROP * sw / RAW_W;
   const svgNS = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(svgNS, 'svg'); svg.setAttribute('class', 'arrows');
   svg.setAttribute('width', W); svg.setAttribute('height', H);
@@ -113,7 +141,8 @@ Promise.all([document.fonts.load('700 50px Caveat'), document.fonts.load('800 50
     n.style.setProperty('--r', r + 'deg');
     // ok: etiket kenarından hedefe hafif kavisli çizgi
     const bw = n.offsetWidth / 2, bh = n.offsetHeight / 2;
-    const cx = ox + lx * k, cy = oy + ly * k, x2 = ox + tx * k, y2 = oy + ty * k;
+    let cx = ox + lx * k; const cy = oy + ly * k, x2 = ox + tx * k, y2 = oy + ty * k;
+    const pad = 10 * u; cx = Math.min(Math.max(cx, ox + bw + pad), ox + sw - bw - pad); n.style.left = cx + 'px';
     const dx = x2 - cx, dy = y2 - cy;
     const tt = Math.min(Math.abs(dx) > 0.01 ? bw / Math.abs(dx) : 1e9, Math.abs(dy) > 0.01 ? bh / Math.abs(dy) : 1e9);
     const x1 = cx + dx * tt * 1.08, y1 = cy + dy * tt * 1.08;
