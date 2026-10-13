@@ -5,7 +5,7 @@ const { chromium } = require('../store-assets/node_modules/playwright');
 const fs = require('fs');
 const path = require('path');
 
-const SETS = { appstore: { w: 1320, h: 2868 }, play: { w: 1080, h: 1920 } };
+const SETS = { appstore: { w: 1320, h: 2868 }, 'appstore-6.3': { w: 1206, h: 2622 }, play: { w: 1080, h: 1920 } };
 const COUNT = 8;
 
 (async () => {
