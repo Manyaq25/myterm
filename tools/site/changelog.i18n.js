@@ -36,10 +36,18 @@ module.exports = {
     ctaText: 'Ücretsiz indir, ilk işini bir dakikada ekle.',
     entries: [
       {
+        version: '1.1.2',
+        date: 'Ekim 2026',
+        title: 'Daha sağlam açılış',
+        latest: true,
+        items: [
+          ['🛠️', 'Kararlılık', 'Uygulamanın nadiren açılışta kapanmasına yol açan bir hata giderildi. Yeni güncellemeler artık bir sonraki açılışta sessizce devreye giriyor.'],
+        ],
+      },
+      {
         version: '1.1',
         date: 'Ekim 2026',
         title: 'Hatırlatmaları uygulamayı açmadan hallet',
-        latest: true,
         items: [
           ['🔔', 'Bildirimden hallet', 'Hatırlatma geldiğinde uygulamayı açmadan “Tamamlandı”, “1 saat ertele” ya da “Yarın” seçebilirsin.'],
           ['💬', 'Karşı tarafa hatırlat', 'Biri sana verdiği sözü unuttuysa yapay zekâ ona kibar bir hatırlatma mesajı yazar (samimi, resmi ya da kısa). Sen de WhatsApp veya SMS ile gönderirsin.'],
@@ -100,10 +108,18 @@ module.exports = {
     ctaText: 'Download free and add your first task in a minute.',
     entries: [
       {
+        version: '1.1.2',
+        date: 'October 2026',
+        title: 'Steadier start-up',
+        latest: true,
+        items: [
+          ['🛠️', 'Stability', 'Fixed a bug that could occasionally close the app right after opening. New updates now apply quietly the next time you open the app.'],
+        ],
+      },
+      {
         version: '1.1',
         date: 'October 2026',
         title: 'Handle reminders without opening the app',
-        latest: true,
         items: [
           ['🔔', 'Act from the notification', 'When a reminder arrives, choose “Done”, “Snooze 1 hour” or “Tomorrow” without opening the app.'],
           ['💬', 'Nudge the other person', 'If someone forgot what they promised you, AI writes a polite reminder (friendly, formal or short). You send it via WhatsApp or SMS.'],
