@@ -164,3 +164,4 @@ Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:i
 - Sentry REACT-NATIVE-2: iOS'ta açılıştan ~6 sn sonra çökme. Sebep: OTA indirilince `Updates.reloadAsync()` ile anında yeniden başlatma → expo-modules-core `SharedObjectRegistry.clear` çöküşü. Anında yeniden başlatma kaldırıldı; güncelleme bir sonraki açılışta devreye girer.
 - iOS build 16 TestFlight'a, Android dahili teste gönderildi (Claude, karar A; Expo network secret ilk kez çalıştı, `EXPO_TOKEN=dummy` ile). Canlıya alma kullanıcıda.
 - Not: Bu tür hatalar için 1.1.1 kullanıcılarına OTA gönderilmedi; eski kod yine anında yeniden başlatacağından risk taşır.
+- 13 Ekim: Play'de 1.1.2 üretim + yeni telefon ekran görüntüleri (play/ 1080x1920) incelemeye gönderildi. Yönetilen yayınlama açık: onaydan sonra Yayın özeti → "Yayınla" kullanıcı tarafından basılmalı. App Store'da 1.1.2'ye 1206x2622 görseller yüklendi (iPhone medium display bölümü 1320x2868 kabul etmiyor).
