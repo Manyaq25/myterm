@@ -3,7 +3,7 @@
     "name": "Synvia AI",
     "slug": "benim-yerime-takip-et",
     "scheme": "benim-yerime-takip-et",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
