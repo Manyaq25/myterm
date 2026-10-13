@@ -171,3 +171,4 @@ Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:i
 - 11 dil (en, de, fr, es, it, pt, ru, ar, ja, ko, zh) uygulamanın web sürümünden gerçek arayüzle çekildi: `promo/screenshots/` (README'de adımlar).
 - App Store'da 1.1.2 incelemede olduğu için görseller bir sonraki sürümde yüklenecek (mağaza işleri kurulumu yapılırsa Claude yükler). nl (Hollandaca) → en görselleri.
 - Fark edilen arayüz sorunu: Almanca/Rusça gibi uzun dillerde alt menüdeki sekme yazıları ("Smart hinzufügen", "Умное добавление") üst üste biniyor; ayrıca bazı tür etiketleri ("Versprochen, das ich gegeben habe") kartlarda tarihi sıkıştırıyor. Kısa etiket ya da tek satır kısaltma ile düzeltilecek.
+- 14 Ekim: App Store 1.1.2 onaylandı ve kullanıcı yayınladı ("Release This Version"). Google Play 1.1.2 de yayında. Yeni dil görselleri bir sonraki sürümde yüklenecek.
