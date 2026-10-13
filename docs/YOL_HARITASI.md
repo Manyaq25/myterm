@@ -159,3 +159,8 @@ Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:i
 - **9 Ekim 2026: Android 1.1.1 (6) üretim incelemesine gönderildi** (5 numaralı derleme fotoğraf izni yüzünden geri çekildi) (yönetilen yayınlama açık; dahili testte de yayında). Ayrıntılar ve Play önerileri: `docs/magaza/google-play-yayin.md`.
 - **Google Play üretim erişimi 8 Ekim 2026'da onaylandı.** Adımlar, sürüm notu, mağaza metni ve Android test listesi: `docs/magaza/google-play-yayin.md`. Karar: inceleme uzun sürebileceği için önce incelemeye gönderilecek ("Yönetilen yayınlama" açık, onaydan sonra elle yayın), test Android telefon temin edilince dahili testten yapılacak. Yayına girince sitedeki "Google Play — Yakında" düğmesi güncellenecek.
 - **Karar (8 Ekim):** Widget ve Siri şimdilik bekliyor, ileride ayrı bir çalışmayla ele alınacak (Android yayınından bağımsız).
+
+## 1.1.2 (13 Ekim) — açılış çökmesi düzeltmesi
+- Sentry REACT-NATIVE-2: iOS'ta açılıştan ~6 sn sonra çökme. Sebep: OTA indirilince `Updates.reloadAsync()` ile anında yeniden başlatma → expo-modules-core `SharedObjectRegistry.clear` çöküşü. Anında yeniden başlatma kaldırıldı; güncelleme bir sonraki açılışta devreye girer.
+- iOS build 16 TestFlight'a, Android dahili teste gönderildi (Claude, karar A; Expo network secret ilk kez çalıştı, `EXPO_TOKEN=dummy` ile). Canlıya alma kullanıcıda.
+- Not: Bu tür hatalar için 1.1.1 kullanıcılarına OTA gönderilmedi; eski kod yine anında yeniden başlatacağından risk taşır.
