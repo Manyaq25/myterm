@@ -166,3 +166,8 @@ Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:i
 - Not: Bu tür hatalar için 1.1.1 kullanıcılarına OTA gönderilmedi; eski kod yine anında yeniden başlatacağından risk taşır.
 - 13 Ekim: Play'de 1.1.2 üretim + yeni telefon ekran görüntüleri (play/ 1080x1920) incelemeye gönderildi. Yönetilen yayınlama açık: onaydan sonra Yayın özeti → "Yayınla" kullanıcı tarafından basılmalı. App Store'da 1.1.2'ye 1206x2622 görseller yüklendi (iPhone medium display bölümü 1320x2868 kabul etmiyor).
 - Onay gelince yapılacak: siteyi güncelle (Yenilikler sayfasına 1.1.2 "hata düzeltmeleri ve kararlılık", gerekirse yeni ekran görüntüleri); Play mağaza ayarlarındaki web sitesi adresini aydinapp.com.tr destek sayfasıyla değiştirmeyi öner.
+
+## Diğer dillerin mağaza görselleri (13 Ekim)
+- 11 dil (en, de, fr, es, it, pt, ru, ar, ja, ko, zh) uygulamanın web sürümünden gerçek arayüzle çekildi: `promo/screenshots/` (README'de adımlar).
+- App Store'da 1.1.2 incelemede olduğu için görseller bir sonraki sürümde yüklenecek (mağaza işleri kurulumu yapılırsa Claude yükler). nl (Hollandaca) → en görselleri.
+- Fark edilen arayüz sorunu: Almanca/Rusça gibi uzun dillerde alt menüdeki sekme yazıları ("Smart hinzufügen", "Умное добавление") üst üste biniyor; ayrıca bazı tür etiketleri ("Versprochen, das ich gegeben habe") kartlarda tarihi sıkıştırıyor. Kısa etiket ya da tek satır kısaltma ile düzeltilecek.
