@@ -34,3 +34,6 @@ npm --prefix ../.. install --no-save react-native-web@~0.21.0
 bash web/build-web.sh && node web/serve.js $TMPDIR/synvia-web/webdist &
 node web/capture.js en && node web/make-i18n.js && node render.js en
 ```
+
+Not: Rusça için uygulama yazı tipine Kiril harfi yok; capture.js Noto Sans'ı `/_fonts` üzerinden ekler
+(woff dosyalarını derleme klasörünün `_fonts/` alt klasörüne kopyala).

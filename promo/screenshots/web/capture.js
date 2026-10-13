@@ -62,6 +62,13 @@ function noteSpecs(c, L) {
     if (only && !name.startsWith(only)) continue;
     const ctx = await b.newContext({ viewport: { width: 402, height: 874 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true, locale: lang });
     await ctx.addInitScript(([lang, sd, demo]) => { localStorage.setItem('ss_onboardingSeen', 'true'); localStorage.setItem('ss_appLanguage', lang); globalThis.__SEED__ = sd; if (demo) globalThis.__DEMO_AI__ = demo; }, [lang, seed(c), s.demo || null]);
+    // Plus Jakarta Sans'ta Kiril harfi yok; telefondaki gibi düz (sans) bir yazı tipine düşsün diye
+    // aynı aile adlarına Kiril aralığı için Noto Sans eklenir (dosyalar sunucunun /_fonts klasöründe).
+    await ctx.addInitScript(() => {
+      const fams = { PlusJakartaSans_400Regular: 400, PlusJakartaSans_500Medium: 500, PlusJakartaSans_600SemiBold: 600, PlusJakartaSans_700Bold: 700, PlusJakartaSans_800ExtraBold: 700, SpaceGrotesk_600SemiBold: 600, SpaceGrotesk_700Bold: 700 };
+      const css = Object.entries(fams).map(([f, w]) => ['cyrillic', 'cyrillic-ext'].map((sub) => `@font-face{font-family:'${f}';src:url('/_fonts/noto-sans-${sub}-${w}-normal.woff') format('woff');unicode-range:${sub === 'cyrillic' ? 'U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116' : 'U+0460-052F,U+1C80-1C88,U+20B4,U+2DE0-2DFF,U+A640-A69F'};}`).join('')).join('');
+      document.addEventListener('DOMContentLoaded', () => { const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st); });
+    });
     await ctx.route('**/api/assistant', (r) => r.fulfill({ contentType: 'application/json', body: JSON.stringify({ answer: c.answer }) }));
     const p = await ctx.newPage();
     p.on('pageerror', (e) => console.log(name, 'E', e.message.slice(0, 150)));
