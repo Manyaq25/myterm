@@ -53,7 +53,7 @@ window.I18N = {
     "Ask in one tap"
    ],
    [
-    "Record your voice",
+    "Just record",
     "Turned into text",
     "Date & person, automatic"
    ],
@@ -62,7 +62,7 @@ window.I18N = {
     "AI answers"
    ],
    [
-    "Snooze in one tap",
+    "Quick snooze",
     "For regular tasks",
     "AI writes the message"
    ],
@@ -134,7 +134,7 @@ window.I18N = {
     "Mit einem Tipp fragen"
    ],
    [
-    "Sprachnotiz aufnehmen",
+    "Aufnehmen",
     "Wird zu Text",
     "Datum & Person automatisch"
    ],
@@ -143,8 +143,8 @@ window.I18N = {
     "Die KI antwortet"
    ],
    [
-    "Mit einem Tipp verschieben",
-    "Für wiederkehrende Aufgaben",
+    "Schnell verschieben",
+    "Für Routinen",
     "KI schreibt die Nachricht"
    ],
    [
@@ -152,7 +152,7 @@ window.I18N = {
     "Links wischen: löschen"
    ],
    [
-    "Mit einem Tipp erreichen",
+    "Direkt erreichen",
     "Eure gemeinsame Historie"
    ],
    [
@@ -215,7 +215,7 @@ window.I18N = {
     "Demandez en un geste"
    ],
    [
-    "Enregistrez votre voix",
+    "Enregistrez",
     "Transformé en texte",
     "Date et personne auto"
    ],
@@ -224,8 +224,8 @@ window.I18N = {
     "L’IA répond"
    ],
    [
-    "Reporter en un geste",
-    "Pour les tâches régulières",
+    "Reporter vite",
+    "Tâches régulières",
     "L’IA écrit le message"
    ],
    [
@@ -305,8 +305,8 @@ window.I18N = {
     "La IA responde"
    ],
    [
-    "Pospón con un toque",
-    "Para tareas periódicas",
+    "Pospón rápido",
+    "Tareas periódicas",
     "La IA escribe el mensaje"
    ],
    [
@@ -386,8 +386,8 @@ window.I18N = {
     "L’IA risponde"
    ],
    [
-    "Rimanda con un tocco",
-    "Per le attività ricorrenti",
+    "Rimanda subito",
+    "Attività ricorrenti",
     "L’IA scrive il messaggio"
    ],
    [
@@ -467,8 +467,8 @@ window.I18N = {
     "A IA responde"
    ],
    [
-    "Adie com um toque",
-    "Para tarefas recorrentes",
+    "Adie rápido",
+    "Tarefas recorrentes",
     "A IA escreve a mensagem"
    ],
    [
@@ -548,7 +548,7 @@ window.I18N = {
     "ИИ отвечает"
    ],
    [
-    "Отложить в одно касание",
+    "Быстро отложить",
     "Для регулярных дел",
     "ИИ пишет сообщение"
    ],
@@ -557,7 +557,7 @@ window.I18N = {
     "Влево: удалить"
    ],
    [
-    "Связаться в одно касание",
+    "Связаться сразу",
     "Ваша общая история"
    ],
    [

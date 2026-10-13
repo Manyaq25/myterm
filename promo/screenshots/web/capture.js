@@ -28,11 +28,11 @@ function noteSpecs(c, L) {
   return [
     [{ img: 1, pick: (r) => ({ t: [r.l + 4, r.cy - 30], l: [r.l - 55, r.cy - 75] }) }, { check: 1, pick: (r) => ({ t: [r.r + 2, r.cy], l: [r.r + 230, r.cy - 45] }) }],
     [{ text: tx('home.overdueSectionTitle'), pick: (r) => ({ t: [r.r + 6, r.cy], l: [r.r + 110, r.cy] }) }, { skip: 1 }],
-    [{ text: tx('aiCikar.recordAgain'), pick: (r) => ({ t: [r.r + 4, r.cy], l: [r.r + 60, r.cy - 55] }) },
+    [{ text: tx('aiCikar.recordAgain'), pick: (r) => ({ t: [r.r + 4, r.cy], l: [r.r + 80, r.cy] }) },
      { text: tx('aiCikar.transcriptLabel'), pick: (r) => ({ t: [r.r + 60, r.b + 20], l: [r.r + 200, r.t - 16] }) },
      { text: '12:00', last: 1, pick: (r) => ({ t: [r.cx, r.b + 4], l: [r.cx + 70, r.b + 78] }) }],
     [{ text: c.question, pick: (r) => ({ t: [r.l - 16, r.cy], l: [r.l - 70, r.cy] }) }, { text: c.answer.split('\n')[0].slice(0, 12), deep: 1, pick: (r) => ({ t: [r.cx, r.b + 18], l: [r.cx + 30, r.b + 55] }) }],
-    [{ text: tx('takipDetay.snoozeHour'), pick: (r) => ({ t: [r.r + 6, r.cy], l: [r.r + 90, r.cy] }) },
+    [{ text: tx('takipDetay.snoozeHour'), pick: (r) => ({ t: [r.cx, r.b + 4], l: [r.cx + 70, r.b + 24] }) },
      { text: tx('recurrence.label'), pick: (r) => ({ t: [r.r + 6, r.cy + 6], l: [r.r + 165, r.cy - 10] }) },
      { text: tx('remindMessage.button'), pick: (r) => ({ t: [r.r + 6, r.cy], l: [r.r + 95, r.cy - 30] }) }],
     [{ text: tx('followUpCard.completeSwipe'), pick: (r) => ({ t: [r.cx, r.cy - 30], l: [r.cx + 131, r.cy - 84] }) }, { text: tx('common.delete'), pick: (r) => ({ t: [r.cx, r.cy + 30], l: [r.cx - 143, r.cy + 84] }) }],
@@ -102,8 +102,11 @@ function noteSpecs(c, L) {
         return { x: r.x, y: r.y, width: r.width, height: r.height };
       }, { text: sp.text, img: sp.img, check: sp.check, last: sp.last, deep: sp.deep });
       if (!box) { console.log(name, 'not bulunamadı', sp.text || (sp.img ? 'img' : 'check')); notePos[si].push(null); continue; }
-      const R = { l: box.x, r: box.x + box.width, t: box.y, b: box.y + box.height, cx: box.x + box.width / 2, cy: box.y + box.height / 2 };
-      const { t, l } = sp.pick(R); notePos[si].push([l[0], l[1], t[0], t[1]].map(Math.round));
+      // Arapça (sağdan sola) arayüzde kurallar aynalanır: kutu aynalanır, sonuç geri aynalanır.
+      const M = c.rtl ? (x) => 402 - x : (x) => x;
+      const X1 = M(box.x), X2 = M(box.x + box.width);
+      const R = { l: Math.min(X1, X2), r: Math.max(X1, X2), t: box.y, b: box.y + box.height, cx: M(box.x + box.width / 2), cy: box.y + box.height / 2 };
+      const { t, l } = sp.pick(R); notePos[si].push([M(l[0]), l[1], M(t[0]), t[1]].map(Math.round));
     }
     console.log('ok', name);
     await ctx.close();
