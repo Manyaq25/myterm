@@ -3,6 +3,7 @@
 Son güncelleme: 6 Ekim 2026 (1.1.1: kalan yerel modüller tek build'de)
 
 ## Kalıcı kurallar
+- **Mağaza görselleri (14 Ekim dersi):** App Store'a görsel yüklerken önce "View All Sizes in Media Manager" ile tüm boyutlara bakılır; "Using Existing Assets" yazan bölüm başka bir boyuttan alıyor demektir. Büyük ekran (6.9", 1320×2868) ve orta ekran (6.3", 1206×2622) ikisi de güncellenir; kullanıcının telefonu 16 Pro Max (büyük ekran). 1.1.2'de sadece orta ekran güncellendi, 6.9" bir sonraki sürümde.
 - **Yeni kullanıcı gözüyle yaz (7 Ekim):** Site, mağaza ve uygulama metinleri uygulamayı hiç bilmeyen biri için yazılır. Kısaltma ve iç terim kullanılmaz ("takip maddesi", "çıkarım", "içgörü", geliştirici terimleri); her özellik "bu ne, bana ne faydası var" sorusunu örnekle cevaplar.
 
 - **Güncelleme notları:** Belirgin bir yenilik yoksa genel ifade kullanılır ("Performans ve kararlılık iyileştirmeleri yapıldı"). Düzeltilen hatalar tek tek sayılmaz.
