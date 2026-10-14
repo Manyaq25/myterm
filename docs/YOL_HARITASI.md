@@ -173,3 +173,5 @@ Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:i
 - App Store'da 1.1.2 incelemede olduğu için görseller bir sonraki sürümde yüklenecek (mağaza işleri kurulumu yapılırsa Claude yükler). nl (Hollandaca) → en görselleri.
 - Fark edilen arayüz sorunu: Almanca/Rusça gibi uzun dillerde alt menüdeki sekme yazıları ("Smart hinzufügen", "Умное добавление") üst üste biniyor; ayrıca bazı tür etiketleri ("Versprochen, das ich gegeben habe") kartlarda tarihi sıkıştırıyor. Kısa etiket ya da tek satır kısaltma ile düzeltilecek.
 - 14 Ekim: App Store 1.1.2 onaylandı ve kullanıcı yayınladı ("Release This Version"). Google Play 1.1.2 de yayında. Yeni dil görselleri bir sonraki sürümde yüklenecek.
+- 14 Ekim: Kullanıcı yeni Apple Developer sözleşmesini ve Paid Applications Schedule'ı onayladı (son tarih 13 Kasım'dı).
+- Bekleyenler (Apple): Nisan 2027'den itibaren iPhone Duo ekran görüntüleri zorunlu (iOS 27.1 SDK ile); bir sonraki sürümde yaş derecelendirmesindeki yeni sosyal medya sorularına "Hayır" cevabı (uygulamada sosyal özellik yok).
