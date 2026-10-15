@@ -332,7 +332,8 @@
       "aiExtractionUnlimited": "Uso dell'IA illimitato (estrazione, assistente, promemoria via messaggio)",
       "smartReminders": "Suggerimenti di promemoria intelligenti",
       "personInsights": "Riepiloghi sugli schemi relazionali",
-      "widgetSiri": "Widget e scorciatoie Siri"
+      "widgetSiri": "Widget e scorciatoie Siri",
+      "homeWidget": "Widget per la schermata Home"
     },
     "planMonthly": "Mensile",
     "planYearly": "Annuale",
@@ -445,5 +446,15 @@
     "monthly": "Ogni mese",
     "badgeA11y": "Follow-up ricorrente: {{label}}",
     "hint": "Quando lo completi, il successivo viene creato automaticamente."
+  },
+  "widget": {
+    "title": "Synvia AI",
+    "overdue": "in ritardo",
+    "open": "aperti",
+    "waiting": "in attesa",
+    "empty": "Tutto a posto 🎉",
+    "lockedTitle": "Widget Premium",
+    "lockedBody": "I tuoi promemoria nella schermata Home.",
+    "lockedCta": "Passa a Premium"
   }
 }

@@ -332,7 +332,8 @@
       "aiExtractionUnlimited": "Sınırsız AI kullanımı (çıkarım, asistan, mesajla hatırlat)",
       "smartReminders": "Akıllı hatırlatma önerileri",
       "personInsights": "İlişki içgörüsü özetleri",
-      "widgetSiri": "Widget ve Siri kısayolları"
+      "widgetSiri": "Widget ve Siri kısayolları",
+      "homeWidget": "Ana ekran widget'ı"
     },
     "planMonthly": "Aylık",
     "planYearly": "Yıllık",
@@ -445,5 +446,15 @@
     "monthly": "Her ay",
     "badgeA11y": "Tekrarlayan takip: {{label}}",
     "hint": "Tamamlayınca bir sonraki otomatik oluşur."
+  },
+  "widget": {
+    "title": "Synvia AI",
+    "overdue": "gecikmiş",
+    "open": "açık",
+    "waiting": "bekliyorum",
+    "empty": "Listen temiz 🎉",
+    "lockedTitle": "Widget Premium’a özel",
+    "lockedBody": "Takiplerini ana ekranda gör.",
+    "lockedCta": "Premium’a geç"
   }
 }

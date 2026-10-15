@@ -332,7 +332,8 @@
       "aiExtractionUnlimited": "AIを無制限に利用（抽出・アシスタント・メッセージでリマインド）",
       "smartReminders": "スマートリマインダー提案",
       "personInsights": "関係性インサイトの要約",
-      "widgetSiri": "ウィジェットとSiriショートカット"
+      "widgetSiri": "ウィジェットとSiriショートカット",
+      "homeWidget": "ホーム画面ウィジェット"
     },
     "planMonthly": "月額",
     "planYearly": "年額",
@@ -445,5 +446,15 @@
     "monthly": "毎月",
     "badgeA11y": "繰り返しのフォローアップ：{{label}}",
     "hint": "完了すると次の分が自動で作成されます。"
+  },
+  "widget": {
+    "title": "Synvia AI",
+    "overdue": "期限切れ",
+    "open": "未完了",
+    "waiting": "待ち",
+    "empty": "すべて完了 🎉",
+    "lockedTitle": "ウィジェットはPremium",
+    "lockedBody": "ホーム画面でフォローアップを確認。",
+    "lockedCta": "Premiumにする"
   }
 }

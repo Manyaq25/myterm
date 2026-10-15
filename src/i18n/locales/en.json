@@ -332,7 +332,8 @@
       "aiExtractionUnlimited": "Unlimited AI use (extraction, assistant, remind by message)",
       "smartReminders": "Smart reminder suggestions",
       "personInsights": "Relationship insight summaries",
-      "widgetSiri": "Widget and Siri shortcuts"
+      "widgetSiri": "Widget and Siri shortcuts",
+      "homeWidget": "Home Screen widget"
     },
     "planMonthly": "Monthly",
     "planYearly": "Yearly",
@@ -445,5 +446,15 @@
     "monthly": "Every month",
     "badgeA11y": "Repeating follow-up: {{label}}",
     "hint": "When you complete it, the next one is created automatically."
+  },
+  "widget": {
+    "title": "Synvia AI",
+    "overdue": "overdue",
+    "open": "open",
+    "waiting": "waiting",
+    "empty": "All clear 🎉",
+    "lockedTitle": "Widget is Premium",
+    "lockedBody": "See your follow-ups on your Home Screen.",
+    "lockedCta": "Go Premium"
   }
 }

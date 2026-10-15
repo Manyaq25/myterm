@@ -332,7 +332,8 @@
       "aiExtractionUnlimited": "استخدام غير محدود للذكاء الاصطناعي (الاستخراج، المساعد، التذكير برسالة)",
       "smartReminders": "اقتراحات تذكير ذكية",
       "personInsights": "ملخصات رؤى العلاقات",
-      "widgetSiri": "الودجت واختصارات Siri"
+      "widgetSiri": "الودجت واختصارات Siri",
+      "homeWidget": "أداة الشاشة الرئيسية"
     },
     "planMonthly": "شهري",
     "planYearly": "سنوي",
@@ -445,5 +446,15 @@
     "monthly": "كل شهر",
     "badgeA11y": "متابعة متكررة: {{label}}",
     "hint": "عند إكمالها تُنشأ التالية تلقائيًا."
+  },
+  "widget": {
+    "title": "Synvia AI",
+    "overdue": "متأخرة",
+    "open": "مفتوحة",
+    "waiting": "بانتظار",
+    "empty": "كل شيء منجز 🎉",
+    "lockedTitle": "الأداة متاحة في Premium",
+    "lockedBody": "شاهد متابعاتك على الشاشة الرئيسية.",
+    "lockedCta": "اشترك في Premium"
   }
 }

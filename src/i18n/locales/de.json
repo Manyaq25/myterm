@@ -332,7 +332,8 @@
       "aiExtractionUnlimited": "Unbegrenzte KI-Nutzung (Extraktion, Assistent, Erinnern per Nachricht)",
       "smartReminders": "Intelligente Erinnerungsvorschläge",
       "personInsights": "Zusammenfassungen zu Beziehungsmustern",
-      "widgetSiri": "Widget und Siri-Kurzbefehle"
+      "widgetSiri": "Widget und Siri-Kurzbefehle",
+      "homeWidget": "Home-Bildschirm-Widget"
     },
     "planMonthly": "Monatlich",
     "planYearly": "Jährlich",
@@ -445,5 +446,15 @@
     "monthly": "Jeden Monat",
     "badgeA11y": "Wiederkehrender Vorgang: {{label}}",
     "hint": "Wenn du ihn erledigst, wird der nächste automatisch erstellt."
+  },
+  "widget": {
+    "title": "Synvia AI",
+    "overdue": "überfällig",
+    "open": "offen",
+    "waiting": "wartend",
+    "empty": "Alles erledigt 🎉",
+    "lockedTitle": "Widget mit Premium",
+    "lockedBody": "Deine Vorgänge auf dem Home-Bildschirm.",
+    "lockedCta": "Premium holen"
   }
 }

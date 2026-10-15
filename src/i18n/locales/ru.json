@@ -332,7 +332,8 @@
       "aiExtractionUnlimited": "Безлимитное использование ИИ (извлечение, ассистент, напоминание сообщением)",
       "smartReminders": "Умные напоминания",
       "personInsights": "Сводки по анализу отношений",
-      "widgetSiri": "Виджет и ярлыки Siri"
+      "widgetSiri": "Виджет и ярлыки Siri",
+      "homeWidget": "Виджет на экране «Домой»"
     },
     "planMonthly": "Ежемесячно",
     "planYearly": "Ежегодно",
@@ -445,5 +446,15 @@
     "monthly": "Каждый месяц",
     "badgeA11y": "Повторяющаяся задача: {{label}}",
     "hint": "Когда вы её выполните, следующая создастся автоматически."
+  },
+  "widget": {
+    "title": "Synvia AI",
+    "overdue": "просрочено",
+    "open": "открыто",
+    "waiting": "жду",
+    "empty": "Всё сделано 🎉",
+    "lockedTitle": "Виджет — в Premium",
+    "lockedBody": "Ваши задачи на экране «Домой».",
+    "lockedCta": "Перейти на Premium"
   }
 }

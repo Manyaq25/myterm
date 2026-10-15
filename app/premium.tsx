@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import type { PurchasesPackage } from 'react-native-purchases';
@@ -27,7 +27,8 @@ const ROWS: ComparisonRow[] = [
   { key: 'aiExtractionUnlimited', free: false, premium: true },
   { key: 'smartReminders', free: false, premium: true },
   { key: 'personInsights', free: false, premium: true },
-  // widgetSiri: widget/Siri eklentileri build'den çıkarıldı (targets/, YOL_HARITASI); geri gelince satır eklenecek.
+  // Ana ekran widget'ı yalnızca iPhone'da (targets/widget); Siri henüz yok.
+  ...(Platform.OS === 'ios' ? [{ key: 'homeWidget', free: false, premium: true }] : []),
 ];
 
 export default function PremiumScreen() {

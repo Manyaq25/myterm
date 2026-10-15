@@ -1,94 +1,67 @@
 import { Platform } from 'react-native';
 import type { SQLiteDatabase } from 'expo-sqlite';
 import { ExtensionStorage } from '@bacons/apple-targets';
+import i18n from '../i18n';
 import { listFollowUps } from '../db/queries';
 import { isOverdue } from '../utils/date';
-import { groupFollowUpsByPerson } from '../utils/grouping';
 import { isPremiumNow } from './subscription';
-import type { FollowUpWithPerson } from '../types';
 
 // app.json'daki ios.entitlements ve targets/widget/expo-target.config.js ile
 // aynı App Group olmalı.
 const APP_GROUP = 'group.com.manyaq25.benimyerimetakipet';
-
-function buildTodaySummary(items: FollowUpWithPerson[]): string {
-  const endOfToday = new Date();
-  endOfToday.setHours(23, 59, 59, 999);
-  const relevant = items
-    .filter((i) => i.dueAt !== null && i.dueAt <= endOfToday.getTime())
-    .sort((a, b) => a.dueAt! - b.dueAt!);
-  if (relevant.length === 0) return 'Bugün için unutman gereken bir şey yok, listen temiz.';
-
-  const overdueCount = relevant.filter((i) => isOverdue(i.dueAt)).length;
-  const lines = relevant.slice(0, 5).map((i) => (i.personName ? `${i.title} (${i.personName})` : i.title));
-  const intro =
-    overdueCount > 0
-      ? `${relevant.length} maddeyi unutmamalısın, ${overdueCount} tanesi gecikmiş: `
-      : `Bugün ${relevant.length} maddeyi unutmamalısın: `;
-  return intro + lines.join(', ') + (relevant.length > 5 ? ' ve daha fazlası.' : '.');
-}
-
-function buildGroupedSummary(
-  items: FollowUpWithPerson[],
-  emptyText: string,
-  introFor: (count: number) => string,
-  unitLabel: string
-): string {
-  if (items.length === 0) return emptyText;
-  const groups = groupFollowUpsByPerson(items);
-  const lines = groups.map((g) => `${g.personName}: ${g.items.length} ${unitLabel}`);
-  return introFor(groups.length) + lines.join(', ') + '.';
-}
-
-const PREMIUM_TEASER = 'Widget ve Siri kısayolları Premium özelliğidir. Ayarlar > Abonelik üzerinden aktifleştirebilirsin.';
+const MAX_ITEMS = 4;
 
 /**
- * iOS Home Screen widget'ının ve Siri App Intent'lerinin okuduğu özeti
- * App Group üzerinden paylaşılan depoya yazar. Expo Go'da veya native
- * modülün henüz derlenmediği bir build'de bu no-op olarak çalışır (hata
- * fırlatmaz). Premium olmayan kullanıcılar için gerçek veri yerine bir
- * tanıtım metni yazılır — widget/Siri native tarafta koşulsuz her zaman
- * etkin olduğundan, "premium'a kapatma" burada verinin kendisi üzerinden
- * yapılıyor.
+ * iOS ana ekran widget'ının okuduğu veriyi App Group üzerinden paylaşılan
+ * depoya JSON metni olarak yazar (anahtar: "widget"). Widget metinleri de burada, uygulamanın
+ * dilinde hazırlanır; Swift tarafı yalnızca gösterir. Widget Premium özelliği:
+ * Premium olmayanlarda yalnızca kilitli tanıtım görünümü için metinler yazılır,
+ * gerçek veri yazılmaz. Expo Go'da veya widget'sız bir build'de no-op.
  */
 export async function updateWidgetSummary(db: SQLiteDatabase): Promise<void> {
   if (Platform.OS !== 'ios') return;
-
-  if (!isPremiumNow()) {
+  try {
+    const t = i18n.t.bind(i18n);
+    const labels = {
+      title: t('widget.title'),
+      overdue: t('widget.overdue'),
+      open: t('widget.open'),
+      waiting: t('widget.waiting'),
+      empty: t('widget.empty'),
+      lockedTitle: t('widget.lockedTitle'),
+      lockedBody: t('widget.lockedBody'),
+      lockedCta: t('widget.lockedCta'),
+    };
     const storage = new ExtensionStorage(APP_GROUP);
-    storage.set('summary', { critical: 0, total: 0, waitingOn: 0 });
-    storage.set('siriTodaySummary', PREMIUM_TEASER);
-    storage.set('siriWaitingOnSummary', PREMIUM_TEASER);
-    storage.set('siriPromisedSummary', PREMIUM_TEASER);
+
+    if (!isPremiumNow()) {
+      storage.set('widget', JSON.stringify({ premium: false, labels, overdue: 0, open: 0, waiting: 0, items: [] }));
+      ExtensionStorage.reloadWidget();
+      return;
+    }
+
+    const all = await listFollowUps(db, ['open', 'snoozed']);
+    // Önce gecikenler, sonra tarihi en yakın olanlar, tarihsizler en sonda.
+    const sorted = [...all].sort((a, b) => (a.dueAt ?? Infinity) - (b.dueAt ?? Infinity));
+    const items = sorted.slice(0, MAX_ITEMS).map((i) => ({
+      id: i.id,
+      title: i.title,
+      person: i.personName ?? '',
+      overdue: isOverdue(i.dueAt),
+    }));
+    storage.set(
+      'widget',
+      JSON.stringify({
+        premium: true,
+        labels,
+        overdue: all.filter((i) => isOverdue(i.dueAt)).length,
+        open: all.length,
+        waiting: all.filter((i) => i.type === 'waiting_on').length,
+        items,
+      })
+    );
     ExtensionStorage.reloadWidget();
-    return;
+  } catch {
+    // Widget hedefi bu build'de yoksa (Expo Go vb.) sessizce geç.
   }
-
-  const items = await listFollowUps(db, ['open', 'snoozed']);
-  const critical = items.filter((i) => isOverdue(i.dueAt)).length;
-  const waitingOnItems = items.filter((i) => i.type === 'waiting_on');
-  const promisedItems = items.filter((i) => i.type === 'promise_made');
-
-  const storage = new ExtensionStorage(APP_GROUP);
-  storage.set('summary', { critical, total: items.length, waitingOn: waitingOnItems.length });
-  storage.set('siriTodaySummary', buildTodaySummary(items));
-  storage.set(
-    'siriWaitingOnSummary',
-    buildGroupedSummary(
-      waitingOnItems,
-      'Şu an kimseden bir şey beklemiyorsun.',
-      (count) => `${count} kişiden bir şeyler bekliyorsun — `,
-      'madde'
-    )
-  );
-  storage.set(
-    'siriPromisedSummary',
-    buildGroupedSummary(
-      promisedItems,
-      'Şu an kimseye açık bir sözün yok.',
-      (count) => `${count} kişiye söz verdin — `,
-      'söz'
-    )
-  );
-  ExtensionStorage.reloadWidget();
 }

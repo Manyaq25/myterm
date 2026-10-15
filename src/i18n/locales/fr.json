@@ -332,7 +332,8 @@
       "aiExtractionUnlimited": "Utilisation de l'IA illimitée (extraction, assistant, relance par message)",
       "smartReminders": "Suggestions de rappels intelligents",
       "personInsights": "Résumés d'insights relationnels",
-      "widgetSiri": "Widget et raccourcis Siri"
+      "widgetSiri": "Widget et raccourcis Siri",
+      "homeWidget": "Widget d’écran d’accueil"
     },
     "planMonthly": "Mensuel",
     "planYearly": "Annuel",
@@ -445,5 +446,15 @@
     "monthly": "Chaque mois",
     "badgeA11y": "Suivi récurrent : {{label}}",
     "hint": "Quand tu le termines, le suivant est créé automatiquement."
+  },
+  "widget": {
+    "title": "Synvia AI",
+    "overdue": "en retard",
+    "open": "ouverts",
+    "waiting": "en attente",
+    "empty": "Tout est à jour 🎉",
+    "lockedTitle": "Widget Premium",
+    "lockedBody": "Vos suivis sur l’écran d’accueil.",
+    "lockedCta": "Passer à Premium"
   }
 }

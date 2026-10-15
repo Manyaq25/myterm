@@ -3,7 +3,7 @@
     "name": "Synvia AI",
     "slug": "benim-yerime-takip-et",
     "scheme": "benim-yerime-takip-et",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -90,7 +90,13 @@
       "./plugins/withAdjustNothingKeyboard",
       "./plugins/withoutMediaPlaybackForegroundService",
       "./plugins/withoutBroadMediaPermissions",
-      "./plugins/withAndroidBackupRules"
+      "./plugins/withAndroidBackupRules",
+      [
+        "@bacons/apple-targets",
+        {
+          "match": "widget"
+        }
+      ]
     ],
     "ios": {
       "supportsTablet": false,
@@ -168,7 +174,24 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "db715a1a-2a9d-4096-888e-7f9c672e1b40"
+        "projectId": "db715a1a-2a9d-4096-888e-7f9c672e1b40",
+        "build": {
+          "experimental": {
+            "ios": {
+              "appExtensions": [
+                {
+                  "bundleIdentifier": "com.manyaq25.benimyerimetakipet.widget",
+                  "targetName": "TakipWidget",
+                  "entitlements": {
+                    "com.apple.security.application-groups": [
+                      "group.com.manyaq25.benimyerimetakipet"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
       }
     },
     "owner": "aydinapp"

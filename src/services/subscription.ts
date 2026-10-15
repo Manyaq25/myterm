@@ -76,7 +76,8 @@ export async function configureRevenueCat(): Promise<void> {
   }
 }
 
-function subscribe(listener: () => void): () => void {
+/** Premium durumu değişince çağrılır (ör. widget'ı güncellemek için). */
+export function subscribe(listener: () => void): () => void {
   listeners.add(listener);
   return () => listeners.delete(listener);
 }

@@ -332,7 +332,8 @@
       "aiExtractionUnlimited": "AI 无限次使用（提取、助手、发消息提醒）",
       "smartReminders": "智能提醒建议",
       "personInsights": "关系洞察摘要",
-      "widgetSiri": "小组件和 Siri 快捷指令"
+      "widgetSiri": "小组件和 Siri 快捷指令",
+      "homeWidget": "主屏幕小组件"
     },
     "planMonthly": "月付",
     "planYearly": "年付",
@@ -445,5 +446,15 @@
     "monthly": "每月",
     "badgeA11y": "重复的跟进事项：{{label}}",
     "hint": "完成后会自动创建下一次。"
+  },
+  "widget": {
+    "title": "Synvia AI",
+    "overdue": "已逾期",
+    "open": "进行中",
+    "waiting": "等待中",
+    "empty": "全部完成 🎉",
+    "lockedTitle": "小组件为 Premium 功能",
+    "lockedBody": "在主屏幕查看你的跟进事项。",
+    "lockedCta": "升级 Premium"
   }
 }

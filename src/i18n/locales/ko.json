@@ -332,7 +332,8 @@
       "aiExtractionUnlimited": "AI 무제한 사용 (추출, 어시스턴트, 메시지로 알리기)",
       "smartReminders": "스마트 리마인더 제안",
       "personInsights": "관계 인사이트 요약",
-      "widgetSiri": "위젯 및 Siri 단축어"
+      "widgetSiri": "위젯 및 Siri 단축어",
+      "homeWidget": "홈 화면 위젯"
     },
     "planMonthly": "월간",
     "planYearly": "연간",
@@ -445,5 +446,15 @@
     "monthly": "매월",
     "badgeA11y": "반복 팔로우업: {{label}}",
     "hint": "완료하면 다음 항목이 자동으로 만들어져요."
+  },
+  "widget": {
+    "title": "Synvia AI",
+    "overdue": "기한 지남",
+    "open": "진행 중",
+    "waiting": "기다리는 중",
+    "empty": "모두 완료 🎉",
+    "lockedTitle": "위젯은 Premium 전용",
+    "lockedBody": "홈 화면에서 팔로우업을 확인하세요.",
+    "lockedCta": "Premium 시작"
   }
 }

@@ -98,6 +98,11 @@ export default function HomeScreen() {
 
   useDataLoader(load);
 
+  // Premium alınınca/bitince ya da dil değişince widget hemen güncellensin.
+  useEffect(() => {
+    void updateWidgetSummary(db);
+  }, [db, isPremium, i18n.language]);
+
   useEffect(() => {
     (async () => {
       if (await isOnboardingSeen()) return;
