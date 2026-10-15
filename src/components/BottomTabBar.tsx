@@ -63,14 +63,14 @@ function TabItem({
         {active ? (
           <LinearGradient colors={[colors.primary, colors.primaryText]} style={styles.jewelPill} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
             <Image source={icon} style={styles.icon3d} resizeMode="contain" />
-            <Text style={[styles.label, styles.labelActive, { color: tintColor }]} numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.8}>
+            <Text style={[styles.label, styles.labelActive, { color: tintColor }]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
               {label}
             </Text>
           </LinearGradient>
         ) : (
           <View style={styles.itemInner}>
             <Image source={icon} style={styles.icon3d} resizeMode="contain" />
-            <Text style={[styles.label, { color: tintColor }]} numberOfLines={2} adjustsFontSizeToFit minimumFontScale={0.8}>
+            <Text style={[styles.label, { color: tintColor }]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.7}>
               {label}
             </Text>
           </View>
@@ -202,7 +202,7 @@ function getStyles(colors: ThemeColors) {
     row: {
       flexDirection: 'row',
       paddingVertical: 8,
-      paddingHorizontal: 6,
+      paddingHorizontal: 2,
     },
     item: {
       flex: 1,
@@ -217,7 +217,7 @@ function getStyles(colors: ThemeColors) {
       justifyContent: 'center',
       gap: 3,
       paddingVertical: 6,
-      paddingHorizontal: 8,
+      paddingHorizontal: 2,
     },
     jewelPill: {
       maxWidth: '100%',
@@ -229,8 +229,8 @@ function getStyles(colors: ThemeColors) {
       borderRadius: 18,
     },
     icon3d: { width: 26, height: 26 },
-    // Uzun adlar (ör. "Einstellungen", "Acompanhamentos") kesilmek yerine iki satıra iner.
-    label: { fontSize: fontSize.caption, fontFamily: fontFamily.label, textAlign: 'center', lineHeight: 14 },
+    // Uzun adlar (ör. "Einstellungen", "Acompanhamentos") sığmazsa telefonda yazı küçülür (adjustsFontSizeToFit).
+    label: { fontSize: fontSize.caption, fontFamily: fontFamily.label, textAlign: 'center' },
     labelActive: { fontFamily: fontFamily.labelBold },
     fab: {
       width: 56,
