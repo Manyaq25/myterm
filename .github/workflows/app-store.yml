@@ -1,0 +1,24 @@
+# App Store Connect işleri (elle başlatılır). Anahtar: gizli değişkenler ASC_KEY_ID, ASC_KEY_P8.
+name: App Store
+
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Komut (check)'
+        default: 'check'
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install pyjwt cryptography requests
+      - env:
+          ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: python tools/store/asc.py ${{ inputs.command }}
