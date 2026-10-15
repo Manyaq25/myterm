@@ -1,0 +1,27 @@
+# Google Play telefon ekran görüntülerini store/play-screenshots/ ile değiştirir. Elle başlatılır.
+# Anahtar: depo gizli değişkeni PLAY_SERVICE_ACCOUNT_JSON (eas-submit hizmet hesabı, "Mağaza varlığını yönet" izni).
+name: Play ekran görüntüleri
+
+on:
+  workflow_dispatch:
+    inputs:
+      languages:
+        description: 'Sadece bu diller (boşluklu, ör. "de ja"); boş = hepsi'
+        default: ''
+      dry_run:
+        description: 'Deneme (göndermeden kontrol et)'
+        type: boolean
+        default: true
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install google-api-python-client google-auth
+      - env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: python tools/store/play_screenshots.py ${{ inputs.languages }} ${{ inputs.dry_run && '--dry-run' || '' }}
