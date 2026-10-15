@@ -44,7 +44,9 @@ export function TypeBadge({ type, style }: { type: FollowUpType; style?: StylePr
   return (
     <View style={[styles.badge, style]}>
       <View style={styles.dot} />
-      <Text style={styles.text}>{followUpTypeLabel(type, t)}</Text>
+      <Text style={styles.text} numberOfLines={1}>
+        {followUpTypeLabel(type, t)}
+      </Text>
     </View>
   );
 }
@@ -62,8 +64,10 @@ function getStyles(palette: BadgePalette) {
       paddingHorizontal: 10,
       paddingVertical: 5,
       borderRadius: 999,
+      flexShrink: 1,
+      maxWidth: '100%',
     },
     dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: palette.dot },
-    text: { color: palette.text, fontSize: fontSize.caption, fontFamily: fontFamily.label },
+    text: { color: palette.text, fontSize: fontSize.caption, fontFamily: fontFamily.label, flexShrink: 1 },
   });
 }

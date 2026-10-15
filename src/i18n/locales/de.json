@@ -259,7 +259,7 @@
   "bottomTabBar": {
     "add": "Hinzufügen",
     "addA11y": "Neuen Vorgang hinzufügen",
-    "smartAdd": "Smart hinzufügen",
+    "smartAdd": "KI-Eingabe",
     "smartAddA11y": "Vorgang mit KI extrahieren"
   },
   "followUpCard": {

@@ -259,7 +259,7 @@
   "bottomTabBar": {
     "add": "Добавить",
     "addA11y": "Добавить новую задачу",
-    "smartAdd": "Умное добавление",
+    "smartAdd": "Ввод с ИИ",
     "smartAddA11y": "Извлечь задачу с помощью ИИ"
   },
   "followUpCard": {

@@ -115,7 +115,7 @@ export function FollowUpCard({ item, onComplete, onDelete, selectionMode, select
             </View>
           )}
         </View>
-        <TypeBadge type={item.type} />
+        <TypeBadge type={item.type} style={styles.footerBadge} />
       </View>
     </>
   );
@@ -231,7 +231,9 @@ function getStyles(colors: ThemeColors) {
       borderTopWidth: 1,
       borderTopColor: colors.border,
     },
-    footerLeft: { flex: 1 },
+    footerLeft: { flexShrink: 0, marginRight: 8 },
+    // Tarih tam görünsün, rozet kalan yere sığsın (uzun dillerde kısalır).
+    footerBadge: { marginLeft: 'auto', flexShrink: 1 },
     dueRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
     personRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 6 },
     selectableRow: {

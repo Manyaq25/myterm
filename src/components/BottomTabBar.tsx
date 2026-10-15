@@ -59,18 +59,18 @@ function TabItem({
       accessibilityState={active ? { selected: true } : {}}
       accessibilityLabel={label}
     >
-      <Animated.View style={animatedStyle}>
+      <Animated.View style={[styles.itemAnim, animatedStyle]}>
         {active ? (
           <LinearGradient colors={[colors.primary, colors.primaryText]} style={styles.jewelPill} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
             <Image source={icon} style={styles.icon3d} resizeMode="contain" />
-            <Text style={[styles.label, styles.labelActive, { color: tintColor }]} numberOfLines={1}>
+            <Text style={[styles.label, styles.labelActive, { color: tintColor }]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75}>
               {label}
             </Text>
           </LinearGradient>
         ) : (
           <View style={styles.itemInner}>
             <Image source={icon} style={styles.icon3d} resizeMode="contain" />
-            <Text style={[styles.label, { color: tintColor }]} numberOfLines={1}>
+            <Text style={[styles.label, { color: tintColor }]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75}>
               {label}
             </Text>
           </View>
@@ -209,7 +209,10 @@ function getStyles(colors: ThemeColors) {
       alignItems: 'center',
       justifyContent: 'center',
     },
+    // Uzun dillerde (Almanca, Rusça…) yazı komşu sekmeye taşmasın: öğe genişliğiyle sınırlı.
+    itemAnim: { maxWidth: '100%' },
     itemInner: {
+      maxWidth: '100%',
       alignItems: 'center',
       justifyContent: 'center',
       gap: 3,
@@ -217,11 +220,12 @@ function getStyles(colors: ThemeColors) {
       paddingHorizontal: 8,
     },
     jewelPill: {
+      maxWidth: '100%',
       alignItems: 'center',
       justifyContent: 'center',
       gap: 3,
       paddingVertical: 6,
-      paddingHorizontal: 12,
+      paddingHorizontal: 10,
       borderRadius: 18,
     },
     icon3d: { width: 26, height: 26 },
