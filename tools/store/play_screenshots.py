@@ -4,6 +4,7 @@ GitHub Actions içinde çalışır (.github/workflows/play-screenshots.yml). Ana
 gizli değişkeninden okunur. Yalnızca Play'de zaten var olan mağaza dillerine yükler; dil kodu klasöre
 öneki ile eşlenir (de-DE -> de, pt-BR -> pt, zh-CN -> zh). Klasörü olmayan dillere en/ yüklenir.
 --dry-run: değişikliği hazırlar, hiçbir şey göndermez.
+--create-listings: store/play-listings.json'daki eksik dilleri (başlık + açıklamalar) önce ekler.
 """
 import glob
 import json
@@ -33,6 +34,14 @@ def main():
     edits = build('androidpublisher', 'v3', credentials=creds, cache_discovery=False).edits()
     edit = edits.insert(packageName=PACKAGE, body={}).execute()['id']
     try:
+        if '--create-listings' in sys.argv:
+            # store/play-listings.json'daki dillerde mağaza sayfası yoksa oluşturur (varsa dokunmaz)
+            have = {l['language'] for l in edits.listings().list(packageName=PACKAGE, editId=edit).execute().get('listings', [])}
+            for lang, body in json.load(open('store/play-listings.json', encoding='utf-8')).items():
+                if lang in have:
+                    continue
+                edits.listings().update(packageName=PACKAGE, editId=edit, language=lang, body={'language': lang, **body}).execute()
+                print('mağaza sayfası eklendi:', lang)
         listings = edits.listings().list(packageName=PACKAGE, editId=edit).execute().get('listings', [])
         langs = [l['language'] for l in listings]
         print('Play mağaza dilleri:', ', '.join(langs))

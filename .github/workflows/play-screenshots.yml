@@ -8,6 +8,10 @@ on:
       languages:
         description: 'Sadece bu diller (boşluklu, ör. "de ja"); boş = hepsi'
         default: ''
+      create_listings:
+        description: 'Eksik dillerde mağaza sayfası oluştur (store/play-listings.json)'
+        type: boolean
+        default: false
       dry_run:
         description: 'Deneme (göndermeden kontrol et)'
         type: boolean
@@ -24,4 +28,4 @@ jobs:
       - run: pip install google-api-python-client google-auth
       - env:
           PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-        run: python tools/store/play_screenshots.py ${{ inputs.languages }} ${{ inputs.dry_run && '--dry-run' || '' }}
+        run: python tools/store/play_screenshots.py ${{ inputs.languages }} ${{ inputs.dry_run && '--dry-run' || '' }} ${{ inputs.create_listings && '--create-listings' || '' }}
