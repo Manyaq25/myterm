@@ -5,6 +5,8 @@ gizli değişkeninden okunur. Yalnızca Play'de zaten var olan mağaza dillerine
 öneki ile eşlenir (de-DE -> de, pt-BR -> pt, zh-CN -> zh). Klasörü olmayan dillere en/ yüklenir.
 --dry-run: değişikliği hazırlar, hiçbir şey göndermez.
 --create-listings: store/play-listings.json'daki eksik dilleri (başlık + açıklamalar) önce ekler.
+--website=URL: mağaza iletişim bilgilerindeki web sitesini değiştirir.
+--no-screenshots: ekran görüntülerine dokunmaz.
 """
 import glob
 import json
@@ -42,9 +44,18 @@ def main():
                     continue
                 edits.listings().update(packageName=PACKAGE, editId=edit, language=lang, body={'language': lang, **body}).execute()
                 print('mağaza sayfası eklendi:', lang)
-        listings = edits.listings().list(packageName=PACKAGE, editId=edit).execute().get('listings', [])
-        langs = [l['language'] for l in listings]
-        print('Play mağaza dilleri:', ', '.join(langs))
+        site = next((a.split('=', 1)[1] for a in sys.argv if a.startswith('--website=')), None)
+        if site:
+            before = edits.details().get(packageName=PACKAGE, editId=edit).execute().get('contactWebsite')
+            edits.details().patch(packageName=PACKAGE, editId=edit, body={'contactWebsite': site}).execute()
+            print(f'web sitesi: {before} -> {site}')
+        if '--no-screenshots' in sys.argv:
+            langs = []
+        else:
+            listings = edits.listings().list(packageName=PACKAGE, editId=edit).execute().get('listings', [])
+            langs = [l['language'] for l in listings]
+        if langs:
+            print('Play mağaza dilleri:', ', '.join(langs))
         for lang in langs:
             if only and lang not in only and lang.split('-')[0] not in only:
                 continue
