@@ -1,3 +1,5 @@
+# Not: Claude'un bulut ortamı Apple API'sine erişemiyor (vekil sunucu engeli); widget gibi yeni
+# bundle ID/profil gerektiren iOS derlemeleri buradan başlatılır.
 name: EAS Build (standalone install link)
 
 on:
@@ -15,6 +17,10 @@ on:
         description: "Build profile (see eas.json)"
         required: false
         default: "preview"
+      submit:
+        description: "Bitince test kanalına gönder (TestFlight / Play dahili test)"
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -38,4 +44,4 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Build
-        run: eas build --platform "${{ github.event.inputs.platform }}" --profile "${{ github.event.inputs.profile }}" --non-interactive
+        run: eas build --platform "${{ github.event.inputs.platform }}" --profile "${{ github.event.inputs.profile }}" --non-interactive --no-wait ${{ inputs.submit && '--auto-submit' || '' }}
