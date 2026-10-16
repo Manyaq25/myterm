@@ -78,3 +78,20 @@ Gerçek yorum metinlerini (özellikle 1–3 yıldız) toplu çekmek için mağaz
 - https://mwm.ai/apps/app/6759302247
 - https://play.google.com/store/apps/details?id=dev.scarinci.chatanalyzer
 - https://play.google.com/store/apps/details?id=chat.analysis.ai
+
+## İkinci tur (16 Ekim): Narya ayrıntıları ve Şikayetvar
+Kaynak yine web araması parçaları; mağaza ve Şikayetvar sayfaları doğrudan açılamadı.
+
+- Geliştirici: Modernist Yazılım (Türk). App Store TR: 4,1 puan, ~2,4 bin değerlendirme; mwm.ai'deki 638 yazılı yorumun ortalaması 1,9 (puan yüksek, yazılı yorumlar çoğunlukla olumsuz).
+- Şikâyetlerin neredeyse hepsi para tarafında; AI kalitesi şikâyeti az.
+- Ücretsiz sürüm yalnızca 3 bilgi gösteriyor; "kişisel verini alıp sonuç için abonelik istiyor".
+- Google Play'de her dokunuşta reklam; reklamla açılan içerik sonra yeniden kilitleniyor ("etik değil").
+- Güncellemeden sonra VIP üyeler jeton sistemine geçirilmiş, ödenen hak boşa çıkmış.
+- Şikayetvar: tek seferlik sanılan satın alma haftalık aboneliğe dönmüş; beklenenden yüksek çekim; uygulamada iptal düğmesi yok; destek yalnız e-posta, yanıt yok; 260 TL, 320 TL ve 1.299 TL (yıllık) için iade alınamamış.
+- Haftalık fiyat yüksek bulunuyor; tek bir rapora ödenen para değmiyor deniyor.
+- Küçük teknik sorunlar: satın aldıktan sonra dosya/fotoğraf kabul etmeme, kaydırılamayan kesik metin.
+- Geliştirici yanıtları kalıp: "her analizin maliyeti var", puan güncelleme ricası.
+
+**Ek dersler:** ana ürün tek seferlik rapor olabilir ("1 sohbet raporu = X ₺", abonelik isteğe bağlı ve açık); satın alınmış haklara güncellemeyle dokunulmaz; uygulama içinde "Aboneliği yönet" bağlantısı ve hızlı destek (Şikayetvar sicili Türkiye'de önemli); gizlilik cümlesi ödeme ekranının yanında.
+
+Ek kaynaklar: https://www.sikayetvar.com/narya-wrapped-ai-koc · https://mwm.ai/apps/narya-wrapped-ai-coach/6740577449 · https://apps.apple.com/tr/app/narya-wrapped-ai-ko%C3%A7/id6740577449?l=tr

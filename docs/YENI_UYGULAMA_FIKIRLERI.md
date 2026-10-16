@@ -69,4 +69,5 @@ Ayrıntı: `docs/sohbet-analizi-rakip-yorumlari.md` (web aramasından, ilk tur; 
 3. Dışa aktarma sihirbazı: WhatsApp/Telegram için adım adım resimli rehber + hata mesajları; olmazsa ekran görüntüsü yolu (Synvia'daki görsel okuma).
 4. Gerçek gizlilik: istatistik cihazda; AI'a yalnızca gereken kısım gider, saklanmaz; "verilerimi sil" görünür; mağaza veri formu birebir aynı.
 5. Türkçe AI kalitesi: argo, ironi, "tamam"ın tonunu anlayan analiz; eğlenceli, paylaşılabilir "Sohbet Özeti" kartı.
-6. "Eğlence amaçlıdır" konumu; manipülasyon/aldatma gibi iddialı etiketlerde temkinli dil.
+6. Fiyat modeli kararı bekliyor: tek seferlik rapor ("1 sohbet = X ₺") mı, abonelik mi, ikisi birden mi (jeton karmaşası olmadan). Satın alınmış haklara güncellemeyle dokunulmaz; uygulama içinde "Aboneliği yönet" ve hızlı destek.
+7. "Eğlence amaçlıdır" konumu; manipülasyon/aldatma gibi iddialı etiketlerde temkinli dil.
