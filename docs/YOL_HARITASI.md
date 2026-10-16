@@ -189,3 +189,4 @@ Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:i
 - 16 Ekim: `asc.py prepare 1.2.0 20` çalıştırıldı: App Store'da 1.2.0 oluşturuldu, derleme 20 bağlandı, 18 dilde Yenilikler + APP_IPHONE_67 görselleri yüklendi. Kullanıcı: yaş derecelendirmesi sosyal medya soruları (No) + Submit for Review.
 - Android 1.2.0 derlendi (widget yok, yalnızca menü düzeltmesi). Android widget ayrı yazılmalı (Jetpack Glance/RemoteViews); Android test telefonu gerekiyor — sonraya.
 - Site Yenilikler 1.2 girdisi yalnızca dalda (commit 383c130); App Store onayından sonra main'e alınacak.
+- 16 Ekim: Kullanıcı iOS 1.2.0'ı incelemeye gönderdi (yaş derecelendirmesi zaten tamam, 4+). Android 1.2.0 (8) üretime alındı, 15 dilde sürüm notu ile incelemeye gönderildi. Onaylar gelince: iki mağazada Yayınla (kullanıcı), site Yenilikler 1.2 girdisini main'e al.
