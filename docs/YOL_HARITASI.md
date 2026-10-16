@@ -43,8 +43,7 @@ Kalan özelliklerin ihtiyaç duyduğu yerel parçalar tek build'e kondu; özelli
 ### Faz 3 — Gelir
 - [ ] **3b** 7 gün ücretsiz deneme + indirimli yıllık plan.
   - [x] Premium ekranı: deneme tanımlıysa ve kullanıcı uygunsa "7 gün ücretsiz, ardından ₺X / ay" + "Ücretsiz denemeyi başlat". Uygunluk belirsizse gösterilmez.
-  - [x] 16 Ekim: Google Play'de `monthly` ve `annual` planlarına 7 günlük ücretsiz deneme teklifi `ucretsiz-deneme` (yeni müşteri, aboneliği hiç edinmemiş) etkinleştirildi. App Store tarafı kullanıcıda.
-  - [ ] Mağaza panelleri: App Store Connect'te aylık ve yıllık aboneliğe "Introductory Offer → Free, 1 week"; Play Console'da temel plana 7 günlük ücretsiz deneme teklifi (yeni müşteriler).
+  - [x] 16 Ekim: Google Play'de `monthly` ve `annual` planlarına 7 günlük ücretsiz deneme teklifi `ucretsiz-deneme` (yeni müşteri, aboneliği hiç edinmemiş) etkinleştirildi. App Store'da Premium Aylık ve Yıllık'a "Free, 1 week" tanıtım teklifi eklendi (175 ülke, 16 Ekim'den itibaren, bitiş yok); `asc.py offers` ile doğrulandı.
   - **Ertelendi (6 Ekim, kullanıcı kararı):** Fiyat ve deneme ayarları uygulama yoğun kullanılmaya başlayınca yapılacak. Kararlaştırılan fiyatlar: Türkiye ₺99/ay, ₺799/yıl; diğer ülkeler $1.99/ay, $15.99/yıl (Apple diğer ülkelere kendisi çevirir). Ücretsiz 6 hak/ay deneme varken de kalır (deneme tek seferlik, kart ister).
 - [ ] **3d** Ülkeye göre fiyat: 3b'deki iki fiyat bölgesiyle aynı karar, aynı zamanda yapılacak. Not: AI maliyeti dolar, gelir yerel para; Premium sınırsız olduğu için 1b ölçümüyle kullanıcı başı maliyete bakılıp gerekirse cömert bir adil kullanım sınırı konacak.
 - [x] **3c** Premium: AI kullanımı (çıkarım + asistan + Mesajla hatırlat) ücretsizde 6/ay, premium'da sınırsız; tekrarlayan takipler ücretsiz (AI maliyeti yok). Premium tablosu ve "hak doldu" uyarısı buna göre güncellendi (uyarı davetle ek hak kazanmayı da anlatıyor).
