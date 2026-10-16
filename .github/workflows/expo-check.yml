@@ -1,0 +1,17 @@
+# EXPO_TOKEN gizli değişkenini derleme başlatmadan doğrular (elle başlatılır).
+name: Expo anahtar kontrolü
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - run: eas whoami
+      - run: eas build:list --limit 1 --non-interactive
