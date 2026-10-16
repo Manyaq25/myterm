@@ -192,3 +192,4 @@ Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:i
 
 - **Karar (16 Ekim, kullanıcı):** Apple Watch / Wear OS uygulaması ve Android widget YAPILMAYACAK. Siri kısayolları da YAPILMAYACAK. Widget yalnızca iPhone'da kalır. `targets/siri/` kodu kullanılmıyor (derlemede yok: apple-targets `match: widget`).
 - 16 Ekim: GitHub `EXPO_TOKEN` yenilendi (eski anahtar başka bir Expo hesabının — manyaq-app — robotuymuş). Yeni: aydinapp kişisel anahtarı "github-actions"; `expo-check.yml` ile doğrulandı. Expo hesabındaki kullanılmayan "synviaapp" anahtarı silinebilir.
+- 16 Ekim: RevenueCat Google gerçek zamanlı bildirimleri (RTDN) kuruldu: Pub/Sub konusu `projects/synvia-ai/topics/Play-Store-Notifications`, Play Console'a girildi, test bildirimi 09:47 UTC'de ulaştı ("Connected to Google").
