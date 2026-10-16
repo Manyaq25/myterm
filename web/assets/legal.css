@@ -1,0 +1,61 @@
+/* Synvia AI gizlilik, destek ve veri silme sayfaları (TR/EN). Ana sayfanın koyu tasarımıyla aynı dil:
+   yeşile kaçan gece siyahı zemin, ince ızgara, turkuaz → mercan vurgu, Plus Jakarta Sans. */
+:root {
+  color-scheme: dark;
+  --bg: #060d0c; --bg-2: #0b1715; --card: rgba(16, 32, 29, .72);
+  --fg: #e4f0ec; --muted: #8fa39e; --line: rgba(121, 248, 227, .10);
+  --teal: #59dbc7; --teal-hi: #79f8e3; --coral: #ff6b4a; --coral-soft: #ffb4a3;
+  --grad: linear-gradient(100deg, var(--teal-hi) 0%, var(--teal) 35%, var(--coral-soft) 75%, var(--coral) 100%);
+  --font: 'Jakarta', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'JBMono', ui-monospace, 'SF Mono', Menlo, monospace;
+}
+@font-face { font-family: 'Jakarta'; src: url('/assets/fonts/plus-jakarta-sans-latin-wght-normal.woff2') format('woff2'); font-weight: 200 800; font-display: swap; unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Jakarta'; src: url('/assets/fonts/plus-jakarta-sans-latin-ext-wght-normal.woff2') format('woff2'); font-weight: 200 800; font-display: swap; unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'JBMono'; src: url('/assets/fonts/jetbrains-mono-latin-wght-normal.woff2') format('woff2'); font-weight: 100 800; font-display: swap; }
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 16px; line-height: 1.7;
+  -webkit-font-smoothing: antialiased; padding: 28px 16px 80px; overflow-x: clip; position: relative; }
+/* İnce ızgara ve üstte hafif turkuaz/mercan ışıması */
+body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: -1;
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 88px 88px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 80%); -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 80%); }
+body::after { content: ''; position: fixed; left: 50%; top: -280px; width: 900px; height: 560px; margin-left: -450px; pointer-events: none; z-index: -1;
+  background: radial-gradient(closest-side, rgba(89, 219, 199, .16), rgba(255, 107, 74, .06) 55%, transparent 75%); }
+::selection { background: var(--teal); color: #0b1614; }
+:focus-visible { outline: 2px solid var(--teal-hi); outline-offset: 3px; border-radius: 6px; }
+
+.page { max-width: 720px; margin-inline: auto; display: flex; flex-direction: column; gap: 22px; }
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; }
+.back { color: var(--muted); font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; }
+.back:hover { color: var(--teal-hi); }
+.lang { font-family: var(--mono); font-size: 12px; letter-spacing: .06em; color: var(--fg); text-decoration: none;
+  border: 1px solid rgba(121, 248, 227, .22); border-radius: 999px; padding: 6px 14px; white-space: nowrap; transition: border-color .2s, color .2s; }
+.lang:hover { border-color: var(--teal); color: var(--teal-hi); }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; color: var(--fg); }
+.brand img { width: 30px; height: 30px; border-radius: 8px; box-shadow: 0 0 22px rgba(89, 219, 199, .35); }
+h1 { font-size: clamp(30px, 6vw, 46px); line-height: 1.08; letter-spacing: -0.03em; font-weight: 800; margin: 0;
+  background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; text-wrap: balance; }
+.updated { color: var(--muted); font-family: var(--mono); font-size: 12px; letter-spacing: .06em; margin: -6px 0 6px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 22px; padding: 24px 26px;
+  display: flex; flex-direction: column; gap: 12px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 24px 60px -30px rgba(0, 0, 0, .8); }
+.card:hover { border-color: rgba(121, 248, 227, .20); }
+h2 { font-size: 18px; letter-spacing: -0.01em; margin: 0; color: var(--fg); display: flex; align-items: center; gap: 10px; }
+h2::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--grad); flex-shrink: 0; }
+p { margin: 0; color: #c9d9d4; }
+p.muted, .muted { color: var(--muted); font-size: 14px; }
+strong { color: var(--fg); }
+ul, ol { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; color: #c9d9d4; }
+li::marker { color: var(--teal); }
+a { color: var(--teal-hi); text-underline-offset: 3px; }
+a:hover { color: var(--coral-soft); }
+a.contact { font-weight: 700; text-decoration: none; font-size: 16px; }
+ul.faq { list-style: none; padding: 0; gap: 20px; }
+ul.faq li { display: flex; flex-direction: column; gap: 6px; }
+ul.faq strong { font-size: 15px; }
+footer { border-top: 1px solid var(--line); padding-top: 20px; margin-top: 8px; font-family: var(--mono); font-size: 12px; letter-spacing: .04em; color: var(--muted); }
+footer a { color: inherit; }
+@media (max-width: 480px) { .card { padding: 20px; border-radius: 18px; } }
