@@ -71,3 +71,12 @@ Ayrıntı: `docs/sohbet-analizi-rakip-yorumlari.md` (web aramasından, ilk tur; 
 5. Türkçe AI kalitesi: argo, ironi, "tamam"ın tonunu anlayan analiz; eğlenceli, paylaşılabilir "Sohbet Özeti" kartı.
 6. Fiyat modeli kararı bekliyor: tek seferlik rapor ("1 sohbet = X ₺") mı, abonelik mi, ikisi birden mi (jeton karmaşası olmadan). Satın alınmış haklara güncellemeyle dokunulmaz; uygulama içinde "Aboneliği yönet" ve hızlı destek.
 7. "Eğlence amaçlıdır" konumu; manipülasyon/aldatma gibi iddialı etiketlerde temkinli dil.
+
+## 16 Ekim: sohbet analizi para kararları (kullanıcı)
+- **REKLAM YOK** — kesin; en güçlü yanımız olarak öne çıkarılacak (site de bunu söylüyor).
+- Para tarafı çok net: ödeyen kişi özgürce, rahatça kullanır. Öneri fiyat: **aylık ~150 TL**. Arka planda görünmeyen bir adil kullanım sınırı olacak (kullanıcının önerisi 300 analiz/ay); maliyeti hesaplanacak.
+- Maliyet tahmini (16 Ekim, bir analiz ≈ 12 bin token girdi [istatistik telefonda, AI'a seçilmiş ~400 mesaj + özet] + ~1,5–3 bin token çıktı; net gelir ₺150 → KDV ve %15 mağaza payı sonrası ~₺106 ≈ 2,4 $ [kur ~44 varsayımı]):
+  - Opus 5.5 ($4/$20): ~0,10 $/analiz → 300 analiz ~30 $ (zarar); başa baş ~24 analiz/ay.
+  - Sonnet 5.5 ($2/$10): ~0,05 $/analiz → 300 analiz ~15 $ (zarar); başa baş ~48 analiz/ay.
+  - Haiku 5.5 ($0,10/$0,50): ~0,003 $/analiz → 300 analiz ~1 $ (kârlı).
+  - Sonuç: 300'lük gizli sınır ancak ucuz modelle kârlı. Türkçe kalite gerçek sohbetlerle Haiku 5.5 / Sonnet 5.5 karşılaştırılarak test edilecek; karma düzen (istatistik + kısa sorular ucuz modelde, derin rapor güçlü modelde) seçenek.
