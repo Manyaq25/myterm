@@ -80,3 +80,9 @@ Ayrıntı: `docs/sohbet-analizi-rakip-yorumlari.md` (web aramasından, ilk tur; 
   - Sonnet 5.5 ($2/$10): ~0,05 $/analiz → 300 analiz ~15 $ (zarar); başa baş ~48 analiz/ay.
   - Haiku 5.5 ($0,10/$0,50): ~0,003 $/analiz → 300 analiz ~1 $ (kârlı).
   - Sonuç: 300'lük gizli sınır ancak ucuz modelle kârlı. Türkçe kalite gerçek sohbetlerle Haiku 5.5 / Sonnet 5.5 karşılaştırılarak test edilecek; karma düzen (istatistik + kısa sorular ucuz modelde, derin rapor güçlü modelde) seçenek.
+
+## 16 Ekim: model testi (Haiku 5.5 / Sonnet 5.5)
+Ayrıntı: `docs/sohbet-analizi-model-testi.md`. 5 kurgu Türkçe sohbet, aynı istem, `effort: medium`.
+- Kalite: Haiku ~%89, Sonnet ~%96. İkisi de ironiyi, pasif-agresif dili ve sevgi dolu argoyu doğru okudu; Haiku'da paylaşım kartında olgu hatası ve kararsız yorumlar var.
+- Gerçek boyutta analiz başına: Haiku ~0,0024 $, Sonnet ~0,041 $. 300 analiz/ay: Haiku ~0,73 $, Sonnet ~12,25 $ (net gelir ~2,4 $). Sonnet ile başa baş ~58 analiz/ay.
+- Öneri: karma düzen (rapor + kart Sonnet, takip soruları Haiku; aylık belirli sayıda Sonnet raporundan sonra Haiku). Karar kullanıcıda.
