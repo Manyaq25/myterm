@@ -36,10 +36,19 @@ module.exports = {
     ctaText: 'Ücretsiz indir, ilk işini bir dakikada ekle.',
     entries: [
       {
+        version: '1.2',
+        date: 'Ekim 2026',
+        title: 'Takiplerin ana ekranında',
+        latest: true,
+        items: [
+          ['📱', 'Ana ekran widget’ı', 'Açık ve geciken işlerini, en yakın takiplerinle birlikte uygulamayı açmadan gör. İki boy var; bir işe dokununca uygulamada açılır. (iPhone, Premium)'],
+          ['🌍', 'Uzun dillerde düzgün menü', 'Almanca, Rusça gibi dillerde alt menü yazıları artık üst üste binmiyor.'],
+        ],
+      },
+      {
         version: '1.1.2',
         date: 'Ekim 2026',
         title: 'Daha sağlam açılış',
-        latest: true,
         items: [
           ['🛠️', 'Kararlılık', 'Uygulamanın nadiren açılışta kapanmasına yol açan bir hata giderildi. Yeni güncellemeler artık bir sonraki açılışta sessizce devreye giriyor.'],
         ],
@@ -108,10 +117,19 @@ module.exports = {
     ctaText: 'Download free and add your first task in a minute.',
     entries: [
       {
+        version: '1.2',
+        date: 'October 2026',
+        title: 'Your follow-ups on your Home Screen',
+        latest: true,
+        items: [
+          ['📱', 'Home Screen widget', 'See your open and overdue follow-ups at a glance, with the next ones listed, without opening the app. Two sizes; tap an item to open it. (iPhone, Premium)'],
+          ['🌍', 'Cleaner menus in longer languages', 'Bottom menu labels no longer overlap in languages like German and Russian.'],
+        ],
+      },
+      {
         version: '1.1.2',
         date: 'October 2026',
         title: 'Steadier start-up',
-        latest: true,
         items: [
           ['🛠️', 'Stability', 'Fixed a bug that could occasionally close the app right after opening. New updates now apply quietly the next time you open the app.'],
         ],
