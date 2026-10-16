@@ -191,3 +191,4 @@ Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:i
 - 16 Ekim: Kullanıcı iOS 1.2.0'ı incelemeye gönderdi (yaş derecelendirmesi zaten tamam, 4+). Android 1.2.0 (8) üretime alındı, 15 dilde sürüm notu ile incelemeye gönderildi. Onaylar gelince: iki mağazada Yayınla (kullanıcı), site Yenilikler 1.2 girdisini main'e al.
 
 - **Karar (16 Ekim, kullanıcı):** Apple Watch / Wear OS uygulaması ve Android widget YAPILMAYACAK. Siri kısayolları da YAPILMAYACAK. Widget yalnızca iPhone'da kalır. `targets/siri/` kodu kullanılmıyor (derlemede yok: apple-targets `match: widget`).
+- 16 Ekim: GitHub `EXPO_TOKEN` yenilendi (eski anahtar başka bir Expo hesabının — manyaq-app — robotuymuş). Yeni: aydinapp kişisel anahtarı "github-actions"; `expo-check.yml` ile doğrulandı. Expo hesabındaki kullanılmayan "synviaapp" anahtarı silinebilir.
