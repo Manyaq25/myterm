@@ -140,6 +140,7 @@ Vercel'de, `main`'e push edilince yayına girer (Root Directory: `web`). Kaynak 
 
 ## Ölçüm (1b)
 Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:input`, `*:output`, `*:cache_read`, `*:cache_write` (rotalar: text, image, pdf, voice, assistant, reminder). Birkaç günlük değerlerle önbellek kararı ve kullanıcı başı maliyet hesabı yapılacak.
+- **16 Ekim ölçüm sonucu (Opus 5, $5/$25, önbellek yazma 1,25x):** 5, 12, 13, 16 Ekim kayıtlarına göre işlem başı maliyet: yazı ~0,015–0,025 $, ekran görüntüsü ~0,026–0,047 $, PDF ~0,035 $, AI Asistan ~0,004–0,02 $; ortalama ~0,025 $. Ücretsiz kullanıcı (6/ay) ~0,15 $; Premium aylık net gelir ~1,6 $ → başa baş ~65 işlem/ay. Günlük toplam kullanım çok düşük (1–6 işlem, bir kısmı test); trafik az olduğu için önbellek yazılıyor ama okunmuyor (işlem başı ~%15 fazla maliyet). Karar bekleyenler: adil kullanım sınırı (öneri: şimdilik yok, izlenecek), Opus 5.5'e geçiş denemesi (%20 ucuz ama düşünme kapatılamıyor; çıktı artabilir, ölçülmeli).
 
 ## Reddedilen / iptal edilenler
 - **1b (ilk hali):** Ucuz modele geçmek — kalite riski.
