@@ -1,0 +1,37 @@
+# Sohbet analizi için Haiku 5.5 / Sonnet 5.5 karşılaştırma testi.
+# Elle başlatılır ya da tools/sohbet-test/calistir.txt değişince çalışır
+# (her kod değişikliğinde AI harcaması olmasın diye). Sonuç iş günlüğüne
+# ve "sohbet-model-raporu" adlı dosyaya yazılır.
+name: Sohbet model testi
+
+on:
+  workflow_dispatch:
+    inputs:
+      effort:
+        description: "effort (low / medium / high)"
+        default: medium
+  push:
+    branches: ["claude/**"]
+    paths: ["tools/sohbet-test/calistir.txt"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tools/sohbet-test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --no-audit --no-fund --loglevel=error
+      - run: node karsilastir.mjs
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          EFFORT: ${{ inputs.effort || 'medium' }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sohbet-model-raporu
+          path: tools/sohbet-test/sonuc/
