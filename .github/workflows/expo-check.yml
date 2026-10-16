@@ -14,4 +14,4 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
       - run: eas whoami
-      - run: eas build:list --limit 1 --non-interactive
+      - run: npm ci --ignore-scripts --no-audit --loglevel=error && eas build:list --limit 1 --non-interactive
