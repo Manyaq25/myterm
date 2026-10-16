@@ -6,6 +6,7 @@ Komutlar:
   prepare <sürüm> <derleme> - sürümü (yoksa) oluşturur, derlemeyi bağlar, "Yenilikler" metnini yazar ve
                              6.9" (APP_IPHONE_67) görsellerini store/appstore-screenshots/<dil>/ ile değiştirir.
                              İncelemeye GÖNDERMEZ (o kullanıcıda). --no-screenshots ile görsellere dokunmaz.
+  offers                   - aboneliklerdeki tanıtım tekliflerini (ücretsiz deneme) listeler (salt okunur)
 """
 import glob
 import hashlib
@@ -129,6 +130,24 @@ def check():
         print(' ', l['attributes']['locale'], '→', ', '.join(s['attributes']['screenshotDisplayType'] for s in sets) or '(kendi görseli yok)')
 
 
+def offers():
+    for g in get(f'/apps/{APP_ID}/subscriptionGroups', limit=20)['data']:
+        print('Grup:', g['attributes']['referenceName'])
+        for sub in get(f"/subscriptionGroups/{g['id']}/subscriptions", limit=20)['data']:
+            a = sub['attributes']
+            data = get(f"/subscriptions/{sub['id']}/introductoryOffers", limit=200)['data']
+            kinds = {}
+            for o in data:
+                oa = o['attributes']
+                key = f"{oa.get('offerMode')} {oa.get('duration')} x{oa.get('numberOfPeriods')} başlangıç={oa.get('startDate') or '-'} bitiş={oa.get('endDate') or '-'}"
+                kinds[key] = kinds.get(key, 0) + 1
+            print(f"  {a['name']} ({a['productId']}, {a.get('subscriptionPeriod')}, durum {a.get('state')}):")
+            for k, n in kinds.items():
+                print(f'    {k} → {n} ülke')
+            if not kinds:
+                print('    tanıtım teklifi YOK')
+
+
 if __name__ == '__main__':
     cmd = sys.argv[1]
     if cmd == 'check':
@@ -136,5 +155,7 @@ if __name__ == '__main__':
     elif cmd == 'prepare':
         args = [a for a in sys.argv[2:] if not a.startswith('--')]
         prepare(args[0], args[1], screenshots='--no-screenshots' not in sys.argv)
+    elif cmd == 'offers':
+        offers()
     else:
         sys.exit('bilinmeyen komut: ' + cmd)
