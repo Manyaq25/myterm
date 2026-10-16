@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       command:
-        description: 'Komut (check)'
+        description: 'Komut: check | prepare 1.2.0 20 [--no-screenshots]'
         default: 'check'
 
 jobs:
