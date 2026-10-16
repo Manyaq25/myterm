@@ -164,6 +164,50 @@ struct LockedView: View {
                 .background(Capsule().fill(Color.synviaTeal))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .background(alignment: .bottomTrailing) {
+            LogoWatermark(size: 92).offset(x: 22, y: 22)
+        }
+    }
+}
+
+// Soluk logo filigranı (sol panel ve küçük widget'ın arka planı).
+struct LogoWatermark: View {
+    var size: CGFloat
+
+    var body: some View {
+        Image("SynviaLogo")
+            .resizable()
+            .scaledToFit()
+            .frame(width: size, height: size)
+            .opacity(0.16)
+            .allowsHitTesting(false)
+    }
+}
+
+// Widget zemini: sistem rengi üzerine çok hafif teal → mercan geçişi.
+struct WidgetBackground: View {
+    var body: some View {
+        ZStack {
+            Color(.systemBackground)
+            LinearGradient(
+                colors: [Color.synviaTeal.opacity(0.10), Color.synviaCoral.opacity(0.06)],
+                startPoint: .topLeading, endPoint: .bottomTrailing
+            )
+        }
+    }
+}
+
+struct BrandHeader: View {
+    let title: String
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Image("SynviaLogo").resizable().scaledToFit().frame(width: 14, height: 14)
+            Text(title)
+                .font(.caption).fontWeight(.bold)
+                .foregroundStyle(Color.synviaTeal)
+                .lineLimit(1)
+        }
     }
 }
 
@@ -171,10 +215,8 @@ struct CountsView: View {
     let payload: WidgetPayload
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(payload.labels.title)
-                .font(.caption).fontWeight(.semibold)
-                .foregroundStyle(Color.synviaTeal)
+        VStack(alignment: .leading, spacing: 3) {
+            BrandHeader(title: payload.labels.title)
             Spacer(minLength: 0)
             if payload.open == 0 {
                 Text(payload.labels.empty)
@@ -182,8 +224,8 @@ struct CountsView: View {
                     .lineLimit(2).minimumScaleFactor(0.8)
             } else {
                 HStack(alignment: .firstTextBaseline, spacing: 4) {
-                    Text("\(payload.open)").font(.system(size: 34, weight: .bold, design: .rounded))
-                    Text(payload.labels.open).font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                    Text("\(payload.open)").font(.system(size: 36, weight: .heavy, design: .rounded))
+                    Text(payload.labels.open).font(.caption).fontWeight(.medium).foregroundStyle(.secondary).lineLimit(1)
                 }
                 if payload.overdue > 0 {
                     countRow(payload.overdue, payload.labels.overdue, Color.synviaRed)
@@ -194,16 +236,19 @@ struct CountsView: View {
             }
             Spacer(minLength: 0)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .background(alignment: .bottomTrailing) {
+            LogoWatermark(size: 92).offset(x: 22, y: 22)
+        }
     }
 
     private func countRow(_ count: Int, _ label: String, _ color: Color) -> some View {
-        HStack(spacing: 4) {
-            Circle().fill(color).frame(width: 6, height: 6)
+        HStack(spacing: 5) {
+            Circle().fill(color).frame(width: 7, height: 7)
             Text("\(count) \(label)")
-                .font(.caption).fontWeight(.medium)
+                .font(.caption).fontWeight(.semibold)
                 .foregroundStyle(color)
-                .lineLimit(1).minimumScaleFactor(0.8)
+                .lineLimit(1).minimumScaleFactor(0.75)
         }
     }
 }
@@ -212,18 +257,22 @@ struct ItemsView: View {
     let items: [WidgetItem]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            ForEach(items) { item in
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+                if index > 0 {
+                    Divider().padding(.vertical, 5)
+                }
                 Link(destination: URL(string: "benim-yerime-takip-et://takip/\(item.id)") ?? URL(string: "benim-yerime-takip-et://")!) {
                     HStack(alignment: .top, spacing: 6) {
                         Circle()
                             .fill(item.overdue ? Color.synviaRed : Color.synviaTeal)
-                            .frame(width: 6, height: 6)
+                            .frame(width: 7, height: 7)
                             .padding(.top, 5)
-                        VStack(alignment: .leading, spacing: 0) {
+                        VStack(alignment: .leading, spacing: 1) {
                             Text(item.title)
-                                .font(.caption).fontWeight(.semibold)
-                                .lineLimit(1)
+                                .font(.system(size: 13, weight: .semibold))
+                                .lineLimit(2)
+                                .fixedSize(horizontal: false, vertical: true)
                             if !item.person.isEmpty {
                                 Text(item.person)
                                     .font(.caption2).foregroundStyle(.secondary)
@@ -243,6 +292,13 @@ struct SynviaWidgetView: View {
     @Environment(\.widgetFamily) var family
     var entry: SynviaProvider.Entry
 
+    // Uzun başlıklar iki satıra iner; sığması için o zaman iki madde gösterilir.
+    private func visibleItems(_ items: [WidgetItem]) -> [WidgetItem] {
+        let firstThree = Array(items.prefix(3))
+        let hasLong = firstThree.contains { $0.title.count > 26 }
+        return Array(firstThree.prefix(hasLong ? 2 : 3))
+    }
+
     var body: some View {
         let payload = entry.payload
         Group {
@@ -251,8 +307,16 @@ struct SynviaWidgetView: View {
                     .widgetURL(URL(string: "benim-yerime-takip-et://premium"))
             } else if family == .systemMedium && !payload.items.isEmpty {
                 HStack(alignment: .top, spacing: 12) {
-                    CountsView(payload: payload).frame(width: 110)
-                    ItemsView(items: Array(payload.items.prefix(3)))
+                    CountsView(payload: payload)
+                        .padding(10)
+                        .frame(width: 120)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .fill(Color.synviaTeal.opacity(0.10))
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    ItemsView(items: visibleItems(payload.items))
+                        .padding(.vertical, 4)
                 }
                 .widgetURL(URL(string: "benim-yerime-takip-et://"))
             } else {
@@ -269,7 +333,7 @@ struct TakipWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: SynviaProvider()) { entry in
             SynviaWidgetView(entry: entry)
-                .containerBackground(.background, for: .widget)
+                .containerBackground(for: .widget) { WidgetBackground() }
         }
         .configurationDisplayName("Synvia AI")
         .description(GalleryText.current.description)
