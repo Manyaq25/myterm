@@ -50,3 +50,10 @@ Rakipler: Astromatik (Yaşam Tarzı 13.), Astrology Master (25., tek kişi), Ms 
 
 ## Sıra önerisi
 Synvia verisi (2–3 hafta) → Hayat Evrakı Asistanı'nın kelime/rakip analizi → ilk sürüm (~3–4 hafta). Sohbet analizi hızlı deneme olarak araya girebilir. Kalabalık olanlar (ehliyet, fal) rakip analizinden sonra.
+
+## 16 Ekim güncellemesi: talep kontrolü (Google Play TR indirme sayıları)
+Synvia'dan ders: Türkçe "hatırlatıcı" aramaları çok az; önce gerçek talep görülmeli. Google Play indirme sayısı en iyi talep göstergesi.
+
+- **Hayat Evrakı (garanti / abonelik / araç muayene): talep düşük, rakip çok.** "Garanti belgesi takip" ilk 10'daki bağımsız uygulamalar 16–117 indirme; "abonelik takip" 0–78 indirme (çoğu 2026'da çıkmış, 8–10 benzer uygulama); tek büyük örnek Abonelik Yöneticisi (632 bin, 2019'dan beri). Araç muayene hatırlatma: 30 indirme. → Öncelikten düşürüldü.
+- **Sohbet analizi: talep kanıtlı ve insanlar para ödüyor.** Narya: Wrapped Sohbet Özeti 940 bin indirme (Nisan 2025'ten beri, 11,7 bin yorum, puan 3,7, ₺48–1.730), IsTalk 120 bin, Wizzcope 62 bin (puan 4,4), analytica 15 bin, Sohbet Özeti & Gizli Analiz 7,5 bin. Fiyatlar ₺55–2.200. Narya'nın 3,7 puanı memnuniyetsizlik var demek (şikâyetler = fırsat).
+- Yeni öneri sırası: 1) Sohbet analizi (rakip yorumları ve akış incelemesi), 2) Ehliyet/meslek sınavı (talep yüksek, kalabalık), 3) Hayat Evrakı listede kalır.
