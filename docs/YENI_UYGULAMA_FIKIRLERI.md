@@ -57,3 +57,16 @@ Synvia'dan ders: Türkçe "hatırlatıcı" aramaları çok az; önce gerçek tal
 - **Hayat Evrakı (garanti / abonelik / araç muayene): talep düşük, rakip çok.** "Garanti belgesi takip" ilk 10'daki bağımsız uygulamalar 16–117 indirme; "abonelik takip" 0–78 indirme (çoğu 2026'da çıkmış, 8–10 benzer uygulama); tek büyük örnek Abonelik Yöneticisi (632 bin, 2019'dan beri). Araç muayene hatırlatma: 30 indirme. → Öncelikten düşürüldü.
 - **Sohbet analizi: talep kanıtlı ve insanlar para ödüyor.** Narya: Wrapped Sohbet Özeti 940 bin indirme (Nisan 2025'ten beri, 11,7 bin yorum, puan 3,7, ₺48–1.730), IsTalk 120 bin, Wizzcope 62 bin (puan 4,4), analytica 15 bin, Sohbet Özeti & Gizli Analiz 7,5 bin. Fiyatlar ₺55–2.200. Narya'nın 3,7 puanı memnuniyetsizlik var demek (şikâyetler = fırsat).
 - Yeni öneri sırası: 1) Sohbet analizi (rakip yorumları ve akış incelemesi), 2) Ehliyet/meslek sınavı (talep yüksek, kalabalık), 3) Hayat Evrakı listede kalır.
+
+## 16 Ekim: sohbet analizi rakip yorumları
+Ayrıntı: `docs/sohbet-analizi-rakip-yorumlari.md` (web aramasından, ilk tur; Narya'nın puanı kaynağa göre 3,7–4,4 arası değişiyor, canlı sayfadan doğrulanmalı).
+
+**Tekrarlayan şikâyetler:** ödeme ekranı dışa aktarma ve beklemeden *sonra* çıkıyor; "reklam izle, sonra yine kilitli"; abonelik + jeton karmaşası, iptal/iade/beklenmedik ücret; WhatsApp dışa aktarma başarısız; gizlilik iddiası veri güvenliği formuyla çelişiyor; Türkçe rakiplerde AI cevapları zayıf; ücretsiz sonuç yüzeysel.
+
+**Bizim farkımız (taslak):**
+1. Dürüst ücretsiz katman: istatistikler (kim çok yazıyor, cevap süreleri, saatler, emojiler) telefonda hesaplanır, bedava ve sınırsız. AI yorumu ücretli; bu, dışa aktarmadan *önce* açıkça söylenir.
+2. Tek ve net fiyat: jeton yok, reklam yok, 7 gün deneme, kolay iptal (Synvia'daki RevenueCat düzeni).
+3. Dışa aktarma sihirbazı: WhatsApp/Telegram için adım adım resimli rehber + hata mesajları; olmazsa ekran görüntüsü yolu (Synvia'daki görsel okuma).
+4. Gerçek gizlilik: istatistik cihazda; AI'a yalnızca gereken kısım gider, saklanmaz; "verilerimi sil" görünür; mağaza veri formu birebir aynı.
+5. Türkçe AI kalitesi: argo, ironi, "tamam"ın tonunu anlayan analiz; eğlenceli, paylaşılabilir "Sohbet Özeti" kartı.
+6. "Eğlence amaçlıdır" konumu; manipülasyon/aldatma gibi iddialı etiketlerde temkinli dil.
