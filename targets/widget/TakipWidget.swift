@@ -39,16 +39,59 @@ struct WidgetPayload: Codable {
         overdue: 0, open: 0, waiting: 0, items: []
     )
 
-    static let sample = WidgetPayload(
-        premium: true,
-        labels: fallback.labels,
-        overdue: 2, open: 5, waiting: 1,
-        items: [
-            WidgetItem(id: "1", title: "Send the sales report", person: "James", overdue: true),
-            WidgetItem(id: "2", title: "Review the contract", person: "Emily", overdue: true),
-            WidgetItem(id: "3", title: "Call the dentist", person: "", overdue: false)
-        ]
-    )
+    static var sample: WidgetPayload {
+        let g = GalleryText.current
+        var labels = fallback.labels
+        labels.open = g.open
+        labels.overdue = g.overdue
+        labels.waiting = g.waiting
+        var items: [WidgetItem] = []
+        for (index, item) in g.items.enumerated() {
+            items.append(WidgetItem(id: "\(index)", title: item.0, person: item.1, overdue: index < 2))
+        }
+        return WidgetPayload(premium: true, labels: labels, overdue: 2, open: 5, waiting: 1, items: items)
+    }
+}
+
+// Widget galerisi (uygulama verisi yokken) için telefonun diline göre metinler.
+struct GalleryText {
+    let description: String
+    let open: String
+    let overdue: String
+    let waiting: String
+    let items: [(String, String)]
+
+    static var current: GalleryText {
+        let code = Locale.current.language.languageCode?.identifier ?? "en"
+        return all[code] ?? all["en"]!
+    }
+
+    static let all: [String: GalleryText] = [
+        "tr": GalleryText(description: "Geciken ve açık takiplerin tek bakışta.", open: "açık", overdue: "gecikmiş", waiting: "bekliyorum",
+                          items: [("Satış raporunu gönder", "Ahmet"), ("Sözleşmeyi incele", "Elif"), ("Diş hekimini ara", "")]),
+        "en": GalleryText(description: "Overdue and open follow-ups at a glance.", open: "open", overdue: "overdue", waiting: "waiting",
+                          items: [("Send the sales report", "James"), ("Review the contract", "Emily"), ("Call the dentist", "")]),
+        "de": GalleryText(description: "Überfällige und offene Vorgänge auf einen Blick.", open: "offen", overdue: "überfällig", waiting: "wartend",
+                          items: [("Verkaufsbericht senden", "Thomas"), ("Vertrag prüfen", "Anna"), ("Zahnarzt anrufen", "")]),
+        "fr": GalleryText(description: "Vos suivis en retard et ouverts en un coup d’œil.", open: "ouverts", overdue: "en retard", waiting: "en attente",
+                          items: [("Envoyer le rapport", "Julien"), ("Relire le contrat", "Claire"), ("Appeler le dentiste", "")]),
+        "es": GalleryText(description: "Tus seguimientos atrasados y abiertos de un vistazo.", open: "abiertos", overdue: "atrasados", waiting: "esperando",
+                          items: [("Enviar el informe", "Carlos"), ("Revisar el contrato", "Lucía"), ("Llamar al dentista", "")]),
+        "it": GalleryText(description: "Promemoria in ritardo e aperti a colpo d’occhio.", open: "aperti", overdue: "in ritardo", waiting: "in attesa",
+                          items: [("Inviare il report", "Marco"), ("Rivedere il contratto", "Giulia"), ("Chiamare il dentista", "")]),
+        "pt": GalleryText(description: "Seus acompanhamentos atrasados e abertos num relance.", open: "abertos", overdue: "atrasados", waiting: "aguardando",
+                          items: [("Enviar o relatório", "João"), ("Revisar o contrato", "Ana"), ("Ligar para o dentista", "")]),
+        "ru": GalleryText(description: "Просроченные и открытые задачи с первого взгляда.", open: "открыто", overdue: "просрочено", waiting: "жду",
+                          items: [("Отправить отчёт", "Алексей"), ("Проверить договор", "Ольга"), ("Позвонить стоматологу", "")]),
+        "ar": GalleryText(description: "متابعاتك المتأخرة والمفتوحة بنظرة واحدة.", open: "مفتوحة", overdue: "متأخرة", waiting: "بانتظار",
+                          items: [("إرسال تقرير المبيعات", "أحمد"), ("مراجعة العقد", "سارة"), ("الاتصال بطبيب الأسنان", "")]),
+        "ja": GalleryText(description: "期限切れと未完了のフォローアップをひと目で。", open: "未完了", overdue: "期限切れ", waiting: "待ち",
+                          items: [("売上レポートを送る", "田中"), ("契約書を確認", "佐藤"), ("歯医者に電話", "")]),
+        "ko": GalleryText(description: "기한 지난 일과 진행 중인 일을 한눈에.", open: "진행 중", overdue: "기한 지남", waiting: "기다리는 중",
+                          items: [("매출 보고서 보내기", "민준"), ("계약서 검토", "지수"), ("치과에 전화", "")]),
+        "zh": GalleryText(description: "一眼看清逾期和进行中的跟进事项。", open: "进行中", overdue: "已逾期", waiting: "等待中",
+                          items: [("发送销售报告", "王伟"), ("审阅合同", "李娜"), ("给牙医打电话", "")]),
+    ]
 }
 
 struct SynviaEntry: TimelineEntry {
@@ -229,7 +272,7 @@ struct TakipWidget: Widget {
                 .containerBackground(.background, for: .widget)
         }
         .configurationDisplayName("Synvia AI")
-        .description("Overdue and open follow-ups at a glance.")
+        .description(GalleryText.current.description)
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
