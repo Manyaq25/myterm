@@ -27,7 +27,7 @@ const ROWS: ComparisonRow[] = [
   { key: 'aiExtractionUnlimited', free: false, premium: true },
   { key: 'smartReminders', free: false, premium: true },
   { key: 'personInsights', free: false, premium: true },
-  // Ana ekran widget'ı yalnızca iPhone'da (targets/widget); Siri henüz yok.
+  // Ana ekran widget'ı yalnızca iPhone'da (targets/widget).
   ...(Platform.OS === 'ios' ? [{ key: 'homeWidget', free: false, premium: true }] : []),
 ];
 
