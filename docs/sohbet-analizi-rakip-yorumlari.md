@@ -95,3 +95,13 @@ Kaynak yine web araması parçaları; mağaza ve Şikayetvar sayfaları doğruda
 **Ek dersler:** ana ürün tek seferlik rapor olabilir ("1 sohbet raporu = X ₺", abonelik isteğe bağlı ve açık); satın alınmış haklara güncellemeyle dokunulmaz; uygulama içinde "Aboneliği yönet" bağlantısı ve hızlı destek (Şikayetvar sicili Türkiye'de önemli); gizlilik cümlesi ödeme ekranının yanında.
 
 Ek kaynaklar: https://www.sikayetvar.com/narya-wrapped-ai-koc · https://mwm.ai/apps/narya-wrapped-ai-coach/6740577449 · https://apps.apple.com/tr/app/narya-wrapped-ai-ko%C3%A7/id6740577449?l=tr
+
+## Narya fiyatları (17 Ekim 2026, App Store TR, arama sonucundan; canlı sayfadan doğrulanmalı)
+| Paket | Haftalık | Aylık | Yıllık |
+|---|---|---|---|
+| Premium | ₺79,99 | ₺139,99 | ₺999,99 |
+| VIP Sohbet Paketi | ₺199,99 | ₺159,99 | ₺1.299,99 |
+| VIP Mega Sohbet Paket | ₺249,99 | – | – |
+
+Jeton: 200 = ₺49,99 · 500 = ₺99,99 · 1000 = ₺169,99. Toplam 10 farklı ürün; haftalık VIP aylığa vurulunca ~₺860. Şikayetvar'da haftalık ₺64,99 kesinti ve beklenmeyen ₺259 çekim bildirimleri var.
+Not: Bizim önerimiz aylık ~₺150, Narya Premium aylıktan (₺139,99) biraz pahalı; "daha ucuz" ilkesi için fiyat yeniden düşünülmeli.
