@@ -47,3 +47,26 @@ Ham çıktılar: `tools/sohbet-test/sonuc/rapor-1.md`. Doğru cevap listesi: `to
 - AI'a giden mesaj sayısını ~400'den ~250'ye indirmek (girdi maliyeti Sonnet'te asıl kalem).
 - Haiku'yu `effort: high` ile denemek (olgu hataları azalıyor mu).
 Bu üç deneme birlikte ~0,5 $ tutar.
+
+## 2. tur (17 Ekim 2026): Haiku `high`, Sonnet `low`
+Ham çıktılar: `tools/sohbet-test/sonuc/rapor-2.md`. Sohbetler, istem ve puanlama 1. turla aynı.
+
+| | Haiku medium (1. tur) | Haiku high | Sonnet medium (1. tur) | Sonnet low |
+|---|---|---|---|---|
+| Kalite | ~%89 | ~%90 | ~%96 | ~%98 |
+| Ortalama süre | 13,5 sn | 20,7 sn | 15,8 sn | 14,3 sn |
+| Ortalama çıktı | ~2.500 | ~4.000 | ~1.700 | ~1.600 |
+| Gerçek boyutta $/analiz | 0,0024 | 0,0032 | 0,041 | 0,040 |
+| 300 analiz/ay | 0,73 $ | 0,96 $ | 12,25 $ | 11,93 $ |
+
+**Bulgular:**
+- **Haiku high işe yaramadı:** %33 daha pahalı ve %50 daha yavaş, kalite aynı. Grup sohbetindeki kart hatası düzeldi ama flört sohbetinde daha kararsız ("Çok komiksin", "Tamam." ve sergi reddi için hep "iki türlü de olabilir") ve Emre'nin 7 cevapsız mesajını gözden kaçırıp "baskı kurmuyor, sağlıklı" dedi. Önerdiği mesajlar ("Son zamanlarda biraz fazla mı yazdım?") ilgi bekleyen bir ton taşıyor. "Tezi bitti" hatası yine var.
+- **Sonnet low, medium kadar iyi, hatta biraz daha iyi:** daha hızlı, ayrıntı yakalama aynı ("Saat 12 olmuş ama neyse" iğnesi, "kavga 35 dakika sürdü", "birkaç gün hiç yazmamak da iyi bir hamle"). Tek küçük kusur: kavga sohbetinde Ozan'a önerdiği bir mesajın bakış açısı karışık ("geldiğin için çok mutlu oldum").
+- **Effort maliyeti neredeyse değiştirmiyor:** Gerçek boyutta Sonnet maliyetinin yarıdan fazlası girdiden (12 bin token × 2 $ = 0,024 $). Asıl kaldıraç AI'a giden mesaj miktarı.
+
+**Hesap (Sonnet low):**
+- 400 mesaj (~12 bin token): ~0,040 $/analiz, başa baş ~60 analiz/ay.
+- 250 mesaj (~7,5 bin token): ~0,031 $/analiz, başa baş ~78 analiz/ay (kaliteye etkisi uzun sohbetle ölçülmeli).
+- Takip soruları: aynı sohbet önbelleğe (prompt caching) alınırsa girdi 10'da 1 fiyata okunur; Sonnet ile takip sorusu ~0,018 $, Haiku ile ~0,001 $.
+
+**Güncel öneri:** Rapor ve paylaşım kartı **Sonnet 5.5 (`effort: low`)**; takip soruları Haiku 5.5 (`medium`). Aylık belirli sayıda (ör. 40–50) Sonnet raporundan sonra raporlar Haiku ile devam eder. Karar kullanıcıda.
