@@ -105,3 +105,11 @@ Ek kaynaklar: https://www.sikayetvar.com/narya-wrapped-ai-koc · https://mwm.ai/
 
 Jeton: 200 = ₺49,99 · 500 = ₺99,99 · 1000 = ₺169,99. Toplam 10 farklı ürün; haftalık VIP aylığa vurulunca ~₺860. Şikayetvar'da haftalık ₺64,99 kesinti ve beklenmeyen ₺259 çekim bildirimleri var.
 Not: Bizim önerimiz aylık ~₺150, Narya Premium aylıktan (₺139,99) biraz pahalı; "daha ucuz" ilkesi için fiyat yeniden düşünülmeli.
+
+### Narya paketlerinin farkı (17 Ekim, arama sonucu)
+Resmî bir karşılaştırma bulunamadı; mağaza sayfaları yalnızca paket adlarını ve fiyatlarını veriyor.
+- Bilinen: Google Play'de geliştirici "abone olarak tüm Wrapped'lere sınırsız erişim" diyor → Premium büyük ihtimalle raporların (Wrapped) kilidini açıyor.
+- Bilinen: Uygulamada bir "AI İlişki Koçu" sohbeti var; "VIP Sohbet Paketi" adı büyük ihtimalle bu koçla yazışmayı kapsıyor (tahmin).
+- "VIP Mega Sohbet Paket" yalnızca haftalık; adından daha fazla koç mesajı içerdiği tahmin ediliyor, içeriği yazılı değil.
+- Jeton ayrı satılıyor ve ne aldığı yazmıyor; bir App Store yorumu "VIP üyelik jetonsuz işe yaramıyor, güncellemeden sonra jeton istendi" diyor.
+- Kesin içerik için uygulamayı indirip satın almadan ödeme ekranına bakmak gerekiyor.
