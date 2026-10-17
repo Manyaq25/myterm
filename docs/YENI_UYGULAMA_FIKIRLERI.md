@@ -88,3 +88,4 @@ Ayrıntı: `docs/sohbet-analizi-model-testi.md`. 5 kurgu Türkçe sohbet, aynı 
 - Öneri: karma düzen (rapor + kart Sonnet, takip soruları Haiku; aylık belirli sayıda Sonnet raporundan sonra Haiku). Karar kullanıcıda.
 - 2. tur (17 Ekim): Haiku high fayda etmedi (pahalı, yavaş, kalite aynı); Sonnet low medium kadar iyi (~%98), maliyet ~0,040 $/analiz. Maliyetin asıl kalemi AI'a giden mesaj miktarı. Güncel öneri: rapor Sonnet low, takip soruları Haiku.
 - Fiyat (17 Ekim, kullanıcı): aylık **₺119,99** uygun bulundu (Narya Premium aylık ₺139,99, VIP ₺159,99). KDV ve %15 mağaza payı sonrası ~₺85 (~1,9 $); Sonnet low ile ~48 rapora kadar kâr.
+- Karar (17 Ekim, kullanıcı): **tek fiyat, tek plan** (₺119,99/ay; jeton, reklam, ek paket yok). Şart: analizler Narya'dan daha iyi olmalı.

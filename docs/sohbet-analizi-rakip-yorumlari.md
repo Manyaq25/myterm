@@ -113,3 +113,14 @@ Resmî bir karşılaştırma bulunamadı; mağaza sayfaları yalnızca paket adl
 - "VIP Mega Sohbet Paket" yalnızca haftalık; adından daha fazla koç mesajı içerdiği tahmin ediliyor, içeriği yazılı değil.
 - Jeton ayrı satılıyor ve ne aldığı yazmıyor; bir App Store yorumu "VIP üyelik jetonsuz işe yaramıyor, güncellemeden sonra jeton istendi" diyor.
 - Kesin içerik için uygulamayı indirip satın almadan ödeme ekranına bakmak gerekiyor.
+
+### Narya'nın özellikleri (17 Ekim, mağaza açıklamalarından; görseller görülemedi)
+- AI "ilişki analisti": duygu kalıpları, cevap hızı, sohbeti kimin yönettiği.
+- "Bağ Endeksi" (Connection Index) ve paylaşılabilir raporlar ("Wrapped").
+- Kim daha çok yazıyor; ghosting ve art arda mesaj (double texting).
+- Kim daha çok "seni özledim" / "seni seviyorum" diyor.
+- Olası manipülasyon ve pasif-agresiflik işaretleri.
+- Grup sohbeti Wrapped: grup dinamiği ve roller (App Store açıklaması; bazı ikincil kaynaklar yalnız birebir sohbet diyor).
+- AI İlişki Koçu: kırmızı bayraklar, duygusal dengesizlik, iletişim sorunları üzerine sohbet.
+- "Analiz çoğunlukla cihazda" iddiası (veri güvenliği formunda üçüncü tarafla paylaşım yazıyor).
+Kaynaklar: https://play.google.com/store/apps/details?id=com.modernist.whatwrapped · https://whatswrappedapp.com/ · https://apps.apple.com/us/app/narya-wrapped-chat-recap/id6740577449
