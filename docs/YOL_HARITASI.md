@@ -190,6 +190,7 @@ Upstash → Data Browser → `stats:YYYY-MM-DD` anahtarları: `*:requests`, `*:i
 - Android 1.2.0 derlendi (widget yok, yalnızca menü düzeltmesi).
 - Site Yenilikler 1.2 girdisi yalnızca dalda (commit 383c130); App Store onayından sonra main'e alınacak.
 - 16 Ekim: Kullanıcı iOS 1.2.0'ı incelemeye gönderdi (yaş derecelendirmesi zaten tamam, 4+). Android 1.2.0 (8) üretime alındı, 15 dilde sürüm notu ile incelemeye gönderildi. Onaylar gelince: iki mağazada Yayınla (kullanıcı), site Yenilikler 1.2 girdisini main'e al.
+- 17 Ekim: iOS ve Android 1.2.0 onaylandı; kullanıcı iki mağazada yayınlıyor. Site Yenilikler 1.2 girdisi main'e alındı.
 
 - **Karar (16 Ekim, kullanıcı):** Apple Watch / Wear OS uygulaması ve Android widget YAPILMAYACAK. Siri kısayolları da YAPILMAYACAK. Widget yalnızca iPhone'da kalır. Kullanılmayan `targets/siri/` kodu ve `premium.feature.widgetSiri` metni silindi.
 - **Karar (16 Ekim, kullanıcı): Ücretli reklam şimdilik YOK** (Google Ads 8.000 TL teklifi "harca-kazan" türü, pahalı bulundu). Önce ücretsiz yollar: 7 günlük deneme (açıldı), kullanıcıların neden bıraktığını gösteren basit ölçüm, mağaza anahtar kelimeleri ("ajanda"), hazır videoların organik paylaşımı, davet sistemi. Gerçek kullanıcı ve elde tutma oranı görülünce küçük bütçeyle yeniden değerlendirilecek.
