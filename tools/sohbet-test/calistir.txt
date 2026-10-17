@@ -1,1 +1,4 @@
-1. çalıştırma: 16 Ekim 2026 (effort medium)
+Bu dosya değişince "Sohbet model testi" iş akışı çalışır.
+1. çalıştırma (16 Ekim): ikisi de medium → docs/sohbet-analizi-model-testi.md
+2. çalıştırma (17 Ekim): Haiku high, Sonnet low
+CONFIG=claude-haiku-5-5:high,claude-sonnet-5-5:low

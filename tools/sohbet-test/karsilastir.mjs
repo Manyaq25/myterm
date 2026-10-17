@@ -10,11 +10,21 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 
 // $ / 1M token (girdi, çıktı)
-const MODELS = [
-  { id: "claude-haiku-5-5", ad: "Haiku 5.5", girdi: 0.1, cikti: 0.5 },
-  { id: "claude-sonnet-5-5", ad: "Sonnet 5.5", girdi: 2, cikti: 10 },
-];
-const EFFORT = process.env.EFFORT || "medium";
+const FIYAT = {
+  "claude-haiku-5-5": { ad: "Haiku 5.5", girdi: 0.1, cikti: 0.5 },
+  "claude-sonnet-5-5": { ad: "Sonnet 5.5", girdi: 2, cikti: 10 },
+};
+// Denenecek model:effort çiftleri. Sıra: CONFIG ortam değişkeni, yoksa
+// calistir.txt içindeki "CONFIG=" satırı, yoksa ikisi de medium.
+const CONFIG =
+  process.env.CONFIG ||
+  fs.readFileSync(path.join(here, "calistir.txt"), "utf8").match(/^CONFIG=(.+)$/m)?.[1] ||
+  "claude-haiku-5-5:medium,claude-sonnet-5-5:medium";
+const MODELS = CONFIG.split(",").map((c) => {
+  const [id, effort = "medium"] = c.trim().split(":");
+  if (!FIYAT[id]) throw new Error(`Fiyatı bilinmeyen model: ${id}`);
+  return { id, effort, ...FIYAT[id], ad: `${FIYAT[id].ad} (${effort})` };
+});
 // Gerçek bir analizde AI'a giden girdi tahmini (~400 mesaj + istatistik).
 const TIPIK_GIRDI = 12000;
 // Uygulamayı kullanan (soruyu soran) taraf
@@ -149,6 +159,10 @@ if (process.env.DRY) {
   process.exit(0);
 }
 
+if (!process.env.ANTHROPIC_API_KEY) {
+  console.error("ANTHROPIC_API_KEY yok; test yalnızca GitHub Actions'ta çalışır (deneme için DRY=1).");
+  process.exit(1);
+}
 const client = new Anthropic();
 
 async function calistir(model, icerik) {
@@ -157,7 +171,7 @@ async function calistir(model, icerik) {
     const r = await client.messages.create({
       model: model.id,
       max_tokens: 16000,
-      output_config: { effort: EFFORT },
+      output_config: { effort: model.effort },
       system: SISTEM,
       messages: [{ role: "user", content: icerik }],
     });
@@ -180,7 +194,7 @@ async function calistir(model, icerik) {
 
 const klasor = path.join(here, "sohbetler");
 const dosyalar = fs.readdirSync(klasor).filter((f) => f.endsWith(".txt")).sort();
-const satirlar = [`# Sohbet analizi model karşılaştırması`, ``, `Tarih: ${new Date().toISOString().slice(0, 10)} · effort: ${EFFORT}`, ``];
+const satirlar = [`# Sohbet analizi model karşılaştırması`, ``, `Tarih: ${new Date().toISOString().slice(0, 10)} · ayarlar: ${CONFIG}`, ``];
 const toplam = Object.fromEntries(MODELS.map((m) => [m.id, { girdi: 0, cikti: 0, maliyet: 0, tipik: 0, sure: 0 }]));
 const tablo = [];
 

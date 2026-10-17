@@ -7,9 +7,9 @@ name: Sohbet model testi
 on:
   workflow_dispatch:
     inputs:
-      effort:
-        description: "effort (low / medium / high)"
-        default: medium
+      config:
+        description: "model:effort listesi (boşsa calistir.txt içindeki CONFIG)"
+        required: false
   push:
     branches: ["claude/**"]
     paths: ["tools/sohbet-test/calistir.txt"]
@@ -29,7 +29,7 @@ jobs:
       - run: node karsilastir.mjs
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          EFFORT: ${{ inputs.effort || 'medium' }}
+          CONFIG: ${{ inputs.config }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
