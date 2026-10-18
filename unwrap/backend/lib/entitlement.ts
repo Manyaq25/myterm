@@ -3,8 +3,11 @@
 import { HttpError, requireEnv } from './http';
 import { k, redis } from './redis';
 
-const ENTITLEMENT = process.env.REVENUECAT_ENTITLEMENT_ID ?? 'pro';
+// Projede tek paket (Unwrap Pro) var; kimlik verilmezse herhangi bir aktif yetki yeter.
+const ENTITLEMENT = process.env.REVENUECAT_ENTITLEMENT_ID;
 const CACHE_SECONDS = 300;
+// Satın alma hemen işlesin diye "abone değil" sonucu çok kısa saklanır.
+const NEGATIVE_CACHE_SECONDS = 15;
 
 type Subscriber = { subscriber?: { entitlements?: Record<string, { expires_date: string | null }> } };
 
@@ -18,9 +21,10 @@ export async function isPro(appUserId: string): Promise<boolean> {
   });
   if (!res.ok) throw new HttpError(502, 'entitlement_unavailable');
   const data = (await res.json()) as Subscriber;
-  const ent = data.subscriber?.entitlements?.[ENTITLEMENT];
-  const active = Boolean(ent && (ent.expires_date === null || Date.parse(ent.expires_date) > Date.now()));
-  await redis().set(cacheKey, active ? '1' : '0', { ex: CACHE_SECONDS });
+  const all = data.subscriber?.entitlements ?? {};
+  const ents = ENTITLEMENT ? [all[ENTITLEMENT]] : Object.values(all);
+  const active = ents.some((e) => e && (e.expires_date === null || Date.parse(e.expires_date) > Date.now()));
+  await redis().set(cacheKey, active ? '1' : '0', { ex: active ? CACHE_SECONDS : NEGATIVE_CACHE_SECONDS });
   return active;
 }
 
