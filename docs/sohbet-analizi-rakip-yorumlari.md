@@ -145,3 +145,13 @@ Kaynaklar: https://play.google.com/store/apps/details?id=com.modernist.whatwrapp
 - Ürünler: İlişki, Sohbet, Grup, Yıl Özeti ve Koç; hepsi tek pakette. Aralıkta güncel "2026 Özeti".
 - Fiyat kıyası: Narya'nın görünen kısa seçeneği haftalık ₺249,99 (~₺1.000/ay); yıllığı ~₺108/ay.
 - Kullanıcı gözlemi (18 Ekim): ödeme yapmadan içerik görülemiyor; dışa aktarma sonrası da analizden önce abonelik istenmesi bekleniyor (yorumlardaki "dışa aktarıp bekledikten sonra ödeme istiyor" şikâyetiyle uyumlu). Ücretsiz önizleme varsa da birkaç bilgiden ibaret. Unwrap farkı: istatistik ve ilk kart ödeme olmadan gösterilir.
+
+## Narya şartlar ve gizlilik metni (18 Ekim, arama özetinden; whatwrapped.com bu ortamdan açılamadı)
+- Şartlar: https://whatwrapped.com/termsandconditions · Gizlilik (ayrı alan adı): https://whatswrappedapp.com/privacypolicy
+- İade: yalnız sitesinden alınan satın almalarda 30 gün içinde, "gerçek kullanım" kanıtıyla (ör. Wrapped tamamlamak ya da 7 gün üst üste kullanım). "Fikrimi değiştirdim" ve "aboneliği / otomatik yenilemeyi bilmiyordum" gerekçeleri reddediliyor. App Store / Google Play alımları mağaza politikasına tabi. Açılmış içerik iade edilmiyor; diğer her şey "kesin satış".
+- Gizlilik çelişkisi: şartlar "analiz cihazda, sohbet verisi sunucumuza hiç ulaşmaz, AI özellikleri aksi belirtilmedikçe cihazda" diyor; gizlilik politikası ise "anonimleştirilmiş bazı veriler üçüncü taraf AI işleme servislerine gidebilir" diyor ve izleme araçları listeliyor: Firebase / Google Analytics, Amplitude, AppsFlyer. Mağaza veri formları da uygulama etkinliği ve cihaz kimliğinin üçüncü taraflarla paylaşıldığını yazıyor.
+
+**Bizim için:**
+- Gizlilik metni tek ve doğru: "İstatistik telefonda hesaplanır. AI yorumu için seçilen mesajlar şifreli olarak sunucumuza gider, yapay zekâ sağlayıcısında işlenir, saklanmaz." Mağaza formu birebir aynı.
+- Reklam/izleme aracı yok (AppsFlyer, Amplitude yok); yalnız kişisel veri toplamayan hata raporu (Sentry, Synvia'daki gibi).
+- İade ve iptal sade: uygulama içinde "Aboneliği yönet" ve Apple / Google iade sayfasına doğrudan bağlantı; "otomatik yenilenir" bilgisi ödeme düğmesinin hemen üstünde, büyük harfle.
