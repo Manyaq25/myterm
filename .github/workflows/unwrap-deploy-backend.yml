@@ -28,7 +28,7 @@ jobs:
       - name: Ortam değişkenleri
         run: |
           set_env() {
-            [ -z "$2" ] && return 0
+            if [ -z "$2" ]; then echo "EKSİK (GitHub sırrı boş ya da adı farklı): $1"; return 0; fi
             vercel env rm "$1" production --yes --token "$VERCEL_TOKEN" >/dev/null 2>&1 || true
             printf '%s' "$2" | vercel env add "$1" production --token "$VERCEL_TOKEN" >/dev/null
             echo "ayarlandı: $1"
