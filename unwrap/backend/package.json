@@ -2,7 +2,7 @@
   "name": "unwrap-backend",
   "version": "1.0.0",
   "private": true,
-  "description": "Unwrap sunucusu (Vercel). Synvia sunucusundan tamamen ayrıdır.",
+  "description": "Unwrap sunucusu (Vercel). Synvia sunucusundan tamamen ayr\u0131d\u0131r.",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "tsx test/run.ts"
@@ -18,5 +18,8 @@
     "@types/node": "^22.20.5",
     "tsx": "^4.23.15",
     "typescript": "~5.9.2"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
