@@ -59,6 +59,8 @@ Synvia'dan ders: Türkçe "hatırlatıcı" aramaları çok az; önce gerçek tal
 - Yeni öneri sırası: 1) Sohbet analizi (rakip yorumları ve akış incelemesi), 2) Ehliyet/meslek sınavı (talep yüksek, kalabalık), 3) Hayat Evrakı listede kalır.
 
 ## 16 Ekim: sohbet analizi rakip yorumları
+**Uygulamanın adı: Unwrap** (18 Ekim, kullanıcı). Çalışma ayrı "Unwrap" sohbetinde sürüyor.
+
 Ayrıntı: `docs/sohbet-analizi-rakip-yorumlari.md` (web aramasından, ilk tur; Narya'nın puanı kaynağa göre 3,7–4,4 arası değişiyor, canlı sayfadan doğrulanmalı).
 
 **Tekrarlayan şikâyetler:** ödeme ekranı dışa aktarma ve beklemeden *sonra* çıkıyor; "reklam izle, sonra yine kilitli"; abonelik + jeton karmaşası, iptal/iade/beklenmedik ücret; WhatsApp dışa aktarma başarısız; gizlilik iddiası veri güvenliği formuyla çelişiyor; Türkçe rakiplerde AI cevapları zayıf; ücretsiz sonuç yüzeysel.

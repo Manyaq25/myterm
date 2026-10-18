@@ -76,5 +76,5 @@ Sadece zamanı gelince, tek tek iste:
 
 ## 9. Okunacak diğer dosyalar
 - `docs/YOL_HARITASI.md` — Synvia'nın tüm kararları ve geçmişi.
-- `docs/YENI_UYGULAMA_FIKIRLERI.md`, `docs/sohbet-analizi-rakip-yorumlari.md` — yeni uygulama fikirleri, talep kontrolü, rakip analizi, maliyet tahmini.
+- `docs/YENI_UYGULAMA_FIKIRLERI.md`, `docs/sohbet-analizi-rakip-yorumlari.md` — **Unwrap** (sohbet analizi uygulaması) ve diğer yeni uygulama fikirleri, talep kontrolü, rakip analizi, maliyet tahmini.
 - `AGENTS.md` / `CLAUDE.md` — depo kuralları (Expo sürüm belgeleri, derleme/gönderim kuralı).
