@@ -60,3 +60,34 @@ Chat screen with an AI coach. Top bar shows context: "💬 Ayşe ile sohbetin" w
 ```
 Settings list screen. Top card: "Unwrap Aylık · 25 Kasım'da yenilenir" with button "Aboneliği yönet". Sections: "Genel" (Dil, Bildirimler), "Gizlilik" (Tüm analizleri sil, Koç sohbetlerini sil, Gizlilik politikası), "Destek" (Bize yaz, Şartlar), "Uygulamayı değerlendir". Clean, lots of white space.
 ```
+
+---
+
+## TOPLU KOMUT (tüm ekranlar tek seferde)
+Hepsini birden yapıştır. Stitch bazı ekranları atlarsa "--- 2. KISIM ---" çizgisinden ikiye bölüp iki ayrı komut olarak gönder (2. kısmın başına da ilk paragrafı ekle).
+
+```
+Design a complete mobile app (iPhone 15) called "Unwrap", a Turkish chat and relationship analysis app for ages 18-30. Generate all 10 screens below in one consistent style: playful, warm and modern like Spotify Wrapped story cards; rounded corners; bold rounded sans-serif headings; soft pastel colors (peach, lilac, mint, butter yellow, coral) on off-white; flat illustrations of young people with phones, small hand-drawn hearts and sparkles. No ads, no coins. All on-screen text in Turkish exactly as written.
+
+1. Onboarding: title "Sohbetinin karnesini al", subtitle "İlgi 5, Hız 3, Espri 5, Trip 2 😄", illustrated report card, black button "Başla", small text "Reklam yok. Jeton yok. Tek fiyat."
+
+2. Home: logo "Unwrap", hero card "Bir sohbet yükle" (subtitle "WhatsApp veya Telegram"), chips "İlişki", "Arkadaş", "Aile", "Grup", "Yıl Özeti", list "Analizlerin" with items "Ayşe · İlişki · 18 Ekim" and "Kankalar · Grup · 12 Ekim", tab bar "Ana Sayfa", "Koç", "Ayarlar".
+
+3. Export guide bottom sheet: tabs "iPhone", "Android", "Telegram"; steps 1-5 (1 active); title "Sohbeti aç ve kişinin adına dokun"; dark WhatsApp header mockup with highlighted name and pointing hand; button "Sonraki"; link "Ekran görüntüsüyle yükle".
+
+4. Setup question: progress "1 / 2", title "Bu kişi senin neyin?", pill buttons "💘 Sevgili", "💍 Eş", "🦋 Flört", "💔 Eski sevgili", "🤝 Arkadaş", "👨‍👩‍👧 Aile", "💼 İş", "✨ Diğer", note with lock icon "Sohbetin telefonunda işlenir."
+
+5. Free story card (Instagram-story style, progress bars, X): peach background, label "Ücretsiz", title "Sohbeti kim başlatıyor?", bars "Emre 8" and "Zeynep 0", caption "Emre sohbetin motoru 🚂", button "Hikâyeyi paylaş".
+
+--- 2. KISIM ---
+
+6. Report card story: mint background like a Turkish school "karne", title "Sohbet Karnesi", columns "Emre" and "Zeynep", rows with grades 1-5: "İlgi", "Cevap hızı", "Espri", "Romantiklik", "Trip", stamp "Takdir Belgesi 🏅", tiny "eğlence amaçlıdır", button "Hikâyeyi paylaş".
+
+7. AI story card: lilac background, title "Kim daha çok yalan söylüyor? 🤥", chips "Ozan 5" and "Selin 2", evidence chat bubble "5 dakikaya oradayım" with note "40 dakika sonra: geldim 😄", tiny "eğlence amaçlıdır", button "Hikâyeyi paylaş".
+
+8. Paywall: visible X, title "Unwrap'in tamamını aç", green checks "Tüm AI kartları ve kanıtlı yorumlar", "Ne yazmalı önerileri", "AI Koç ve rol yapma", "Sınırsız sohbet analizi", "Reklam yok, jeton yok"; plans "Aylık ₺139,99" and "Yıllık ₺999,99 (aylık ₺83)" marked "En avantajlı"; button "7 gün ücretsiz dene"; small text "Deneme bitince otomatik yenilenir. İstediğin an iptal edebilirsin."; links "Geri yükle · Şartlar · Gizlilik".
+
+9. AI coach chat: top context "💬 Ayşe ile sohbetin" with link "değiştir", gradient avatar, chips "Ona ne yazayım?", "İlgisini mi kaybetti?", "Beni aldatıyor mu?", "Eski sevgilim gibi konuş", coach bubble "Son haftada senin cevapların ortalama 2 dakika, onunkiler 3 saat. Baskı yapmadan alan bırakmak işe yarayabilir.", input "Koça bir şey sor…".
+
+10. Settings: top card "Unwrap Aylık · 25 Kasım'da yenilenir" with button "Aboneliği yönet"; rows "Dil", "Bildirimler", "Tüm analizleri sil", "Koç sohbetlerini sil", "Gizlilik politikası", "Bize yaz", "Şartlar", "Uygulamayı değerlendir".
+```
