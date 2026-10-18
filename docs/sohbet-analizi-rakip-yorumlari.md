@@ -124,3 +124,23 @@ Resmî bir karşılaştırma bulunamadı; mağaza sayfaları yalnızca paket adl
 - AI İlişki Koçu: kırmızı bayraklar, duygusal dengesizlik, iletişim sorunları üzerine sohbet.
 - "Analiz çoğunlukla cihazda" iddiası (veri güvenliği formunda üçüncü tarafla paylaşım yazıyor).
 Kaynaklar: https://play.google.com/store/apps/details?id=com.modernist.whatwrapped · https://whatswrappedapp.com/ · https://apps.apple.com/us/app/narya-wrapped-chat-recap/id6740577449
+
+## Narya uygulama içi inceleme (18 Ekim 2026, kullanıcının iPhone ekran görüntüleri, satın alma yapılmadı)
+**Akış:**
+1. Açılış: "Tüm dünyada 10+ milyon kullanıcı".
+2. Bildirim izni ilk saniyede (hiçbir değer göstermeden).
+3. Hikâye tarzı 6 tanıtım kartı: İlişki Özeti ("Aşk hikâyenizi gözden geçirin"), İlişki Koçu ("Aşkınızı iyileştirin"), Sadece Sana Özel, Sohbet Özeti, Grup Sohbeti Özeti ("Grubunun enerjisini keşfet"), 2025 Özeti (yıl sonu, Wrapped mantığı). Alt metin hep aynı: "Duygusal örüntüleri, olumsuz sinyalleri ve gizli dinamikleri keşfedin." Devam = şartları kabul.
+4. App Store puan isteği, hiçbir şey kullanılmadan (mağaza puanı yüksek, yazılı yorumlar düşük: büyük ihtimalle bu yüzden).
+5. 5 adımlı resimli WhatsApp dışa aktarma rehberi (sohbeti aç → başlığa tıkla → en alta kaydır → "Sohbeti dışa aktar" → "Medyayı ekleme" → paylaşımda Narya). WhatsApp'ı doğrudan açıyor. Paylaşım menüsünde eski ad "WhatWrapped". İyi yapılmış.
+6. Her adımda: "Verilerin cihazında kalır ve bizimle hiçbir zaman paylaşılmaz." (AI sunucudaysa çelişkili; mağaza veri formunda üçüncü tarafla paylaşım yazıyor.)
+7. Ödeme ekranı **hiçbir sonuç göstermeden**: başlık "Bir Şeyler Tuhaf Geliyor! Hissediyorsun ama açıklayamıyorsun" (korku dili). Yalnız iki seçenek: **Haftalık ₺249,99** ("₺35,71/günlük") ve **Yıllık ₺1.299,99** ("₺3,56/günlük", "%85 İNDİRİM", varsayılan seçili). Aylık yok, ücretsiz deneme yazmıyor, görünür kapatma (X) yok.
+8. Ana sayfa: 2025 Özet ("Yeni"), İlişki Özeti, Grup Sohbeti Özeti, Sohbet Özeti (hepsi "2025" etiketli) ve bir kart daha (büyük ihtimalle Koç). Ödeme ekranı ana sayfada tekrar açılıyor.
+- Premium / VIP / Mega adları ödeme ekranında hiç geçmiyor; kullanıcı neyi aldığını göremiyor. Haftalık ₺249,99 = mağazadaki "VIP Mega" fiyatı, yıllık ₺1.299,99 = "Yıllık VIP".
+- İçerik güncel değil: Ekim 2026'da hâlâ "2025" etiketi ve "Yeni" yazıyor.
+
+**Bizim için:**
+- Önce değer, sonra ödeme: ücretsiz istatistik + bir kart, ödeme ekranı sonra; merak dili, görünür X.
+- Bildirim izni ve puan isteği doğru anda (ilk rapordan sonra).
+- Dışa aktarma rehberi en az onunki kadar iyi; Android ve Telegram adımları da.
+- Ürünler: İlişki, Sohbet, Grup, Yıl Özeti ve Koç; hepsi tek pakette. Aralıkta güncel "2026 Özeti".
+- Fiyat kıyası: Narya'nın görünen kısa seçeneği haftalık ₺249,99 (~₺1.000/ay); yıllığı ~₺108/ay.
