@@ -157,3 +157,25 @@ Kaynaklar: https://play.google.com/store/apps/details?id=com.modernist.whatwrapp
 - İade ve iptal sade: uygulama içinde "Aboneliği yönet" ve Apple / Google iade sayfasına doğrudan bağlantı; "otomatik yenilenir" bilgisi ödeme düğmesinin hemen üstünde, büyük harfle.
 - Gizlilik politikası (https://whatwrapped.com/privacypolicy, arama özeti; tam metin açılamadı, aynısı gibi görünen kopya whatswrappedapp.com'da): sohbet dosyası "tamamen cihazda işlenir, dış sunucuya yüklenmez" ama "anonimleştirilmiş bazı veriler üçüncü taraf AI servislerine gidebilir". Toplanan: cihaz türü, işletim sistemi, kullanım istatistikleri. Araçlar: Qonversion (abonelik), Firebase / Google Analytics, Amplitude, AppsFlyer. App Store etiketi: izleme amaçlı tanımlayıcılar, kullanıcı ve cihaz kimliği, kullanım ve çökme verisi. Saklama süresi yazmıyor.
 - Şartlarda: App Store iade talebinde uygulama içi kullanım bilgisi Apple'a gönderilebiliyor (Apple'ın "tüketim bilgisi" yolu; geliştirici "kullandı" bilgisiyle iadeye karşı çıkabiliyor). Bizde yapılmaz.
+
+## Narya İlişki Özeti: ücretsiz ve kilitli kartlar (18 Ekim, kullanıcının denemesi; kişi adları yazılmadı)
+Hikâye tarzı ~20 kart; her kartın altında "Hikâyeyi Paylaş" (Instagram Hikâye, WhatsApp, Facebook, X).
+
+**Ücretsiz (3 kart):**
+1. "Konuşmayı en çok kim başlatıyor?": isim + "20 defa sohbeti başlatan taraf olmuş 👏".
+2. "Birbirinize olan ilgi seviyeniz nedir?": iki çubuk, %64 ve %31 (toplam 100 değil). "Mesaj yoğunluğu, emoji kullanımı ve sohbeti sürdürme çabası incelenerek hesaplandı."
+3. "Ortalama ne kadar sürede yanıt veriyorsunuz?": 20 sn ve 19 sn. Altında hazır metin: "Opps, birileri zamanlamada biraz daha çaba göstermeli galiba! 🤭" (1 saniyelik fark için anlamsız; metin veriye göre değişmiyor).
+
+**Kilitli ("Tüm kilitleri aç 🔑", "İlişki Özetini Gör 👀"):** Kim daha manipülatif? · Kim daha baskın? · Kim daha çok "seni seviyorum" demiş? · Kim kaç defa yalan söylemiş? · Kim daha romantik? · Kim ne kadar çabalamış? · Kim kaç defa imalı mesaj göndermiş? · Kim kaç defa özür dilemiş? · En çok hangi konudan konuşuyorsunuz? · En çok kullandığınız sevgi sözcükleri · Kaç gün konuştunuz? · Birbirinize söylediğiniz ilk sevgi cümlesi.
+
+**Gözlemler:**
+- Sohbet arkadaş/iş arkadaşı sohbeti olduğu hâlde her kart kalpli ve "aşk" çerçeveli; ilişki türüne uyum yok.
+- "Kaç gün konuştunuz?" gibi telefonda saniyede hesaplanan basit sayılar bile kilitli (ödeme baskısı).
+- "Kim kaç defa yalan söylemiş?", "Kim daha manipülatif?" gibi kartlar AI'ın gerçekten bilemeyeceği, kişiyi suçlayan iddialar; paylaşılınca kırıcı ve riskli.
+- Hazır espri metinleri veriye uymuyor (19 sn / 20 sn için "biraz daha çaba").
+
+**Unwrap için:**
+- Önce ilişki türünü sor/anla (sevgili, arkadaş, aile, iş, grup) ve kartların dilini ona göre seç.
+- Telefonda hesaplanan bütün sayılar ücretsiz: kim başlatıyor, cevap süresi, kaç gün, en aktif saat, emoji, kelime, rekorlar. Ücretli olan AI yorumu (ton, imalar, özürler, konular, ilk sevgi cümlesi, "ne yazmalı").
+- Suçlayıcı kart yok: "yalan", "manipülatif" yerine "Kim daha çok özür diliyor?", "İmalı mesajlar (eğlence amaçlı)", "Kim sohbeti daha çok taşıyor?" gibi yumuşak, kanıtlı (alıntılı) kartlar.
+- Yüzdeler toplamı 100; espri metni veriye göre yazılır (AI ya da kurallı şablon).
