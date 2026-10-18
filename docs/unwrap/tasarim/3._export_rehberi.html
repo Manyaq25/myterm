@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="tr"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "surface-bright": "#fff8f8", "outline": "#8c706f", "on-tertiary-fixed-variant": "#005227", "on-surface-variant": "#584140", "surface-container-low": "#fbf1f2", "inverse-primary": "#ffb3b0", "tertiary-container": "#00b35c", "on-primary-container": "#6d0010", "secondary-fixed-dim": "#cebdff", "secondary-fixed": "#e8ddff", "on-tertiary-container": "#003c1b", "on-primary": "#ffffff", "tertiary-fixed-dim": "#4de082", "surface-variant": "#e9e0e1", "surface-container-highest": "#e9e0e1", "on-background": "#1e1b1c", "secondary-container": "#ab8ffe", "primary-container": "#ff6b6b", "on-surface": "#1e1b1c", "on-secondary-container": "#3f1e8c", "surface-tint": "#ae2f34", "inverse-on-surface": "#f8efef", "error": "#ba1a1a", "on-primary-fixed-variant": "#8c1520", "tertiary": "#006d36", "surface-container-high": "#efe6e7", "surface": "#fff8f8", "on-error-container": "#93000a", "on-tertiary-fixed": "#00210c", "primary": "#ae2f34", "primary-fixed-dim": "#ffb3b0", "on-secondary-fixed-variant": "#4f319c", "primary-fixed": "#ffdad8", "on-secondary-fixed": "#21005e", "surface-container": "#f5eced", "secondary": "#674bb5", "inverse-surface": "#342f30", "on-primary-fixed": "#410006", "background": "#fff8f8", "on-error": "#ffffff", "tertiary-fixed": "#6dfe9c", "error-container": "#ffdad6", "outline-variant": "#e0bfbd", "on-secondary": "#ffffff", "on-tertiary": "#ffffff", "surface-container-lowest": "#ffffff", "surface-dim": "#e1d8d9" }, borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, spacing: { "gutter": "1rem", "gutter-sm": "0.75rem", "margin-mobile": "1rem", "space-xl": "2.25rem", "space-lg": "1.5rem", "space-sm": "0.5rem", "margin": "1.25rem", "space-md": "1rem", "space-xs": "0.25rem" }, fontFamily: { "body-sm": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "label-lg": ["Plus Jakarta Sans"], "display-xl-mobile": ["Plus Jakarta Sans"], "display-xl": ["Plus Jakarta Sans"], "label-xs": ["Plus Jakarta Sans"], "body-lg": ["Plus Jakarta Sans"], "body-md": ["Plus Jakarta Sans"], "label-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "title-sm": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"] }, fontSize: { "body-sm": ["12px", { lineHeight: "16px", fontWeight: "500" }], "headline-md": ["22px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "700" }], "label-lg": ["14px", { lineHeight: "18px", letterSpacing: "0.01em", fontWeight: "700" }], "display-xl-mobile": ["38px", { lineHeight: "44px", letterSpacing: "-0.03em", fontWeight: "800" }], "display-xl": ["48px", { lineHeight: "52px", letterSpacing: "-0.03em", fontWeight: "800" }], "label-xs": ["10px", { lineHeight: "12px", letterSpacing: "0.05em", fontWeight: "800" }], "body-lg": ["16px", { lineHeight: "24px", fontWeight: "500" }], "body-md": ["14px", { lineHeight: "20px", fontWeight: "500" }], "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "700" }], "headline-lg": ["32px", { lineHeight: "38px", letterSpacing: "-0.02em", fontWeight: "700" }], "title-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }], "headline-lg-mobile": ["26px", { lineHeight: "32px", letterSpacing: "-0.02em", fontWeight: "700" }] } } } };</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 bg-surface/85 backdrop-blur-xl pt-safe"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-xs"><button class="w-11 h-11 -ml-space-xs rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-[24px]">arrow_back</span></button><img alt="Unwrap App Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Xh9A9Zlt2inb6HSC4po7v6IVHqa3EHGHt261A6P2om2GVeQNQK6NCcZke4HH7N9FnLdjbDuzqLhJM2sId2Y3CCuRFZWkfbgBksaro3HdFOQNZ_ckamfEGnfw1NsvwDTzc3hwsyh4XGnMgvHfbr7MkdengnmDaDtL4XT0d7U1bklkmtJqclBmaMgXN0shxxHOvrInXr56C27Z1wXUwG8uBtR0NmSWCpB2o1-gp1aa0sdgZ5HVyprMk-JTk"/><h1 class="font-title-sm text-title-sm text-on-surface ml-space-xs truncate max-w-[180px]">Export Rehberi</h1></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="flex-1 flex flex-col w-full bg-surface pt-16 pb-safe"><div class="flex flex-col w-full relative">
+<!-- Soft App Background Context (Subtle preview underneath the active sheet) -->
+<div class="px-margin pt-space-md pb-space-lg flex flex-col gap-space-md opacity-40 select-none pointer-events-none">
+<div class="p-space-lg rounded-lg bg-surface-container-high shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-[26px]">chat_spark</span>
+</div>
+<div>
+<span class="block font-title-sm text-title-sm text-on-surface">Ece &amp; Sen</span>
+<span class="block font-body-sm text-body-sm text-on-surface-variant">Son analiz: Dün 23:42</span>
+</div>
+</div>
+<span class="font-label-md text-label-md px-3 py-1 rounded-full bg-primary-container text-on-primary-container">%94 Kimya</span>
+</div>
+</div>
+<!-- Dim Scrim Layer -->
+<div class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-30 transition-opacity"></div>
+<!-- Bottom Sheet Container -->
+<div class="relative z-40 w-full mt-auto bg-surface rounded-t-xl shadow-2xl flex flex-col px-margin pt-3 pb-8">
+<!-- Grabber Handle -->
+<div class="w-full flex justify-center pb-2">
+<div class="w-12 h-1.5 rounded-full bg-surface-variant"></div>
+</div>
+<!-- Sheet Header Bar -->
+<div class="flex items-center justify-between pt-1 pb-space-md">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-md text-label-md text-primary tracking-wide uppercase">Rehber</span>
+</div>
+<button aria-label="Kapat" class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-transform active:scale-90" type="button">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Platform Switcher Tabs -->
+<div class="w-full p-1 bg-surface-container rounded-full flex items-center justify-between gap-1 mb-space-lg shadow-sm" id="platformTabs">
+<button class="flex-1 py-2 px-3 rounded-full font-label-md text-label-md bg-on-surface text-surface transition-all flex items-center justify-center gap-1.5 shadow-sm" id="tab-ios" onclick="switchPlatform('ios')" type="button">
+<span class="material-symbols-outlined text-[16px]">phone_iphone</span>
+<span>iPhone</span>
+</button>
+<button class="flex-1 py-2 px-3 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all flex items-center justify-center gap-1.5" id="tab-android" onclick="switchPlatform('android')" type="button">
+<span class="material-symbols-outlined text-[16px]">android</span>
+<span>Android</span>
+</button>
+<button class="flex-1 py-2 px-3 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all flex items-center justify-center gap-1.5" id="tab-telegram" onclick="switchPlatform('telegram')" type="button">
+<span class="material-symbols-outlined text-[16px]">send</span>
+<span>Telegram</span>
+</button>
+</div>
+<!-- Step Tracker Progress Indicator -->
+<div class="flex items-center justify-between mb-space-md">
+<div class="flex items-center gap-2" id="stepPills">
+<div class="h-2 w-8 rounded-full bg-primary transition-all duration-300"></div>
+<div class="h-2 w-2 rounded-full bg-surface-container-high transition-all duration-300"></div>
+<div class="h-2 w-2 rounded-full bg-surface-container-high transition-all duration-300"></div>
+<div class="h-2 w-2 rounded-full bg-surface-container-high transition-all duration-300"></div>
+<div class="h-2 w-2 rounded-full bg-surface-container-high transition-all duration-300"></div>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-low px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-primary text-[14px]">auto_stories</span>
+<span class="font-label-md text-label-md text-primary" id="stepCounterText">Adım 1 / 5</span>
+</div>
+</div>
+<!-- Dynamic Instruction Header -->
+<div class="flex flex-col gap-1 mb-space-md text-left">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface tracking-tight" id="stepTitle">
+        Sohbeti aç ve kişinin adına dokun
+      </h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed" id="stepCaption">
+        WhatsApp'ta analiz etmek istediğin sohbete gir ve en üstteki profil ismine tıkla.
+      </p>
+</div>
+<!-- Realistic WhatsApp Mockup Frame -->
+<div class="relative w-full rounded-lg bg-inverse-surface p-3 shadow-xl overflow-hidden mb-space-lg">
+<!-- Ambient Glow Behind Focus Area -->
+<div class="absolute -top-6 left-10 w-44 h-24 bg-primary/25 rounded-full blur-2xl pointer-events-none"></div>
+<!-- iOS Chat Header Simulated Shell -->
+<div class="relative rounded-md bg-[#1F2C34] p-2.5 flex items-center justify-between text-white shadow-md">
+<!-- Left: Back Button & Count -->
+<div class="flex items-center gap-1 text-[#25D366]">
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+<span class="font-label-md text-label-md">9</span>
+</div>
+<!-- Target Highlight Box around Name & Avatar -->
+<div class="relative flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#128C7E]/25 transition-all">
+<!-- Spotlight Pulse Ring -->
+<div class="absolute inset-0 rounded-full bg-primary-container/20 animate-ping pointer-events-none"></div>
+<img class="w-9 h-9 rounded-full object-cover shrink-0 shadow-sm" data-alt="A candid profile photo of a smiling stylish brunette Gen Z woman wearing a chic vintage beige trench coat under soft golden hour city sunlight, warm cinematic tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUTajwPN6veaB_usiVnbGI1PJUiU8THnqYYsFEoc0x5JQKAcZaZ_qUtbIlvmbcAGldHlPrBAkznoBQQUXlqTiXgJQ7A3y9gvaCR-oC6HfD0eSMLVz7yLurT5aIm-TV7RmHkaJ0nI5ITyH2_VwruMqPngT2RpY6ZdaOD0UEAodJe9NNI5eCNTcUGZckVyObKWlAfE_1Ro1N7o4y2c-bi9d4hfI7B8qyNItUalwDxgAs_Dt_A3VnEd_lnQ"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1">
+<span class="font-label-lg text-label-lg text-white font-bold tracking-tight">Ece ✨</span>
+<span class="material-symbols-outlined text-[13px] text-tertiary-fixed-dim">verified</span>
+</div>
+<span class="font-label-xs text-label-xs text-[#8696A0]">çevrimiçi</span>
+</div>
+<!-- Hand Tap Cursor Pointer Sticker -->
+<div class="absolute -bottom-6 right-2 flex items-center justify-center animate-bounce z-10 filter drop-shadow-md">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-lg">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">touch_app</span>
+</div>
+</div>
+</div>
+<!-- Right: Audio / Video Call Icons -->
+<div class="flex items-center gap-3 text-[#00A884]">
+<span class="material-symbols-outlined text-[20px]">videocam</span>
+<span class="material-symbols-outlined text-[18px]">call</span>
+</div>
+</div>
+<!-- Faux Chat Message Bubble Area -->
+<div class="mt-3.5 space-y-2 select-none pointer-events-none px-1">
+<div class="flex justify-start">
+<div class="bg-[#202C33] text-[#E9EDEF] rounded-lg rounded-tl-none px-3.5 py-2 max-w-[78%] shadow-sm">
+<p class="font-body-sm text-body-sm leading-relaxed">Kahve için yarın 15:00 Kadıköy uyuyor mu sana? ☕️</p>
+<span class="block text-right font-label-xs text-label-xs text-[#8696A0] mt-0.5">14:28</span>
+</div>
+</div>
+<div class="flex justify-end">
+<div class="bg-[#005C4B] text-[#E9EDEF] rounded-lg rounded-tr-none px-3.5 py-2 max-w-[78%] shadow-sm">
+<p class="font-body-sm text-body-sm leading-relaxed">Süper olur, tam o saatte oradayım! 🧁</p>
+<div class="flex items-center justify-end gap-1 mt-0.5">
+<span class="font-label-xs text-label-xs text-[#8696A0]">14:31</span>
+<span class="material-symbols-outlined text-[#53BDEB] text-[13px]">done_all</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Micro-Tip Badge -->
+<div class="mt-3 pt-2.5 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[16px]">lock</span>
+<span class="font-label-xs text-label-xs text-[#8696A0]">Uçtan uca şifrelenmiş veri</span>
+</div>
+<span class="font-label-xs text-label-xs bg-surface-variant/20 text-[#D1D7DB] px-2 py-0.5 rounded-full">Medya Olmadan</span>
+</div>
+</div>
+<!-- Action Section -->
+<div class="flex flex-col gap-3 w-full">
+<!-- Primary CTA Button -->
+<button class="w-full h-14 rounded-full bg-primary-container text-on-primary flex items-center justify-center gap-2 font-label-lg text-label-lg shadow-md hover:opacity-95 active:scale-[0.98] transition-all" onclick="nextStep()" type="button">
+<span>Sonraki</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<!-- Secondary Screen-Capture Link Option -->
+<button class="w-full py-2.5 flex items-center justify-center gap-2 text-on-surface-variant hover:text-primary transition-colors active:scale-95" type="button">
+<span class="material-symbols-outlined text-[18px]">photo_library</span>
+<span class="font-label-md text-label-md underline underline-offset-4 decoration-outline-variant">Ekran görüntüsüyle yükle</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+  let currentStep = 1;
+  const totalSteps = 5;
+
+  const stepsData = [
+    {
+      title: "Sohbeti aç ve kişinin adına dokun",
+      caption: "WhatsApp'ta analiz etmek istediğin sohbete gir ve en üstteki profil ismine tıkla."
+    },
+    {
+      title: "Sayfayı aşağı kaydır",
+      caption: "İletişim bilgisi sayfasında en alta inip 'Sohbeti Dışa Aktar' seçeneğini bul."
+    },
+    {
+      title: "'Medyasız' seçeneğini seç",
+      caption: "Fotoğraflar analizi yavaşlatmasın, hızla aktarmak için Medyasız'ı tıkla."
+    },
+    {
+      title: "Paylaşım menüsünden Unwrap'i seç",
+      caption: "Açılan iOS paylaşım ekranında Unwrap ikonuna tıkla veya Dosyalar'a kaydet."
+    },
+    {
+      title: "İşte bu kadar, büyüyü başlat!",
+      caption: "Yükleme tamamlandı, aşk ve sohbet kimyasını çözmeye hazırız."
+    }
+  ];
+
+  function switchPlatform(platform) {
+    const tabs = ['ios', 'android', 'telegram'];
+    tabs.forEach(tab => {
+      const el = document.getElementById('tab-' + tab);
+      if (tab === platform) {
+        el.className = "flex-1 py-2 px-3 rounded-full font-label-md text-label-md bg-on-surface text-surface transition-all flex items-center justify-center gap-1.5 shadow-sm";
+      } else {
+        el.className = "flex-1 py-2 px-3 rounded-full font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all flex items-center justify-center gap-1.5";
+      }
+    });
+  }
+
+  function nextStep() {
+    currentStep = (currentStep % totalSteps) + 1;
+    const data = stepsData[currentStep - 1];
+
+    document.getElementById('stepTitle').textContent = data.title;
+    document.getElementById('stepCaption').textContent = data.caption;
+    document.getElementById('stepCounterText').textContent = 'Adım ' + currentStep + ' / ' + totalSteps;
+
+    const pills = document.getElementById('stepPills').children;
+    for (let i = 0; i < pills.length; i++) {
+      if (i < currentStep) {
+        pills[i].className = (i === currentStep - 1) 
+          ? "h-2 w-8 rounded-full bg-primary transition-all duration-300"
+          : "h-2 w-3 rounded-full bg-primary/60 transition-all duration-300";
+      } else {
+        pills[i].className = "h-2 w-2 rounded-full bg-surface-container-high transition-all duration-300";
+      }
+    }
+  }
+</script></main></body></html>
