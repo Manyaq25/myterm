@@ -10,7 +10,8 @@
 import { createHash, randomBytes } from 'crypto';
 import type { IncomingMessage } from 'http';
 import { GoogleAuth } from 'google-auth-library';
-import { verifyAssertion, verifyAttestation } from 'node-app-attest';
+import type * as AppAttest from 'node-app-attest';
+import { pathToFileURL } from 'url';
 
 import { HttpError, header, requireEnv } from './http';
 import { k, redis } from './redis';
@@ -21,6 +22,14 @@ const TEAM_ID = process.env.APPLE_TEAM_ID ?? 'G2T885G2XY';
 const CHALLENGE_TTL = 300;
 /** Bir abonelik en fazla bu kadar cihaz anahtarıyla kullanılabilir. */
 const MAX_KEYS_PER_USER = 4;
+
+// node-app-attest yalnız ESM; Vercel'in CommonJS yükleyicisi require() edemiyor.
+// Gerçek import() ile yüklenir (TypeScript bunu require'a çevirmesin diye
+// Function ile). require.resolve, Vercel'in dosya izleyicisinin paketi dahil
+// etmesini de sağlar.
+const esmImport = new Function('u', 'return import(u)') as (u: string) => Promise<typeof AppAttest>;
+let appAttest: Promise<typeof AppAttest> | null = null;
+const loadAppAttest = () => (appAttest ??= esmImport(pathToFileURL(require.resolve('node-app-attest')).href));
 
 const mode = () => (process.env.INTEGRITY_MODE === 'enforce' ? 'enforce' : 'log');
 
@@ -38,7 +47,7 @@ export async function registerAppleKey(appUserId: string, keyId: string, attesta
   if (!used) throw new HttpError(400, 'challenge_expired');
   let publicKey: string;
   try {
-    ({ publicKey } = verifyAttestation({
+    ({ publicKey } = (await loadAppAttest()).verifyAttestation({
       attestation: Buffer.from(attestationB64, 'base64'),
       challenge,
       keyId,
@@ -88,7 +97,7 @@ async function verifyRequestStrict(req: IncomingMessage, rawBody: string, appUse
     if (stored.appUserId !== appUserId) throw new HttpError(403, 'attest_user_mismatch');
     let signCount: number;
     try {
-      ({ signCount } = verifyAssertion({
+      ({ signCount } = (await loadAppAttest()).verifyAssertion({
         assertion: Buffer.from(assertion, 'base64'),
         payload: bodyHash,
         publicKey: stored.publicKey,
