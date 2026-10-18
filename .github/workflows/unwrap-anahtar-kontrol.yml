@@ -30,4 +30,5 @@ jobs:
           code=$(curl -s -o /dev/null -w '%{http_code}' https://api.revenuecat.com/v1/subscribers/unwrap-anahtar-kontrol \
             -H "Authorization: Bearer $KEY")
           echo "SONUÇ: HTTP $code"
-          [ "$code" = "200" ]
+          # 201: ilk sorguda deneme kaydı oluşturuldu; anahtar geçerli
+          [ "$code" = "200" ] || [ "$code" = "201" ]
