@@ -166,7 +166,7 @@ Hikâye tarzı ~20 kart; her kartın altında "Hikâyeyi Paylaş" (Instagram Hik
 2. "Birbirinize olan ilgi seviyeniz nedir?": iki çubuk, %64 ve %31 (toplam 100 değil). "Mesaj yoğunluğu, emoji kullanımı ve sohbeti sürdürme çabası incelenerek hesaplandı."
 3. "Ortalama ne kadar sürede yanıt veriyorsunuz?": 20 sn ve 19 sn. Altında hazır metin: "Opps, birileri zamanlamada biraz daha çaba göstermeli galiba! 🤭" (1 saniyelik fark için anlamsız; metin veriye göre değişmiyor).
 
-**Kilitli ("Tüm kilitleri aç 🔑", "İlişki Özetini Gör 👀"):** Kim daha manipülatif? · Kim daha baskın? · Kim daha çok "seni seviyorum" demiş? · Kim kaç defa yalan söylemiş? · Kim daha romantik? · Kim ne kadar çabalamış? · Kim kaç defa imalı mesaj göndermiş? · Kim kaç defa özür dilemiş? · En çok hangi konudan konuşuyorsunuz? · En çok kullandığınız sevgi sözcükleri · Kaç gün konuştunuz? · Birbirinize söylediğiniz ilk sevgi cümlesi.
+**Kilitli ("Tüm kilitleri aç 🔑", "İlişki Özetini Gör 👀"):** Kim daha manipülatif? · Kim daha baskın? · Kim daha çok "seni seviyorum" demiş? · Kim kaç defa yalan söylemiş? · Kim daha romantik? · Kim ne kadar çabalamış? · Kim kaç defa imalı mesaj göndermiş? · Kim kaç defa özür dilemiş? · En çok hangi konudan konuşuyorsunuz? · En çok kullandığınız sevgi sözcükleri · Kaç gün konuştunuz? · Birbirinize söylediğiniz ilk sevgi cümlesi · Ortalama kaç kelime kullanıyorsunuz? · Birlikte kaç defa gülmüşsünüz? · Birbirinizi ne kadar arzuluyorsunuz? · Favori sevgi emojiniz · En çok güldüğünüz mesaj. Toplam 20 kart: 3 ücretsiz, 17 kilitli. Kilitlilerin yaklaşık yarısı (kelime, gülme, emoji, gün sayısı) telefonda AI'sız hesaplanabilir.
 
 **Gözlemler:**
 - Sohbet arkadaş/iş arkadaşı sohbeti olduğu hâlde her kart kalpli ve "aşk" çerçeveli; ilişki türüne uyum yok.
