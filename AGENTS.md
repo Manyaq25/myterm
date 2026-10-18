@@ -8,3 +8,5 @@ Read the exact versioned docs at https://docs.expo.dev/versions/v54.0.0/ before 
 - Mağazada canlıya alma (App Store "İncelemeye gönder", Google Play üretim) her zaman kullanıcıda kalır.
 - Expo ücretsiz planının aylık derleme kotası gözetilir; gereksiz derleme yapılmaz, kotaya yaklaşınca kullanıcıya söylenir.
 - Expo erişimi Claude ortamında network secret olarak tanımlı (`*.expo.dev`, Authorization: Bearer); anahtar sohbete yazılmaz.
+
+- Sunucu yayını (Vercel; ör. Unwrap için ayrı `unwrap-backend` projesi) kullanıcıya sormadan yapılır (kullanıcı kararı, 18 Ekim 2026). Yayından önce testler çalışır; Synvia ve Unwrap sunucuları birbirine karışmaz.

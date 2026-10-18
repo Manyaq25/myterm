@@ -5,7 +5,7 @@ name: Unwrap sunucu yayını (Vercel)
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main, "claude/**"]
     paths: ["unwrap/backend/**", ".github/workflows/unwrap-deploy-backend.yml"]
 
 jobs:
@@ -55,4 +55,7 @@ jobs:
           # Abonelik olmadan ücretli uç kapalı olmalı
           code=$(curl -s -o /dev/null -w '%{http_code}' -X POST "${{ steps.deploy.outputs.url }}/api/report" -H 'x-app-user-id: ci-test' -d '{}')
           echo "abonesiz rapor: HTTP $code"; [ "$code" != "200" ]
+          # Veritabanı bağlantısı (sayaç Upstash'tan okunur)
+          code=$(curl -s -o c.json -w '%{http_code}' "${{ steps.deploy.outputs.url }}/api/counter"); cat c.json; echo
+          echo "sayaç: HTTP $code"; [ "$code" = "200" ]
           echo "Unwrap sunucusu: ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
