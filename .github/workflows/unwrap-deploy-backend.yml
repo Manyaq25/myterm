@@ -57,7 +57,7 @@ jobs:
           # Abonelik olmadan ücretli uç kapalı olmalı
           code=$(curl -s -o r.json -w '%{http_code}' -X POST "${{ steps.deploy.outputs.url }}/api/report" -H 'x-app-user-id: ci-test' -d '{}')
           echo "abonesiz rapor: HTTP $code"; head -c 300 r.json; echo
-          [ "$code" = "402" ] || { timeout 40 vercel logs --deployment "$(grep -Eo "https://unwrap-backend-[a-z0-9]+-[a-z0-9]+\.vercel\.app" out.log | tail -n 1)" --token "$VERCEL_TOKEN" 2>&1 | tail -40 || true; exit 1; }
+          [ "$code" = "402" ] || { sleep 30; timeout 40 vercel logs --since 10m --deployment "$(grep -Eo "https://unwrap-backend-[a-z0-9]+-[a-z0-9]+\.vercel\.app" out.log | tail -n 1)" --token "$VERCEL_TOKEN" 2>&1 | tail -40 || true; exit 1; }
           # Veritabanı bağlantısı (sayaç Upstash'tan okunur)
           code=$(curl -s -o c.json -w '%{http_code}' "${{ steps.deploy.outputs.url }}/api/counter"); cat c.json; echo
           echo "sayaç: HTTP $code"; [ "$code" = "200" ]
