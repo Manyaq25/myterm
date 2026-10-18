@@ -1,0 +1,42 @@
+# Unwrap sunucusu: tip kontrolü + çevrimdışı testler (her değişiklikte).
+# Canlı model denemesi yalnız unwrap/backend/test/canli-calistir.txt değişince çalışır (ücretli).
+name: Unwrap sunucu testi
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**", main]
+    paths: ["unwrap/backend/**", "unwrap/src/lib/**", ".github/workflows/unwrap-backend-test.yml"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: unwrap/backend
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm test
+      - name: Canlı deneme gerekli mi?
+        id: live
+        run: |
+          if git diff --name-only HEAD~1 HEAD | grep -q '^unwrap/backend/test/canli-calistir.txt$'; then
+            echo "run=1" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Canlı rapor denemesi (gerçek model)
+        if: steps.live.outputs.run == '1'
+        env:
+          UNWRAP_ANTHROPIC_API_KEY: ${{ secrets.UNWRAP_ANTHROPIC_API_KEY }}
+        run: npx tsx test/live-report.ts
+      - uses: actions/upload-artifact@v4
+        if: steps.live.outputs.run == '1'
+        with:
+          name: canli-rapor
+          path: unwrap/backend/test/live-report-output.md

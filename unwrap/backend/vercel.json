@@ -1,0 +1,6 @@
+{
+  "functions": {
+    "api/report.ts": { "maxDuration": 60 },
+    "api/coach.ts": { "maxDuration": 30 }
+  }
+}

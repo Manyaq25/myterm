@@ -1,0 +1,56 @@
+# Unwrap sunucusunu AYRI bir Vercel projesine (unwrap-backend) yayınlar.
+# Synvia'nın sunucusuna (backend/) dokunmaz.
+name: Unwrap sunucu yayını (Vercel)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["unwrap/backend/**", ".github/workflows/unwrap-deploy-backend.yml"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: unwrap/backend
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci && npx tsc --noEmit && npm test
+      - run: npm install --global vercel@latest
+      - name: Vercel projesine bağlan
+        run: vercel link --yes --project unwrap-backend --token "$VERCEL_TOKEN"
+      - name: Ortam değişkenleri
+        run: |
+          set_env() {
+            [ -z "$2" ] && return 0
+            vercel env rm "$1" production --yes --token "$VERCEL_TOKEN" >/dev/null 2>&1 || true
+            printf '%s' "$2" | vercel env add "$1" production --token "$VERCEL_TOKEN" >/dev/null
+            echo "ayarlandı: $1"
+          }
+          set_env UNWRAP_ANTHROPIC_API_KEY "${{ secrets.UNWRAP_ANTHROPIC_API_KEY }}"
+          set_env REVENUECAT_SECRET_KEY "${{ secrets.UNWRAP_REVENUECAT_SECRET_KEY }}"
+          set_env PLAY_INTEGRITY_SA_JSON '${{ secrets.UNWRAP_PLAY_INTEGRITY_SA_JSON }}'
+          set_env INTEGRITY_MODE "${{ vars.UNWRAP_INTEGRITY_MODE || 'log' }}"
+      - run: vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
+      - run: vercel build --prod --token "$VERCEL_TOKEN"
+      - name: Yayınla
+        id: deploy
+        run: |
+          vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN" 2>&1 | tee out.log
+          url=$(grep -A1 'Aliased' out.log | grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' | tail -n 1)
+          url=${url:-$(grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' out.log | tail -n 1)}
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+      - name: Sağlık kontrolü
+        run: |
+          curl -sS --max-time 20 "${{ steps.deploy.outputs.url }}/api/health" | tee h.json
+          grep -q '"service":"unwrap"' h.json
+          # Abonelik olmadan ücretli uç kapalı olmalı
+          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST "${{ steps.deploy.outputs.url }}/api/report" -H 'x-app-user-id: ci-test' -d '{}')
+          echo "abonesiz rapor: HTTP $code"; [ "$code" != "200" ]
+          echo "Unwrap sunucusu: ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"
