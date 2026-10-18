@@ -54,3 +54,18 @@ Yıl Özeti (Aralık'ta gelir) · Instagram DM içe aktarma · sesli mesaj anali
 
 ## 9. Tasarım (Google Stitch)
 Ekran komutları: `docs/unwrap/STITCH_KOMUTLARI.md`. Kullanıcı Stitch'te üretir, beğendiklerini ekran görüntüsü / dışa aktarım olarak gönderir; kod Expo'da yazılır, Stitch HTML'i görsel rehber olarak kullanılır.
+
+## 10. Synvia'dan tam ayrılık (kullanıcı kararı, 18 Ekim)
+- Kod: depoda ayrı `unwrap/` klasörü; kendi `package.json`, `app.json`, bundle ID (`com.aydinapp.unwrap`), EAS projesi. Synvia dosyalarına dokunulmaz.
+- Sunucu: ayrı Vercel projesi (`unwrap/backend`), ayrı ortam değişkenleri; Synvia sunucusuyla ortak kod veya adres yok.
+- Servisler: ayrı RevenueCat projesi, ayrı Sentry projesi, ayrı Upstash veritabanı. Ayrı Anthropic API anahtarı önerilir (maliyet ve sınırlar ayrı görünsün).
+- Otomasyon: ayrı iş akışı dosyaları (`unwrap-*.yml`), yalnız `unwrap/**` değişince çalışır.
+
+## 11. Güvenlik: kırılmış (crack) sürüme ve API kötüye kullanımına karşı
+Hiçbir uygulama %100 kırılamaz değildir; amaç, kırılmış sürümün **hiçbir Pro değeri vermemesi**.
+1. **Pro'nun değeri sunucuda:** AI raporu, AI kartları ve Mila yalnız sunucuda üretilir. Uygulamadaki "Pro" işaretini değiştirmek işe yaramaz.
+2. **Sunucu aboneliği kendisi doğrular:** her AI isteğinde sunucu, RevenueCat'e (gizli anahtarla, sunucudan) bu kullanıcının aboneliği aktif mi diye sorar. Ödeme yoksa AI cevabı yok.
+3. **Gerçek uygulama kontrolü:** Apple App Attest ve Google Play Integrity ile istek değiştirilmemiş, mağazadan gelen uygulamadan mı geliyor diye doğrulanır; yan yüklenen / kırılmış IPA ve APK'nın istekleri reddedilir.
+4. **Anahtarlar uygulamada yok:** Anthropic ve RevenueCat gizli anahtarları yalnız sunucuda; istemler (prompt) de sunucuda, uygulamayı açan kişi "tarifi" göremez. Uygulamaya gömülü paylaşılan şifreye güvenilmez.
+5. **Sınır ve izleme:** kullanıcı / cihaz başına hız sınırı ve adil kullanım (Upstash); olağandışı kullanım Sentry ve günlük maliyet ölçümüyle görülür.
+6. Ücretsiz istatistikler zaten bedava olduğu için telefonda kalır; kırılmaları kayıp değildir.
