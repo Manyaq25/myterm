@@ -94,3 +94,9 @@ Ayrıntı: `docs/sohbet-analizi-model-testi.md`. 5 kurgu Türkçe sohbet, aynı 
 - İsim biçimi (18 Ekim, kullanıcı): Narya gibi **"Marka: Sohbet Karnesi"** (tek kelimelik marka + açıklama). Adaylar: Unwrap, Undertone, Mesajo (aramada çakışma yok); Karnio açıklamayla tekrara düşüyor. Elenenler: Ghosty (kötü geçmiş), Tonely, Yapper, Vibra, VibeCheck, Aura (dolu). Karar kullanıcıda; mağazada ve alan adında kontrol edilecek.
 - İsim açıklaması (18 Ekim, kullanıcı): "Sohbet Karnesi" yerine **"Sohbet ve İlişki Analizi"**. Mağaza adı sınırı 30 karakter: "Unwrap: Sohbet ve İlişki Analizi" 32 karakter, sığmıyor. Öneri: ad "Unwrap: Sohbet Analizi" (22), App Store alt başlığı "İlişki analizi, sohbet karnesi" (30), Google Play kısa açıklaması "Sohbet ve ilişki analizi: ilgi, ton, ghosting ve sohbet karnesi".
 - **İsim kararı (18 Ekim, kullanıcı): Unwrap.** Mağaza adı önerisi "Unwrap: Sohbet Analizi", alt başlık "İlişki analizi, sohbet karnesi". Mağazada ve alan adında boşluk kontrolü yapılacak.
+- **Kararlar (18 Ekim, kullanıcı):**
+  - Fiyat yapısı: önce ücretsiz deneme, sonra **aylık ve yıllık** (aynı tek paket, iki ödeme dönemi; her şey dahil). Kesin rakamlar kullanıcıda; öneri aylık ₺139,99, yıllık ₺999,99.
+  - Eğlence kartları olsun: "Kim daha çok yalan söylüyor?" gibi kartlar dahil (eğlence amaçlı; insanlar gülüyor ve seviyor).
+  - AI Koç'ta **rol yapma** olsun (eski sevgili, partner, hoşlanılan kişi vb.).
+  - Aldatma / sadakat gibi merak edilen sorular olsun.
+  - Uygulanış: kartlarda "eğlence amaçlıdır" notu, esprili dil, sohbetten alıntıyla gösterim; yaş sınırı 18+ (Narya da 18+); cinsel içerik üretilmez (mağaza kuralı).
