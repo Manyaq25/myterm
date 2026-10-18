@@ -39,12 +39,14 @@ jobs:
           set_env UPSTASH_REDIS_REST_URL "${{ secrets.UNWRAP_UPSTASH_REDIS_REST_URL || secrets.UPSTASH_REDIS_REST_URL }}"
           set_env UPSTASH_REDIS_REST_TOKEN "${{ secrets.UNWRAP_UPSTASH_REDIS_REST_TOKEN }}"
           set_env INTEGRITY_MODE "${{ vars.UNWRAP_INTEGRITY_MODE || 'log' }}"
-      - run: vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
-      - run: vercel build --prod --token "$VERCEL_TOKEN"
+      # Derleme Vercel'de yapılır: "Secret" türündeki değişkenler indirilemediği için
+      # yerelde derleme (--prebuilt) yer tutucu değerlerle çalışırdı.
+      - name: Yerel kalıntıları temizle
+        run: rm -f .env.local .vercel/.env.production.local
       - name: Yayınla
         id: deploy
         run: |
-          vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN" 2>&1 | tee out.log
+          vercel deploy --prod --token "$VERCEL_TOKEN" 2>&1 | tee out.log
           url=$(grep -A1 'Aliased' out.log | grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' | tail -n 1)
           url=${url:-$(grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' out.log | tail -n 1)}
           echo "url=$url" >> "$GITHUB_OUTPUT"
