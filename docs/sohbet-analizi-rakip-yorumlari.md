@@ -144,3 +144,4 @@ Kaynaklar: https://play.google.com/store/apps/details?id=com.modernist.whatwrapp
 - Dışa aktarma rehberi en az onunki kadar iyi; Android ve Telegram adımları da.
 - Ürünler: İlişki, Sohbet, Grup, Yıl Özeti ve Koç; hepsi tek pakette. Aralıkta güncel "2026 Özeti".
 - Fiyat kıyası: Narya'nın görünen kısa seçeneği haftalık ₺249,99 (~₺1.000/ay); yıllığı ~₺108/ay.
+- Kullanıcı gözlemi (18 Ekim): ödeme yapmadan içerik görülemiyor; dışa aktarma sonrası da analizden önce abonelik istenmesi bekleniyor (yorumlardaki "dışa aktarıp bekledikten sonra ödeme istiyor" şikâyetiyle uyumlu). Ücretsiz önizleme varsa da birkaç bilgiden ibaret. Unwrap farkı: istatistik ve ilk kart ödeme olmadan gösterilir.
