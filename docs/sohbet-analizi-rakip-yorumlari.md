@@ -1,4 +1,4 @@
-# Sohbet analizi: rakip yorumları (ilk tur)
+# Unwrap (sohbet analizi): rakip yorumları (ilk tur)
 
 Tarih: 16 Ekim 2026. Kaynak: web araması sonuçları. Mağaza sayfaları (apps.apple.com, play.google.com, itunes.apple.com) bu ortamın ağ ayarında kapalı olduğu için yorumlar doğrudan çekilemedi; puanlar ve alıntılar arama özetlerinden geliyor, canlı sayfadan doğrulanmalı.
 
