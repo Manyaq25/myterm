@@ -32,3 +32,16 @@ jobs:
           echo "SONUÇ: HTTP $code"
           # 201: ilk sorguda deneme kaydı oluşturuldu; anahtar geçerli
           [ "$code" = "200" ] || [ "$code" = "201" ]
+      - name: Upstash veritabanı
+        env:
+          URL: ${{ secrets.UNWRAP_UPSTASH_REDIS_REST_URL || secrets.UPSTASH_REDIS_REST_URL }}
+          TOKEN: ${{ secrets.UNWRAP_UPSTASH_REDIS_REST_TOKEN }}
+        run: |
+          [ -z "$URL" ] && { echo "SONUÇ: adres yok"; exit 1; }
+          [ -z "$TOKEN" ] && { echo "SONUÇ: token yok"; exit 1; }
+          case "$URL" in https://*.upstash.io*) echo "adres biçimi doğru";; *) echo "UYARI: adres https://...upstash.io biçiminde değil";; esac
+          echo "token uzunluğu: ${#TOKEN}"
+          [ "$TOKEN" != "$(printf '%s' "$TOKEN" | tr -d '[:space:]')" ] && echo "UYARI: token içinde boşluk/satır sonu var"
+          code=$(curl -s -o r.txt -w '%{http_code}' "${URL%/}/ping" -H "Authorization: Bearer $TOKEN")
+          echo "SONUÇ: HTTP $code"; cat r.txt; echo
+          [ "$code" = "200" ]
