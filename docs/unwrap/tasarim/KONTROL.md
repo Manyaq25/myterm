@@ -22,3 +22,9 @@
 
 ## Stitch'te olmayan, kodda tasarımla aynı stilde yapılacak ekranlar
 "Sen hangisisin?" sorusu · sohbet okunuyor (yükleniyor) ekranı · tam rapor özet sayfası · ödeme sonrası teşekkür.
+
+## Kullanıcı kararları (18 Ekim)
+- Örnek sayılar tasarımda **özelliğin yeri** demek: sayaç ve benzeri alanlar kalır, gösterilen sayı gerçek veriden gelir. Örn. "Bu hafta X sohbet analiz edildi" sayacı sunucudaki gerçek toplamdan (yalnız sayı, içerik yok); "Uyum %", "14.280 mesaj" gibi alanlar kullanıcının kendi analizinden; Ayarlar'daki puan gerçek mağaza puanından ya da puan yokken gizli. Sayı henüz anlamlı değilse (ör. sayaç çok düşükse) alan gizlenir, uydurma sayı asla yazılmaz.
+- Ücretli paketin adı: **Unwrap Pro** (Pro ve Plus ikisi de uygun bulundu; ödeme ekranındaki "Pro" seçildi, Ayarlar da "Pro" olacak).
+- Koçun adı: **Mila**.
+- Kartlarda alan adı yazılmayacak (yalnız "unwrap" logosu).
