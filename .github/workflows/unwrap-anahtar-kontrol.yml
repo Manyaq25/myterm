@@ -1,0 +1,23 @@
+# Unwrap'in Anthropic anahtarını değerini göstermeden doğrular (ücretsiz model listesi isteği).
+# Elle ya da unwrap/backend/anahtar-kontrol.txt değişince çalışır.
+name: Unwrap anahtar kontrolü
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths: ["unwrap/backend/anahtar-kontrol.txt"]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Anthropic anahtarı
+        env:
+          KEY: ${{ secrets.UNWRAP_ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$KEY" ]; then echo "SONUÇ: UNWRAP_ANTHROPIC_API_KEY bulunamadı"; exit 1; fi
+          code=$(curl -s -o /dev/null -w '%{http_code}' https://api.anthropic.com/v1/models \
+            -H "x-api-key: $KEY" -H "anthropic-version: 2023-06-01")
+          echo "SONUÇ: HTTP $code"
+          [ "$code" = "200" ]
