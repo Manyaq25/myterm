@@ -192,3 +192,23 @@ Hikâye tarzı ~20 kart; her kartın altında "Hikâyeyi Paylaş" (Instagram Hik
 
 **Unwrap için:** koç tek pakete dahil; hazır sorular kategorili ve doğal Türkçe; rol yapma ilk sürümde yok; aldatma / sadakat sorularında kesin hüküm yok, sakin ve yönlendirici dil; koç özetin bağlamını kullanır ve kullanıcının hangi taraf olduğunu başta bir kez sorar (analizde de kullanılır); Ayarlar'da "Aboneliği yönet" ve veri silme düğmeleri.
 - Narya'nın Apple abonelik ayarlarında görünen tüm planları ("VIP Chat Group", 18 Ekim): Aylık VIP Sohbet Paketi ₺159,99 · Haftalık VIP Sohbet Paketi ₺199,99 · Haftalık VIP Mega Sohbet Paket ₺249,99 · Yıllık Premium Abonelik ₺999,99 · Yıllık VIP Sohbet Paketi ₺1.299,99. Aylık seçenek uygulama içi ödeme ekranında hiç gösterilmiyor (yalnız haftalık Mega + yıllık VIP). Kullanıcı test sırasında haftalık Mega'yı başlattı ve iptal etti (süre 25 Ekim'de doluyor); bu süre içinde ücretli içerik rakip incelemesi için görülebilir.
+
+## Narya ücretli içerik incelemesi (18 Ekim, kullanıcı aboneliği iptal ettikten sonra süre dolana kadar; kişi adları yazılmadı)
+**İptal sonrası geri kazanma teklifi:** "%92 İNDİRİM – Premium erişimini kaybetme: ~~₺199,99~~ ₺24,99/haftalık, alacağın en düşük fiyat".
+
+**Ücretli İlişki Özeti kartları (gerçek eş sohbeti, 374 gün):** Kim daha manipülatif (66/34, "İkna sanatı mı, tatlı oyunlar mı? 😈") · Kim daha baskın (tek isim, "%61 oranla sözü geçen taraf") · Kim daha çok "seni seviyorum" (14/12) · Kim kaç defa yalan (20/6, "tutarsız ifadeler ve tekrar eden kalıplar") · Kim daha romantik (56/44) · Kim ne kadar çabalamış (51/49) · İmalı mesaj (173/140) · Özür (43/21) · Konu ("Duygusal Yakınlık") · Sevgi sözcükleri (seviyorum, canım, karım / kocam, canım, özledim) · Kaç gün (374, "4 mevsimlik hikâye") · Ortalama kelime (4/3) · Gülme (343) · Arzu (4/10, "alevlendirmenin zamanı 🪵😅") · Favori sevgi emojisi (😘 ×11) · En çok güldüğünüz mesaj (tarihli gerçek alıntı) · Final: "Bu ilişkinin sonu nereye gider?" (AI çizimi + "Kelimelerde Kaybolmak" başlığı).
+- Kanıt yok: yalan / imalı / manipülatif sayılarının hiçbirinde örnek mesaj yok; 173 imalı mesaj gibi sayılar kelime taraması izlenimi veriyor.
+- Hazır metinler veriyle çelişiyor: cevap süresi iki tarafta da "3s" (birim belirsiz) ama "birileri çaba göstermeli".
+- İyi yanlar: sevgi sözcükleri doğru, tarihli gerçek alıntı kartı, final kartı ve "4 mevsim" gibi sıcak cümleler paylaşılmaya çok uygun; renkli, sade tasarım.
+
+**AI Koç (ücretli):**
+- Seans başında ilişki türünü butonla soruyor (Partner / Eş / Platonik / Arkadaş / Eski Sevgili / Diğer), sonra çoktan seçmeli sorularla ilerliyor; serbest yazı da var.
+- Genel, terapi kalıbı cümleler; uydurma istatistik ("güven %70'in üzerindeyse mutluluk ciddi artıyor").
+- **Kendi verisiyle çelişiyor:** koç "seni seviyorum nadiren söyleniyor, taraflardan biri çaba koymada eksik" dedi; oysa özet kartları 14/12 ve 51/49 gösteriyordu. Koç yanlış sohbete bağlıydı (önce yüklenen asker arkadaşı sohbeti) ve o arkadaş sohbeti için "5 olumsuz sinyal" çıkarmış: yüksek sayıda yalan, tek taraflı üstünlük, çaba eksikliği, düşük ilgi, nadiren "seni seviyorum". İlişki türünü bilmediği için arkadaşlık sohbetini sevgili gibi yargılıyor.
+- Rol yapma (eski sevgili, "sıcak ve samimi"): akıcı ve duygusal; seans sonunda başlıklı "Sohbet Notu" özeti, "Tüm sohbeti gör", paylaş ve 👍/👎 geri bildirim. "Verileriniz anonimleştirilir, kullanıcı bazlı bilgi tutulmaz" yazıyor.
+
+**Unwrap için:**
+- İlişki türü analizin en başında sorulur; kartlar, sinyaller ve koç buna göre çalışır (arkadaşa "seni seviyorum az" denmez).
+- Koç ve kartlar aynı hesaplanmış veriyi kullanır; çelişki olmaz. Koç rakam söylerken kartlardaki gerçek sayıyı ve örnek mesajı kullanır, uydurma istatistik vermez.
+- Eğlence kartları (yalan, manipülatif, arzu dahil) kalır ama her birinde 1–2 örnek mesaj ve "eğlence amaçlı" notu; sayılar makul (AI seçer, kelime taraması değil).
+- Alacağımız iyi fikirler: tarihli "en komik mesaj" kartı, "4 mevsim" gibi sıcak final, "Bu ilişki nereye gider?" final kartı, seans sonu not + geri bildirim, ilişki türü butonları.
