@@ -212,3 +212,4 @@ Hikâye tarzı ~20 kart; her kartın altında "Hikâyeyi Paylaş" (Instagram Hik
 - Koç ve kartlar aynı hesaplanmış veriyi kullanır; çelişki olmaz. Koç rakam söylerken kartlardaki gerçek sayıyı ve örnek mesajı kullanır, uydurma istatistik vermez.
 - Eğlence kartları (yalan, manipülatif, arzu dahil) kalır ama her birinde 1–2 örnek mesaj ve "eğlence amaçlı" notu; sayılar makul (AI seçer, kelime taraması değil).
 - Alacağımız iyi fikirler: tarihli "en komik mesaj" kartı, "4 mevsim" gibi sıcak final, "Bu ilişki nereye gider?" final kartı, seans sonu not + geri bildirim, ilişki türü butonları.
+- Kullanıcı gözlemi (18 Ekim): iki ayrı sohbet analizi yapıldı (arkadaş sohbeti ve eş sohbeti) ama AI Koç her seansta yalnız ilk yüklenen arkadaş sohbetini baz aldı; koçta sohbet seçme yeri yok. Unwrap: koç her zaman bir analizin içinden açılır ("Bu sohbet hakkında koça sor") ve ekranın üstünde hangi sohbetle konuşulduğu yazar; başka sohbete geçmek için seçici olur.
