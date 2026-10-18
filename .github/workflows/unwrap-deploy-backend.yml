@@ -36,7 +36,7 @@ jobs:
           set_env UNWRAP_ANTHROPIC_API_KEY "${{ secrets.UNWRAP_ANTHROPIC_API_KEY }}"
           set_env REVENUECAT_SECRET_KEY "${{ secrets.UNWRAP_REVENUECAT_SECRET_KEY }}"
           set_env PLAY_INTEGRITY_SA_JSON '${{ secrets.UNWRAP_PLAY_INTEGRITY_SA_JSON }}'
-          set_env UPSTASH_REDIS_REST_URL "${{ secrets.UNWRAP_UPSTASH_REDIS_REST_URL }}"
+          set_env UPSTASH_REDIS_REST_URL "${{ secrets.UNWRAP_UPSTASH_REDIS_REST_URL || secrets.UPSTASH_REDIS_REST_URL }}"
           set_env UPSTASH_REDIS_REST_TOKEN "${{ secrets.UNWRAP_UPSTASH_REDIS_REST_TOKEN }}"
           set_env INTEGRITY_MODE "${{ vars.UNWRAP_INTEGRITY_MODE || 'log' }}"
       - run: vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
