@@ -55,8 +55,9 @@ jobs:
           curl -sS --max-time 20 "${{ steps.deploy.outputs.url }}/api/health" | tee h.json
           grep -q '"service":"unwrap"' h.json
           # Abonelik olmadan ücretli uç kapalı olmalı
-          code=$(curl -s -o /dev/null -w '%{http_code}' -X POST "${{ steps.deploy.outputs.url }}/api/report" -H 'x-app-user-id: ci-test' -d '{}')
-          echo "abonesiz rapor: HTTP $code"; [ "$code" != "200" ]
+          code=$(curl -s -o r.json -w '%{http_code}' -X POST "${{ steps.deploy.outputs.url }}/api/report" -H 'x-app-user-id: ci-test' -d '{}')
+          echo "abonesiz rapor: HTTP $code"; head -c 300 r.json; echo
+          [ "$code" = "402" ] || { timeout 25 vercel logs "${{ steps.deploy.outputs.url }}" --token "$VERCEL_TOKEN" 2>&1 | tail -40 || true; exit 1; }
           # Veritabanı bağlantısı (sayaç Upstash'tan okunur)
           code=$(curl -s -o c.json -w '%{http_code}' "${{ steps.deploy.outputs.url }}/api/counter"); cat c.json; echo
           echo "sayaç: HTTP $code"; [ "$code" = "200" ]
