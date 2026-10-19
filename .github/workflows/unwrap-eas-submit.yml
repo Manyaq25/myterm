@@ -1,0 +1,37 @@
+# Unwrap'in son iOS derlemesini TestFlight'a gönderir (mağazada yayın DEĞİL).
+# Tetikleme: elle ya da unwrap/gonder.txt değişince.
+name: Unwrap TestFlight gönderimi
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**", main]
+    paths: ["unwrap/gonder.txt"]
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: unwrap
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: App Store Connect anahtarı
+        env:
+          P8: ${{ secrets.ASC_KEY_P8 }}
+        run: printf '%s' "$P8" > "$RUNNER_TEMP/asc.p8"
+      - name: TestFlight'a gönder
+        env:
+          EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
+          EXPO_ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          EXPO_ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
+          EXPO_APPLE_TEAM_ID: G2T885G2XY
+          EXPO_APPLE_TEAM_TYPE: INDIVIDUAL
+        run: eas submit --platform ios --profile production --latest --non-interactive
