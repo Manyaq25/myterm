@@ -1,0 +1,45 @@
+# Unwrap iOS derlemesi + TestFlight'a gönderim (Synvia'dan ayrı EAS projesi: @aydinapp/unwrap).
+# Apple işlemleri Claude ortamından yapılamadığı için buradan çalışır.
+# Tetikleme: elle ya da unwrap/derle.txt değişince.
+name: Unwrap derleme (TestFlight)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**", main]
+    paths: ["unwrap/derle.txt"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: unwrap
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Uygulama ortam değişkenleri (herkese açık RevenueCat anahtarı)
+        env:
+          RC_IOS: ${{ secrets.UNWRAP_RC_IOS_KEY }}
+        run: |
+          [ -z "$RC_IOS" ] && { echo "UNWRAP_RC_IOS_KEY yok"; exit 1; }
+          eas env:create --name EXPO_PUBLIC_RC_IOS_KEY --value "$RC_IOS" --environment production --visibility plaintext --force --non-interactive
+      - name: App Store Connect anahtarı
+        env:
+          P8: ${{ secrets.ASC_KEY_P8 }}
+        run: printf '%s' "$P8" > "$RUNNER_TEMP/asc.p8"
+      - name: Derle ve TestFlight'a gönder
+        env:
+          EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
+          EXPO_ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          EXPO_ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
+          EXPO_APPLE_TEAM_ID: G2T885G2XY
+        run: eas build --platform ios --profile production --non-interactive --auto-submit --no-wait

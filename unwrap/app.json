@@ -19,7 +19,8 @@
       },
       "entitlements": {
         "com.apple.developer.devicecheck.appattest-environment": "production"
-      }
+      },
+      "appleTeamId": "G2T885G2XY"
     },
     "android": {
       "package": "com.aydinapp.unwrap",
@@ -49,6 +50,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "owner": "aydinapp",
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "b5bd4e8a-173f-4154-93f5-36ee77154691"
+      }
     }
   }
 }
