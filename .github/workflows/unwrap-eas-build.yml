@@ -36,6 +36,15 @@ jobs:
         env:
           P8: ${{ secrets.ASC_KEY_P8 }}
         run: printf '%s' "$P8" > "$RUNNER_TEMP/asc.p8"
+      - name: iOS kimlik bilgileri (sertifika + profil)
+        env:
+          EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
+          EXPO_ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          EXPO_ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
+          EXPO_APPLE_TEAM_ID: G2T885G2XY
+        run: |
+          pip install --quiet pexpect
+          python3 scripts/eas-credentials.py
       - name: Derle ve TestFlight'a gönder
         env:
           EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
