@@ -7,7 +7,7 @@ import sys
 import pexpect
 
 cmd = 'eas credentials:configure-build --platform ios --profile production'
-child = pexpect.spawn(cmd, encoding='utf-8', timeout=600, dimensions=(50, 200))
+child = pexpect.spawn(cmd, encoding='utf-8', timeout=300, dimensions=(50, 200))
 child.logfile_read = sys.stdout
 
 YES_NO = r'\((?:Y/n|y/N)\)'
@@ -19,7 +19,12 @@ while True:
         answer = 'n' if ('push' in seen or 'notification' in seen) else 'y'
         child.sendline(answer)
     elif i == 1:
-        child.send('\r')  # listede varsayılan (ilk) seçenek
+        prompt = (child.after or '').lower()
+        if 'team type' in prompt:
+            # Enterprise / Company / Individual → Individual (üçüncü)
+            child.send('\x1b[B\x1b[B\r')
+        else:
+            child.send('\r')  # listede varsayılan (ilk) seçenek
     else:
         break
 

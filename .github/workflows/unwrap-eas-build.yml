@@ -42,6 +42,7 @@ jobs:
           EXPO_ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           EXPO_ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
           EXPO_APPLE_TEAM_ID: G2T885G2XY
+          EXPO_APPLE_TEAM_TYPE: INDIVIDUAL
         run: |
           pip install --quiet pexpect
           python3 scripts/eas-credentials.py
@@ -51,4 +52,5 @@ jobs:
           EXPO_ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           EXPO_ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
           EXPO_APPLE_TEAM_ID: G2T885G2XY
+          EXPO_APPLE_TEAM_TYPE: INDIVIDUAL
         run: eas build --platform ios --profile production --non-interactive --auto-submit --no-wait
