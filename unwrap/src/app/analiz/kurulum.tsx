@@ -5,7 +5,7 @@ import { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Button, Note, Pill } from '@/components/ui';
+import { BackButton, Button, Note, Pill } from '@/components/ui';
 import { RELATIONS } from '@/lib/relations';
 import { getAnalysis, updateAnalysis, type Relation } from '@/lib/store';
 import { colors, fonts, space, type } from '@/theme';
@@ -28,6 +28,9 @@ export default function Kurulum() {
 
   return (
     <SafeAreaView style={styles.safe}>
+      <View style={styles.top}>
+        <BackButton onPress={() => (step === 2 ? setStep(1) : router.back())} />
+      </View>
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.eyebrow}>● ANALİZ AYARLARI · {step} / {totalSteps}</Text>
         {step === 1 ? (
@@ -72,6 +75,7 @@ export default function Kurulum() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
+  top: { paddingHorizontal: space.lg, paddingTop: space.sm },
   content: { padding: space.lg, gap: space.md },
   eyebrow: { fontFamily: fonts.extrabold, fontSize: 13, letterSpacing: 1, color: colors.primary },
   title: { ...type.headline, color: colors.text },

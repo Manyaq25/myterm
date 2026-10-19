@@ -8,7 +8,7 @@ import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { captureRef } from 'react-native-view-shot';
 
-import { Button, Card } from '@/components/ui';
+import { Button, Card, Sticker } from '@/components/ui';
 import { ApiError, errorText, requestReport } from '@/lib/ai/api';
 import type { Report, ReportCard } from '@/lib/ai/types';
 import { isPro } from '@/lib/purchases';
@@ -166,7 +166,7 @@ function AiCard({ card, bg }: { card: ReportCard; bg: string }) {
   return (
     <Shareable bg={bg}>
       <Text style={styles.cardTitle}>{card.title}</Text>
-      {FUN.has(card.key) ? <Text style={styles.fun}>Eğlence amaçlı</Text> : null}
+      {FUN.has(card.key) ? <Sticker text="😜 EĞLENCE AMAÇLI" rotate={-5} bg={colors.lilac} style={{ marginTop: -space.xs }} /> : null}
       <View style={{ gap: space.sm }}>
         {card.people.map((p, i) => (
           <View key={p.name} style={{ gap: 4 }}>
@@ -204,6 +204,7 @@ function Karne({ report }: { report: Report }) {
   if (!names.length) return null;
   return (
     <Shareable bg={colors.surface}>
+      <Sticker text="🏅 TAKDİR BELGESİ" rotate={7} bg={colors.cardButter} style={{ position: 'absolute', top: -12, right: 16, zIndex: 2 }} />
       <Text style={styles.cardTitle}>Sohbet Karnesi</Text>
       <View style={styles.karneRow}>
         <Text style={[styles.karneCell, styles.karneSubject]} />

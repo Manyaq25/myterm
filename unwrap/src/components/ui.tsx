@@ -1,4 +1,6 @@
 // Uygulama genelinde kullanılan küçük yapı taşları.
+import { router } from 'expo-router';
+import { ChevronLeft } from 'lucide-react-native';
 import type { ReactNode } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 
@@ -66,7 +68,49 @@ export function Note({ icon, title, text }: { icon: string; title: string; text?
   );
 }
 
+/** Her ekranda aynı yerde duran geri düğmesi. */
+export function BackButton({ onPress, label = 'Geri' }: { onPress?: () => void; label?: string }) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      hitSlop={12}
+      onPress={onPress ?? (() => (router.canGoBack() ? router.back() : router.replace('/')))}
+      style={styles.back}>
+      <ChevronLeft color={colors.text} size={22} />
+    </Pressable>
+  );
+}
+
+/** Stitch tasarımındaki eğik, eğlenceli etiket ("TAKDİR BELGESİ" gibi). */
+export function Sticker({ text, rotate = -6, bg = colors.surface, color = colors.text, style }: {
+  text: string;
+  rotate?: number;
+  bg?: string;
+  color?: string;
+  style?: StyleProp<ViewStyle>;
+}) {
+  return (
+    <View style={[styles.sticker, { backgroundColor: bg, transform: [{ rotate: `${rotate}deg` }] }, style]}>
+      <Text style={[styles.stickerText, { color }]}>{text}</Text>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
+  back: { width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surfaceMid, alignItems: 'center', justifyContent: 'center' },
+  sticker: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: radius.md,
+    shadowColor: '#000',
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 3,
+  },
+  stickerText: { fontFamily: fonts.extrabold, fontSize: 14, letterSpacing: 0.5 },
   button: {
     minHeight: 56,
     borderRadius: radius.pill,

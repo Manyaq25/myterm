@@ -8,10 +8,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button, Card, Pill } from '@/components/ui';
 import { weeklyCount } from '@/lib/ai/api';
-import { loadChatFile } from '@/lib/chat/load';
-import { computeStats } from '@/lib/chat/stats';
+import { importChatFile, importErrorText } from '@/lib/chat/import';
 import { relationLabel } from '@/lib/relations';
-import { listAnalyses, newId, saveAnalysis, type AnalysisSummary, type Relation } from '@/lib/store';
+import { listAnalyses, type AnalysisSummary, type Relation } from '@/lib/store';
 import { colors, fonts, radius, space, type } from '@/theme';
 
 const FILTERS: { id: 'hepsi' | Relation; label: string; emoji: string }[] = [
@@ -23,10 +22,6 @@ const FILTERS: { id: 'hepsi' | Relation; label: string; emoji: string }[] = [
 ];
 const ROMANTIC: Relation[] = ['sevgili', 'es', 'flort', 'eski'];
 
-const ERRORS: Record<string, string> = {
-  EMPTY_CHAT: 'Bu dosyada sohbet mesajı bulamadık. WhatsApp\'ta "Sohbeti dışa aktar" ile alınan dosyayı seçtiğinden emin ol.',
-  NO_CHAT_IN_ZIP: 'ZIP dosyasının içinde sohbet bulamadık.',
-};
 
 export default function Home() {
   const [items, setItems] = useState<AnalysisSummary[]>([]);
@@ -46,25 +41,10 @@ export default function Home() {
     const asset = res.assets[0];
     setBusy(true);
     try {
-      const chat = await loadChatFile(asset.uri, asset.name);
-      const stats = computeStats(chat);
-      const id = newId();
-      const isGroup = chat.participants.length > 2;
-      saveAnalysis({
-        id,
-        createdAt: new Date().toISOString(),
-        title: isGroup ? `${chat.participants.length} kişilik grup` : chat.participants.join(' & '),
-        source: chat.source,
-        participants: chat.participants,
-        me: null,
-        relation: isGroup ? 'grup' : null,
-        stats,
-        messages: chat.messages,
-      });
+      const id = await importChatFile(asset.uri, asset.name);
       router.push({ pathname: '/analiz/kurulum', params: { id } });
     } catch (e) {
-      const code = e instanceof Error ? e.message : '';
-      Alert.alert('Dosya okunamadı', ERRORS[code] ?? 'Bu dosyayı okuyamadık. Rehberdeki adımlarla yeniden dışa aktarmayı dene.');
+      Alert.alert('Dosya okunamadı', importErrorText(e));
     } finally {
       setBusy(false);
     }

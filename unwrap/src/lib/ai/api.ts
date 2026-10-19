@@ -64,14 +64,15 @@ export function coachContext(a: Analysis): string {
   return `${formatStats(a.stats)}\n\n${formatMessages(sampleMessages(a.messages))}`.slice(0, CONTEXT_LIMIT);
 }
 
-export async function askCoach(a: Analysis, role: CoachRole | null, history: CoachTurn[]): Promise<string> {
-  const other = a.participants.find((p) => p !== a.me) ?? null;
+/** a = null: sohbet seçilmeden genel ilişki sorusu. */
+export async function askCoach(a: Analysis | null, role: CoachRole | null, history: CoachTurn[]): Promise<string> {
+  const other = a ? (a.participants.find((p) => p !== a.me) ?? null) : null;
   const { text } = await post<{ text: string }>('/api/coach', {
-    relation: a.relation ?? 'diger',
-    me: a.me,
-    other: a.participants.length > 2 ? null : other,
-    context: coachContext(a),
-    role,
+    relation: a?.relation ?? 'diger',
+    me: a?.me ?? null,
+    other: a && a.participants.length <= 2 ? other : null,
+    context: a ? coachContext(a) : '',
+    role: a ? role : null,
     history: history.slice(-40),
   });
   return text;

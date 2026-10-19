@@ -22,7 +22,15 @@ import { Card, Pill } from '@/components/ui';
 import { ApiError, askCoach, errorText } from '@/lib/ai/api';
 import type { CoachRole, CoachTurn } from '@/lib/ai/types';
 import { isRomantic } from '@/lib/relations';
-import { getAnalysis, listAnalyses, updateAnalysis, type Analysis, type AnalysisSummary } from '@/lib/store';
+import {
+  getAnalysis,
+  getGeneralCoach,
+  listAnalyses,
+  saveGeneralCoach,
+  updateAnalysis,
+  type Analysis,
+  type AnalysisSummary,
+} from '@/lib/store';
 import { colors, fonts, radius, space, type } from '@/theme';
 
 const ROLES: { id: CoachRole | null; label: string; emoji: string }[] = [
@@ -31,6 +39,13 @@ const ROLES: { id: CoachRole | null; label: string; emoji: string }[] = [
   { id: 'hoslandigim', label: 'Hoşlandığım', emoji: '🦋' },
   { id: 'eski', label: 'Eski sevgilim', emoji: '💔' },
   { id: 'hayalimdeki', label: 'Hayalimdeki', emoji: '✨' },
+];
+
+const GENERAL_STARTERS = [
+  'Flörtüme ilk mesajı nasıl atayım?',
+  'Tartıştık, nasıl barışırım?',
+  'Mesajlarıma geç cevap veriyor, ne yapmalıyım?',
+  'Eski sevgilime yazmalı mıyım?',
 ];
 
 function starters(a: Analysis): string[] {
@@ -48,10 +63,20 @@ export default function Koc() {
   const [history, setHistory] = useState<CoachTurn[]>([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
+  const [general, setGeneral] = useState(false);
   const listRef = useRef<FlatList<CoachTurn>>(null);
 
+  /** 'genel' = sohbet seçmeden Mila ile konuşma. */
   const select = useCallback((id: string) => {
+    if (id === 'genel') {
+      setGeneral(true);
+      setAnalysis(null);
+      setRole(null);
+      setHistory(getGeneralCoach());
+      return;
+    }
     const a = getAnalysis(id);
+    setGeneral(false);
     setAnalysis(a);
     setRole(a?.coach?.role ?? null);
     setHistory(a?.coach?.history ?? []);
@@ -64,16 +89,17 @@ export default function Koc() {
     useCallback(() => {
       const all = listAnalyses();
       setList(all);
-      if (!all.length) return setAnalysis(null);
+      if (!all.length) return select('genel');
       const fromParam = params.id && params.id !== handledParam.current && all.some((x) => x.id === params.id);
       if (fromParam) {
         handledParam.current = params.id;
         select(params.id!);
-      } else if (!currentId || !all.some((x) => x.id === currentId)) select(all[0].id);
-    }, [params.id, currentId, select]),
+      } else if (!general && (!currentId || !all.some((x) => x.id === currentId))) select(all[0].id);
+    }, [params.id, currentId, general, select]),
   );
 
-  const save = (a: Analysis, r: CoachRole | null, h: CoachTurn[]) => updateAnalysis(a.id, { coach: { role: r, history: h } });
+  const save = (a: Analysis | null, r: CoachRole | null, h: CoachTurn[]) =>
+    a ? updateAnalysis(a.id, { coach: { role: r, history: h } }) : saveGeneralCoach(h);
 
   const changeRole = (r: CoachRole | null) => {
     if (!analysis || r === role) return;
@@ -92,7 +118,7 @@ export default function Koc() {
 
   const send = async (text: string) => {
     const q = text.trim();
-    if (!analysis || !q || sending) return;
+    if (!q || sending) return;
     const next: CoachTurn[] = [...history, { role: 'user', text: q }];
     setHistory(next);
     setInput('');
@@ -122,6 +148,7 @@ export default function Koc() {
           <Text style={styles.title}>Mila</Text>
           {list.length ? (
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
+              <Pill label="Genel soru" emoji="💬" active={general} onPress={() => select('genel')} />
               {list.map((a) => (
                 <Pill key={a.id} label={a.title} active={a.id === analysis?.id} onPress={() => select(a.id)} />
               ))}
@@ -136,15 +163,6 @@ export default function Koc() {
           ) : null}
         </View>
 
-        {!analysis ? (
-          <View style={styles.content}>
-            <Card>
-              <Text style={[type.body, { color: colors.textMuted }]}>
-                Mila, yüklediğin sohbetlerden birini seçip onun hakkında konuşur. Önce Ana Sayfa’dan bir sohbet yükle.
-              </Text>
-            </Card>
-          </View>
-        ) : (
           <FlatList
             ref={listRef}
             data={history}
@@ -155,14 +173,16 @@ export default function Koc() {
               <View style={{ gap: space.md }}>
                 <Card>
                   <Text style={[type.body, { color: colors.text }]}>
-                    {role
-                      ? `Şimdi ${other ?? 'karşındaki kişi'} gibi konuşuyorum; onun üslubunu sohbetinizden öğrendim. Bir şey yaz, prova edelim.`
-                      : `Merhaba, ben Mila. “${analysis.title}” sohbetini okudum. Ne merak ediyorsun?`}
+                    {!analysis
+                      ? 'Merhaba, ben Mila 💬 İlişki, flört ya da arkadaşlık; aklındakini sor. Bir sohbet yüklersen onu okuyup kanıtlarıyla konuşurum.'
+                      : role
+                        ? `Şimdi ${other ?? 'karşındaki kişi'} gibi konuşuyorum; onun üslubunu sohbetinizden öğrendim. Bir şey yaz, prova edelim.`
+                        : `Merhaba, ben Mila. “${analysis.title}” sohbetini okudum. Ne merak ediyorsun?`}
                   </Text>
                 </Card>
                 {!role ? (
                   <View style={styles.starters}>
-                    {starters(analysis).map((s) => (
+                    {(analysis ? starters(analysis) : GENERAL_STARTERS).map((s) => (
                       <Pill key={s} label={s} onPress={() => send(s)} />
                     ))}
                   </View>
@@ -176,9 +196,7 @@ export default function Koc() {
             )}
             ListFooterComponent={sending ? <ActivityIndicator color={colors.primary} style={{ marginTop: space.sm }} /> : null}
           />
-        )}
 
-        {analysis ? (
           <View style={styles.inputRow}>
             <TextInput
               style={styles.input}
@@ -197,8 +215,7 @@ export default function Koc() {
               <Send color={colors.onPrimary} size={20} />
             </Pressable>
           </View>
-        ) : null}
-        {analysis ? <Text style={styles.note}>Mila yapay zekâdır, yanılabilir; kesin hüküm vermez.</Text> : null}
+        <Text style={styles.note}>Mila yapay zekâdır, yanılabilir; kesin hüküm vermez.</Text>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -209,7 +226,6 @@ const styles = StyleSheet.create({
   header: { paddingHorizontal: space.lg, paddingTop: space.md, gap: space.sm },
   title: { fontFamily: fonts.extrabold, fontSize: 26, color: colors.text },
   chips: { gap: space.sm, paddingRight: space.lg },
-  content: { padding: space.lg },
   messages: { padding: space.lg, gap: space.sm, flexGrow: 1 },
   starters: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
   bubble: { maxWidth: '85%', borderRadius: radius.md, paddingVertical: space.sm, paddingHorizontal: space.md },

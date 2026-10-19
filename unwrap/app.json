@@ -20,7 +20,22 @@
       "entitlements": {
         "com.apple.developer.devicecheck.appattest-environment": "production"
       },
-      "appleTeamId": "G2T885G2XY"
+      "appleTeamId": "G2T885G2XY",
+      "infoPlist": {
+        "CFBundleDocumentTypes": [
+          {
+            "CFBundleTypeName": "Sohbet dökümü",
+            "LSHandlerRank": "Alternate",
+            "LSItemContentTypes": [
+              "public.zip-archive",
+              "public.plain-text",
+              "public.text",
+              "public.json"
+            ]
+          }
+        ],
+        "LSSupportsOpeningDocumentsInPlace": false
+      }
     },
     "android": {
       "package": "com.aydinapp.unwrap",
@@ -31,7 +46,33 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "category": [
+            "DEFAULT"
+          ],
+          "data": [
+            {
+              "scheme": "content",
+              "mimeType": "application/zip"
+            },
+            {
+              "scheme": "content",
+              "mimeType": "text/plain"
+            },
+            {
+              "scheme": "file",
+              "mimeType": "application/zip"
+            },
+            {
+              "scheme": "file",
+              "mimeType": "text/plain"
+            }
+          ]
+        }
+      ]
     },
     "plugins": [
       "expo-router",

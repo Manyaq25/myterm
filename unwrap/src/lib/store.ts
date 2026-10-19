@@ -75,14 +75,37 @@ export function updateAnalysis(id: string, patch: Partial<Analysis>) {
   if (a) saveAnalysis({ ...a, ...patch });
 }
 
+// Sohbet seçmeden Mila ile yapılan genel konuşma.
+const generalCoachFile = () => new File(Paths.document, 'koc-genel.json');
+
+export function getGeneralCoach(): CoachTurn[] {
+  const f = generalCoachFile();
+  if (!f.exists) return [];
+  try {
+    return JSON.parse(f.textSync()) as CoachTurn[];
+  } catch {
+    return [];
+  }
+}
+
+export function saveGeneralCoach(history: CoachTurn[]) {
+  const f = generalCoachFile();
+  if (!f.exists) f.create();
+  f.write(JSON.stringify(history));
+}
+
 /** Mila konuşmalarını siler; sohbetler ve raporlar kalır. */
 export function deleteCoachHistory() {
   for (const { id } of listAnalyses()) updateAnalysis(id, { coach: undefined });
+  const f = generalCoachFile();
+  if (f.exists) f.delete();
 }
 
 export function deleteAllAnalyses() {
   const d = dir();
   if (d.exists) d.delete();
+  const f = generalCoachFile();
+  if (f.exists) f.delete();
 }
 
 export const newId = () => `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 7)}`;

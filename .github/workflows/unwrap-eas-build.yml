@@ -46,6 +46,20 @@ jobs:
         run: |
           pip install --quiet pexpect
           python3 scripts/eas-credentials.py
+      - name: Gönderim profiline App Store Connect anahtarını ekle (yalnız bu çalışmada)
+        env:
+          KEY_ID: ${{ secrets.ASC_KEY_ID }}
+        run: |
+          node -e '
+            const fs = require("fs");
+            const j = JSON.parse(fs.readFileSync("eas.json", "utf8"));
+            Object.assign(j.submit.production.ios, {
+              ascApiKeyPath: process.env.RUNNER_TEMP + "/asc.p8",
+              ascApiKeyIssuerId: "3da2f4bd-3acd-404f-8748-c7e43756dd8d",
+              ascApiKeyId: process.env.KEY_ID,
+            });
+            fs.writeFileSync("eas.json", JSON.stringify(j, null, 2));
+          '
       - name: Derle ve TestFlight'a gönder
         env:
           EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
@@ -53,4 +67,4 @@ jobs:
           EXPO_ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
           EXPO_APPLE_TEAM_ID: G2T885G2XY
           EXPO_APPLE_TEAM_TYPE: INDIVIDUAL
-        run: eas build --platform ios --profile production --non-interactive --auto-submit --no-wait
+        run: eas build --platform ios --profile production --non-interactive --auto-submit --no-wait --freeze-credentials
