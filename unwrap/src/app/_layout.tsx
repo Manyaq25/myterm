@@ -11,6 +11,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { initPurchases } from '@/lib/purchases';
 import { colors } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
@@ -22,6 +23,10 @@ export default function RootLayout() {
     PlusJakartaSans_700Bold,
     PlusJakartaSans_800ExtraBold,
   });
+
+  useEffect(() => {
+    initPurchases();
+  }, []);
 
   useEffect(() => {
     if (loaded) SplashScreen.hideAsync();
@@ -38,6 +43,8 @@ export default function RootLayout() {
         <Stack.Screen name="rehber" options={{ presentation: 'modal' }} />
         <Stack.Screen name="analiz/kurulum" />
         <Stack.Screen name="analiz/[id]" options={{ presentation: 'fullScreenModal', animation: 'fade' }} />
+        <Stack.Screen name="analiz/rapor/[id]" options={{ presentation: 'fullScreenModal' }} />
+        <Stack.Screen name="pro" options={{ presentation: 'modal' }} />
       </Stack>
     </GestureHandlerRootView>
   );

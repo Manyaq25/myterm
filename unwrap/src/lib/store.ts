@@ -2,6 +2,7 @@
 // Hesap yok, bulut yok; "Tüm analizleri sil" bu klasörü boşaltır.
 import { Directory, File, Paths } from 'expo-file-system';
 
+import type { CoachRole, CoachTurn, Report } from './ai/types';
 import type { Message } from './chat/parse';
 import type { ChatStats } from './chat/stats';
 
@@ -17,6 +18,10 @@ export type Analysis = {
   relation: Relation | null;
   stats: ChatStats;
   messages: Message[];
+  /** Yapay zekâ raporu (Pro); bir kez üretilir, telefonda saklanır. */
+  report?: Report;
+  /** Mila ile bu sohbet hakkındaki konuşma. */
+  coach?: { role: CoachRole | null; history: CoachTurn[] };
 };
 
 export type AnalysisSummary = Pick<Analysis, 'id' | 'createdAt' | 'title' | 'relation' | 'participants'> & {
@@ -68,6 +73,11 @@ export function listAnalyses(): AnalysisSummary[] {
 export function updateAnalysis(id: string, patch: Partial<Analysis>) {
   const a = getAnalysis(id);
   if (a) saveAnalysis({ ...a, ...patch });
+}
+
+/** Mila konuşmalarını siler; sohbetler ve raporlar kalır. */
+export function deleteCoachHistory() {
+  for (const { id } of listAnalyses()) updateAnalysis(id, { coach: undefined });
 }
 
 export function deleteAllAnalyses() {

@@ -2,11 +2,12 @@
 import * as DocumentPicker from 'expo-document-picker';
 import { router, useFocusEffect } from 'expo-router';
 import { BookOpen, Plus } from 'lucide-react-native';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button, Card, Pill } from '@/components/ui';
+import { weeklyCount } from '@/lib/ai/api';
 import { loadChatFile } from '@/lib/chat/load';
 import { computeStats } from '@/lib/chat/stats';
 import { relationLabel } from '@/lib/relations';
@@ -31,6 +32,11 @@ export default function Home() {
   const [items, setItems] = useState<AnalysisSummary[]>([]);
   const [filter, setFilter] = useState<'hepsi' | Relation>('hepsi');
   const [busy, setBusy] = useState(false);
+  const [weekly, setWeekly] = useState<number | null>(null);
+
+  useEffect(() => {
+    weeklyCount().then(setWeekly);
+  }, []);
 
   useFocusEffect(useCallback(() => setItems(listAnalyses()), []));
 
@@ -87,7 +93,7 @@ export default function Home() {
           <Text style={styles.privacy}>🔒 İstatistikler telefonunda hesaplanır. Sohbetin sunucularda saklanmaz.</Text>
         </View>
 
-        <Text style={styles.counter}>Bu hafta – – sohbet analiz edildi</Text>
+        <Text style={styles.counter}>Bu hafta {weekly == null ? '– –' : weekly.toLocaleString('tr-TR')} sohbet analiz edildi</Text>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: space.sm }}>
           {FILTERS.map((f) => (

@@ -11,6 +11,7 @@ import { captureRef } from 'react-native-view-shot';
 import { StoryCard } from '@/components/StoryCard';
 import { Button } from '@/components/ui';
 import { buildFreeCards } from '@/lib/cards/free';
+import { isPro } from '@/lib/purchases';
 import { getAnalysis } from '@/lib/store';
 import { colors, radius, space, type } from '@/theme';
 
@@ -24,6 +25,11 @@ export default function Hikaye() {
   if (!analysis || !cards.length) return null;
   const card = cards[index];
   const isTeaser = card.kind === 'teaser';
+
+  const openFull = async () => {
+    if (analysis.report || (await isPro())) router.push({ pathname: '/analiz/rapor/[id]', params: { id: analysis.id } });
+    else router.push({ pathname: '/pro', params: { id: analysis.id } });
+  };
 
   const go = (delta: number) => setIndex((i) => Math.min(cards.length - 1, Math.max(0, i + delta)));
 
@@ -61,8 +67,8 @@ export default function Hikaye() {
       <View style={styles.footer}>
         {isTeaser ? (
           <>
-            <Button label="Tam raporu aç" variant="coral" onPress={() => router.push('/pro')} />
-            <Text style={styles.small}>7 gün ücretsiz · İstediğin an iptal</Text>
+            <Button label="Tam raporu aç" variant="coral" onPress={openFull} />
+            <Text style={styles.small}>Ücretsiz denemeyle başla · İstediğin an iptal</Text>
           </>
         ) : (
           <Button label="Hikâyeyi paylaş" onPress={share} icon={<Share2 color="#fff" size={20} />} />
