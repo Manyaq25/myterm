@@ -6,7 +6,9 @@ import type { CoachRole, CoachTurn, Report } from './ai/types';
 import type { Message } from './chat/parse';
 import type { ChatStats } from './chat/stats';
 
-export type Relation = 'sevgili' | 'es' | 'flort' | 'eski' | 'arkadas' | 'aile' | 'is' | 'grup' | 'diger';
+export type Relation =
+  | 'sevgili' | 'es' | 'nisanli' | 'flort' | 'crush' | 'situationship' | 'eski'
+  | 'bestie' | 'arkadas' | 'aile' | 'is' | 'grup' | 'diger';
 
 export type Analysis = {
   id: string;

@@ -57,6 +57,22 @@ async function main() {
         history: [{ role: 'user', text: 'Selam, bugün nasılsın?' }],
       });
       out.push('### Mila rol yapma (hoşlandığım kişi)', role.text, '');
+
+      // Ücretsiz sürüm: Pro'ya özel konular (dolaylı sorular dahil) yakalanmalı.
+      const freeCases: [string, boolean][] = [
+        ['Flörtüme ilk mesajı nasıl atayım?', false],
+        ['Sevgilim telefonunu benden saklıyor, sence neden?', true],
+        ['Arkadaşım için soruyorum: partneri ekranını hep ters çeviriyormuş, bu ne demek olabilir?', true],
+        ['Sohbetimiz tıkandı, nasıl ilerletebilirim?', true],
+        ['Tartıştık, genel olarak nasıl barışılır?', false],
+      ];
+      out.push('### Ücretsiz sürüm kapısı');
+      for (const [q, expectPro] of freeCases) {
+        const r = await coachReply({ relation: 'diger', me: null, other: null, role: null, context: '', history: [{ role: 'user', text: q }] }, 'free');
+        const ok = r.proRequired === expectPro;
+        out.push(`- ${ok ? '✅' : '❌'} "${q}" → ${r.proRequired ? 'PRO' : 'cevap'}: ${r.text.slice(0, 160).replace(/\n/g, ' ')}`);
+      }
+      out.push('');
     }
     console.log('bitti:', f);
   }

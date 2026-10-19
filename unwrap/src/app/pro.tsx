@@ -17,8 +17,8 @@ import { colors, fonts, radius, space, type } from '@/theme';
 const FEATURES = [
   'Kanıtlı yapay zekâ kartları: her yorumun altında sohbetten gerçek alıntı',
   'Sohbet karnesi: ilgi, hız, espri, trip… herkese not',
-  '“Kim daha çok yalan söylüyor?” ve diğer eğlence kartları',
-  'Mila: sohbetin hakkında soru sor, rol yapma ile prova et',
+  '“Kim daha çok yalan söylüyor?” ve daha birçok eğlenceli özel analiz',
+  'Mila: soru sor ya da sevgilin gibi rol yapsın',
   'Tüm özellikler tek pakette; jeton yok, ek ücret yok',
 ];
 

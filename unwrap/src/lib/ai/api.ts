@@ -20,6 +20,8 @@ export function errorText(e: unknown): string {
       return 'Bu özellik Unwrap Pro ile açılıyor.';
     case 'slow_down':
       return 'Çok hızlı gidiyoruz, bir dakika sonra tekrar dener misin?';
+    case 'free_limit':
+      return 'Bugünkü ücretsiz soru hakkın doldu. Unwrap Pro ile Mila’ya sınırsız sorabilirsin.';
     case 'daily_limit':
       return 'Bugünlük sınır doldu, yarın tekrar deneyebilirsin.';
     case 'report_failed':
@@ -65,17 +67,21 @@ export function coachContext(a: Analysis): string {
 }
 
 /** a = null: sohbet seçilmeden genel ilişki sorusu. */
-export async function askCoach(a: Analysis | null, role: CoachRole | null, history: CoachTurn[]): Promise<string> {
+export async function askCoach(
+  a: Analysis | null,
+  role: CoachRole | null,
+  history: CoachTurn[],
+): Promise<{ text: string; proRequired: boolean }> {
   const other = a ? (a.participants.find((p) => p !== a.me) ?? null) : null;
-  const { text } = await post<{ text: string }>('/api/coach', {
+  const { text, proRequired } = await post<{ text: string; proRequired?: boolean }>('/api/coach', {
     relation: a?.relation ?? 'diger',
     me: a?.me ?? null,
     other: a && a.participants.length <= 2 ? other : null,
     context: a ? coachContext(a) : '',
     role: a ? role : null,
-    history: history.slice(-40),
+    history: history.slice(-40).map(({ role: r, text: t }) => ({ role: r, text: t })),
   });
-  return text;
+  return { text, proRequired: Boolean(proRequired) };
 }
 
 /** "Bu hafta X sohbet analiz edildi" — sayı henüz anlamlı değilse null. */

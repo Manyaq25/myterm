@@ -12,7 +12,8 @@ export type Card =
   | { id: string; kind: 'rows'; title: string; bg: string; rows: Row[]; caption: string; unit?: string }
   | { id: string; kind: 'big'; title: string; bg: string; value: string; unit: string; caption: string }
   | { id: string; kind: 'awards'; title: string; bg: string; awards: { emoji: string; title: string; name: string }[]; caption: string }
-  | { id: string; kind: 'teaser'; title: string; bg: string; items: string[] };
+  | { id: string; kind: 'teaser'; title: string; bg: string; items: string[] }
+  | { id: string; kind: 'karne'; title: string; bg: string; names: string[]; subjects: { subject: string; grades: (number | null)[] }[]; caption: string };
 
 const pct = (a: number, total: number) => (total ? Math.round((a / total) * 100) : 0);
 
@@ -144,15 +145,53 @@ function wordsCard(s: ChatStats): Card {
 }
 
 function signalsCard(s: ChatStats): Card | null {
-  const tamam = top(s.people, (p) => p.coldTamam)[0];
-  const aynen = top(s.people, (p) => p.aynen)[0];
-  const rows: Row[] = [];
-  if (aynen.aynen > 0) rows.push({ name: aynen.name, value: aynen.aynen, display: String(aynen.aynen), note: '"aynen" sayısı' });
-  if (tamam.coldTamam > 0) rows.push({ name: tamam.name, value: tamam.coldTamam, display: String(tamam.coldTamam), note: 'noktalı "Tamam." sayısı' });
-  if (!rows.length) return null;
+  const people = s.people.slice(0, 4).filter((p) => p.aynen > 0 || p.coldTamam > 0);
+  if (!people.length) return null;
+  const anyTamam = people.some((p) => p.coldTamam > 0);
   return {
-    id: 'aynen', kind: 'rows', title: 'Aynen ve Tamam. sayacı', bg: colors.cardCoral, rows,
-    caption: tamam.coldTamam > 0 ? 'Noktalı "Tamam." Türkçede pek iyiye işaret değil 😬' : 'Aynen aynen 😄',
+    id: 'aynen', kind: 'rows', title: 'Aynen ve Tamam. sayacı', bg: colors.cardCoral,
+    rows: people.map((p) => ({
+      name: p.name, value: p.aynen + p.coldTamam, display: String(p.aynen + p.coldTamam),
+      note: `${p.aynen} "aynen" · ${p.coldTamam} noktalı "Tamam."`,
+    })),
+    caption: anyTamam ? 'Noktalı "Tamam." Türkçede pek iyiye işaret değil 😬' : 'Aynen aynen 😄',
+  };
+}
+
+// Telefonda, istatistikten hesaplanan karne (yapay zekâ karnesi Pro'da).
+const clampGrade = (n: number) => Math.min(5, Math.max(1, Math.round(n)));
+const per100 = (n: number, total: number) => (total ? (n / total) * 100 : 0);
+
+function karneCard(s: ChatStats): Card | null {
+  if (s.isGroup || s.people.length < 2) return null;
+  const people = s.people.slice(0, 2);
+  const totalMsg = people.reduce((n, p) => n + p.messages, 0);
+  const totalInit = people.reduce((n, p) => n + p.initiations, 0) || 1;
+  const ilgi = people.map((p) => clampGrade(((p.messages / totalMsg) * 0.5 + (p.initiations / totalInit) * 0.5) * 5 + 0.5));
+  const hiz = people.map((p) => {
+    const m = p.medianReplyMs;
+    if (m == null) return null;
+    return m < 2 * 60e3 ? 5 : m < 10 * 60e3 ? 4 : m < 60 * 60e3 ? 3 : m < 4 * 3600e3 ? 2 : 1;
+  });
+  const espri = people.map((p) => {
+    const r = per100(p.laughs, p.messages);
+    return r >= 15 ? 5 : r >= 8 ? 4 : r >= 4 ? 3 : r >= 1 ? 2 : 1;
+  });
+  const trip = people.map((p) => {
+    const r = per100(p.coldTamam, p.messages);
+    return r >= 3 ? 5 : r >= 1.5 ? 4 : r >= 0.7 ? 3 : r > 0 ? 2 : 1;
+  });
+  const best = people[ilgi[0] >= ilgi[1] ? 0 : 1].name;
+  return {
+    id: 'karne', kind: 'karne', title: 'Sohbet Karnesi 📒', bg: colors.cardButter,
+    names: people.map((p) => p.name),
+    subjects: [
+      { subject: 'İlgi & Alaka', grades: ilgi },
+      { subject: 'Cevap hızı', grades: hiz },
+      { subject: 'Espri', grades: espri },
+      { subject: 'Trip', grades: trip },
+    ],
+    caption: `Sınıf birincisi (ilgi): ${best} 🏅`,
   };
 }
 
@@ -184,6 +223,7 @@ function groupAwardsCard(s: ChatStats): Card | null {
 
 export function buildFreeCards(s: ChatStats, relation: Relation | null): Card[] {
   const cards = [
+    karneCard(s),
     initiationCard(s),
     messageCountCard(s),
     replyCard(s),
@@ -202,8 +242,8 @@ export function buildFreeCards(s: ChatStats, relation: Relation | null): Card[] 
   cards.push({
     id: 'pro', kind: 'teaser', title: 'Asıl hikâye yapay zekâda 🔮', bg: colors.cardLilac,
     items: romantic
-      ? ['Kim daha romantik?', 'Kim daha çok yalan söylüyor? 🤥', 'İmalı mesajlar ve satır araları', 'Sohbet Karnesi', 'Bu ilişki nereye gider?']
-      : ['Sohbet Karnesi', 'Kim daha çok yalan söylüyor? 🤥', 'İmalı mesajlar ve satır araları', 'Kim sohbeti taşıyor?', 'Ne yazmalı önerileri'],
+      ? ['Kim daha romantik?', 'Kim daha çok yalan söylüyor? 🤥', 'İmalı mesajlar ve satır araları', 'Kanıtlı yapay zekâ karnesi', 'Bu ilişki nereye gider?']
+      : ['Kanıtlı yapay zekâ karnesi', 'Kim daha çok yalan söylüyor? 🤥', 'İmalı mesajlar ve satır araları', 'Kim sohbeti taşıyor?', 'Ne yazmalı önerileri'],
   });
   return cards;
 }

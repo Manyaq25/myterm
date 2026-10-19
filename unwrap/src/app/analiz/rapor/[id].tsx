@@ -8,7 +8,7 @@ import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { captureRef } from 'react-native-view-shot';
 
-import { Button, Card, Sticker } from '@/components/ui';
+import { Button, Card, Sticker, useTopInset } from '@/components/ui';
 import { ApiError, errorText, requestReport } from '@/lib/ai/api';
 import type { Report, ReportCard } from '@/lib/ai/types';
 import { isPro } from '@/lib/purchases';
@@ -25,6 +25,7 @@ export default function Rapor() {
   const [report, setReport] = useState<Report | undefined>(analysis?.report);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const topInset = useTopInset();
 
   const generate = useCallback(async () => {
     if (!analysis) return;
@@ -53,7 +54,7 @@ export default function Rapor() {
   if (!analysis) return null;
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <SafeAreaView style={[styles.safe, { paddingTop: topInset }]} edges={['bottom', 'left', 'right']}>
       <View style={styles.top}>
         <Text style={styles.heading} numberOfLines={1}>{analysis.title}</Text>
         <Pressable accessibilityLabel="Kapat" onPress={() => router.back()} style={styles.close} hitSlop={12}>

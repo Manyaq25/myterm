@@ -12,5 +12,8 @@ export type Report = {
   finale: { title: string; text: string };
 };
 
-export type CoachRole = 'eski' | 'sevgili' | 'hoslandigim' | 'hayalimdeki';
-export type CoachTurn = { role: 'user' | 'assistant'; text: string };
+export type CoachRole =
+  | 'sevgili' | 'es' | 'nisanli' | 'flort' | 'crush' | 'situationship' | 'eski'
+  | 'bestie' | 'arkadas' | 'aile' | 'hayalimdeki' | 'hoslandigim';
+/** pro: Mila bu sorunun Pro'ya özel olduğunu söyledi (ödeme düğmesi gösterilir). */
+export type CoachTurn = { role: 'user' | 'assistant'; text: string; pro?: boolean };

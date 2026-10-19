@@ -7,9 +7,12 @@ import { z } from 'zod';
 import { HttpError, requireEnv } from './http';
 import { maskPersonalData } from './mask';
 
-export const RELATIONS = ['sevgili', 'es', 'flort', 'eski', 'arkadas', 'aile', 'is', 'grup', 'diger'] as const;
+export const RELATIONS = [
+  'sevgili', 'es', 'nisanli', 'flort', 'crush', 'situationship', 'eski',
+  'bestie', 'arkadas', 'aile', 'is', 'grup', 'diger',
+] as const;
 export type Relation = (typeof RELATIONS)[number];
-const ROMANTIC: Relation[] = ['sevgili', 'es', 'flort', 'eski'];
+const ROMANTIC: Relation[] = ['sevgili', 'es', 'nisanli', 'flort', 'crush', 'situationship', 'eski'];
 
 const CARD_KEYS = [
   'ilgi', 'romantik', 'cabalama', 'seni_seviyorum', 'ozur', 'imali', 'yalan', 'manipulatif', 'baskin', 'arzu',
@@ -66,8 +69,9 @@ function karneSubjects(relation: Relation): string {
 }
 
 const RELATION_LABEL: Record<Relation, string> = {
-  sevgili: 'sevgili', es: 'eş', flort: 'flört', eski: 'eski sevgili', arkadas: 'arkadaş',
-  aile: 'aile', is: 'iş arkadaşı', grup: 'arkadaş grubu', diger: 'diğer',
+  sevgili: 'sevgili', es: 'eş', nisanli: 'nişanlı', flort: 'flört', crush: 'crush (hoşlanılan kişi)',
+  situationship: 'situationship (adı konmamış ilişki)', eski: 'eski sevgili', bestie: 'bestie / kanka (en yakın arkadaş)',
+  arkadas: 'arkadaş', aile: 'aile', is: 'iş arkadaşı', grup: 'arkadaş grubu', diger: 'diğer',
 };
 
 export function systemPrompt(relation: Relation): string {

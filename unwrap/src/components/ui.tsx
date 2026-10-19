@@ -2,6 +2,7 @@
 import { router } from 'expo-router';
 import { ChevronLeft } from 'lucide-react-native';
 import type { ReactNode } from 'react';
+import { initialWindowMetrics, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { colors, fonts, radius, space, type } from '@/theme';
@@ -66,6 +67,15 @@ export function Note({ icon, title, text }: { icon: string; title: string; text?
       </View>
     </View>
   );
+}
+
+/**
+ * Tam ekran açılan sayfalarda üst boşluk. SafeAreaView bazen ilk anda 0 ölçüp
+ * içeriği saat/şarj göstergesinin altına itebiliyor; ilk ölçüme geri düşeriz.
+ */
+export function useTopInset() {
+  const insets = useSafeAreaInsets();
+  return insets.top || initialWindowMetrics?.insets.top || 0;
 }
 
 /** Her ekranda aynı yerde duran geri düğmesi. */

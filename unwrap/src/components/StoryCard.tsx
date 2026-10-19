@@ -1,6 +1,7 @@
 // Tek bir hikâye kartının görünümü (ekranda ve paylaşılan resimde aynı).
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Sticker } from '@/components/ui';
 import type { Card } from '@/lib/cards/free';
 import { colors, fonts, radius, space, type } from '@/theme';
 
@@ -34,6 +35,32 @@ export function StoryCard({ card }: { card: Card }) {
                 </View>
               </View>
             ))}
+          </View>
+        )}
+        {card.kind === 'karne' && (
+          <View style={styles.karne}>
+            <Sticker text="🏅 TAKDİR BELGESİ" rotate={8} bg={colors.surface} style={styles.karneSticker} />
+            <View style={styles.karneRow}>
+              <Text style={[styles.karneSubject]} />
+              {card.names.map((n) => (
+                <Text key={n} style={[styles.karneCell, type.label, { color: colors.text }]} numberOfLines={1}>
+                  {n}
+                </Text>
+              ))}
+            </View>
+            {card.subjects.map((sub) => (
+              <View key={sub.subject} style={styles.karneRow}>
+                <Text style={[styles.karneSubject, type.body, { color: colors.text }]}>{sub.subject}</Text>
+                {sub.grades.map((g, i) => (
+                  <Text key={i} style={[styles.karneCell, styles.grade, { color: g == null ? colors.textMuted : g >= 4 ? colors.green : g <= 2 ? colors.primary : colors.text }]}>
+                    {g ?? '–'}
+                  </Text>
+                ))}
+              </View>
+            ))}
+            <Text style={[type.caption, { color: colors.textMuted, marginTop: space.sm }]}>
+              İstatistikten hesaplandı · Kanıtlı yapay zekâ karnesi Pro’da
+            </Text>
           </View>
         )}
         {card.kind === 'teaser' && (
@@ -101,5 +128,11 @@ const styles = StyleSheet.create({
   rowUnit: { fontFamily: fonts.semibold, fontSize: 14, color: colors.textMuted },
   track: { height: 10, borderRadius: 5, backgroundColor: 'rgba(0,0,0,0.06)', overflow: 'hidden' },
   fill: { height: 10, borderRadius: 5 },
+  karne: { backgroundColor: 'rgba(255,255,255,0.65)', borderRadius: radius.lg, padding: space.md, paddingTop: space.lg },
+  karneSticker: { position: 'absolute', top: -18, right: 8 },
+  karneRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: 'rgba(0,0,0,0.12)' },
+  karneSubject: { flex: 2 },
+  karneCell: { flex: 1, textAlign: 'center' },
+  grade: { fontFamily: fonts.extrabold, fontSize: 26 },
   caption: { ...type.title, fontFamily: fonts.semibold, color: colors.text, textAlign: 'center' },
 });

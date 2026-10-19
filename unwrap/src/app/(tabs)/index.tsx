@@ -1,15 +1,14 @@
 // Ana sayfa: sohbet yükle + geçmiş analizler.
 import * as DocumentPicker from 'expo-document-picker';
 import { router, useFocusEffect } from 'expo-router';
-import { BookOpen, Plus } from 'lucide-react-native';
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Button, Card, Pill } from '@/components/ui';
+import { Card, Pill, Sticker } from '@/components/ui';
 import { weeklyCount } from '@/lib/ai/api';
 import { importChatFile, importErrorText } from '@/lib/chat/import';
-import { relationLabel } from '@/lib/relations';
+import { isRomantic, relationLabel } from '@/lib/relations';
 import { listAnalyses, type AnalysisSummary, type Relation } from '@/lib/store';
 import { colors, fonts, radius, space, type } from '@/theme';
 
@@ -20,7 +19,6 @@ const FILTERS: { id: 'hepsi' | Relation; label: string; emoji: string }[] = [
   { id: 'aile', label: 'Aile', emoji: '🏡' },
   { id: 'grup', label: 'Grup', emoji: '⚡' },
 ];
-const ROMANTIC: Relation[] = ['sevgili', 'es', 'flort', 'eski'];
 
 
 export default function Home() {
@@ -51,7 +49,7 @@ export default function Home() {
   };
 
   const shown = items.filter((a) =>
-    filter === 'hepsi' ? true : filter === 'sevgili' ? ROMANTIC.includes(a.relation as Relation) : a.relation === filter,
+    filter === 'hepsi' ? true : filter === 'sevgili' ? isRomantic(a.relation) : filter === 'arkadas' ? a.relation === 'arkadas' || a.relation === 'bestie' : a.relation === filter,
   );
 
   return (
@@ -59,19 +57,21 @@ export default function Home() {
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.logo}>✦ Unwrap</Text>
 
-        <View style={styles.hero}>
-          <Text style={styles.badge}>✨ Yapay Zekâ Destekli</Text>
-          <Text style={styles.heroTitle}>Bir sohbet yükle</Text>
-          <Text style={[type.body, { color: colors.textMuted }]}>
-            WhatsApp veya Telegram sohbetini aktar, tüm gerçekler tatlı dille açılsın.
-          </Text>
-          <Button label="Dosya seç" variant="coral" loading={busy} onPress={pick} icon={<Plus color="#fff" size={20} />} />
-          <Pressable onPress={() => router.push('/rehber')} style={styles.guideLink}>
-            <BookOpen color={colors.primary} size={16} />
-            <Text style={[type.label, { color: colors.primary }]}>Sohbet nasıl dışa aktarılır?</Text>
+        <Text style={styles.heroTitle}>Hangi sohbeti açalım?</Text>
+        <View style={styles.tiles}>
+          <Pressable onPress={() => router.push('/rehber')} style={[styles.tile, { backgroundColor: colors.cardMint }]}>
+            <Sticker text="EN KOLAYI" rotate={-6} bg={colors.surface} style={styles.tileSticker} />
+            <Text style={styles.tileEmoji}>💬</Text>
+            <Text style={styles.tileTitle}>WhatsApp’tan aktar</Text>
+            <Text style={styles.tileText}>Sohbet → Dışa Aktar → Unwrap. Nasıl yapılır, adım adım göster.</Text>
           </Pressable>
-          <Text style={styles.privacy}>🔒 İstatistikler telefonunda hesaplanır. Sohbetin sunucularda saklanmaz.</Text>
+          <Pressable onPress={pick} disabled={busy} style={[styles.tile, { backgroundColor: colors.cardLilac }]}>
+            <Text style={styles.tileEmoji}>{busy ? '⏳' : '📂'}</Text>
+            <Text style={styles.tileTitle}>{busy ? 'Açılıyor…' : 'Dosya seç'}</Text>
+            <Text style={styles.tileText}>Kaydettiğin .zip / .txt ya da Telegram .json dosyası</Text>
+          </Pressable>
         </View>
+        <Text style={styles.privacy}>🔒 İstatistikler telefonunda hesaplanır. Sohbetin sunucularda saklanmaz.</Text>
 
         <Text style={styles.counter}>Bu hafta {weekly == null ? '– –' : weekly.toLocaleString('tr-TR')} sohbet analiz edildi</Text>
 
@@ -117,10 +117,13 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
   content: { padding: space.lg, gap: space.md, paddingBottom: space.xl },
   logo: { fontFamily: fonts.extrabold, fontSize: 26, color: colors.text },
-  hero: { backgroundColor: colors.cardPeach, borderRadius: radius.lg, padding: space.lg, gap: space.md },
-  badge: { alignSelf: 'flex-start', backgroundColor: colors.surface, borderRadius: radius.pill, paddingHorizontal: 12, paddingVertical: 6, fontFamily: fonts.bold, fontSize: 12, color: colors.primary },
+  tiles: { flexDirection: 'row', gap: space.sm },
+  tile: { flex: 1, borderRadius: radius.lg, padding: space.md, gap: 6, minHeight: 150 },
+  tileSticker: { position: 'absolute', top: -10, right: 8, paddingHorizontal: 10, paddingVertical: 4 },
+  tileEmoji: { fontSize: 28 },
+  tileTitle: { fontFamily: fonts.extrabold, fontSize: 17, color: colors.text },
+  tileText: { ...type.caption, color: colors.textMuted },
   heroTitle: { ...type.headline, color: colors.text },
-  guideLink: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'center' },
   privacy: { ...type.caption, color: colors.textMuted, textAlign: 'center' },
   counter: { ...type.label, color: colors.textMuted, textAlign: 'center' },
   section: { ...type.title, color: colors.text, marginTop: space.sm },

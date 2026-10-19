@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { captureRef } from 'react-native-view-shot';
 
 import { StoryCard } from '@/components/StoryCard';
-import { Button } from '@/components/ui';
+import { Button, useTopInset } from '@/components/ui';
 import { buildFreeCards } from '@/lib/cards/free';
 import { isPro } from '@/lib/purchases';
 import { getAnalysis } from '@/lib/store';
@@ -21,6 +21,7 @@ export default function Hikaye() {
   const cards = useMemo(() => (analysis ? buildFreeCards(analysis.stats, analysis.relation) : []), [analysis]);
   const [index, setIndex] = useState(0);
   const shot = useRef<View>(null);
+  const topInset = useTopInset();
 
   if (!analysis || !cards.length) return null;
   const card = cards[index];
@@ -43,7 +44,7 @@ export default function Hikaye() {
   };
 
   return (
-    <SafeAreaView style={styles.safe}>
+    <SafeAreaView style={[styles.safe, { paddingTop: topInset }]} edges={['bottom', 'left', 'right']}>
       <View style={styles.top}>
         <View style={styles.bars}>
           {cards.map((c, i) => (

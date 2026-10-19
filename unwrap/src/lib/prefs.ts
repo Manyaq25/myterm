@@ -1,7 +1,12 @@
 // Küçük tercih bayrakları (karşılama görüldü mü vb.).
-import * as SecureStore from 'expo-secure-store';
+// Uygulama klasöründe dosya olarak tutulur: iPhone'un anahtar zinciri uygulama
+// silinince de kaldığı için, yeniden yüklemede karşılama yine gösterilsin diye.
+import { File, Paths } from 'expo-file-system';
 
-const ONBOARDED = 'unwrap.onboarded';
+const onboardedFile = () => new File(Paths.document, '.karsilama-goruldu');
 
-export const hasOnboarded = () => SecureStore.getItem(ONBOARDED) === '1';
-export const setOnboarded = () => SecureStore.setItem(ONBOARDED, '1');
+export const hasOnboarded = () => onboardedFile().exists;
+export function setOnboarded() {
+  const f = onboardedFile();
+  if (!f.exists) f.create();
+}

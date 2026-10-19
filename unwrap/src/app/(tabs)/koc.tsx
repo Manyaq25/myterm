@@ -21,7 +21,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card, Pill } from '@/components/ui';
 import { ApiError, askCoach, errorText } from '@/lib/ai/api';
 import type { CoachRole, CoachTurn } from '@/lib/ai/types';
-import { isRomantic } from '@/lib/relations';
+import { isPro } from '@/lib/purchases';
+import { RELATIONS, isRomantic } from '@/lib/relations';
 import {
   getAnalysis,
   getGeneralCoach,
@@ -33,26 +34,48 @@ import {
 } from '@/lib/store';
 import { colors, fonts, radius, space, type } from '@/theme';
 
+// Rol yapma: analiz kurulumundaki ilişki türlerinin hepsi (+ hayalimdeki).
 const ROLES: { id: CoachRole | null; label: string; emoji: string }[] = [
   { id: null, label: 'Mila (koç)', emoji: '💬' },
-  { id: 'sevgili', label: 'Sevgilim', emoji: '💘' },
-  { id: 'hoslandigim', label: 'Hoşlandığım', emoji: '🦋' },
-  { id: 'eski', label: 'Eski sevgilim', emoji: '💔' },
+  ...RELATIONS.filter((r) => r.id !== 'is' && r.id !== 'diger').map((r) => ({ id: r.id as CoachRole, label: r.label, emoji: r.emoji })),
   { id: 'hayalimdeki', label: 'Hayalimdeki', emoji: '✨' },
 ];
 
-const GENERAL_STARTERS = [
-  'Flörtüme ilk mesajı nasıl atayım?',
-  'Tartıştık, nasıl barışırım?',
-  'Mesajlarıma geç cevap veriyor, ne yapmalıyım?',
-  'Eski sevgilime yazmalı mıyım?',
+type Starter = { q: string; pro?: boolean };
+
+// pro: true olanlar ücretsiz sürümde soluk ve kilitli görünür.
+const GENERAL_STARTERS: Starter[] = [
+  { q: 'Flörtüme ilk mesajı nasıl atayım?' },
+  { q: 'Tartıştık, nasıl barışırım?' },
+  { q: 'Özür mesajı yazmama yardım eder misin?' },
+  { q: 'Ona tatlı bir iltifat nasıl ederim?' },
+  { q: 'İlk buluşmada ne konuşulur?' },
+  { q: 'Doğum günü için ne yazayım?' },
+  { q: 'Sohbet tıkandı, nasıl ilerleyebilirim?', pro: true },
+  { q: 'Telefonunu benden saklıyor, sence neden?', pro: true },
+  { q: 'Beni aldatıyor olabilir mi?', pro: true },
+  { q: 'Bana gerçekten ilgisi var mı?', pro: true },
+  { q: 'Son zamanlarda neden soğudu?', pro: true },
+  { q: 'Eski sevgilisiyle hâlâ konuşuyor mu?', pro: true },
+  { q: 'Yalan söylediğini nasıl anlarım?', pro: true },
+  { q: 'Beni manipüle ediyor mu?', pro: true },
 ];
 
-function starters(a: Analysis): string[] {
-  if (a.participants.length > 2) return ['Grubu en çok kim taşıyor?', 'Kim kime daha çok destek oluyor?', 'Grupta küs olan var mı?'];
+// Seçili sohbete özel sorular sohbeti okumayı gerektirir; hepsi Pro.
+function starters(a: Analysis): Starter[] {
+  if (a.participants.length > 2)
+    return ['Grubu en çok kim taşıyor?', 'Kim kime daha çok destek oluyor?', 'Grupta küs olan var mı?', 'Grubun en komiği kim?'].map((q) => ({ q, pro: true }));
   if (isRomantic(a.relation))
-    return ['Bana ilgisi var mı?', 'Ona şimdi ne yazmalıyım?', 'Kim daha çok çabalıyor?', 'Beni aldatıyor olabilir mi?'];
-  return ['Bu arkadaşlık nasıl gidiyor?', 'Aramızda gerginlik var mı?', 'Ona ne yazmalıyım?'];
+    return [
+      'Bana ilgisi var mı?',
+      'Ona şimdi ne yazmalıyım?',
+      'Kim daha çok çabalıyor?',
+      'Sohbetimiz neden tıkandı?',
+      'Benden bir şey saklıyor mu?',
+      'Beni aldatıyor olabilir mi?',
+      'Bu ilişki nereye gidiyor?',
+    ].map((q) => ({ q, pro: true }));
+  return ['Bu arkadaşlık nasıl gidiyor?', 'Aramızda gerginlik var mı?', 'Ona ne yazmalıyım?', 'Kim daha çok çabalıyor?'].map((q) => ({ q, pro: true }));
 }
 
 export default function Koc() {
@@ -64,6 +87,7 @@ export default function Koc() {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [general, setGeneral] = useState(false);
+  const [pro, setPro] = useState(false);
   const listRef = useRef<FlatList<CoachTurn>>(null);
 
   /** 'genel' = sohbet seçmeden Mila ile konuşma. */
@@ -87,6 +111,7 @@ export default function Koc() {
   const currentId = analysis?.id;
   useFocusEffect(
     useCallback(() => {
+      isPro().then(setPro);
       const all = listAnalyses();
       setList(all);
       if (!all.length) return select('genel');
@@ -125,13 +150,16 @@ export default function Koc() {
     setSending(true);
     try {
       const answer = await askCoach(analysis, role, next);
-      const done: CoachTurn[] = [...next, { role: 'assistant', text: answer }];
+      const done: CoachTurn[] = [...next, { role: 'assistant', text: answer.text, pro: answer.proRequired || undefined }];
       setHistory(done);
       save(analysis, role, done);
     } catch (e) {
       setHistory(history);
       setInput(q);
-      if (e instanceof ApiError && e.code === 'pro_required') router.push('/pro');
+      if (e instanceof ApiError && (e.code === 'pro_required' || e.code === 'free_limit')) {
+        if (e.code === 'free_limit') Alert.alert('Ücretsiz hakkın doldu', errorText(e));
+        router.push('/pro');
+      }
       else Alert.alert('Mila cevap veremedi', errorText(e));
     } finally {
       setSending(false);
@@ -157,7 +185,14 @@ export default function Koc() {
           {analysis && oneToOne ? (
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
               {ROLES.map((r) => (
-                <Pill key={r.label} label={r.label} emoji={r.emoji} active={r.id === role} onPress={() => changeRole(r.id)} />
+                <View key={r.label} style={r.id && !pro ? styles.locked : undefined}>
+                  <Pill
+                    label={r.label}
+                    emoji={r.id && !pro ? '🔒' : r.emoji}
+                    active={r.id === role}
+                    onPress={() => (r.id && !pro ? router.push('/pro') : changeRole(r.id))}
+                  />
+                </View>
               ))}
             </ScrollView>
           ) : null}
@@ -182,9 +217,14 @@ export default function Koc() {
                 </Card>
                 {!role ? (
                   <View style={styles.starters}>
-                    {(analysis ? starters(analysis) : GENERAL_STARTERS).map((s) => (
-                      <Pill key={s} label={s} onPress={() => send(s)} />
-                    ))}
+                    {(analysis ? starters(analysis) : GENERAL_STARTERS).map((s) => {
+                      const locked = s.pro && !pro;
+                      return (
+                        <View key={s.q} style={locked && styles.locked}>
+                          <Pill label={s.q} emoji={locked ? '🔒' : undefined} onPress={() => (locked ? router.push('/pro') : send(s.q))} />
+                        </View>
+                      );
+                    })}
                   </View>
                 ) : null}
               </View>
@@ -192,6 +232,11 @@ export default function Koc() {
             renderItem={({ item }) => (
               <View style={[styles.bubble, item.role === 'user' ? styles.mine : styles.theirs]}>
                 <Text style={[type.body, { color: item.role === 'user' ? colors.onPrimary : colors.text }]}>{item.text}</Text>
+                {item.pro && !pro ? (
+                  <Pressable onPress={() => router.push('/pro')} style={styles.proCta}>
+                    <Text style={[type.label, { color: colors.onPrimary }]}>🔓 Unwrap Pro ile cevabı aç</Text>
+                  </Pressable>
+                ) : null}
               </View>
             )}
             ListFooterComponent={sending ? <ActivityIndicator color={colors.primary} style={{ marginTop: space.sm }} /> : null}
@@ -228,6 +273,8 @@ const styles = StyleSheet.create({
   chips: { gap: space.sm, paddingRight: space.lg },
   messages: { padding: space.lg, gap: space.sm, flexGrow: 1 },
   starters: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+  locked: { opacity: 0.45 },
+  proCta: { marginTop: space.sm, alignSelf: 'flex-start', backgroundColor: colors.coral, borderRadius: radius.pill, paddingHorizontal: 14, paddingVertical: 8 },
   bubble: { maxWidth: '85%', borderRadius: radius.md, paddingVertical: space.sm, paddingHorizontal: space.md },
   mine: { alignSelf: 'flex-end', backgroundColor: colors.primary, borderBottomRightRadius: 6 },
   theirs: { alignSelf: 'flex-start', backgroundColor: colors.surface, borderBottomLeftRadius: 6 },
