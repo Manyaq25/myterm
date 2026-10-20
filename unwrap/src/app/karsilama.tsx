@@ -33,7 +33,6 @@ function Bubble({ text, mine, style }: { text: string; mine?: boolean; style?: o
 const KarneHero = () => (
   <View style={styles.heroCard}>
     <Sticker text="🏅 TAKDİR BELGESİ" rotate={8} bg={colors.cardButter} style={styles.stickerTopRight} />
-    <Text style={styles.cardKicker}>ÖRNEK</Text>
     <Text style={styles.cardTitle}>Sohbet Karnesi</Text>
     <View style={styles.grades}>
       {([['İlgi', '5', colors.primary], ['Hız', '3', colors.purple], ['Espri', '5', colors.green], ['Trip', '2', colors.textMuted]] as const).map(
@@ -53,19 +52,40 @@ const KarneHero = () => (
   </View>
 );
 
-const StatsHero = () => (
+const FUN = [
+  ['🤥 Kim daha çok yalan söylüyor?', colors.cardCoral, -4],
+  ['💘 Kim daha romantik?', colors.cardPeach, 3],
+  ['🙄 İmalı mesajlar', colors.cardLilac, -2],
+  ['🔥 Arzu ölçer', colors.cardButter, 5],
+  ['🕵️ Manipülasyon radarı', colors.lilac, -5],
+  ['😂 En komik mesaj', colors.cardMint, 2],
+  ['👻 En uzun sessizlik', colors.cardLilac, -3],
+  ['🦉 Gece kuşu kim?', colors.cardPeach, 4],
+] as const;
+
+const FunHero = () => (
   <View style={styles.heroCard}>
-    <Sticker text="🔒 TELEFONUNDA KALIR" rotate={-7} bg={colors.cardMint} style={styles.stickerTopRight} />
-    <Text style={styles.cardKicker}>ÜCRETSİZ İSTATİSTİK</Text>
-    <Text style={styles.cardTitle}>Kim ne kadar?</Text>
-    <View style={{ gap: space.sm, marginTop: space.sm }}>
-      <Bar label="Kim daha çok yazıyor?" left="Sen" right="O" pct={62} />
-      <Bar label="Sohbeti kim başlatıyor?" left="Sen" right="O" pct={35} />
-    </View>
+    <Sticker text="👀 SIRLAR ÇÖZÜLÜYOR" rotate={-7} bg={colors.cardMint} style={styles.stickerTopRight} />
+    <Text style={styles.cardTitle}>Kim daha çok…?</Text>
     <View style={styles.chips}>
-      <Sticker text="🤫 En uzun sessizlik" rotate={-3} bg={colors.cardLilac} />
-      <Sticker text="⏳ Kim bekletiyor" rotate={4} bg={colors.cardPeach} />
-      <Sticker text="😂 Kahkaha sayısı" rotate={-2} bg={colors.cardCoral} />
+      {FUN.map(([t, bg, r]) => (
+        <Sticker key={t} text={t} rotate={r} bg={bg} />
+      ))}
+    </View>
+  </View>
+);
+
+const EvidenceHero = () => (
+  <View style={styles.heroCard}>
+    <Sticker text="🔍 KANITLI" rotate={6} bg={colors.cardButter} style={styles.stickerTopRight} />
+    <Text style={styles.cardTitle}>Kim daha çok çabalıyor?</Text>
+    <View style={{ gap: space.sm, marginTop: space.sm }}>
+      <Bar label="Sohbeti kim başlatıyor?" left="Sen" right="O" pct={72} />
+    </View>
+    <View style={styles.quote}>
+      <Text style={[type.label, { color: colors.text }]}>“Tamam.”</Text>
+      <Text style={[type.caption, { color: colors.textMuted }]}>16.10 · 23:48</Text>
+      <Text style={[type.bodySm, { color: colors.text }]}>Noktalı “Tamam.” Türkçede pek iyiye işaret değil 😬</Text>
     </View>
   </View>
 );
@@ -87,15 +107,13 @@ function Bar({ label, left, right, pct }: { label: string; left: string; right: 
 
 const MilaHero = () => (
   <View style={styles.heroCard}>
-    <Sticker text="✨ TEK PAKET" rotate={7} bg={colors.lilac} style={styles.stickerTopRight} />
-    <Text style={styles.cardKicker}>MİLA · ÖRNEK SOHBET</Text>
-    <Text style={styles.cardTitle}>Sor, prova et</Text>
+    <Sticker text="💬 AI KOÇ" rotate={7} bg={colors.lilac} style={styles.stickerTopRight} />
+    <Text style={styles.cardTitle}>Sor ya da rol yaptır</Text>
     <View style={{ gap: space.sm, marginTop: space.sm }}>
       <Bubble mine text="Bana ilgisi var mı? 🤔" />
       <Bubble text="Sohbeti sen başlatıyorsun ama o da uzun cevaplar yazıyor; bu iyi bir işaret olabilir 💬" />
-      <Bubble mine text="Ona ne yazayım?" />
+      <Bubble mine text="Sevgilim gibi cevap ver, barışmayı prova edelim 💘" />
     </View>
-    <Sticker text="JETON YOK" rotate={-6} bg={colors.cardButter} style={{ marginTop: space.md }} />
   </View>
 );
 
@@ -107,15 +125,21 @@ const PAGES: Page[] = [
     hero: KarneHero,
   },
   {
-    eyebrow: '🔒 GİZLİLİK',
-    title: 'İstatistiklerin\nbedava',
-    body: 'Kim çok yazıyor, kim bekletiyor, en uzun sessizlik… Hepsi telefonunda hesaplanır, hesap açmana gerek yok.',
-    hero: StatsHero,
+    eyebrow: '🤫 SATIR ARALARI',
+    title: 'Sohbetinde\nneler saklı?',
+    body: 'Yalan ölçer, romantiklik, imalı mesajlar, arzu ölçer, manipülasyon radarı ve daha fazlası. Arkadaşlarınla paylaşmalık kartlar.',
+    hero: FunHero,
   },
   {
-    eyebrow: '💸 DÜRÜST FİYAT',
-    title: 'Tek paket,\nher şey dahil',
-    body: 'Yapay zekâ analizi, kanıtlı eğlenceli kartlar ve koçun Mila tek pakette. Önce ücretsiz dene.',
+    eyebrow: '🔍 KANITIYLA',
+    title: 'Laf değil,\nalıntı',
+    body: 'Her yorumun altında sohbetinden gerçek mesaj, tarihiyle birlikte. Kim çabalıyor, kim bekletiyor, kim soğudu; görerek anla.',
+    hero: EvidenceHero,
+  },
+  {
+    eyebrow: '💬 MİLA',
+    title: 'Ne yazacağını\nbilemedin mi?',
+    body: 'Mila sohbetini okur, sana özel cevap önerir. İstersen sevgilin, crush’ın ya da eski sevgilin gibi konuşup prova ettirir.',
     hero: MilaHero,
   },
 ];
@@ -165,7 +189,9 @@ export default function Karsilama() {
           ))}
         </View>
         <Button label={page === PAGES.length - 1 ? 'Başla' : 'Devam'} onPress={next} icon={<ArrowRight color="#fff" size={20} />} />
-        <Text style={styles.small}>Reklam yok. Jeton yok. Tek fiyat.</Text>
+        <Text style={[styles.small, page !== PAGES.length - 1 && { opacity: 0 }]}>
+          Reklam yok. Jeton yok. Tüm özellikler tek pakette.
+        </Text>
       </View>
     </SafeAreaView>
   );
