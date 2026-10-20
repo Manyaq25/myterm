@@ -46,13 +46,13 @@ async function main() {
 
     if (f.startsWith('1-')) {
       const coach = await coachReply({
-        relation: 'flort', me: 'Emre', other: 'Zeynep', role: null,
+        lang: 'tr', relation: 'flort', me: 'Emre', other: 'Zeynep', role: null,
         context: `${payload.stats}\n\n${payload.messages}`,
         history: [{ role: 'user', text: 'Zeynep son günlerde çok soğuk, ilgisini mi kaybetti? Ona ne yazayım?' }],
       });
       out.push('### Mila (koç) cevabı', coach.text, `_girdi ${coach.usage.input} · çıktı ${coach.usage.output}_`, '');
       const role = await coachReply({
-        relation: 'flort', me: 'Emre', other: 'Zeynep', role: 'hoslandigim',
+        lang: 'tr', relation: 'flort', me: 'Emre', other: 'Zeynep', role: 'hoslandigim',
         context: `${payload.stats}\n\n${payload.messages}`,
         history: [{ role: 'user', text: 'Selam, bugün nasılsın?' }],
       });
@@ -68,11 +68,17 @@ async function main() {
       ];
       out.push('### Ücretsiz sürüm kapısı');
       for (const [q, expectPro] of freeCases) {
-        const r = await coachReply({ relation: 'diger', me: null, other: null, role: null, context: '', history: [{ role: 'user', text: q }] }, 'free');
+        const r = await coachReply({ lang: 'tr', relation: 'diger', me: null, other: null, role: null, context: '', history: [{ role: 'user', text: q }] }, 'free');
         const ok = r.proRequired === expectPro;
         out.push(`- ${ok ? '✅' : '❌'} "${q}" → ${r.proRequired ? 'PRO' : 'cevap'}: ${r.text.slice(0, 160).replace(/\n/g, ' ')}`);
       }
       out.push('');
+
+      // Diğer dil: İngilizce rapor + İngilizce ücretsiz kapı.
+      const en = await generateReport({ ...payload, lang: 'en' }, 'sonnet');
+      out.push('### English report (same chat)', '```json', JSON.stringify(en.report, null, 2).slice(0, 3000), '```');
+      const enGate = await coachReply({ lang: 'en', relation: 'diger', me: null, other: null, role: null, context: '', history: [{ role: 'user', text: 'Asking for a friend: her boyfriend always keeps his phone face down, what does it mean?' }] }, 'free');
+      out.push(`- ${enGate.proRequired ? '✅' : '❌'} EN gate → ${enGate.proRequired ? 'PRO' : 'answer'}: ${enGate.text.slice(0, 160)}`, '');
     }
     console.log('bitti:', f);
   }

@@ -1,0 +1,21 @@
+// Yapay zekâ raporu ekranı metinleri.
+export default {
+  close: 'Kapat',
+  loadingTitle: 'Sohbetin okunuyor…',
+  loadingBody: 'Kanıtları tek tek topluyoruz. Bu yaklaşık yarım dakika sürer.',
+  retry: 'Tekrar dene',
+  summary: 'ÖZET',
+  tone: 'TON ANALİZİ',
+  replies: 'NE YAZABİLİRSİN?',
+  askMila: 'Bu sohbeti Mila’ya sor',
+  disclaimer: 'Yorumlar yapay zekâ tahminidir, kesin hüküm değildir. “Yalan”, “manipülatif” ve “arzu” kartları eğlence içindir.',
+  shareDialog: 'Kartı paylaş',
+  shareFailTitle: 'Paylaşılamadı',
+  shareFailBody: 'Kart resmi oluşturulamadı, tekrar dener misin?',
+  shareLabel: 'Kartı paylaş',
+  share: 'Paylaş',
+  funSticker: '😜 EĞLENCE AMAÇLI',
+  karneSticker: '🏅 TAKDİR BELGESİ',
+  karneTitle: 'Sohbet Karnesi',
+  teacherNote: 'Öğretmen görüşü: {{note}}',
+};

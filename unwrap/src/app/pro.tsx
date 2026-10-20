@@ -10,17 +10,13 @@ import type { PurchasesPackage } from 'react-native-purchases';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/ui';
+import { t } from '@/i18n';
 import { config } from '@/lib/config';
 import { buy, getPlans, restore, type Plans } from '@/lib/purchases';
 import { colors, fonts, radius, space, type } from '@/theme';
 
-const FEATURES = [
-  'Kanıtlı yapay zekâ kartları: her yorumun altında sohbetten gerçek alıntı',
-  'Sohbet karnesi: ilgi, hız, espri, trip… herkese not',
-  '“Kim daha çok yalan söylüyor?” ve daha birçok eğlenceli özel analiz',
-  'Mila: soru sor ya da sevgilin gibi rol yapsın',
-  'Tüm özellikler tek pakette; jeton yok, ek ücret yok',
-];
+// Metinler çizimde alınır ki seçili dili izlesin.
+const features = () => (['evidence', 'report', 'fun', 'mila', 'allInOne'] as const).map((k) => t(`paywall.features.${k}`));
 
 /** Ücretsiz deneme süresi (gün). Mağazada tanımlı değilse null. */
 function trialDays(pkg: PurchasesPackage): number | null {
@@ -68,7 +64,7 @@ export default function Pro() {
     try {
       if (await buy(pkg)) done();
     } catch {
-      Alert.alert('Satın alma tamamlanamadı', 'Ücret alınmadı. Birazdan tekrar dener misin?');
+      Alert.alert(t('paywall.errors.purchaseTitle'), t('paywall.errors.purchaseBody'));
     } finally {
       setBusy(false);
     }
@@ -78,34 +74,34 @@ export default function Pro() {
     setBusy(true);
     try {
       if (await restore()) done();
-      else Alert.alert('Abonelik bulunamadı', 'Bu mağaza hesabında etkin bir Unwrap Pro aboneliği yok.');
+      else Alert.alert(t('paywall.errors.notFoundTitle'), t('paywall.errors.notFoundBody'));
     } catch {
-      Alert.alert('Geri yüklenemedi', 'Birazdan tekrar dener misin?');
+      Alert.alert(t('paywall.errors.restoreTitle'), t('paywall.errors.restoreBody'));
     } finally {
       setBusy(false);
     }
   };
 
-  const period = selected === 'yearly' ? 'yıl' : 'ay';
+  const period = t(selected === 'yearly' ? 'paywall.period.year' : 'paywall.period.month');
   const disclosure = pkg
     ? trial
-      ? `${trial} gün ücretsiz, sonra ${pkg.product.priceString}/${period}. Abonelik otomatik yenilenir; deneme bitmeden iptal edersen hiç ücret alınmaz.`
-      : `${pkg.product.priceString}/${period}. Abonelik otomatik yenilenir; istediğin an mağaza ayarlarından iptal edebilirsin.`
+      ? t('paywall.trialDisclosure', { days: trial, price: pkg.product.priceString, period })
+      : t('paywall.disclosure', { price: pkg.product.priceString, period })
     : '';
 
   return (
     <SafeAreaView style={styles.safe}>
       <View style={styles.top}>
-        <Pressable accessibilityLabel="Kapat" onPress={() => router.back()} style={styles.close} hitSlop={12}>
+        <Pressable accessibilityLabel={t('paywall.close')} onPress={() => router.back()} style={styles.close} hitSlop={12}>
           <X color={colors.text} size={22} />
         </Pressable>
       </View>
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title}>Unwrap Pro</Text>
-        <Text style={[type.body, { color: colors.textMuted }]}>Sohbetinin tamamını aç.</Text>
+        <Text style={[type.body, { color: colors.textMuted }]}>{t('paywall.subtitle')}</Text>
 
         <View style={styles.features}>
-          {FEATURES.map((f) => (
+          {features().map((f) => (
             <View key={f} style={styles.feature}>
               <View style={styles.check}>
                 <Check color={colors.onPrimary} size={14} strokeWidth={3} />
@@ -119,7 +115,7 @@ export default function Pro() {
           <ActivityIndicator color={colors.primary} style={{ marginTop: space.lg }} />
         ) : !plans.monthly && !plans.yearly ? (
           <Text style={[type.body, styles.unavailable]}>
-            Abonelik şu an hazır değil. Biraz sonra tekrar dener misin?
+            {t('paywall.unavailable')}
           </Text>
         ) : (
           <View style={{ gap: space.sm }}>
@@ -127,17 +123,17 @@ export default function Pro() {
               <PlanRow
                 active={selected === 'yearly'}
                 onPress={() => setSelected('yearly')}
-                title="Yıllık"
-                price={`${plans.yearly.product.priceString}/yıl`}
-                badge={saving > 0 ? `%${saving} daha uygun` : undefined}
+                title={t('paywall.yearly')}
+                price={t('paywall.pricePer', { price: plans.yearly.product.priceString, period: t('paywall.period.year') })}
+                badge={saving > 0 ? t('paywall.saving', { pct: saving }) : undefined}
               />
             ) : null}
             {plans.monthly ? (
               <PlanRow
                 active={selected === 'monthly'}
                 onPress={() => setSelected('monthly')}
-                title="Aylık"
-                price={`${plans.monthly.product.priceString}/ay`}
+                title={t('paywall.monthly')}
+                price={t('paywall.pricePer', { price: plans.monthly.product.priceString, period: t('paywall.period.month') })}
               />
             ) : null}
           </View>
@@ -147,17 +143,17 @@ export default function Pro() {
       <View style={styles.footer}>
         {disclosure ? <Text style={styles.disclosure}>{disclosure}</Text> : null}
         <Button
-          label={trial ? `${trial} gün ücretsiz başla` : 'Abone ol'}
+          label={trial ? t('paywall.startTrial', { days: trial }) : t('paywall.subscribe')}
           variant="coral"
           onPress={purchase}
           loading={busy}
           disabled={!pkg}
         />
         <View style={styles.links}>
-          <Text style={styles.link} onPress={restorePurchases}>Satın alımları geri yükle</Text>
-          <Text style={styles.link} onPress={() => WebBrowser.openBrowserAsync(config.termsUrl)}>Kullanım koşulları</Text>
+          <Text style={styles.link} onPress={restorePurchases}>{t('paywall.restore')}</Text>
+          <Text style={styles.link} onPress={() => WebBrowser.openBrowserAsync(config.termsUrl)}>{t('paywall.terms')}</Text>
           {config.privacyUrl ? (
-            <Text style={styles.link} onPress={() => WebBrowser.openBrowserAsync(config.privacyUrl)}>Gizlilik</Text>
+            <Text style={styles.link} onPress={() => WebBrowser.openBrowserAsync(config.privacyUrl)}>{t('paywall.privacy')}</Text>
           ) : null}
         </View>
       </View>

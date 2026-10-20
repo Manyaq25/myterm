@@ -10,6 +10,7 @@ import { captureRef } from 'react-native-view-shot';
 
 import { StoryCard } from '@/components/StoryCard';
 import { Button, useTopInset } from '@/components/ui';
+import { t } from '@/i18n';
 import { buildFreeCards } from '@/lib/cards/free';
 import { isPro } from '@/lib/purchases';
 import { getAnalysis } from '@/lib/store';
@@ -37,9 +38,9 @@ export default function Hikaye() {
   const share = async () => {
     try {
       const uri = await captureRef(shot, { format: 'png', quality: 1 });
-      await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: 'Hikâyeyi paylaş' });
+      await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: t('story.viewer.shareDialog') });
     } catch {
-      Alert.alert('Paylaşılamadı', 'Kart resmi oluşturulamadı, tekrar dener misin?');
+      Alert.alert(t('story.viewer.shareFailTitle'), t('story.viewer.shareFailBody'));
     }
   };
 
@@ -51,7 +52,7 @@ export default function Hikaye() {
             <View key={c.id} style={[styles.bar, i <= index && styles.barActive]} />
           ))}
         </View>
-        <Pressable accessibilityLabel="Kapat" onPress={() => router.back()} style={styles.close}>
+        <Pressable accessibilityLabel={t('story.viewer.close')} onPress={() => router.back()} style={styles.close}>
           <X color={colors.text} size={20} />
         </Pressable>
       </View>
@@ -61,20 +62,20 @@ export default function Hikaye() {
           <StoryCard card={card} />
         </View>
         {/* Sol / sağ dokunma alanları */}
-        <Pressable style={[styles.tapZone, { left: 0 }]} onPress={() => go(-1)} accessibilityLabel="Önceki kart" />
-        <Pressable style={[styles.tapZone, { right: 0 }]} onPress={() => go(1)} accessibilityLabel="Sonraki kart" />
+        <Pressable style={[styles.tapZone, { left: 0 }]} onPress={() => go(-1)} accessibilityLabel={t('story.viewer.prev')} />
+        <Pressable style={[styles.tapZone, { right: 0 }]} onPress={() => go(1)} accessibilityLabel={t('story.viewer.next')} />
       </View>
 
       <View style={styles.footer}>
         {isTeaser ? (
           <>
-            <Button label="Tam raporu aç" variant="coral" onPress={openFull} />
-            <Text style={styles.small}>Ücretsiz denemeyle başla · İstediğin an iptal</Text>
+            <Button label={t('story.viewer.openFull')} variant="coral" onPress={openFull} />
+            <Text style={styles.small}>{t('story.viewer.trialNote')}</Text>
           </>
         ) : (
-          <Button label="Hikâyeyi paylaş" onPress={share} icon={<Share2 color="#fff" size={20} />} />
+          <Button label={t('story.viewer.share')} onPress={share} icon={<Share2 color="#fff" size={20} />} />
         )}
-        <Text style={styles.small}>Ücretsiz · {index + 1} / {cards.length}</Text>
+        <Text style={styles.small}>{t('story.viewer.counter', { index: index + 1, total: cards.length })}</Text>
       </View>
     </SafeAreaView>
   );

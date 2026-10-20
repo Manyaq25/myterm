@@ -6,18 +6,20 @@ import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Card, Pill, Sticker } from '@/components/ui';
+import { locale, t } from '@/i18n';
 import { weeklyCount } from '@/lib/ai/api';
 import { importChatFile, importErrorText } from '@/lib/chat/import';
 import { isRomantic, relationLabel } from '@/lib/relations';
 import { listAnalyses, type AnalysisSummary, type Relation } from '@/lib/store';
 import { colors, fonts, radius, space, type } from '@/theme';
 
-const FILTERS: { id: 'hepsi' | Relation; label: string; emoji: string }[] = [
-  { id: 'hepsi', label: 'Hepsi', emoji: '✨' },
-  { id: 'sevgili', label: 'İlişki', emoji: '💖' },
-  { id: 'arkadas', label: 'Arkadaş', emoji: '🤝' },
-  { id: 'aile', label: 'Aile', emoji: '🏡' },
-  { id: 'grup', label: 'Grup', emoji: '⚡' },
+// Filtreler: metin seçili dile göre, her çizimde kurulur.
+const filters = (): { id: 'hepsi' | Relation; label: string; emoji: string }[] => [
+  { id: 'hepsi', label: t('home.filters.hepsi'), emoji: '✨' },
+  { id: 'sevgili', label: t('home.filters.sevgili'), emoji: '💖' },
+  { id: 'arkadas', label: t('home.filters.arkadas'), emoji: '🤝' },
+  { id: 'aile', label: t('home.filters.aile'), emoji: '🏡' },
+  { id: 'grup', label: t('home.filters.grup'), emoji: '⚡' },
 ];
 
 
@@ -42,7 +44,7 @@ export default function Home() {
       const id = await importChatFile(asset.uri, asset.name);
       router.push({ pathname: '/analiz/kurulum', params: { id } });
     } catch (e) {
-      Alert.alert('Dosya okunamadı', importErrorText(e));
+      Alert.alert(t('home.readError'), importErrorText(e));
     } finally {
       setBusy(false);
     }
@@ -57,35 +59,35 @@ export default function Home() {
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.logo}>✦ Unwrap</Text>
 
-        <Text style={styles.heroTitle}>Hangi sohbeti açalım?</Text>
+        <Text style={styles.heroTitle}>{t('home.title')}</Text>
         <View style={styles.tiles}>
           <Pressable onPress={() => router.push('/rehber')} style={[styles.tile, { backgroundColor: colors.cardMint }]}>
-            <Sticker text="EN KOLAYI" rotate={-6} bg={colors.surface} style={styles.tileSticker} />
+            <Sticker text={t('home.easiest')} rotate={-6} bg={colors.surface} style={styles.tileSticker} />
             <Text style={styles.tileEmoji}>💬</Text>
-            <Text style={styles.tileTitle}>WhatsApp’tan aktar</Text>
-            <Text style={styles.tileText}>Sohbet → Dışa Aktar → Unwrap. Nasıl yapılır, adım adım göster.</Text>
+            <Text style={styles.tileTitle}>{t('home.waTitle')}</Text>
+            <Text style={styles.tileText}>{t('home.waText')}</Text>
           </Pressable>
           <Pressable onPress={pick} disabled={busy} style={[styles.tile, { backgroundColor: colors.cardLilac }]}>
             <Text style={styles.tileEmoji}>{busy ? '⏳' : '📂'}</Text>
-            <Text style={styles.tileTitle}>{busy ? 'Açılıyor…' : 'Dosya seç'}</Text>
-            <Text style={styles.tileText}>Kaydettiğin .zip / .txt ya da Telegram .json dosyası</Text>
+            <Text style={styles.tileTitle}>{busy ? t('home.opening') : t('home.pickFile')}</Text>
+            <Text style={styles.tileText}>{t('home.pickText')}</Text>
           </Pressable>
         </View>
-        <Text style={styles.privacy}>🔒 İstatistikler telefonunda hesaplanır. Sohbetin sunucularda saklanmaz.</Text>
+        <Text style={styles.privacy}>{t('home.privacy')}</Text>
 
-        <Text style={styles.counter}>Bu hafta {weekly == null ? '– –' : weekly.toLocaleString('tr-TR')} sohbet analiz edildi</Text>
+        <Text style={styles.counter}>{t('home.weekly', { count: weekly == null ? '– –' : weekly.toLocaleString(locale()) })}</Text>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: space.sm }}>
-          {FILTERS.map((f) => (
+          {filters().map((f) => (
             <Pill key={f.id} label={f.label} emoji={f.emoji} active={filter === f.id} onPress={() => setFilter(f.id)} />
           ))}
         </ScrollView>
 
-        <Text style={styles.section}>Analizlerin</Text>
+        <Text style={styles.section}>{t('home.section')}</Text>
         {shown.length === 0 ? (
           <Card>
             <Text style={[type.body, { color: colors.textMuted }]}>
-              Henüz analiz yok. İlk sohbetini yükle, kartların birkaç saniyede hazır olsun.
+              {t('home.empty')}
             </Text>
           </Card>
         ) : (
@@ -100,8 +102,8 @@ export default function Home() {
                     {a.title}
                   </Text>
                   <Text style={[type.caption, { color: colors.textMuted }]}>
-                    {relationLabel(a.relation)} · {new Date(a.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })} ·{' '}
-                    {a.totalMessages.toLocaleString('tr-TR')} mesaj
+                    {relationLabel(a.relation)} · {new Date(a.createdAt).toLocaleDateString(locale(), { day: 'numeric', month: 'long' })} ·{' '}
+                    {t('home.messages', { count: a.totalMessages.toLocaleString(locale()) })}
                   </Text>
                 </View>
               </Card>

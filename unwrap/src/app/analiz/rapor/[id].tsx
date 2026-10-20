@@ -9,6 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { captureRef } from 'react-native-view-shot';
 
 import { Button, Card, Sticker, useTopInset } from '@/components/ui';
+import { t } from '@/i18n';
 import { ApiError, errorText, requestReport } from '@/lib/ai/api';
 import type { Report, ReportCard } from '@/lib/ai/types';
 import { isPro } from '@/lib/purchases';
@@ -57,7 +58,7 @@ export default function Rapor() {
     <SafeAreaView style={[styles.safe, { paddingTop: topInset }]} edges={['bottom', 'left', 'right']}>
       <View style={styles.top}>
         <Text style={styles.heading} numberOfLines={1}>{analysis.title}</Text>
-        <Pressable accessibilityLabel="Kapat" onPress={() => router.back()} style={styles.close} hitSlop={12}>
+        <Pressable accessibilityLabel={t('report.close')} onPress={() => router.back()} style={styles.close} hitSlop={12}>
           <X color={colors.text} size={20} />
         </Pressable>
       </View>
@@ -67,22 +68,22 @@ export default function Rapor() {
           {loading ? (
             <>
               <ActivityIndicator color={colors.primary} size="large" />
-              <Text style={[type.title, { color: colors.text, textAlign: 'center' }]}>Sohbetin okunuyor…</Text>
+              <Text style={[type.title, { color: colors.text, textAlign: 'center' }]}>{t('report.loadingTitle')}</Text>
               <Text style={[type.bodySm, { color: colors.textMuted, textAlign: 'center' }]}>
-                Kanıtları tek tek topluyoruz. Bu yaklaşık yarım dakika sürer.
+                {t('report.loadingBody')}
               </Text>
             </>
           ) : error ? (
             <>
               <Text style={[type.body, { color: colors.text, textAlign: 'center' }]}>{error}</Text>
-              <Button label="Tekrar dene" onPress={generate} />
+              <Button label={t('report.retry')} onPress={generate} />
             </>
           ) : null}
         </View>
       ) : (
         <ScrollView contentContainerStyle={styles.content}>
           <Card>
-            <Text style={styles.section}>ÖZET</Text>
+            <Text style={styles.section}>{t('report.summary')}</Text>
             <Text style={[type.body, { color: colors.text }]}>{report.summary}</Text>
           </Card>
 
@@ -94,12 +95,12 @@ export default function Rapor() {
 
           {report.tone.length ? (
             <Card>
-              <Text style={styles.section}>TON ANALİZİ</Text>
-              {report.tone.map((t, i) => (
+              <Text style={styles.section}>{t('report.tone')}</Text>
+              {report.tone.map((tn, i) => (
                 <View key={i} style={styles.tone}>
-                  <Text style={styles.quote}>“{t.quote}”</Text>
-                  <Text style={[type.caption, { color: colors.textMuted }]}>{t.author}</Text>
-                  <Text style={[type.bodySm, { color: colors.text }]}>{t.meaning}</Text>
+                  <Text style={styles.quote}>“{tn.quote}”</Text>
+                  <Text style={[type.caption, { color: colors.textMuted }]}>{tn.author}</Text>
+                  <Text style={[type.bodySm, { color: colors.text }]}>{tn.meaning}</Text>
                 </View>
               ))}
             </Card>
@@ -107,7 +108,7 @@ export default function Rapor() {
 
           {report.replies.length ? (
             <Card>
-              <Text style={styles.section}>NE YAZABİLİRSİN?</Text>
+              <Text style={styles.section}>{t('report.replies')}</Text>
               {report.replies.map((r, i) => (
                 <View key={i} style={styles.reply}>
                   <Text style={[type.body, { color: colors.text }]}>{r}</Text>
@@ -122,13 +123,13 @@ export default function Rapor() {
           </Shareable>
 
           <Button
-            label="Bu sohbeti Mila’ya sor"
+            label={t('report.askMila')}
             variant="coral"
             icon={<MessageCircleHeart color="#fff" size={20} />}
             onPress={() => router.push({ pathname: '/koc', params: { id: analysis.id } })}
           />
           <Text style={styles.disclaimer}>
-            Yorumlar yapay zekâ tahminidir, kesin hüküm değildir. “Yalan”, “manipülatif” ve “arzu” kartları eğlence içindir.
+            {t('report.disclaimer')}
           </Text>
         </ScrollView>
       )}
@@ -142,9 +143,9 @@ function Shareable({ bg, children }: { bg: string; children: ReactNode }) {
   const share = async () => {
     try {
       const uri = await captureRef(ref, { format: 'png', quality: 1 });
-      await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: 'Kartı paylaş' });
+      await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: t('report.shareDialog') });
     } catch {
-      Alert.alert('Paylaşılamadı', 'Kart resmi oluşturulamadı, tekrar dener misin?');
+      Alert.alert(t('report.shareFailTitle'), t('report.shareFailBody'));
     }
   };
   return (
@@ -153,9 +154,9 @@ function Shareable({ bg, children }: { bg: string; children: ReactNode }) {
         {children}
         <Text style={styles.brand}>Unwrap</Text>
       </View>
-      <Pressable onPress={share} style={styles.shareBtn} accessibilityLabel="Kartı paylaş">
+      <Pressable onPress={share} style={styles.shareBtn} accessibilityLabel={t('report.shareLabel')}>
         <Share2 color={colors.text} size={16} />
-        <Text style={[type.label, { color: colors.text }]}>Paylaş</Text>
+        <Text style={[type.label, { color: colors.text }]}>{t('report.share')}</Text>
       </Pressable>
     </View>
   );
@@ -167,7 +168,7 @@ function AiCard({ card, bg }: { card: ReportCard; bg: string }) {
   return (
     <Shareable bg={bg}>
       <Text style={styles.cardTitle}>{card.title}</Text>
-      {FUN.has(card.key) ? <Sticker text="😜 EĞLENCE AMAÇLI" rotate={-5} bg={colors.lilac} style={{ marginTop: -space.xs }} /> : null}
+      {FUN.has(card.key) ? <Sticker text={t('report.funSticker')} rotate={-5} bg={colors.lilac} style={{ marginTop: -space.xs }} /> : null}
       <View style={{ gap: space.sm }}>
         {card.people.map((p, i) => (
           <View key={p.name} style={{ gap: 4 }}>
@@ -205,8 +206,8 @@ function Karne({ report }: { report: Report }) {
   if (!names.length) return null;
   return (
     <Shareable bg={colors.surface}>
-      <Sticker text="🏅 TAKDİR BELGESİ" rotate={7} bg={colors.cardButter} style={{ position: 'absolute', top: -12, right: 16, zIndex: 2 }} />
-      <Text style={styles.cardTitle}>Sohbet Karnesi</Text>
+      <Sticker text={t('report.karneSticker')} rotate={7} bg={colors.cardButter} style={{ position: 'absolute', top: -12, right: 16, zIndex: 2 }} />
+      <Text style={styles.cardTitle}>{t('report.karneTitle')}</Text>
       <View style={styles.karneRow}>
         <Text style={[styles.karneCell, styles.karneSubject]} />
         {names.map((n) => (
@@ -228,7 +229,7 @@ function Karne({ report }: { report: Report }) {
           })}
         </View>
       ))}
-      <Text style={[type.bodySm, { color: colors.textMuted }]}>Öğretmen görüşü: {report.karne.teacherNote}</Text>
+      <Text style={[type.bodySm, { color: colors.textMuted }]}>{t('report.teacherNote', { note: report.karne.teacherNote })}</Text>
     </Shareable>
   );
 }

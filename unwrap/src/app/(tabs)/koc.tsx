@@ -22,6 +22,7 @@ import { Card, Pill } from '@/components/ui';
 import { ApiError, askCoach, errorText } from '@/lib/ai/api';
 import type { CoachRole, CoachTurn } from '@/lib/ai/types';
 import { isPro } from '@/lib/purchases';
+import { t } from '@/i18n';
 import { RELATIONS, isRomantic } from '@/lib/relations';
 import {
   getAnalysis,
@@ -35,47 +36,43 @@ import {
 import { colors, fonts, radius, space, type } from '@/theme';
 
 // Rol yapma: analiz kurulumundaki ilişki türlerinin hepsi (+ hayalimdeki).
-const ROLES: { id: CoachRole | null; label: string; emoji: string }[] = [
-  { id: null, label: 'Mila (koç)', emoji: '💬' },
+// Etiketler dile göre değiştiği için çizim anında kurulur.
+const roles = (): { id: CoachRole | null; label: string; emoji: string }[] => [
+  { id: null, label: t('coach.roleCoach'), emoji: '💬' },
   ...RELATIONS.filter((r) => r.id !== 'is' && r.id !== 'diger').map((r) => ({ id: r.id as CoachRole, label: r.label, emoji: r.emoji })),
-  { id: 'hayalimdeki', label: 'Hayalimdeki', emoji: '✨' },
+  { id: 'hayalimdeki', label: t('coach.roleDream'), emoji: '✨' },
 ];
 
 type Starter = { q: string; pro?: boolean };
 
 // pro: true olanlar ücretsiz sürümde soluk ve kilitli görünür.
-const GENERAL_STARTERS: Starter[] = [
-  { q: 'Flörtüme ilk mesajı nasıl atayım?' },
-  { q: 'Tartıştık, nasıl barışırım?' },
-  { q: 'Özür mesajı yazmama yardım eder misin?' },
-  { q: 'Ona tatlı bir iltifat nasıl ederim?' },
-  { q: 'İlk buluşmada ne konuşulur?' },
-  { q: 'Doğum günü için ne yazayım?' },
-  { q: 'Sohbet tıkandı, nasıl ilerleyebilirim?', pro: true },
-  { q: 'Telefonunu benden saklıyor, sence neden?', pro: true },
-  { q: 'Beni aldatıyor olabilir mi?', pro: true },
-  { q: 'Bana gerçekten ilgisi var mı?', pro: true },
-  { q: 'Son zamanlarda neden soğudu?', pro: true },
-  { q: 'Eski sevgilisiyle hâlâ konuşuyor mu?', pro: true },
-  { q: 'Yalan söylediğini nasıl anlarım?', pro: true },
-  { q: 'Beni manipüle ediyor mu?', pro: true },
+const generalStarters = (): Starter[] => [
+  { q: t('coach.general.firstMessage') },
+  { q: t('coach.general.makeUp') },
+  { q: t('coach.general.apology') },
+  { q: t('coach.general.compliment') },
+  { q: t('coach.general.firstDate') },
+  { q: t('coach.general.birthday') },
+  { q: t('coach.general.stuck'), pro: true },
+  { q: t('coach.general.hidesPhone'), pro: true },
+  { q: t('coach.general.cheating'), pro: true },
+  { q: t('coach.general.interested'), pro: true },
+  { q: t('coach.general.coldLately'), pro: true },
+  { q: t('coach.general.ex'), pro: true },
+  { q: t('coach.general.lying'), pro: true },
+  { q: t('coach.general.manipulating'), pro: true },
 ];
 
 // Seçili sohbete özel sorular sohbeti okumayı gerektirir; hepsi Pro.
 function starters(a: Analysis): Starter[] {
   if (a.participants.length > 2)
-    return ['Grubu en çok kim taşıyor?', 'Kim kime daha çok destek oluyor?', 'Grupta küs olan var mı?', 'Grubun en komiği kim?'].map((q) => ({ q, pro: true }));
+    return ['carries', 'supports', 'falloutRift', 'funniest'].map((k) => ({ q: t(`coach.group.${k}`), pro: true }));
   if (isRomantic(a.relation))
-    return [
-      'Bana ilgisi var mı?',
-      'Ona şimdi ne yazmalıyım?',
-      'Kim daha çok çabalıyor?',
-      'Sohbetimiz neden tıkandı?',
-      'Benden bir şey saklıyor mu?',
-      'Beni aldatıyor olabilir mi?',
-      'Bu ilişki nereye gidiyor?',
-    ].map((q) => ({ q, pro: true }));
-  return ['Bu arkadaşlık nasıl gidiyor?', 'Aramızda gerginlik var mı?', 'Ona ne yazmalıyım?', 'Kim daha çok çabalıyor?'].map((q) => ({ q, pro: true }));
+    return ['interested', 'whatToWrite', 'effort', 'stuck', 'hiding', 'cheating', 'whereGoing'].map((k) => ({
+      q: t(`coach.romantic.${k}`),
+      pro: true,
+    }));
+  return ['howGoing', 'tension', 'whatToWrite', 'effort'].map((k) => ({ q: t(`coach.other.${k}`), pro: true }));
 }
 
 export default function Koc() {
@@ -134,9 +131,9 @@ export default function Koc() {
       save(analysis, r, []);
     };
     if (history.length)
-      Alert.alert('Yeni konuşma başlasın mı?', 'Rol değişince bu konuşma silinir.', [
-        { text: 'Vazgeç', style: 'cancel' },
-        { text: 'Başlat', onPress: apply },
+      Alert.alert(t('coach.newChatTitle'), t('coach.newChatBody'), [
+        { text: t('coach.cancel'), style: 'cancel' },
+        { text: t('coach.start'), onPress: apply },
       ]);
     else apply();
   };
@@ -157,10 +154,10 @@ export default function Koc() {
       setHistory(history);
       setInput(q);
       if (e instanceof ApiError && (e.code === 'pro_required' || e.code === 'free_limit')) {
-        if (e.code === 'free_limit') Alert.alert('Ücretsiz hakkın doldu', errorText(e));
+        if (e.code === 'free_limit') Alert.alert(t('coach.freeLimitTitle'), errorText(e));
         router.push('/pro');
       }
-      else Alert.alert('Mila cevap veremedi', errorText(e));
+      else Alert.alert(t('coach.errorTitle'), errorText(e));
     } finally {
       setSending(false);
     }
@@ -173,10 +170,10 @@ export default function Koc() {
     <SafeAreaView style={styles.safe} edges={['top']}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <View style={styles.header}>
-          <Text style={styles.title}>Mila</Text>
+          <Text style={styles.title}>{t('coach.title')}</Text>
           {list.length ? (
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
-              <Pill label="Genel soru" emoji="💬" active={general} onPress={() => select('genel')} />
+              <Pill label={t('coach.generalChip')} emoji="💬" active={general} onPress={() => select('genel')} />
               {list.map((a) => (
                 <Pill key={a.id} label={a.title} active={a.id === analysis?.id} onPress={() => select(a.id)} />
               ))}
@@ -184,7 +181,7 @@ export default function Koc() {
           ) : null}
           {analysis && oneToOne ? (
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
-              {ROLES.map((r) => (
+              {roles().map((r) => (
                 <View key={r.label} style={r.id && !pro ? styles.locked : undefined}>
                   <Pill
                     label={r.label}
@@ -209,15 +206,15 @@ export default function Koc() {
                 <Card>
                   <Text style={[type.body, { color: colors.text }]}>
                     {!analysis
-                      ? 'Merhaba, ben Mila 💬 İlişki, flört ya da arkadaşlık; aklındakini sor. Bir sohbet yüklersen onu okuyup kanıtlarıyla konuşurum.'
+                      ? t('coach.introGeneral')
                       : role
-                        ? `Şimdi ${other ?? 'karşındaki kişi'} gibi konuşuyorum; onun üslubunu sohbetinizden öğrendim. Bir şey yaz, prova edelim.`
-                        : `Merhaba, ben Mila. “${analysis.title}” sohbetini okudum. Ne merak ediyorsun?`}
+                        ? t('coach.introRole', { name: other ?? t('coach.otherPerson') })
+                        : t('coach.introChat', { title: analysis.title })}
                   </Text>
                 </Card>
                 {!role ? (
                   <View style={styles.starters}>
-                    {(analysis ? starters(analysis) : GENERAL_STARTERS).map((s) => {
+                    {(analysis ? starters(analysis) : generalStarters()).map((s) => {
                       const locked = s.pro && !pro;
                       return (
                         <View key={s.q} style={locked && styles.locked}>
@@ -234,7 +231,7 @@ export default function Koc() {
                 <Text style={[type.body, { color: item.role === 'user' ? colors.onPrimary : colors.text }]}>{item.text}</Text>
                 {item.pro && !pro ? (
                   <Pressable onPress={() => router.push('/pro')} style={styles.proCta}>
-                    <Text style={[type.label, { color: colors.onPrimary }]}>🔓 Unwrap Pro ile cevabı aç</Text>
+                    <Text style={[type.label, { color: colors.onPrimary }]}>{t('coach.unlockAnswer')}</Text>
                   </Pressable>
                 ) : null}
               </View>
@@ -247,20 +244,20 @@ export default function Koc() {
               style={styles.input}
               value={input}
               onChangeText={setInput}
-              placeholder={role ? 'Mesajını yaz…' : 'Mila’ya sor…'}
+              placeholder={role ? t('coach.placeholderRole') : t('coach.placeholderAsk')}
               placeholderTextColor={colors.textMuted}
               multiline
               maxLength={1000}
             />
             <Pressable
-              accessibilityLabel="Gönder"
+              accessibilityLabel={t('coach.send')}
               onPress={() => send(input)}
               disabled={!input.trim() || sending}
               style={[styles.send, (!input.trim() || sending) && { opacity: 0.4 }]}>
               <Send color={colors.onPrimary} size={20} />
             </Pressable>
           </View>
-        <Text style={styles.note}>Mila yapay zekâdır, yanılabilir; kesin hüküm vermez.</Text>
+        <Text style={styles.note}>{t('coach.note')}</Text>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

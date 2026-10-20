@@ -7,6 +7,7 @@ import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-nat
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BackButton, Button, Sticker } from '@/components/ui';
+import { t } from '@/i18n';
 import { setOnboarded } from '@/lib/prefs';
 import { colors, fonts, radius, space, type } from '@/theme';
 
@@ -32,10 +33,17 @@ function Bubble({ text, mine, style }: { text: string; mine?: boolean; style?: o
 
 const KarneHero = () => (
   <View style={styles.heroCard}>
-    <Sticker text="🏅 TAKDİR BELGESİ" rotate={8} bg={colors.cardButter} style={styles.stickerTopRight} />
-    <Text style={styles.cardTitle}>Sohbet Karnesi</Text>
+    <Sticker text={t('onboarding.report.sticker')} rotate={8} bg={colors.cardButter} style={styles.stickerTopRight} />
+    <Text style={styles.cardTitle}>{t('onboarding.report.title')}</Text>
     <View style={styles.grades}>
-      {([['İlgi', '5', colors.primary], ['Hız', '3', colors.purple], ['Espri', '5', colors.green], ['Trip', '2', colors.textMuted]] as const).map(
+      {(
+        [
+          [t('onboarding.report.grades.interest'), '5', colors.primary],
+          [t('onboarding.report.grades.speed'), '3', colors.purple],
+          [t('onboarding.report.grades.humor'), '5', colors.green],
+          [t('onboarding.report.grades.drama'), '2', colors.textMuted],
+        ] as const
+      ).map(
         ([label, grade, color]) => (
           <View key={label} style={styles.grade}>
             <Text style={[type.label, { color: colors.text }]}>{label}</Text>
@@ -44,32 +52,33 @@ const KarneHero = () => (
         ),
       )}
     </View>
-    <Row icon="⏱️" label="Ortalama cevap" value="2 dk" />
-    <Row icon="🌙" label="02:00 sonrası felsefe" value="Aşırı yüksek" color={colors.purple} />
+    <Row icon="⏱️" label={t('onboarding.report.avgReply')} value={t('onboarding.report.avgReplyValue')} />
+    <Row icon="🌙" label={t('onboarding.report.philosophy')} value={t('onboarding.report.philosophyValue')} color={colors.purple} />
     <View style={styles.quote}>
-      <Text style={[type.bodySm, { color: colors.text }]}>💬 Bilirkişi notu: “Trip seviyesi zararsız dozda.”</Text>
+      <Text style={[type.bodySm, { color: colors.text }]}>{t('onboarding.report.note')}</Text>
     </View>
   </View>
 );
 
+// Metinler seçili dile göre çizimde alınır.
 const FUN = [
-  ['🤥 Kim daha çok yalan söylüyor?', colors.cardCoral, -4],
-  ['💘 Kim daha romantik?', colors.cardPeach, 3],
-  ['🙄 İmalı mesajlar', colors.cardLilac, -2],
-  ['🔥 Arzu ölçer', colors.cardButter, 5],
-  ['🕵️ Manipülasyon radarı', colors.lilac, -5],
-  ['😂 En komik mesaj', colors.cardMint, 2],
-  ['👻 En uzun sessizlik', colors.cardLilac, -3],
-  ['🦉 Gece kuşu kim?', colors.cardPeach, 4],
+  ['liar', colors.cardCoral, -4],
+  ['romantic', colors.cardPeach, 3],
+  ['hints', colors.cardLilac, -2],
+  ['desire', colors.cardButter, 5],
+  ['manipulation', colors.lilac, -5],
+  ['funniest', colors.cardMint, 2],
+  ['silence', colors.cardLilac, -3],
+  ['nightOwl', colors.cardPeach, 4],
 ] as const;
 
 const FunHero = () => (
   <View style={styles.heroCard}>
-    <Sticker text="👀 SIRLAR ÇÖZÜLÜYOR" rotate={-7} bg={colors.cardMint} style={styles.stickerTopRight} />
-    <Text style={styles.cardTitle}>Kim daha çok…?</Text>
+    <Sticker text={t('onboarding.fun.sticker')} rotate={-7} bg={colors.cardMint} style={styles.stickerTopRight} />
+    <Text style={styles.cardTitle}>{t('onboarding.fun.title')}</Text>
     <View style={styles.chips}>
-      {FUN.map(([t, bg, r]) => (
-        <Sticker key={t} text={t} rotate={r} bg={bg} />
+      {FUN.map(([key, bg, r]) => (
+        <Sticker key={key} text={t(`onboarding.fun.chips.${key}`)} rotate={r} bg={bg} />
       ))}
     </View>
   </View>
@@ -77,15 +86,15 @@ const FunHero = () => (
 
 const EvidenceHero = () => (
   <View style={styles.heroCard}>
-    <Sticker text="🔍 KANITLI" rotate={6} bg={colors.cardButter} style={styles.stickerTopRight} />
-    <Text style={styles.cardTitle}>Kim daha çok çabalıyor?</Text>
+    <Sticker text={t('onboarding.evidence.sticker')} rotate={6} bg={colors.cardButter} style={styles.stickerTopRight} />
+    <Text style={styles.cardTitle}>{t('onboarding.evidence.title')}</Text>
     <View style={{ gap: space.sm, marginTop: space.sm }}>
-      <Bar label="Sohbeti kim başlatıyor?" left="Sen" right="O" pct={72} />
+      <Bar label={t('onboarding.evidence.starter')} left={t('onboarding.evidence.you')} right={t('onboarding.evidence.them')} pct={72} />
     </View>
     <View style={styles.quote}>
-      <Text style={[type.label, { color: colors.text }]}>“Tamam.”</Text>
-      <Text style={[type.caption, { color: colors.textMuted }]}>16.10 · 23:48</Text>
-      <Text style={[type.bodySm, { color: colors.text }]}>Noktalı “Tamam.” Türkçede pek iyiye işaret değil 😬</Text>
+      <Text style={[type.label, { color: colors.text }]}>{t('onboarding.evidence.quote')}</Text>
+      <Text style={[type.caption, { color: colors.textMuted }]}>{t('onboarding.evidence.quoteTime')}</Text>
+      <Text style={[type.bodySm, { color: colors.text }]}>{t('onboarding.evidence.quoteNote')}</Text>
     </View>
   </View>
 );
@@ -98,8 +107,8 @@ function Bar({ label, left, right, pct }: { label: string; left: string; right: 
         <View style={[styles.fill, { width: `${pct}%` }]} />
       </View>
       <View style={styles.barLegend}>
-        <Text style={[type.caption, { color: colors.textMuted }]}>{left} %{pct}</Text>
-        <Text style={[type.caption, { color: colors.textMuted }]}>{right} %{100 - pct}</Text>
+        <Text style={[type.caption, { color: colors.textMuted }]}>{t('onboarding.evidence.share', { name: left, pct })}</Text>
+        <Text style={[type.caption, { color: colors.textMuted }]}>{t('onboarding.evidence.share', { name: right, pct: 100 - pct })}</Text>
       </View>
     </View>
   );
@@ -107,47 +116,31 @@ function Bar({ label, left, right, pct }: { label: string; left: string; right: 
 
 const MilaHero = () => (
   <View style={styles.heroCard}>
-    <Sticker text="💬 AI KOÇ" rotate={7} bg={colors.lilac} style={styles.stickerTopRight} />
-    <Text style={styles.cardTitle}>Sor ya da rol yaptır</Text>
+    <Sticker text={t('onboarding.mila.sticker')} rotate={7} bg={colors.lilac} style={styles.stickerTopRight} />
+    <Text style={styles.cardTitle}>{t('onboarding.mila.title')}</Text>
     <View style={{ gap: space.sm, marginTop: space.sm }}>
-      <Bubble mine text="Bana ilgisi var mı? 🤔" />
-      <Bubble text="Sohbeti sen başlatıyorsun ama o da uzun cevaplar yazıyor; bu iyi bir işaret olabilir 💬" />
-      <Bubble mine text="Sevgilim gibi cevap ver, barışmayı prova edelim 💘" />
+      <Bubble mine text={t('onboarding.mila.ask')} />
+      <Bubble text={t('onboarding.mila.answer')} />
+      <Bubble mine text={t('onboarding.mila.roleplay')} />
     </View>
   </View>
 );
 
-const PAGES: Page[] = [
-  {
-    eyebrow: '✨ MERAK EDİLENLER MASADA',
-    title: 'Sohbetinin\nkarnesini al',
-    body: 'WhatsApp veya Telegram sohbetini yükle; kim ne kadar ilgili, kim trip atıyor, hepsi ortaya çıksın.',
-    hero: KarneHero,
-  },
-  {
-    eyebrow: '🤫 SATIR ARALARI',
-    title: 'Sohbetinde\nneler saklı?',
-    body: 'Yalan ölçer, romantiklik, imalı mesajlar, arzu ölçer, manipülasyon radarı ve daha fazlası. Arkadaşlarınla paylaşmalık kartlar.',
-    hero: FunHero,
-  },
-  {
-    eyebrow: '🔍 KANITIYLA',
-    title: 'Laf değil,\nalıntı',
-    body: 'Her yorumun altında sohbetinden gerçek mesaj, tarihiyle birlikte. Kim çabalıyor, kim bekletiyor, kim soğudu; görerek anla.',
-    hero: EvidenceHero,
-  },
-  {
-    eyebrow: '💬 MİLA',
-    title: 'Ne yazacağını\nbilemedin mi?',
-    body: 'Mila sohbetini okur, sana özel cevap önerir. İstersen sevgilin, crush’ın ya da eski sevgilin gibi konuşup prova ettirir.',
-    hero: MilaHero,
-  },
-];
+// Sayfalar çizimde kurulur ki metin seçili dili izlesin.
+const HEROES = { report: KarneHero, fun: FunHero, evidence: EvidenceHero, mila: MilaHero } as const;
+const pages = (): Page[] =>
+  (Object.keys(HEROES) as (keyof typeof HEROES)[]).map((k) => ({
+    eyebrow: t(`onboarding.pages.${k}.eyebrow`),
+    title: t(`onboarding.pages.${k}.title`),
+    body: t(`onboarding.pages.${k}.body`),
+    hero: HEROES[k],
+  }));
 
 export default function Karsilama() {
   const { width } = useWindowDimensions();
   const [page, setPage] = useState(0);
   const list = useRef<FlatList<Page>>(null);
+  const PAGES = pages();
 
   const goTo = (i: number) => {
     list.current?.scrollToIndex({ index: i });
@@ -188,9 +181,9 @@ export default function Karsilama() {
             <View key={p.title} style={[styles.dot, i === page && styles.dotActive]} />
           ))}
         </View>
-        <Button label={page === PAGES.length - 1 ? 'Başla' : 'Devam'} onPress={next} icon={<ArrowRight color="#fff" size={20} />} />
+        <Button label={page === PAGES.length - 1 ? t('onboarding.start') : t('onboarding.next')} onPress={next} icon={<ArrowRight color="#fff" size={20} />} />
         <Text style={[styles.small, page !== PAGES.length - 1 && { opacity: 0 }]}>
-          Reklam yok. Jeton yok. Tüm özellikler tek pakette.
+          {t('onboarding.footnote')}
         </Text>
       </View>
     </SafeAreaView>

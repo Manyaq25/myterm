@@ -1,5 +1,6 @@
 // Ücretsiz hikâye kartları: telefondaki istatistiklerden, yapay zekâsız.
 // Altyazılar sayıya göre seçilir; veriyle çelişen hazır cümle yok.
+import { lang, locale, t, tl } from '@/i18n';
 import { colors } from '@/theme';
 
 import { formatDuration, type ChatStats, type PersonStats } from '../chat/stats';
@@ -41,12 +42,12 @@ function initiationCard(s: ChatStats): Card {
   const lead = people[0];
   const share = pct(lead.initiations, total);
   const caption =
-    total < 2 ? 'Sohbet yeni başlamış, motoru kim olacak henüz belli değil 👀'
-    : share >= 70 ? `${lead.name} sohbetin motoru 🚂`
-    : share >= 55 ? `${lead.name} biraz daha istekli görünüyor 😊`
-    : 'Dengeli: iki taraf da sohbeti açıyor 🤝';
+    total < 2 ? t('story.initiation.captionNew')
+    : share >= 70 ? t('story.initiation.captionLead', { name: lead.name })
+    : share >= 55 ? t('story.initiation.captionKeen', { name: lead.name })
+    : t('story.initiation.captionBalanced');
   return {
-    id: 'baslatma', kind: 'rows', title: 'Sohbeti kim başlatıyor?', bg: colors.cardPeach, caption, unit: 'kez',
+    id: 'baslatma', kind: 'rows', title: t('story.initiation.title'), bg: colors.cardPeach, caption, unit: t('story.initiation.unit'),
     rows: people.map((p) => ({ name: p.name, value: p.initiations, display: String(p.initiations) })),
   };
 }
@@ -56,12 +57,12 @@ function messageCountCard(s: ChatStats): Card {
   const shares = percentages(people.map((p) => p.messages));
   const lead = people[0];
   const caption = s.isGroup
-    ? `Grubun en konuşkanı: ${lead.name} 🎤`
-    : shares[0] >= 65 ? `${lead.name} yazıyor, yazıyor, yazıyor ✍️`
-    : 'Mesaj sayıları neredeyse eşit, güzel denge ⚖️';
+    ? t('story.messages.captionGroup', { name: lead.name })
+    : shares[0] >= 65 ? t('story.messages.captionLead', { name: lead.name })
+    : t('story.messages.captionBalanced');
   return {
-    id: 'mesaj', kind: 'rows', title: 'Kim daha çok yazıyor?', bg: colors.cardLilac, caption,
-    rows: people.map((p, i) => ({ name: p.name, value: p.messages, display: `%${shares[i]}`, note: `${p.messages.toLocaleString('tr-TR')} mesaj` })),
+    id: 'mesaj', kind: 'rows', title: t('story.messages.title'), bg: colors.cardLilac, caption,
+    rows: people.map((p, i) => ({ name: p.name, value: p.messages, display: (shares[i] / 100).toLocaleString(locale(), { style: 'percent' }), note: t('story.messages.note', { count: p.messages.toLocaleString(locale()) }) })),
   };
 }
 
@@ -73,11 +74,11 @@ function replyCard(s: ChatStats): Card | null {
   const slow = sorted[sorted.length - 1];
   const ratio = slow.medianReplyMs! / Math.max(fast.medianReplyMs!, 1000);
   const caption =
-    ratio < 2 ? 'Cevap hızlarınız çok yakın, kimse kimseyi bekletmiyor ⚡'
-    : ratio < 10 ? `${fast.name} daha hızlı dönüyor, ${slow.name} biraz bekletiyor ⏳`
-    : `${slow.name} cevaplarda ağırdan alıyor… çok ağırdan 🐢`;
+    ratio < 2 ? t('story.reply.captionClose')
+    : ratio < 10 ? t('story.reply.captionFaster', { fast: fast.name, slow: slow.name })
+    : t('story.reply.captionSlow', { name: slow.name });
   return {
-    id: 'cevap', kind: 'rows', title: 'Ortalama ne kadar sürede yanıt veriyorsunuz?', bg: colors.cardButter, caption,
+    id: 'cevap', kind: 'rows', title: t('story.reply.title'), bg: colors.cardButter, caption,
     rows: sorted.map((p) => ({ name: p.name, value: -p.medianReplyMs!, display: formatDuration(p.medianReplyMs!) })),
   };
 }
@@ -85,12 +86,12 @@ function replyCard(s: ChatStats): Card | null {
 function daysCard(s: ChatStats, relation: Relation | null): Card {
   const seasons = Math.floor(s.spanDays / 91);
   const caption =
-    s.spanDays < 30 ? 'Daha yolun başındasınız, hikâye yeni yazılıyor ✨'
-    : seasons >= 4 ? `${seasons} mevsimlik bir hikâye, hâlâ devam ediyor ❤️`
-    : `${s.activeDays} gün mesajlaşmışsınız, az değil 💬`;
+    s.spanDays < 30 ? t('story.days.captionNew')
+    : seasons >= 4 ? t('story.days.captionSeasons', { seasons })
+    : t('story.days.captionActive', { days: s.activeDays.toLocaleString(locale()) });
   return {
-    id: 'gun', kind: 'big', title: isRomantic(relation) ? 'Kaç gündür konuşuyorsunuz?' : 'Bu sohbet kaç günlük?',
-    bg: colors.cardCoral, value: s.spanDays.toLocaleString('tr-TR'), unit: 'gün', caption,
+    id: 'gun', kind: 'big', title: isRomantic(relation) ? t('story.days.titleRomantic') : t('story.days.title'),
+    bg: colors.cardCoral, value: s.spanDays.toLocaleString(locale()), unit: t('story.days.unit'), caption,
   };
 }
 
@@ -98,8 +99,8 @@ function laughCard(s: ChatStats): Card | null {
   if (s.totalLaughs < 3) return null;
   const people = top(s.people, (p) => p.laughs).slice(0, 4);
   return {
-    id: 'gulme', kind: 'rows', title: 'Birlikte kaç kez güldünüz?', bg: colors.cardButter, unit: 'kahkaha',
-    caption: `Toplam ${s.totalLaughs.toLocaleString('tr-TR')} kahkaha 😂 En çok gülen: ${people[0].name}`,
+    id: 'gulme', kind: 'rows', title: t('story.laugh.title'), bg: colors.cardButter, unit: t('story.laugh.unit'),
+    caption: t('story.laugh.caption', { total: s.totalLaughs.toLocaleString(locale()), name: people[0].name }),
     rows: people.map((p) => ({ name: p.name, value: p.laughs, display: String(p.laughs) })),
   };
 }
@@ -107,11 +108,11 @@ function laughCard(s: ChatStats): Card | null {
 function silenceCard(s: ChatStats): Card | null {
   const sil = s.longestSilence;
   if (!sil || sil.ms < 6 * 60 * 60 * 1000) return null;
-  const date = sil.at.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const date = sil.at.toLocaleDateString(locale(), { day: 'numeric', month: 'long', year: 'numeric' });
   return {
-    id: 'sessizlik', kind: 'big', title: 'En uzun sessizlik 👻', bg: colors.cardLilac,
+    id: 'sessizlik', kind: 'big', title: t('story.silence.title'), bg: colors.cardLilac,
     value: formatDuration(sil.ms), unit: '',
-    caption: `Sessizliği bozan: ${sil.brokenBy} (${date})`,
+    caption: t('story.silence.caption', { name: sil.brokenBy, date }),
   };
 }
 
@@ -119,9 +120,9 @@ function emojiCard(s: ChatStats): Card | null {
   const people = s.people.filter((p) => p.topEmoji).slice(0, 4);
   if (!people.length) return null;
   return {
-    id: 'emoji', kind: 'rows', title: 'Favori emojiniz hangisi?', bg: colors.cardMint,
-    caption: 'Duygular bazen tek bir emojiye sığar 💫',
-    rows: people.map((p) => ({ name: p.name, value: p.emojis, display: p.topEmoji!, note: `${p.emojis} emoji` })),
+    id: 'emoji', kind: 'rows', title: t('story.emoji.title'), bg: colors.cardMint,
+    caption: t('story.emoji.caption'),
+    rows: people.map((p) => ({ name: p.name, value: p.emojis, display: p.topEmoji!, note: t('story.emoji.note', { count: p.emojis.toLocaleString(locale()) }) })),
   };
 }
 
@@ -129,8 +130,8 @@ function nightCard(s: ChatStats): Card | null {
   const people = top(s.people, (p) => p.nightMessages).filter((p) => p.nightMessages > 0).slice(0, 3);
   if (!people.length) return null;
   return {
-    id: 'gece', kind: 'rows', title: 'Gece kuşu kim? 🦉', bg: colors.cardLilac, unit: 'mesaj',
-    caption: 'Gece 00:00–05:00 arası atılan mesajlar',
+    id: 'gece', kind: 'rows', title: t('story.night.title'), bg: colors.cardLilac, unit: t('story.night.unit'),
+    caption: t('story.night.caption'),
     rows: people.map((p) => ({ name: p.name, value: p.nightMessages, display: String(p.nightMessages) })),
   };
 }
@@ -138,23 +139,25 @@ function nightCard(s: ChatStats): Card | null {
 function wordsCard(s: ChatStats): Card {
   const people = top(s.people, (p) => p.avgWords).slice(0, 4);
   return {
-    id: 'kelime', kind: 'rows', title: 'Mesaj başına kaç kelime?', bg: colors.cardPeach,
-    caption: people[0].avgWords >= 8 ? `${people[0].name} uzun uzun anlatmayı seviyor 📜` : 'Kısa ve öz yazıyorsunuz ✂️',
-    rows: people.map((p) => ({ name: p.name, value: p.avgWords, display: p.avgWords.toLocaleString('tr-TR') })),
+    id: 'kelime', kind: 'rows', title: t('story.words.title'), bg: colors.cardPeach,
+    caption: people[0].avgWords >= 8 ? t('story.words.captionLong', { name: people[0].name }) : t('story.words.captionShort'),
+    rows: people.map((p) => ({ name: p.name, value: p.avgWords, display: p.avgWords.toLocaleString(locale()) })),
   };
 }
 
+// "aynen" ve noktalı "Tamam." Türkçe sözcükler: kart yalnız Türkçe arayüzde.
 function signalsCard(s: ChatStats): Card | null {
+  if (lang() !== 'tr') return null;
   const people = s.people.slice(0, 4).filter((p) => p.aynen > 0 || p.coldTamam > 0);
   if (!people.length) return null;
   const anyTamam = people.some((p) => p.coldTamam > 0);
   return {
-    id: 'aynen', kind: 'rows', title: 'Aynen ve Tamam. sayacı', bg: colors.cardCoral,
+    id: 'aynen', kind: 'rows', title: t('story.signals.title'), bg: colors.cardCoral,
     rows: people.map((p) => ({
       name: p.name, value: p.aynen + p.coldTamam, display: String(p.aynen + p.coldTamam),
-      note: `${p.aynen} "aynen" · ${p.coldTamam} noktalı "Tamam."`,
+      note: t('story.signals.note', { aynen: p.aynen, tamam: p.coldTamam }),
     })),
-    caption: anyTamam ? 'Noktalı "Tamam." Türkçede pek iyiye işaret değil 😬' : 'Aynen aynen 😄',
+    caption: anyTamam ? t('story.signals.captionTamam') : t('story.signals.captionAynen'),
   };
 }
 
@@ -183,15 +186,15 @@ function karneCard(s: ChatStats): Card | null {
   });
   const best = people[ilgi[0] >= ilgi[1] ? 0 : 1].name;
   return {
-    id: 'karne', kind: 'karne', title: 'Sohbet Karnesi 📒', bg: colors.cardButter,
+    id: 'karne', kind: 'karne', title: t('story.karne.title'), bg: colors.cardButter,
     names: people.map((p) => p.name),
     subjects: [
-      { subject: 'İlgi & Alaka', grades: ilgi },
-      { subject: 'Cevap hızı', grades: hiz },
-      { subject: 'Espri', grades: espri },
-      { subject: 'Trip', grades: trip },
+      { subject: t('story.karne.interest'), grades: ilgi },
+      { subject: t('story.karne.replySpeed'), grades: hiz },
+      { subject: t('story.karne.humor'), grades: espri },
+      { subject: t('story.karne.trip'), grades: trip },
     ],
-    caption: `Sınıf birincisi (ilgi): ${best} 🏅`,
+    caption: t('story.karne.caption', { name: best }),
   };
 }
 
@@ -199,8 +202,8 @@ function streakCard(s: ChatStats): Card | null {
   const st = s.longestStreak;
   if (!st || st.count < 4) return null;
   return {
-    id: 'seri', kind: 'big', title: 'Cevap gelmeden üst üste en çok mesaj', bg: colors.cardMint,
-    value: String(st.count), unit: 'mesaj', caption: `Rekor sahibi: ${st.by} 📨`,
+    id: 'seri', kind: 'big', title: t('story.streak.title'), bg: colors.cardMint,
+    value: st.count.toLocaleString(locale()), unit: t('story.streak.unit'), caption: t('story.streak.caption', { name: st.by }),
   };
 }
 
@@ -208,17 +211,17 @@ function groupAwardsCard(s: ChatStats): Card | null {
   if (!s.isGroup) return null;
   const awards: { emoji: string; title: string; name: string }[] = [];
   const by = (k: (p: PersonStats) => number) => top(s.people, k)[0];
-  awards.push({ emoji: '🎤', title: 'En konuşkan', name: s.people[0].name });
-  awards.push({ emoji: '🚂', title: 'Organizatör', name: by((p) => p.initiations).name });
+  awards.push({ emoji: '🎤', title: t('story.awards.talker'), name: s.people[0].name });
+  awards.push({ emoji: '🚂', title: t('story.awards.organizer'), name: by((p) => p.initiations).name });
   const emoji = by((p) => p.emojis);
-  if (emoji.emojis > 0) awards.push({ emoji: '🎨', title: 'Emoji makinesi', name: emoji.name });
+  if (emoji.emojis > 0) awards.push({ emoji: '🎨', title: t('story.awards.emoji'), name: emoji.name });
   const laugh = by((p) => p.laughs);
-  if (laugh.laughs > 0) awards.push({ emoji: '😂', title: 'Neşe kaynağı', name: laugh.name });
+  if (laugh.laughs > 0) awards.push({ emoji: '😂', title: t('story.awards.joy'), name: laugh.name });
   const night = by((p) => p.nightMessages);
-  if (night.nightMessages > 0) awards.push({ emoji: '🦉', title: 'Gece kuşu', name: night.name });
+  if (night.nightMessages > 0) awards.push({ emoji: '🦉', title: t('story.awards.night'), name: night.name });
   const quiet = [...s.people].sort((a, b) => a.messages - b.messages)[0];
-  awards.push({ emoji: '🤫', title: 'Sessiz izleyici', name: quiet.name });
-  return { id: 'odul', kind: 'awards', title: 'Grup ödülleri 🏆', bg: colors.cardButter, awards, caption: 'Tebrikler, hepiniz birer efsanesiniz' };
+  awards.push({ emoji: '🤫', title: t('story.awards.quiet'), name: quiet.name });
+  return { id: 'odul', kind: 'awards', title: t('story.awards.title'), bg: colors.cardButter, awards, caption: t('story.awards.caption') };
 }
 
 export function buildFreeCards(s: ChatStats, relation: Relation | null): Card[] {
@@ -240,10 +243,8 @@ export function buildFreeCards(s: ChatStats, relation: Relation | null): Card[] 
 
   const romantic = isRomantic(relation);
   cards.push({
-    id: 'pro', kind: 'teaser', title: 'Asıl hikâye yapay zekâda 🔮', bg: colors.cardLilac,
-    items: romantic
-      ? ['Kim daha romantik?', 'Kim daha çok yalan söylüyor? 🤥', 'İmalı mesajlar ve satır araları', 'Kanıtlı yapay zekâ karnesi', 'Bu ilişki nereye gider?']
-      : ['Kanıtlı yapay zekâ karnesi', 'Kim daha çok yalan söylüyor? 🤥', 'İmalı mesajlar ve satır araları', 'Kim sohbeti taşıyor?', 'Ne yazmalı önerileri'],
+    id: 'pro', kind: 'teaser', title: t('story.teaser.title'), bg: colors.cardLilac,
+    items: tl(romantic ? 'story.teaser.romantic' : 'story.teaser.other'),
   });
   return cards;
 }

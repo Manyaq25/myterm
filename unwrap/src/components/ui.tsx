@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { initialWindowMetrics, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
 
+import { t } from '@/i18n';
 import { colors, fonts, radius, space, type } from '@/theme';
 
 type ButtonProps = {
@@ -79,7 +80,7 @@ export function useTopInset() {
 }
 
 /** Her ekranda aynı yerde duran geri düğmesi. */
-export function BackButton({ onPress, label = 'Geri' }: { onPress?: () => void; label?: string }) {
+export function BackButton({ onPress, label = t('common.back') }: { onPress?: () => void; label?: string }) {
   return (
     <Pressable
       accessibilityRole="button"

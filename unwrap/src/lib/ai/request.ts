@@ -48,6 +48,7 @@ export function formatStats(s: ChatStats): string {
 }
 
 export type ReportPayload = {
+  lang: string;
   relation: string;
   me: string | null;
   participants: string[];
@@ -55,14 +56,18 @@ export type ReportPayload = {
   messages: string;
 };
 
-export function buildReportPayload(a: {
+export function buildReportPayload(
+  a: {
   relation: string | null;
   me: string | null;
   participants: string[];
   stats: ChatStats;
   messages: Message[];
-}): ReportPayload {
+  },
+  lang = 'tr',
+): ReportPayload {
   return {
+    lang,
     relation: a.relation ?? 'diger',
     me: a.me,
     participants: a.participants.slice(0, 30),

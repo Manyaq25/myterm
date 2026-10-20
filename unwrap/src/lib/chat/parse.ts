@@ -29,6 +29,10 @@ const MEDIA_MARKERS = [
   '<attached:',
   'dosya ekli',
   'file attached',
+  // Diğer diller (Android "<... omitted>" ve iPhone "‎image omitted" biçimleri)
+  'ausgeschlossen', 'weggelassen', 'omitido', 'omitida', 'omis', 'absente', 'omess', 'ocultad', 'oculto',
+  'weggelaten', 'pominięt', 'tidak disertakan', 'disembunyikan', 'отсутствует', 'без медиа', 'медиа', 'omisă', 'omise',
+  'تم استبعاد', 'محذوف', 'छोड़', 'вилучено', 'пропущено',
 ];
 
 const isMedia = (text: string) => {

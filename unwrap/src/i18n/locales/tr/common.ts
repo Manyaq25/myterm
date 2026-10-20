@@ -1,0 +1,46 @@
+// Ortak metinler: düğmeler, sekmeler, ilişki türleri, hata mesajları.
+export default {
+  back: 'Geri',
+  cancel: 'Vazgeç',
+  delete: 'Sil',
+  tabs: {
+    home: 'Ana Sayfa',
+    coach: 'Koç',
+    settings: 'Ayarlar',
+  },
+  relations: {
+    sevgili: 'Sevgili',
+    es: 'Eş',
+    nisanli: 'Nişanlı',
+    flort: 'Flört',
+    crush: 'Crush',
+    situationship: 'Situationship',
+    eski: 'Eski sevgili',
+    bestie: 'Bestie / Kanka',
+    arkadas: 'Arkadaş',
+    aile: 'Aile',
+    is: 'İş',
+    diger: 'Diğer',
+    grup: 'Grup',
+    chat: 'Sohbet',
+  },
+  apiErrors: {
+    proRequired: 'Bu özellik Unwrap Pro ile açılıyor.',
+    slowDown: 'Çok hızlı gidiyoruz, bir dakika sonra tekrar dener misin?',
+    freeLimit: 'Bugünkü ücretsiz soru hakkın doldu. Unwrap Pro ile Mila’ya sınırsız sorabilirsin.',
+    dailyLimit: 'Bugünlük sınır doldu, yarın tekrar deneyebilirsin.',
+    noAnswer: 'Bu sohbet için cevap üretemedik. Farklı bir soru dener misin?',
+    network: 'Bağlantı kurulamadı. İnternetini kontrol edip tekrar dener misin?',
+    generic: 'Bir şeyler ters gitti, birazdan tekrar dener misin?',
+  },
+  importErrors: {
+    emptyChat: 'Bu dosyada sohbet mesajı bulamadık. WhatsApp\'ta "Sohbeti dışa aktar" ile alınan dosyayı seçtiğinden emin ol.',
+    noChatInZip: 'ZIP dosyasının içinde sohbet bulamadık.',
+    fallback: 'Bu dosyayı okuyamadık. Rehberdeki adımlarla yeniden dışa aktarmayı dene.',
+  },
+  groupTitle: '{{count}} kişilik grup',
+  importing: {
+    opening: 'Sohbetin açılıyor…',
+    failedTitle: 'Dosya okunamadı',
+  },
+};

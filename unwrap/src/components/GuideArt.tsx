@@ -6,6 +6,7 @@ import { Hand } from 'lucide-react-native';
 import type { ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { t } from '@/i18n';
 import { colors, fonts, radius, space, type } from '@/theme';
 
 const DARK = '#1E2326';
@@ -43,8 +44,8 @@ function ChatArt({ tap }: { tap: 'name' | 'menu' }) {
         <View style={[styles.namePill, tap === 'name' && styles.hl]}>
           <View style={styles.avatar} />
           <View>
-            <Text style={[styles.light, { fontFamily: fonts.bold }]}>Ece ✨</Text>
-            <Text style={styles.mutedSm}>çevrimiçi</Text>
+            <Text style={[styles.light, { fontFamily: fonts.bold }]}>{t('guide.name')} ✨</Text>
+            <Text style={styles.mutedSm}>{t('guide.online')}</Text>
           </View>
           {tap === 'name' ? <Tap /> : null}
         </View>
@@ -54,10 +55,10 @@ function ChatArt({ tap }: { tap: 'name' | 'menu' }) {
         </View>
       </View>
       <View style={[styles.msg, styles.msgIn]}>
-        <Text style={styles.lightSm}>Kahve için yarın 15:00 uyar mı? ☕</Text>
+        <Text style={styles.lightSm}>{t('guide.msgIn')}</Text>
       </View>
       <View style={[styles.msg, styles.msgOut]}>
-        <Text style={styles.lightSm}>Süper olur, oradayım! 🧁</Text>
+        <Text style={styles.lightSm}>{t('guide.msgOut')}</Text>
       </View>
     </Phone>
   );
@@ -80,7 +81,7 @@ function ListArt({ header, rows, scrollHint }: Extract<Art, { kind: 'list' }>) {
           </View>
         ))}
       </View>
-      {scrollHint ? <Text style={[styles.mutedSm, { textAlign: 'center', marginTop: space.sm }]}>⬇ en alta kaydır</Text> : null}
+      {scrollHint ? <Text style={[styles.mutedSm, { textAlign: 'center', marginTop: space.sm }]}>{t('guide.scrollHint')}</Text> : null}
     </Phone>
   );
 }
@@ -100,7 +101,7 @@ function SheetArt({ title, options, hl }: Extract<Art, { kind: 'sheet' }>) {
       </View>
       <View style={[styles.listBox, { marginTop: 6 }]}>
         <View style={[styles.listRow, { justifyContent: 'center' }]}>
-          <Text style={[styles.light, { color: '#53BDEB', fontFamily: fonts.bold }]}>Vazgeç</Text>
+          <Text style={[styles.light, { color: '#53BDEB', fontFamily: fonts.bold }]}>{t('guide.ios.cancel')}</Text>
         </View>
       </View>
     </Phone>
@@ -111,7 +112,7 @@ function ShareArt({ apps }: Extract<Art, { kind: 'share' }>) {
   return (
     <Phone>
       <View style={styles.fileChip}>
-        <Text style={styles.lightSm}>🗂️ WhatsApp Sohbeti – Ece.zip</Text>
+        <Text style={styles.lightSm}>🗂️ {t('guide.fileName', { name: t('guide.name') })}</Text>
       </View>
       <View style={styles.appsRow}>
         {apps.map((a) => (
@@ -145,7 +146,7 @@ function DesktopArt({ title, rows, hl }: Extract<Art, { kind: 'desktop' }>) {
       </View>
       <View style={{ flexDirection: 'row', gap: space.sm, padding: space.sm }}>
         <View style={{ flex: 1, gap: 6 }}>
-          {['Ece', 'Kankalar', 'Annem'].map((n, i) => (
+          {[t('guide.name'), t('guide.tg.group'), t('guide.tg.mom')].map((n, i) => (
             <View key={n} style={[styles.deskChat, i === 0 && { backgroundColor: '#2B5278' }]}>
               <Text style={styles.lightSm}>{n}</Text>
             </View>
@@ -162,7 +163,7 @@ function DesktopArt({ title, rows, hl }: Extract<Art, { kind: 'desktop' }>) {
               ))}
             </View>
           ) : (
-            <Text style={[styles.lightSm, { color: MUTED }]}>💻 Bilgisayardaki Telegram Desktop</Text>
+            <Text style={[styles.lightSm, { color: MUTED }]}>{t('guide.tg.placeholder')}</Text>
           )}
         </View>
       </View>

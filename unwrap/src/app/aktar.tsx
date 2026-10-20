@@ -3,6 +3,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { ActivityIndicator, Alert, StyleSheet, Text, View } from 'react-native';
 
+import { t } from '@/i18n';
 import { importChatFile, importErrorText } from '@/lib/chat/import';
 import { setOnboarded } from '@/lib/prefs';
 import { colors, space, type } from '@/theme';
@@ -22,7 +23,7 @@ export default function Aktar() {
         router.replace({ pathname: '/analiz/kurulum', params: { id } });
       })
       .catch((e) => {
-        Alert.alert('Dosya okunamadı', importErrorText(e));
+        Alert.alert(t('common.importing.failedTitle'), importErrorText(e));
         router.replace('/');
       });
   }, [uri]);
@@ -30,7 +31,7 @@ export default function Aktar() {
   return (
     <View style={styles.center}>
       <ActivityIndicator color={colors.primary} size="large" />
-      <Text style={[type.title, { color: colors.text }]}>Sohbetin açılıyor…</Text>
+      <Text style={[type.title, { color: colors.text }]}>{t('common.importing.opening')}</Text>
     </View>
   );
 }

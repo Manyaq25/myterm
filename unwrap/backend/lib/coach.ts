@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 import { HttpError } from './http';
 import { maskPersonalData } from './mask';
-import { anthropic, MODELS, RELATIONS, type Usage } from './report';
+import { anthropic, LangSchema, MODELS, RELATIONS, languageRule, type Usage } from './report';
 
 // Rol yapma seçenekleri, analiz kurulumundaki ilişki türleriyle aynı (+ hayalimdeki).
 export const ROLES = [
@@ -13,6 +13,7 @@ export const ROLES = [
 ] as const;
 
 export const CoachSchema = z.object({
+  lang: LangSchema,
   relation: z.enum(RELATIONS),
   me: z.string().max(80).nullable(),
   other: z.string().max(80).nullable(),
@@ -68,6 +69,8 @@ function system(r: CoachRequest, tier: CoachTier): string {
     'Açık cinsel içerik üretme; romantik ve flörtöz olabilirsin.',
   ];
   if (tier === 'free') base.push(FREE_GATE);
+  const rule = languageRule(r.lang);
+  if (rule) base.push(rule.replace('Translate the Turkish card titles and karne subject names below naturally', 'Reply naturally'));
   if (r.role) {
     base.push(
       `ROL YAPMA: Şimdi ${ROLE_TEXT[r.role]} gibi konuşuyorsun. Sohbetteki ${r.other ?? 'diğer kişinin'} üslubunu, hitaplarını ve emojilerini taklit et; birinci tekil şahısla, doğal ve sıcak yaz. Gerçekte o kişi olmadığını kullanıcı biliyor; ara sıra kendini hatırlatmana gerek yok.`,

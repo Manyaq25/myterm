@@ -7,54 +7,68 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { GuideArt, type Art } from '@/components/GuideArt';
 import { BackButton, Button } from '@/components/ui';
+import { t } from '@/i18n';
 import { colors, fonts, radius, space, type } from '@/theme';
 
 type Tab = 'iphone' | 'android' | 'telegram';
 type Step = { title: string; text: string; art: Art };
 
-const STEPS: Record<Tab, Step[]> = {
-  iphone: [
-    { title: 'Sohbeti aç ve kişinin adına dokun', text: 'WhatsApp\'ta analiz etmek istediğin sohbete gir, en üstteki isme dokun.', art: { kind: 'chat', tap: 'name' } },
-    {
-      title: 'En alta kaydır',
-      text: 'Kişi bilgileri sayfasının en altına in.',
-      art: { kind: 'list', header: 'Ece ✨', rows: [{ label: 'Medya, Bağlantılar ve Belgeler' }, { label: 'Yıldızlı Mesajlar' }, { label: 'Bildirimler' }], scrollHint: true },
-    },
-    {
-      title: '"Sohbeti Dışa Aktar"a dokun',
-      text: 'Kırmızı yazılı seçeneklerin hemen üstünde durur.',
-      art: { kind: 'list', rows: [{ label: 'Sohbeti Dışa Aktar', hl: true }, { label: 'Sohbeti Temizle' }, { label: 'Kişiyi Engelle', danger: true }, { label: 'Kişiyi Şikayet Et', danger: true }] },
-    },
-    { title: '"Medya Olmadan" seç', text: 'Fotoğraflara ihtiyacımız yok; dosya küçük olur, analiz hızlanır.', art: { kind: 'sheet', title: 'Medya eklemek sohbet dökümünü büyütür', options: ['Medya Ekle', 'Medya Olmadan'], hl: 1 } },
-    {
-      title: 'Paylaşım menüsünde Unwrap\'i seç',
-      text: 'Sohbet doğrudan Unwrap\'te açılır. Listede yoksa sağa kaydırıp "Diğer"e dokun ya da "Dosyalara Kaydet" deyip burada "Dosya seç"e bas.',
-      art: { kind: 'share', apps: [{ label: 'Mesajlar', icon: '💬' }, { label: 'Unwrap', icon: 'unwrap', hl: true }, { label: 'Mail', icon: '✉️' }, { label: 'Dosyalar', icon: '🗂️' }] },
-    },
-  ],
-  android: [
-    { title: 'Sohbeti aç, sağ üstteki ⋮ menüsüne dokun', text: 'WhatsApp\'ta analiz etmek istediğin sohbete gir.', art: { kind: 'chat', tap: 'menu' } },
-    { title: '"Diğer"e dokun', text: 'Menünün en altında durur.', art: { kind: 'list', rows: [{ label: 'Kişiyi görüntüle' }, { label: 'Ara' }, { label: 'Sessize al' }, { label: 'Diğer', hl: true }] } },
-    { title: '"Sohbeti dışa aktar"ı seç', text: '', art: { kind: 'list', rows: [{ label: 'Şikayet et' }, { label: 'Engelle' }, { label: 'Sohbeti temizle' }, { label: 'Sohbeti dışa aktar', hl: true }] } },
-    { title: '"Medya olmadan" seç', text: 'Dosya küçük olur, analiz hızlanır.', art: { kind: 'sheet', title: 'Sohbet dışa aktarılsın mı?', options: ['Medya olmadan', 'Medyayı dahil et'], hl: 0 } },
-    {
-      title: 'Dosyayı kaydet, sonra Unwrap\'te "Dosya seç"',
-      text: 'Paylaşım menüsünden "Dosyalara kaydet" ya da Drive\'ı seç; ardından Unwrap\'e dönüp .txt dosyasını seç.',
-      art: { kind: 'share', apps: [{ label: 'Dosyalar', icon: '🗂️', hl: true }, { label: 'Drive', icon: '☁️' }, { label: 'Gmail', icon: '✉️' }] },
-    },
-  ],
-  telegram: [
-    { title: 'Bilgisayarda Telegram Desktop\'ı aç', text: 'Telegram\'ın telefon uygulaması sohbet dışa aktarmıyor; bu yalnızca bilgisayar uygulamasında var.', art: { kind: 'desktop', title: 'Telegram Desktop' } },
-    { title: 'Sohbeti aç, sağ üstteki ⋮ menüsüne tıkla', text: '', art: { kind: 'desktop', title: 'Telegram Desktop', rows: ['Sessize al', 'Ara', 'Sohbet geçmişini dışa aktar'], hl: 2 } },
-    { title: '"Sohbet geçmişini dışa aktar"', text: 'Fotoğraf ve videoların işaretini kaldır.', art: { kind: 'desktop', title: 'Dışa aktarma ayarları', rows: ['☐ Fotoğraflar', '☐ Videolar', '☐ Sesli mesajlar'] } },
-    { title: 'Biçim olarak "JSON" seç', text: 'Ardından "Dışa aktar"a tıkla; result.json dosyası oluşur.', art: { kind: 'desktop', title: 'Biçim', rows: ['İnsan tarafından okunabilir HTML', 'Makine tarafından okunabilir JSON'], hl: 1 } },
-    {
-      title: 'Dosyayı telefonuna gönder, Unwrap\'te "Dosya seç"',
-      text: 'Kendine e-postayla ya da Drive ile gönder, sonra result.json dosyasını seç.',
-      art: { kind: 'share', apps: [{ label: 'Mail', icon: '✉️' }, { label: 'Drive', icon: '☁️' }, { label: 'Unwrap', icon: 'unwrap', hl: true }] },
-    },
-  ],
-};
+// Adımlar seçili dilde kurulur; menü adları WhatsApp / Telegram'da görünenle aynı.
+function buildSteps(): Record<Tab, Step[]> {
+  const g = (k: string) => t(`guide.${k}`);
+  const name = g('name');
+  return {
+    iphone: [
+      { title: g('iphone.s1.title'), text: g('iphone.s1.text'), art: { kind: 'chat', tap: 'name' } },
+      {
+        title: g('iphone.s2.title'),
+        text: g('iphone.s2.text'),
+        art: { kind: 'list', header: `${name} ✨`, rows: [{ label: g('ios.media') }, { label: g('ios.starred') }, { label: g('ios.notifications') }], scrollHint: true },
+      },
+      {
+        title: g('iphone.s3.title'),
+        text: g('iphone.s3.text'),
+        art: {
+          kind: 'list',
+          rows: [
+            { label: g('ios.export'), hl: true },
+            { label: g('ios.clear') },
+            { label: t('guide.ios.block', { name }), danger: true },
+            { label: t('guide.ios.report', { name }), danger: true },
+          ],
+        },
+      },
+      { title: g('iphone.s4.title'), text: g('iphone.s4.text'), art: { kind: 'sheet', title: g('ios.sheetTitle'), options: [g('ios.attach'), g('ios.without')], hl: 1 } },
+      {
+        title: g('iphone.s5.title'),
+        text: g('iphone.s5.text'),
+        art: { kind: 'share', apps: [{ label: g('ios.messages'), icon: '💬' }, { label: 'Unwrap', icon: 'unwrap', hl: true }, { label: g('ios.mail'), icon: '✉️' }, { label: g('ios.files'), icon: '🗂️' }] },
+      },
+    ],
+    android: [
+      { title: g('android.s1.title'), text: g('android.s1.text'), art: { kind: 'chat', tap: 'menu' } },
+      { title: g('android.s2.title'), text: g('android.s2.text'), art: { kind: 'list', rows: [{ label: g('droid.viewContact') }, { label: g('droid.search') }, { label: g('droid.mute') }, { label: g('droid.more'), hl: true }] } },
+      { title: g('android.s3.title'), text: '', art: { kind: 'list', rows: [{ label: g('droid.report') }, { label: g('droid.block') }, { label: g('droid.clear') }, { label: g('droid.export'), hl: true }] } },
+      { title: g('android.s4.title'), text: g('android.s4.text'), art: { kind: 'sheet', title: g('droid.dialogTitle'), options: [g('droid.without'), g('droid.include')], hl: 0 } },
+      {
+        title: g('android.s5.title'),
+        text: g('android.s5.text'),
+        art: { kind: 'share', apps: [{ label: g('droid.files'), icon: '🗂️', hl: true }, { label: 'Drive', icon: '☁️' }, { label: 'Gmail', icon: '✉️' }] },
+      },
+    ],
+    telegram: [
+      { title: g('telegram.s1.title'), text: g('telegram.s1.text'), art: { kind: 'desktop', title: 'Telegram Desktop' } },
+      { title: g('telegram.s2.title'), text: '', art: { kind: 'desktop', title: 'Telegram Desktop', rows: [g('tg.mute'), g('tg.search'), g('tg.export')], hl: 2 } },
+      { title: g('telegram.s3.title'), text: g('telegram.s3.text'), art: { kind: 'desktop', title: g('tg.settings'), rows: [`☐ ${g('tg.photos')}`, `☐ ${g('tg.videos')}`, `☐ ${g('tg.voice')}`] } },
+      { title: g('telegram.s4.title'), text: g('telegram.s4.text'), art: { kind: 'desktop', title: g('tg.format'), rows: [g('tg.html'), g('tg.json')], hl: 1 } },
+      {
+        title: g('telegram.s5.title'),
+        text: g('telegram.s5.text'),
+        art: { kind: 'share', apps: [{ label: g('ios.mail'), icon: '✉️' }, { label: 'Drive', icon: '☁️' }, { label: 'Unwrap', icon: 'unwrap', hl: true }] },
+      },
+    ],
+  };
+}
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'iphone', label: 'iPhone' },
@@ -65,7 +79,7 @@ const TABS: { id: Tab; label: string }[] = [
 export default function Rehber() {
   const [tab, setTab] = useState<Tab>('iphone');
   const [step, setStep] = useState(0);
-  const steps = STEPS[tab];
+  const steps = buildSteps()[tab];
   const current = steps[step];
   const last = step === steps.length - 1;
 
@@ -73,21 +87,21 @@ export default function Rehber() {
     <SafeAreaView style={styles.safe}>
       <View style={styles.header}>
         <BackButton onPress={() => (step > 0 ? setStep(step - 1) : router.back())} />
-        <Text style={[styles.eyebrow, { flex: 1 }]}>● DIŞA AKTARMA REHBERİ</Text>
-        <Pressable accessibilityLabel="Kapat" onPress={() => router.back()} style={styles.close}>
+        <Text style={[styles.eyebrow, { flex: 1 }]}>{t('guide.eyebrow')}</Text>
+        <Pressable accessibilityLabel={t('guide.close')} onPress={() => router.back()} style={styles.close}>
           <X color={colors.text} size={20} />
         </Pressable>
       </View>
       <View style={styles.tabs}>
-        {TABS.map((t) => (
+        {TABS.map((tb) => (
           <Pressable
-            key={t.id}
+            key={tb.id}
             onPress={() => {
-              setTab(t.id);
+              setTab(tb.id);
               setStep(0);
             }}
-            style={[styles.tab, tab === t.id && styles.tabActive]}>
-            <Text style={[type.label, { color: tab === t.id ? '#fff' : colors.text }]}>{t.label}</Text>
+            style={[styles.tab, tab === tb.id && styles.tabActive]}>
+            <Text style={[type.label, { color: tab === tb.id ? '#fff' : colors.text }]}>{tb.label}</Text>
           </Pressable>
         ))}
       </View>
@@ -96,7 +110,7 @@ export default function Rehber() {
           {steps.map((s, i) => (
             <View key={s.title} style={[styles.seg, i <= step && styles.segActive]} />
           ))}
-          <Text style={styles.stepNo}>Adım {step + 1} / {steps.length}</Text>
+          <Text style={styles.stepNo}>{t('guide.stepOf', { step: step + 1, total: steps.length })}</Text>
         </View>
         <Text style={styles.title}>{current.title}</Text>
         {current.text ? <Text style={[type.body, { color: colors.textMuted }]}>{current.text}</Text> : null}
@@ -106,11 +120,11 @@ export default function Rehber() {
       </ScrollView>
       <View style={styles.footer}>
         <Button
-          label={last ? 'Anladım' : 'Sonraki'}
+          label={last ? t('guide.gotIt') : t('guide.next')}
           variant="coral"
           onPress={() => (last ? router.back() : setStep(step + 1))}
         />
-        {step > 0 ? <Button label="Geri" variant="ghost" onPress={() => setStep(step - 1)} /> : null}
+        {step > 0 ? <Button label={t('guide.back')} variant="ghost" onPress={() => setStep(step - 1)} /> : null}
       </View>
     </SafeAreaView>
   );

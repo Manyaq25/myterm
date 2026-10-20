@@ -6,6 +6,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BackButton, Button, Note, Pill } from '@/components/ui';
+import { t } from '@/i18n';
 import { RELATIONS } from '@/lib/relations';
 import { getAnalysis, updateAnalysis, type Relation } from '@/lib/store';
 import { colors, fonts, space, type } from '@/theme';
@@ -32,12 +33,12 @@ export default function Kurulum() {
         <BackButton onPress={() => (step === 2 ? setStep(1) : router.back())} />
       </View>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.eyebrow}>● ANALİZ AYARLARI · {step} / {totalSteps}</Text>
+        <Text style={styles.eyebrow}>{t('setup.eyebrow', { step, total: totalSteps })}</Text>
         {step === 1 ? (
           <>
-            <Text style={styles.title}>Bu sohbette sen hangisisin?</Text>
+            <Text style={styles.title}>{t('setup.meTitle')}</Text>
             <Text style={[type.body, { color: colors.textMuted }]}>
-              Önerileri ve “ne yazmalı” kısmını senin açından hazırlayacağız.
+              {t('setup.meText')}
             </Text>
             <View style={styles.grid}>
               {analysis.participants.slice(0, 12).map((p) => (
@@ -47,9 +48,9 @@ export default function Kurulum() {
           </>
         ) : (
           <>
-            <Text style={styles.title}>Bu kişi senin neyin?</Text>
+            <Text style={styles.title}>{t('setup.relTitle')}</Text>
             <Text style={[type.body, { color: colors.textMuted }]}>
-              Kartların dilini ve yorumların tonunu buna göre ayarlayacağız.
+              {t('setup.relText')}
             </Text>
             <View style={styles.grid}>
               {RELATIONS.map((r) => (
@@ -58,11 +59,11 @@ export default function Kurulum() {
             </View>
           </>
         )}
-        <Note icon="🔒" title="İstatistikler telefonunda hesaplanır." text="Yapay zekâ yorumu için seçilen mesajlar şifreli gönderilir ve saklanmaz." />
+        <Note icon="🔒" title={t('setup.privacyTitle')} text={t('setup.privacyText')} />
       </ScrollView>
       <View style={styles.footer}>
         <Button
-          label="Devam et"
+          label={t('setup.continue')}
           variant="coral"
           disabled={step === 1 ? !me : !relation}
           icon={<ArrowRight color="#fff" size={20} />}

@@ -1,4 +1,5 @@
 // Sunucuya ücretli istekler: kullanıcı kimliği + gerçek uygulama kanıtı ile.
+import { lang, t } from '@/i18n';
 import type { Analysis } from '../store';
 import { config } from '../config';
 import { bodyHash, integrityHeaders } from '../integrity';
@@ -12,25 +13,25 @@ export class ApiError extends Error {
   }
 }
 
-/** Kullanıcıya gösterilecek sade Türkçe açıklama. */
+/** Kullanıcıya gösterilecek sade açıklama (seçili dilde). */
 export function errorText(e: unknown): string {
   const code = e instanceof ApiError ? e.code : 'network';
   switch (code) {
     case 'pro_required':
-      return 'Bu özellik Unwrap Pro ile açılıyor.';
+      return t('common.apiErrors.proRequired');
     case 'slow_down':
-      return 'Çok hızlı gidiyoruz, bir dakika sonra tekrar dener misin?';
+      return t('common.apiErrors.slowDown');
     case 'free_limit':
-      return 'Bugünkü ücretsiz soru hakkın doldu. Unwrap Pro ile Mila’ya sınırsız sorabilirsin.';
+      return t('common.apiErrors.freeLimit');
     case 'daily_limit':
-      return 'Bugünlük sınır doldu, yarın tekrar deneyebilirsin.';
+      return t('common.apiErrors.dailyLimit');
     case 'report_failed':
     case 'coach_refused':
-      return 'Bu sohbet için cevap üretemedik. Farklı bir soru dener misin?';
+      return t('common.apiErrors.noAnswer');
     case 'network':
-      return 'Bağlantı kurulamadı. İnternetini kontrol edip tekrar dener misin?';
+      return t('common.apiErrors.network');
     default:
-      return 'Bir şeyler ters gitti, birazdan tekrar dener misin?';
+      return t('common.apiErrors.generic');
   }
 }
 
@@ -55,7 +56,7 @@ async function post<T>(path: string, body: unknown): Promise<T> {
 }
 
 export async function requestReport(a: Analysis): Promise<Report> {
-  const { report } = await post<{ report: Report }>('/api/report', buildReportPayload(a));
+  const { report } = await post<{ report: Report }>('/api/report', buildReportPayload(a, lang()));
   return report;
 }
 
@@ -74,12 +75,13 @@ export async function askCoach(
 ): Promise<{ text: string; proRequired: boolean }> {
   const other = a ? (a.participants.find((p) => p !== a.me) ?? null) : null;
   const { text, proRequired } = await post<{ text: string; proRequired?: boolean }>('/api/coach', {
+    lang: lang(),
     relation: a?.relation ?? 'diger',
     me: a?.me ?? null,
     other: a && a.participants.length <= 2 ? other : null,
     context: a ? coachContext(a) : '',
     role: a ? role : null,
-    history: history.slice(-40).map(({ role: r, text: t }) => ({ role: r, text: t })),
+    history: history.slice(-40).map(({ role: r, text }) => ({ role: r, text })),
   });
   return { text, proRequired: Boolean(proRequired) };
 }

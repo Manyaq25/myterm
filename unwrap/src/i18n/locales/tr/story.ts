@@ -1,0 +1,116 @@
+// Ücretsiz hikâye kartları ve hikâye görüntüleyici metinleri.
+export default {
+  viewer: {
+    shareDialog: 'Hikâyeyi paylaş',
+    shareFailTitle: 'Paylaşılamadı',
+    shareFailBody: 'Kart resmi oluşturulamadı, tekrar dener misin?',
+    close: 'Kapat',
+    prev: 'Önceki kart',
+    next: 'Sonraki kart',
+    openFull: 'Tam raporu aç',
+    trialNote: 'Ücretsiz denemeyle başla · İstediğin an iptal',
+    share: 'Hikâyeyi paylaş',
+    counter: 'Ücretsiz · {{index}} / {{total}}',
+  },
+  card: {
+    karneSticker: '🏅 TAKDİR BELGESİ',
+    karneFootnote: 'İstatistikten hesaplandı · Kanıtlı yapay zekâ karnesi Pro’da',
+  },
+  // Süre birimleri: "3 sa 12 dk"
+  duration: {
+    sec: '{{n}} sn',
+    min: '{{n}} dk',
+    hour: '{{h}} sa',
+    hourMin: '{{h}} sa {{m}} dk',
+    day: '{{d}} gün',
+    dayHour: '{{d}} gün {{h}} sa',
+  },
+  initiation: {
+    title: 'Sohbeti kim başlatıyor?',
+    unit: 'kez',
+    captionNew: 'Sohbet yeni başlamış, motoru kim olacak henüz belli değil 👀',
+    captionLead: '{{name}} sohbetin motoru 🚂',
+    captionKeen: '{{name}} biraz daha istekli görünüyor 😊',
+    captionBalanced: 'Dengeli: iki taraf da sohbeti açıyor 🤝',
+  },
+  messages: {
+    title: 'Kim daha çok yazıyor?',
+    captionGroup: 'Grubun en konuşkanı: {{name}} 🎤',
+    captionLead: '{{name}} yazıyor, yazıyor, yazıyor ✍️',
+    captionBalanced: 'Mesaj sayıları neredeyse eşit, güzel denge ⚖️',
+    note: '{{count}} mesaj',
+  },
+  reply: {
+    title: 'Ortalama ne kadar sürede yanıt veriyorsunuz?',
+    captionClose: 'Cevap hızlarınız çok yakın, kimse kimseyi bekletmiyor ⚡',
+    captionFaster: '{{fast}} daha hızlı dönüyor, {{slow}} biraz bekletiyor ⏳',
+    captionSlow: '{{name}} cevaplarda ağırdan alıyor… çok ağırdan 🐢',
+  },
+  days: {
+    titleRomantic: 'Kaç gündür konuşuyorsunuz?',
+    title: 'Bu sohbet kaç günlük?',
+    unit: 'gün',
+    captionNew: 'Daha yolun başındasınız, hikâye yeni yazılıyor ✨',
+    captionSeasons: '{{seasons}} mevsimlik bir hikâye, hâlâ devam ediyor ❤️',
+    captionActive: '{{days}} gün mesajlaşmışsınız, az değil 💬',
+  },
+  laugh: {
+    title: 'Birlikte kaç kez güldünüz?',
+    unit: 'kahkaha',
+    caption: 'Toplam {{total}} kahkaha 😂 En çok gülen: {{name}}',
+  },
+  silence: {
+    title: 'En uzun sessizlik 👻',
+    caption: 'Sessizliği bozan: {{name}} ({{date}})',
+  },
+  emoji: {
+    title: 'Favori emojiniz hangisi?',
+    caption: 'Duygular bazen tek bir emojiye sığar 💫',
+    note: '{{count}} emoji',
+  },
+  night: {
+    title: 'Gece kuşu kim? 🦉',
+    unit: 'mesaj',
+    caption: 'Gece 00:00–05:00 arası atılan mesajlar',
+  },
+  words: {
+    title: 'Mesaj başına kaç kelime?',
+    captionLong: '{{name}} uzun uzun anlatmayı seviyor 📜',
+    captionShort: 'Kısa ve öz yazıyorsunuz ✂️',
+  },
+  // Yalnız Türkçe sohbetlerde gösterilir
+  signals: {
+    title: 'Aynen ve Tamam. sayacı',
+    note: '{{aynen}} "aynen" · {{tamam}} noktalı "Tamam."',
+    captionTamam: 'Noktalı "Tamam." Türkçede pek iyiye işaret değil 😬',
+    captionAynen: 'Aynen aynen 😄',
+  },
+  karne: {
+    title: 'Sohbet Karnesi 📒',
+    interest: 'İlgi & Alaka',
+    replySpeed: 'Cevap hızı',
+    humor: 'Espri',
+    trip: 'Trip',
+    caption: 'Sınıf birincisi (ilgi): {{name}} 🏅',
+  },
+  streak: {
+    title: 'Cevap gelmeden üst üste en çok mesaj',
+    unit: 'mesaj',
+    caption: 'Rekor sahibi: {{name}} 📨',
+  },
+  awards: {
+    title: 'Grup ödülleri 🏆',
+    caption: 'Tebrikler, hepiniz birer efsanesiniz',
+    talker: 'En konuşkan',
+    organizer: 'Organizatör',
+    emoji: 'Emoji makinesi',
+    joy: 'Neşe kaynağı',
+    night: 'Gece kuşu',
+    quiet: 'Sessiz izleyici',
+  },
+  teaser: {
+    title: 'Asıl hikâye yapay zekâda 🔮',
+    romantic: ['Kim daha romantik?', 'Kim daha çok yalan söylüyor? 🤥', 'İmalı mesajlar ve satır araları', 'Kanıtlı yapay zekâ karnesi', 'Bu ilişki nereye gider?'],
+    other: ['Kanıtlı yapay zekâ karnesi', 'Kim daha çok yalan söylüyor? 🤥', 'İmalı mesajlar ve satır araları', 'Kim sohbeti taşıyor?', 'Ne yazmalı önerileri'],
+  },
+};

@@ -1,0 +1,46 @@
+// Ortak metinler (İngilizce).
+export default {
+  back: 'Back',
+  cancel: 'Cancel',
+  delete: 'Delete',
+  tabs: {
+    home: 'Home',
+    coach: 'Coach',
+    settings: 'Settings',
+  },
+  relations: {
+    sevgili: 'Partner',
+    es: 'Spouse',
+    nisanli: 'Fiancé(e)',
+    flort: 'Dating',
+    crush: 'Crush',
+    situationship: 'Situationship',
+    eski: 'Ex',
+    bestie: 'Bestie',
+    arkadas: 'Friend',
+    aile: 'Family',
+    is: 'Work',
+    diger: 'Other',
+    grup: 'Group',
+    chat: 'Chat',
+  },
+  apiErrors: {
+    proRequired: 'This one’s unlocked with Unwrap Pro.',
+    slowDown: 'Whoa, that’s a lot at once! Try again in a minute?',
+    freeLimit: 'You’ve used today’s free questions. Go Unwrap Pro to ask Mila as much as you like.',
+    dailyLimit: 'You’ve hit today’s limit. Come back tomorrow!',
+    noAnswer: 'We couldn’t come up with an answer for this chat. Try asking something different?',
+    network: 'Can’t connect. Check your internet and try again?',
+    generic: 'Something went wrong. Try again in a bit?',
+  },
+  importErrors: {
+    emptyChat: 'We couldn’t find any messages in this file. Make sure you picked the file from WhatsApp’s "Export chat".',
+    noChatInZip: 'We couldn’t find a chat inside this ZIP file.',
+    fallback: 'We couldn’t read this file. Try exporting it again using the steps in the guide.',
+  },
+  groupTitle: 'Group of {{count}}',
+  importing: {
+    opening: 'Opening your chat…',
+    failedTitle: 'Couldn’t read the file',
+  },
+};

@@ -1,4 +1,5 @@
 // Ücretsiz kartların sayıları: tamamen telefonda, yapay zekâ olmadan hesaplanır.
+import trStory from '../../i18n/locales/tr/story';
 import type { Message, ParsedChat } from './parse';
 
 const MIN = 60 * 1000;
@@ -10,7 +11,8 @@ const NEW_CONVERSATION_GAP = 4 * HOUR;
 const MAX_REPLY_GAP = 48 * HOUR;
 
 const EMOJI = /\p{Extended_Pictographic}/gu;
-const LAUGH = /(😂|🤣|😆|😹|\b(?:a?ha(?:ha)+h?|he(?:he)+|ks(?:ks)+k?|sj(?:sj)+|js(?:js)+|lol|lmao|asdf\w*|ahah\w*)\b)/giu;
+// Kahkaha: emoji + dillere göre yazımlar (haha, jaja, kkkk, rsrs, хаха, wkwk, ههه, mdr, xD…)
+const LAUGH = /(😂|🤣|😆|😹|(?<!\p{L})(?:a?ha(?:ha)+h?|he(?:he)+|ks(?:ks)+k?|sj(?:sj)+|js(?:js)+|ja(?:ja)+|je(?:je)+|k{4,}|rs(?:rs)+|lol|lmao|asdf\p{L}*|ahah\p{L}*|xd+|mdr|ptdr|wk(?:wk)+|х[аa](?:х[аa])+|а?ха(?:ха)+|ه{3,}|خخخ+)(?!\p{L}))/giu;
 const AYNEN = /\baynen\b/giu;
 const COLD_TAMAM = /^tamam\.$/iu;
 
@@ -147,16 +149,33 @@ export function computeStats(chat: ParsedChat): ChatStats {
   };
 }
 
+// Süre birimleri dil dosyasından gelir. i18n React Native'e bağlı olduğu için
+// tembel yüklenir; yüklenemezse (Node testleri) Türkçe metin kullanılır.
+type DurationKey = keyof typeof trStory.duration;
+let translate: typeof import('../../i18n').t | null | undefined;
+function dur(key: DurationKey, params: Record<string, number>): string {
+  if (translate === undefined) {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      translate = (require('../../i18n') as typeof import('../../i18n')).t;
+    } catch {
+      translate = null;
+    }
+  }
+  if (translate) return translate(`story.duration.${key}`, params);
+  return trStory.duration[key].replace(/\{\{(\w+)\}\}/g, (_, k) => String(params[k] ?? ''));
+}
+
 /** "3 sa 12 dk" gibi okunur süre (birim her zaman yazılır). */
 export function formatDuration(ms: number): string {
-  if (ms < MIN) return `${Math.max(1, Math.round(ms / 1000))} sn`;
-  if (ms < HOUR) return `${Math.round(ms / MIN)} dk`;
+  if (ms < MIN) return dur('sec', { n: Math.max(1, Math.round(ms / 1000)) });
+  if (ms < HOUR) return dur('min', { n: Math.round(ms / MIN) });
   if (ms < DAY) {
     const h = Math.floor(ms / HOUR);
     const m = Math.round((ms % HOUR) / MIN);
-    return m ? `${h} sa ${m} dk` : `${h} sa`;
+    return m ? dur('hourMin', { h, m }) : dur('hour', { h });
   }
   const d = Math.floor(ms / DAY);
   const h = Math.round((ms % DAY) / HOUR);
-  return h ? `${d} gün ${h} sa` : `${d} gün`;
+  return h ? dur('dayHour', { d, h }) : dur('day', { d });
 }

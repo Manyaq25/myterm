@@ -1,12 +1,14 @@
-// Ayarlar: abonelik (iki dokunuşta iptal), veri silme, değerlendirme.
+// Ayarlar: abonelik (iki dokunuşta iptal), dil, veri silme, değerlendirme.
 import Constants from 'expo-constants';
 import { router, useFocusEffect } from 'expo-router';
+import * as Updates from 'expo-updates';
 import * as WebBrowser from 'expo-web-browser';
 import { useCallback, useState } from 'react';
 import { Alert, Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Card } from '@/components/ui';
+import { LANGUAGES, lang, langInfo, saveLanguage, t, type LangCode } from '@/i18n';
 import { config } from '@/lib/config';
 import { isPro, managementUrl, restore } from '@/lib/purchases';
 import { deleteAllAnalyses, deleteCoachHistory } from '@/lib/store';
@@ -25,6 +27,7 @@ function Row({ title, subtitle, onPress, danger }: { title: string; subtitle?: s
 
 export default function Ayarlar() {
   const [pro, setPro] = useState<boolean | null>(null);
+  const [langOpen, setLangOpen] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -38,54 +41,84 @@ export default function Ayarlar() {
     try {
       const ok = await restore();
       setPro(ok);
-      Alert.alert(ok ? 'Abonelik geri yüklendi' : 'Abonelik bulunamadı', ok ? 'Unwrap Pro açık.' : 'Bu mağaza hesabında etkin bir abonelik yok.');
+      Alert.alert(
+        t(ok ? 'settings.restore.okTitle' : 'settings.restore.noneTitle'),
+        t(ok ? 'settings.restore.okText' : 'settings.restore.noneText'),
+      );
     } catch {
-      Alert.alert('Geri yüklenemedi', 'Birazdan tekrar dener misin?');
+      Alert.alert(t('settings.restore.failTitle'), t('settings.restore.failText'));
+    }
+  };
+
+  // Dili kaydedip uygulamayı yeniden başlatır; olmazsa elle açmasını ister.
+  const chooseLanguage = async (code: LangCode) => {
+    setLangOpen(false);
+    if (code === lang()) return;
+    saveLanguage(code);
+    try {
+      await Updates.reloadAsync();
+    } catch {
+      Alert.alert(t('settings.language.reloadFailTitle'), t('settings.language.reloadFailText'));
     }
   };
 
   const confirmDelete = () =>
-    Alert.alert('Tüm analizler silinsin mi?', 'Yüklediğin bütün sohbetler, raporlar ve Mila konuşmaları bu telefondan kalıcı olarak silinir.', [
-      { text: 'Vazgeç', style: 'cancel' },
-      { text: 'Sil', style: 'destructive', onPress: () => deleteAllAnalyses() },
+    Alert.alert(t('settings.deleteAll.confirmTitle'), t('settings.deleteAll.confirmText'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('common.delete'), style: 'destructive', onPress: () => deleteAllAnalyses() },
     ]);
 
   const confirmDeleteCoach = () =>
-    Alert.alert('Mila konuşmaları silinsin mi?', 'Sohbetlerin ve raporların kalır; yalnız Mila ile yazışmalar silinir.', [
-      { text: 'Vazgeç', style: 'cancel' },
-      { text: 'Sil', style: 'destructive', onPress: () => deleteCoachHistory() },
+    Alert.alert(t('settings.deleteCoach.confirmTitle'), t('settings.deleteCoach.confirmText'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('common.delete'), style: 'destructive', onPress: () => deleteCoachHistory() },
     ]);
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Ayarlar</Text>
+        <Text style={styles.title}>{t('settings.title')}</Text>
 
-        <Text style={styles.section}>ABONELİK</Text>
+        <Text style={styles.section}>{t('settings.sections.subscription')}</Text>
         {pro ? (
-          <Row title="Aboneliği yönet" subtitle="Unwrap Pro açık · İptal ve plan değişikliği mağaza ayarlarında" onPress={manage} />
+          <Row title={t('settings.manage.title')} subtitle={t('settings.manage.subtitle')} onPress={manage} />
         ) : (
-          <Row title="Unwrap Pro’ya geç" subtitle="Ücretsiz denemeyle başla, istediğin an iptal et" onPress={() => router.push('/pro')} />
+          <Row title={t('settings.goPro.title')} subtitle={t('settings.goPro.subtitle')} onPress={() => router.push('/pro')} />
         )}
-        <Row title="Satın alımları geri yükle" subtitle="Telefon değiştirdiysen aboneliğini buradan getir" onPress={restorePurchases} />
+        <Row title={t('settings.restore.title')} subtitle={t('settings.restore.subtitle')} onPress={restorePurchases} />
 
-        <Text style={styles.section}>VERİ YÖNETİMİ</Text>
-        <Row title="Mila konuşmalarını sil" subtitle="Koçla yaptığın tüm yazışmalar" onPress={confirmDeleteCoach} danger />
-        <Row title="Tüm analizleri sil" subtitle="Yüklenen tüm WhatsApp ve Telegram dökümleri" onPress={confirmDelete} danger />
+        <Text style={styles.section}>{t('settings.sections.language')}</Text>
+        <Row title={t('settings.language.title')} subtitle={langInfo().name} onPress={() => setLangOpen((o) => !o)} />
+        {langOpen ? (
+          <Card style={styles.langList}>
+            {LANGUAGES.map((l) => (
+              <Pressable
+                key={l.code}
+                accessibilityRole="button"
+                accessibilityState={{ selected: l.code === lang() }}
+                onPress={() => chooseLanguage(l.code)}
+                style={({ pressed }) => [styles.langItem, pressed && { backgroundColor: colors.surfaceMid }]}>
+                <Text style={[type.body, { color: l.code === lang() ? colors.primary : colors.text }]}>{l.name}</Text>
+                {l.code === lang() ? <Text style={[type.body, { color: colors.primary }]}>✓</Text> : null}
+              </Pressable>
+            ))}
+          </Card>
+        ) : null}
+
+        <Text style={styles.section}>{t('settings.sections.data')}</Text>
+        <Row title={t('settings.deleteCoach.title')} subtitle={t('settings.deleteCoach.subtitle')} onPress={confirmDeleteCoach} danger />
+        <Row title={t('settings.deleteAll.title')} subtitle={t('settings.deleteAll.subtitle')} onPress={confirmDelete} danger />
         <Card>
-          <Text style={[type.bodySm, { color: colors.textMuted }]}>
-            Sohbetlerin yalnız bu telefonda saklanır. Pro analizde, kişisel bilgiler (telefon, IBAN, e-posta) gizlenerek
-            seçilmiş mesajlar yapay zekâya gönderilir ve orada saklanmaz.
-          </Text>
+          <Text style={[type.bodySm, { color: colors.textMuted }]}>{t('settings.privacyNote')}</Text>
         </Card>
 
-        <Text style={styles.section}>DİĞER</Text>
+        <Text style={styles.section}>{t('settings.sections.other')}</Text>
         <Card>
-          <Text style={[type.title, { color: colors.text }]}>Uygulamayı değerlendir</Text>
+          <Text style={[type.title, { color: colors.text }]}>{t('settings.rate')}</Text>
           <Text style={[type.body, { color: colors.textMuted }]}>⭐⭐⭐⭐⭐  – –</Text>
         </Card>
-        {config.privacyUrl ? <Row title="Gizlilik politikası" onPress={() => WebBrowser.openBrowserAsync(config.privacyUrl)} /> : null}
-        <Row title="Kullanım koşulları" onPress={() => WebBrowser.openBrowserAsync(config.termsUrl)} />
+        {config.privacyUrl ? <Row title={t('settings.privacy')} onPress={() => WebBrowser.openBrowserAsync(config.privacyUrl)} /> : null}
+        <Row title={t('settings.terms')} onPress={() => WebBrowser.openBrowserAsync(config.termsUrl)} />
 
         <View style={{ alignItems: 'center', marginTop: space.lg }}>
           <Text style={[type.caption, { color: colors.textMuted }]}>Unwrap {Constants.expoConfig?.version}</Text>
@@ -99,5 +132,7 @@ const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
   content: { padding: space.lg, gap: space.md },
   title: { fontFamily: fonts.extrabold, fontSize: 26, color: colors.text },
+  langList: { paddingVertical: space.sm, paddingHorizontal: space.sm },
+  langItem: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, paddingHorizontal: space.sm, borderRadius: 12 },
   section: { fontFamily: fonts.extrabold, fontSize: 12, letterSpacing: 1, color: colors.primary, marginTop: space.md },
 });

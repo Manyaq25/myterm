@@ -2,6 +2,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Sticker } from '@/components/ui';
+import { t } from '@/i18n';
 import type { Card } from '@/lib/cards/free';
 import { colors, fonts, radius, space, type } from '@/theme';
 
@@ -39,7 +40,7 @@ export function StoryCard({ card }: { card: Card }) {
         )}
         {card.kind === 'karne' && (
           <View style={styles.karne}>
-            <Sticker text="🏅 TAKDİR BELGESİ" rotate={8} bg={colors.surface} style={styles.karneSticker} />
+            <Sticker text={t('story.card.karneSticker')} rotate={8} bg={colors.surface} style={styles.karneSticker} />
             <View style={styles.karneRow}>
               <Text style={[styles.karneSubject]} />
               {card.names.map((n) => (
@@ -59,7 +60,7 @@ export function StoryCard({ card }: { card: Card }) {
               </View>
             ))}
             <Text style={[type.caption, { color: colors.textMuted, marginTop: space.sm }]}>
-              İstatistikten hesaplandı · Kanıtlı yapay zekâ karnesi Pro’da
+              {t('story.card.karneFootnote')}
             </Text>
           </View>
         )}
