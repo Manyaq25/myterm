@@ -5,7 +5,7 @@ export default {
   delete: 'Hapus',
   tabs: {
     home: 'Beranda',
-    coach: 'Coach',
+    coach: 'Mila',
     settings: 'Pengaturan',
   },
   relations: {

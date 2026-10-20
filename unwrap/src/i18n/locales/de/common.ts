@@ -5,7 +5,7 @@ export default {
   delete: 'Löschen',
   tabs: {
     home: 'Start',
-    coach: 'Coach',
+    coach: 'Mila',
     settings: 'Einstellungen',
   },
   relations: {

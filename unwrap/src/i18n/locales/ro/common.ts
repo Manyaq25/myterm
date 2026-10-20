@@ -5,7 +5,7 @@ export default {
   delete: 'Șterge',
   tabs: {
     home: 'Acasă',
-    coach: 'Coach',
+    coach: 'Mila',
     settings: 'Setări',
   },
   relations: {

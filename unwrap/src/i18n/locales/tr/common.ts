@@ -5,7 +5,7 @@ export default {
   delete: 'Sil',
   tabs: {
     home: 'Ana Sayfa',
-    coach: 'Koç',
+    coach: 'Mila',
     settings: 'Ayarlar',
   },
   relations: {
