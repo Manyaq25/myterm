@@ -83,25 +83,15 @@
           ]
         },
         {
-          "action": "VIEW",
+          "action": "SEND",
           "category": [
             "DEFAULT"
           ],
           "data": [
             {
-              "scheme": "content",
               "mimeType": "application/zip"
             },
             {
-              "scheme": "content",
-              "mimeType": "text/plain"
-            },
-            {
-              "scheme": "file",
-              "mimeType": "application/zip"
-            },
-            {
-              "scheme": "file",
               "mimeType": "text/plain"
             }
           ]
@@ -111,7 +101,12 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
-      ["expo-localization", { "supportsRTL": true }],
+      [
+        "expo-localization",
+        {
+          "supportsRTL": true
+        }
+      ],
       [
         "expo-splash-screen",
         {

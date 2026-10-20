@@ -152,12 +152,13 @@ export function computeStats(chat: ParsedChat): ChatStats {
 // Süre birimleri dil dosyasından gelir. i18n React Native'e bağlı olduğu için
 // tembel yüklenir; yüklenemezse (Node testleri) Türkçe metin kullanılır.
 type DurationKey = keyof typeof trStory.duration;
-let translate: typeof import('../../i18n').t | null | undefined;
+type Translate = (key: string, params?: Record<string, string | number>) => string;
+let translate: Translate | null | undefined;
 function dur(key: DurationKey, params: Record<string, number>): string {
   if (translate === undefined) {
     try {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
-      translate = (require('../../i18n') as typeof import('../../i18n')).t;
+      translate = (require('../../i18n') as { t: Translate }).t;
     } catch {
       translate = null;
     }
