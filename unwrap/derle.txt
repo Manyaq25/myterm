@@ -6,3 +6,4 @@ TestFlight derlemesini başlatmak için bu dosyayı değiştir. 1
 6
 7
 8
+Tue Oct 20 16:10:47 UTC 2026
