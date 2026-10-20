@@ -36,6 +36,14 @@ jobs:
         env:
           P8: ${{ secrets.ASC_KEY_P8 }}
         run: printf '%s' "$P8" > "$RUNNER_TEMP/asc.p8"
+      - name: Apple ile Giriş yeteneği (EAS eşitlemesi bu yetenekte hata veriyor)
+        env:
+          EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
+          EXPO_ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          EXPO_ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
+        run: |
+          pip install --quiet pyjwt cryptography
+          python3 scripts/apple-capability.py
       - name: iOS kimlik bilgileri (sertifika + profil)
         env:
           EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
@@ -43,6 +51,7 @@ jobs:
           EXPO_ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
           EXPO_APPLE_TEAM_ID: G2T885G2XY
           EXPO_APPLE_TEAM_TYPE: INDIVIDUAL
+          EXPO_NO_CAPABILITY_SYNC: '1'
         run: |
           pip install --quiet pexpect
           python3 scripts/eas-credentials.py
@@ -67,4 +76,5 @@ jobs:
           EXPO_ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
           EXPO_APPLE_TEAM_ID: G2T885G2XY
           EXPO_APPLE_TEAM_TYPE: INDIVIDUAL
+          EXPO_NO_CAPABILITY_SYNC: '1'
         run: eas build --platform ios --profile production --non-interactive --auto-submit --no-wait --freeze-credentials
