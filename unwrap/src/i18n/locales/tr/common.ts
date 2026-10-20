@@ -6,6 +6,7 @@ export default {
   tabs: {
     home: 'Ana Sayfa',
     coach: 'Mila',
+    profile: 'Profil',
     settings: 'Ayarlar',
   },
   relations: {

@@ -6,6 +6,7 @@ export default {
   tabs: {
     home: 'Beranda',
     coach: 'Mila',
+    profile: 'Profil',
     settings: 'Pengaturan',
   },
   relations: {

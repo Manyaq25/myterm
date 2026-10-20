@@ -1,5 +1,5 @@
 import { Redirect, Tabs } from 'expo-router';
-import { Home, MessageCircleHeart, Settings } from 'lucide-react-native';
+import { Home, MessageCircleHeart, Settings, UserRound } from 'lucide-react-native';
 
 import { t } from '@/i18n';
 import { hasOnboarded } from '@/lib/prefs';
@@ -19,6 +19,7 @@ export default function TabsLayout() {
       }}>
       <Tabs.Screen name="index" options={{ title: t('common.tabs.home'), tabBarIcon: ({ color }) => <Home color={color} size={22} /> }} />
       <Tabs.Screen name="koc" options={{ title: t('common.tabs.coach'), tabBarIcon: ({ color }) => <MessageCircleHeart color={color} size={22} /> }} />
+      <Tabs.Screen name="profil" options={{ title: t('common.tabs.profile'), tabBarIcon: ({ color }) => <UserRound color={color} size={22} /> }} />
       <Tabs.Screen name="ayarlar" options={{ title: t('common.tabs.settings'), tabBarIcon: ({ color }) => <Settings color={color} size={22} /> }} />
     </Tabs>
   );
