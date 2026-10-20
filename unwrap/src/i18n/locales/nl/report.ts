@@ -1,1 +1,21 @@
-export default {};
+// Yapay zekâ raporu (Felemenkçe).
+export default {
+  close: 'Sluiten',
+  loadingTitle: 'Je chat wordt gelezen…',
+  loadingBody: 'We verzamelen het bewijs stukje voor stukje. Dit duurt ongeveer een halve minuut.',
+  retry: 'Opnieuw proberen',
+  summary: 'SAMENVATTING',
+  tone: 'TOONANALYSE',
+  replies: 'WAT ZOU JE KUNNEN STUREN?',
+  askMila: 'Vraag Mila over deze chat',
+  disclaimer: 'De inzichten zijn inschattingen van AI, geen definitieve oordelen. De kaarten ‘Leugens’, ‘Manipulatief’ en ‘Verlangen’ zijn alleen voor de lol.',
+  shareDialog: 'Kaart delen',
+  shareFailTitle: 'Delen mislukt',
+  shareFailBody: 'We konden de afbeelding van de kaart niet maken. Nog een keer proberen?',
+  shareLabel: 'Kaart delen',
+  share: 'Delen',
+  funSticker: '😜 GEWOON VOOR DE LOL',
+  karneSticker: '🏅 ERECERTIFICAAT',
+  karneTitle: 'Chatrapport',
+  teacherNote: 'Opmerking van de leraar: {{note}}',
+};

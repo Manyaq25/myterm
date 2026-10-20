@@ -1,1 +1,92 @@
-export default {};
+// Dışa aktarma rehberi (Felemenkçe). Menü adları WhatsApp / Telegram'ın
+// Felemenkçe arayüzündeki adlarla aynı.
+export default {
+  eyebrow: '● EXPORTHANDLEIDING',
+  close: 'Sluiten',
+  stepOf: 'Stap {{step}} / {{total}}',
+  gotIt: 'Begrepen',
+  next: 'Volgende',
+  back: 'Terug',
+  // Çizimlerdeki örnek kişi ve mesajlar
+  name: 'Sanne',
+  online: 'online',
+  msgIn: 'Morgen om 15:00 koffie? ☕',
+  msgOut: 'Leuk, ik ben er! 🧁',
+  scrollHint: '⬇ scroll helemaal naar beneden',
+  fileName: 'WhatsApp-chat met {{name}}.zip',
+  iphone: {
+    s1: { title: 'Open de chat en tik op de naam van het contact', text: 'Open in WhatsApp de chat die je wilt analyseren en tik bovenaan op de naam.' },
+    s2: { title: 'Scroll helemaal naar beneden', text: 'Ga naar onderen op de pagina Contactinfo.' },
+    s3: { title: 'Tik op "Chat exporteren"', text: 'Dat staat direct boven de rode opties.' },
+    s4: { title: 'Kies "Zonder media"', text: 'Foto’s hebben we niet nodig; het bestand blijft klein en de analyse gaat sneller.' },
+    s5: {
+      title: 'Kies Unwrap in het deelmenu',
+      text: 'De chat opent direct in Unwrap. Staat het er niet tussen? Veeg naar links en tik op "Meer", of kies "Bewaar in Bestanden" en tik dan hier op "Bestand kiezen".',
+    },
+  },
+  android: {
+    s1: { title: 'Open de chat en tik rechtsboven op het ⋮-menu', text: 'Open in WhatsApp de chat die je wilt analyseren.' },
+    s2: { title: 'Tik op "Meer"', text: 'Dat staat helemaal onderaan in het menu.' },
+    s3: { title: 'Kies "Chat exporteren"' },
+    s4: { title: 'Kies "Zonder media"', text: 'Het bestand blijft klein en de analyse gaat sneller.' },
+    s5: {
+      title: 'Sla het bestand op en kies in Unwrap "Bestand kiezen"',
+      text: 'Kies in het deelmenu "Bestanden" of Drive; ga daarna terug naar Unwrap en kies het .txt-bestand.',
+    },
+  },
+  telegram: {
+    s1: { title: 'Open Telegram Desktop op je computer', text: 'De telefoonapp van Telegram kan geen chats exporteren; dat kan alleen in de desktop-app.' },
+    s2: { title: 'Open de chat en klik rechtsboven op het ⋮-menu' },
+    s3: { title: '"Chatgeschiedenis exporteren"', text: 'Vink foto’s en video’s uit.' },
+    s4: { title: 'Kies "JSON" als formaat', text: 'Klik daarna op "Exporteren"; er wordt een result.json-bestand gemaakt.' },
+    s5: { title: 'Stuur het bestand naar je telefoon en kies in Unwrap "Bestand kiezen"', text: 'Mail het naar jezelf of stuur het via Drive, en kies dan het bestand result.json.' },
+  },
+  // WhatsApp iPhone ekranları
+  ios: {
+    media: 'Media, links en documenten',
+    starred: 'Berichten met ster',
+    notifications: 'Meldingen',
+    export: 'Chat exporteren',
+    clear: 'Chat wissen',
+    block: 'Contact blokkeren',
+    report: 'Contact rapporteren',
+    sheetTitle: 'Als je media toevoegt, wordt het chatarchief groter.',
+    attach: 'Media toevoegen',
+    without: 'Zonder media',
+    cancel: 'Annuleer',
+    messages: 'Berichten',
+    mail: 'Mail',
+    files: 'Bewaar in Bestanden',
+  },
+  // WhatsApp Android ekranları
+  droid: {
+    viewContact: 'Contact bekijken',
+    search: 'Zoeken',
+    mute: 'Meldingen dempen',
+    more: 'Meer',
+    report: 'Rapporteren',
+    block: 'Blokkeren',
+    clear: 'Chat wissen',
+    export: 'Chat exporteren',
+    dialogTitle: 'Chat exporteren?',
+    without: 'Zonder media',
+    include: 'Media toevoegen',
+    files: 'Bestanden',
+  },
+  // Telegram Desktop ekranları
+  tg: {
+    mute: 'Dempen',
+    search: 'Zoeken',
+    export: 'Chatgeschiedenis exporteren',
+    settings: 'Instellingen chatexport',
+    photos: 'Foto’s',
+    videos: 'Video’s',
+    voice: 'Spraakberichten',
+    format: 'Formaat',
+    html: 'Leesbare HTML',
+    json: 'Machineleesbare JSON',
+    group: 'Besties',
+    mom: 'Mama',
+    placeholder: '💻 Telegram Desktop op je computer',
+  },
+};

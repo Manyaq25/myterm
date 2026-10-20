@@ -1,1 +1,46 @@
-export default {};
+// Ortak metinler (Felemenkçe).
+export default {
+  back: 'Terug',
+  cancel: 'Annuleren',
+  delete: 'Verwijderen',
+  tabs: {
+    home: 'Home',
+    coach: 'Coach',
+    settings: 'Instellingen',
+  },
+  relations: {
+    sevgili: 'Partner',
+    es: 'Getrouwd',
+    nisanli: 'Verloofd',
+    flort: 'Daten',
+    crush: 'Crush',
+    situationship: 'Situationship',
+    eski: 'Ex',
+    bestie: 'Bestie',
+    arkadas: 'Vriendschap',
+    aile: 'Familie',
+    is: 'Werk',
+    diger: 'Anders',
+    grup: 'Groep',
+    chat: 'Chat',
+  },
+  apiErrors: {
+    proRequired: 'Deze functie ontgrendel je met Unwrap Pro.',
+    slowDown: 'Rustig aan, dit gaat te snel! Probeer je het over een minuutje nog eens?',
+    freeLimit: 'Je gratis vragen voor vandaag zijn op. Met Unwrap Pro kun je Mila zoveel vragen als je wilt.',
+    dailyLimit: 'Je hebt de limiet van vandaag bereikt. Probeer het morgen weer!',
+    noAnswer: 'We konden geen antwoord bedenken voor deze chat. Probeer je een andere vraag?',
+    network: 'Geen verbinding. Check je internet en probeer het opnieuw?',
+    generic: 'Er ging iets mis. Probeer je het zo nog eens?',
+  },
+  importErrors: {
+    emptyChat: 'We hebben geen berichten in dit bestand gevonden. Kies het bestand dat je in WhatsApp via "Chat exporteren" hebt gemaakt.',
+    noChatInZip: 'We hebben geen chat gevonden in dit ZIP-bestand.',
+    fallback: 'We kunnen dit bestand niet lezen. Exporteer het opnieuw met de stappen uit de handleiding.',
+  },
+  groupTitle: 'Groep van {{count}}',
+  importing: {
+    opening: 'Je chat wordt geopend…',
+    failedTitle: 'Bestand niet leesbaar',
+  },
+};

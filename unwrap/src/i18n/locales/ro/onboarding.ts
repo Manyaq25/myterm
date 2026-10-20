@@ -40,7 +40,7 @@ export default {
     title: 'Întreabă sau joacă un rol',
     ask: 'Îi place de mine? 🤔',
     answer:
-      'De obicei tu scrii primul, dar primești răspunsuri lungi, și asta poate fi un semn foarte bun 💬',
+      'De obicei tu începi conversația, dar primești răspunsuri lungi, și asta poate fi un semn foarte bun 💬',
     roleplay: 'Răspunde-mi ca partenerul meu, hai să repetăm împăcarea 💘',
   },
   pages: {

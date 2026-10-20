@@ -1,1 +1,21 @@
-export default {};
+// Yapay zekâ raporu ekranı (Lehçe).
+export default {
+  close: 'Zamknij',
+  loadingTitle: 'Czytamy twój czat…',
+  loadingBody: 'Zbieramy dowody jeden po drugim. To potrwa około pół minuty.',
+  retry: 'Spróbuj ponownie',
+  summary: 'PODSUMOWANIE',
+  tone: 'ANALIZA TONU',
+  replies: 'CO MOŻESZ NAPISAĆ?',
+  askMila: 'Zapytaj Milę o ten czat',
+  disclaimer: 'To przypuszczenia AI, a nie ostateczne werdykty. Karty „Kłamstwa”, „Manipulacja” i „Pożądanie” są tylko dla zabawy.',
+  shareDialog: 'Udostępnij kartę',
+  shareFailTitle: 'Nie udało się udostępnić',
+  shareFailBody: 'Nie udało się utworzyć obrazka karty. Spróbujesz jeszcze raz?',
+  shareLabel: 'Udostępnij kartę',
+  share: 'Udostępnij',
+  funSticker: '😜 DLA ZABAWY',
+  karneSticker: '🏅 ŚWIADECTWO Z PASKIEM',
+  karneTitle: 'Świadectwo czatu',
+  teacherNote: 'Uwaga wychowawcy: {{note}}',
+};

@@ -1,1 +1,116 @@
-export default {};
+// Ücretsiz hikâye kartları (Felemenkçe).
+export default {
+  viewer: {
+    shareDialog: 'Story delen',
+    shareFailTitle: 'Delen mislukt',
+    shareFailBody: 'We konden de afbeelding van de kaart niet maken. Nog een keer proberen?',
+    close: 'Sluiten',
+    prev: 'Vorige kaart',
+    next: 'Volgende kaart',
+    openFull: 'Volledig rapport openen',
+    trialNote: 'Begin met de gratis proefperiode · Altijd opzegbaar',
+    share: 'Story delen',
+    counter: 'Gratis · {{index}} / {{total}}',
+  },
+  card: {
+    karneSticker: '🏅 ERECERTIFICAAT',
+    karneFootnote: 'Berekend uit statistieken · Het AI-rapport met bewijs zit in Pro',
+  },
+  // Süre birimleri: "3 u 12 min"
+  duration: {
+    sec: '{{n}} sec',
+    min: '{{n}} min',
+    hour: '{{h}} u',
+    hourMin: '{{h}} u {{m}} min',
+    day: '{{d}} d',
+    dayHour: '{{d}} d {{h}} u',
+  },
+  initiation: {
+    title: 'Wie appt als eerste?',
+    unit: 'keer',
+    captionNew: 'De chat is net begonnen, wie de motor wordt is nog niet duidelijk 👀',
+    captionLead: '{{name}} is de motor van deze chat 🚂',
+    captionKeen: '{{name}} lijkt net iets enthousiaster 😊',
+    captionBalanced: 'Mooi in balans: jullie beginnen allebei het gesprek 🤝',
+  },
+  messages: {
+    title: 'Wie stuurt meer berichten?',
+    captionGroup: 'De grootste kletskous van de groep: {{name}} 🎤',
+    captionLead: '{{name}} typt en typt en typt ✍️',
+    captionBalanced: 'Bijna evenveel berichten, mooie balans ⚖️',
+    note: '{{count}} berichten',
+  },
+  reply: {
+    title: 'Hoe snel reageren jullie gemiddeld?',
+    captionClose: 'Jullie reactietijden liggen heel dicht bij elkaar, niemand laat de ander wachten ⚡',
+    captionFaster: '{{fast}} reageert sneller, {{slow}} laat even op zich wachten ⏳',
+    captionSlow: '{{name}} neemt de tijd om te reageren… heel veel tijd 🐢',
+  },
+  days: {
+    titleRomantic: 'Hoeveel dagen praten jullie al?',
+    title: 'Hoe oud is deze chat?',
+    unit: 'dagen',
+    captionNew: 'Jullie staan nog aan het begin, het verhaal wordt nog geschreven ✨',
+    captionSeasons: 'Een verhaal van {{seasons}} seizoenen, en het gaat nog door ❤️',
+    captionActive: 'Jullie hebben op {{days}} dagen geappt, dat is niet niks 💬',
+  },
+  laugh: {
+    title: 'Hoe vaak hebben jullie samen gelachen?',
+    unit: 'lachjes',
+    caption: 'In totaal {{total}} lachjes 😂 Lacht het meest: {{name}}',
+  },
+  silence: {
+    title: 'De langste stilte 👻',
+    caption: 'Stilte doorbroken door: {{name}} ({{date}})',
+  },
+  emoji: {
+    title: 'Wat is jullie favoriete emoji?',
+    caption: 'Soms past een heel gevoel in één emoji 💫',
+    note: '{{count}} emoji’s',
+  },
+  night: {
+    title: 'Wie is de nachtuil? 🦉',
+    unit: 'berichten',
+    caption: 'Berichten verstuurd tussen 00:00 en 05:00',
+  },
+  words: {
+    title: 'Hoeveel woorden per bericht?',
+    captionLong: '{{name}} vertelt graag het hele verhaal 📜',
+    captionShort: 'Kort en krachtig, dat is jullie stijl ✂️',
+  },
+  // Yalnız Türkçe sohbetlerde gösterilir
+  signals: {
+    title: 'Aynen- & Tamam.-teller',
+    note: '{{aynen}} "aynen" · {{tamam}} "Tamam." met punt',
+    captionTamam: 'Een "Tamam." met punt is zelden een goed teken 😬',
+    captionAynen: 'Aynen aynen 😄',
+  },
+  karne: {
+    title: 'Chatrapport 📒',
+    interest: 'Interesse & aandacht',
+    replySpeed: 'Reactiesnelheid',
+    humor: 'Humor',
+    trip: 'Drama',
+    caption: 'Beste van de klas (interesse): {{name}} 🏅',
+  },
+  streak: {
+    title: 'Meeste berichten achter elkaar zonder antwoord',
+    unit: 'berichten',
+    caption: 'Recordhouder: {{name}} 📨',
+  },
+  awards: {
+    title: 'Groepsawards 🏆',
+    caption: 'Gefeliciteerd, jullie zijn allemaal legendes',
+    talker: 'Kletskous',
+    organizer: 'De organisator',
+    emoji: 'Emojimachine',
+    joy: 'Zonnestraaltje',
+    night: 'Nachtuil',
+    quiet: 'Stille meelezer',
+  },
+  teaser: {
+    title: 'Het echte verhaal zit in de AI 🔮',
+    romantic: ['Wie is het romantischst?', 'Wie liegt er meer? 🤥', 'Hints en wat er tussen de regels staat', 'AI-rapport met bewijs', 'Waar gaat deze relatie heen?'],
+    other: ['AI-rapport met bewijs', 'Wie liegt er meer? 🤥', 'Hints en wat er tussen de regels staat', 'Wie houdt het gesprek gaande?', 'Tips voor wat je kunt sturen'],
+  },
+};
