@@ -1,1 +1,46 @@
-export default {};
+// Ortak metinler (Brezilya Portekizcesi).
+export default {
+  back: 'Voltar',
+  cancel: 'Cancelar',
+  delete: 'Apagar',
+  tabs: {
+    home: 'Início',
+    coach: 'Coach',
+    settings: 'Ajustes',
+  },
+  relations: {
+    sevgili: 'Namoro',
+    es: 'Cônjuge',
+    nisanli: 'Noivado',
+    flort: 'Ficante',
+    crush: 'Crush',
+    situationship: 'Situationship',
+    eski: 'Ex',
+    bestie: 'Bestie',
+    arkadas: 'Amizade',
+    aile: 'Família',
+    is: 'Trabalho',
+    diger: 'Outro',
+    grup: 'Grupo',
+    chat: 'Conversa',
+  },
+  apiErrors: {
+    proRequired: 'Esse recurso é liberado com o Unwrap Pro.',
+    slowDown: 'Opa, muita coisa de uma vez! Tenta de novo daqui a um minuto?',
+    freeLimit: 'Suas perguntas grátis de hoje acabaram. Com o Unwrap Pro você pergunta o quanto quiser pra Mila.',
+    dailyLimit: 'Você chegou no limite de hoje. Volta amanhã!',
+    noAnswer: 'Não conseguimos gerar uma resposta pra essa conversa. Tenta uma pergunta diferente?',
+    network: 'Sem conexão. Confere sua internet e tenta de novo?',
+    generic: 'Algo deu errado. Tenta de novo daqui a pouco?',
+  },
+  importErrors: {
+    emptyChat: 'Não encontramos mensagens nesse arquivo. Confere se você escolheu o arquivo gerado pelo “Exportar conversa” do WhatsApp.',
+    noChatInZip: 'Não encontramos nenhuma conversa dentro desse ZIP.',
+    fallback: 'Não conseguimos ler esse arquivo. Tenta exportar de novo seguindo os passos do guia.',
+  },
+  groupTitle: 'Grupo de {{count}} pessoas',
+  importing: {
+    opening: 'Abrindo sua conversa…',
+    failedTitle: 'Não deu pra ler o arquivo',
+  },
+};

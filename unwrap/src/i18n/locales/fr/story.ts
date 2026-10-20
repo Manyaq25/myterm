@@ -1,1 +1,116 @@
-export default {};
+// Ücretsiz hikâye kartları (Fransızca).
+export default {
+  viewer: {
+    shareDialog: 'Partager la story',
+    shareFailTitle: 'Partage impossible',
+    shareFailBody: 'On n’a pas pu créer l’image de la carte. Tu réessaies ?',
+    close: 'Fermer',
+    prev: 'Carte précédente',
+    next: 'Carte suivante',
+    openFull: 'Ouvrir le rapport complet',
+    trialNote: 'Commence par l’essai gratuit · Annule quand tu veux',
+    share: 'Partager la story',
+    counter: 'Gratuit · {{index}} / {{total}}',
+  },
+  card: {
+    karneSticker: '🏅 TABLEAU D’HONNEUR',
+    karneFootnote: 'Calculé à partir des stats · Le bulletin IA avec preuves est dans Pro',
+  },
+  // Süre birimleri: "3 h 12 min"
+  duration: {
+    sec: '{{n}} s',
+    min: '{{n}} min',
+    hour: '{{h}} h',
+    hourMin: '{{h}} h {{m}} min',
+    day: '{{d}} j',
+    dayHour: '{{d}} j {{h}} h',
+  },
+  initiation: {
+    title: 'Qui écrit en premier ?',
+    unit: 'fois',
+    captionNew: 'La discussion vient de commencer, on ne sait pas encore qui mène la danse 👀',
+    captionLead: '{{name}} est le moteur de cette discussion 🚂',
+    captionKeen: '{{name}} a l’air un peu plus motivé·e 😊',
+    captionBalanced: 'Équilibré : vous lancez tous les deux la conversation 🤝',
+  },
+  messages: {
+    title: 'Qui écrit le plus ?',
+    captionGroup: 'La pipelette du groupe : {{name}} 🎤',
+    captionLead: '{{name}} écrit, écrit, écrit ✍️',
+    captionBalanced: 'Presque autant de messages de chaque côté, bel équilibre ⚖️',
+    note: '{{count}} messages',
+  },
+  reply: {
+    title: 'En combien de temps vous répondez, en moyenne ?',
+    captionClose: 'Vos temps de réponse sont très proches, personne ne fait attendre l’autre ⚡',
+    captionFaster: '{{fast}} répond plus vite, {{slow}} fait un peu attendre ⏳',
+    captionSlow: '{{name}} prend son temps pour répondre… vraiment son temps 🐢',
+  },
+  days: {
+    titleRomantic: 'Depuis combien de jours vous vous parlez ?',
+    title: 'Cette discussion a quel âge ?',
+    unit: 'jours',
+    captionNew: 'Vous n’en êtes qu’au début, l’histoire s’écrit encore ✨',
+    captionSeasons: 'Une histoire de {{seasons}} saisons, et ça continue ❤️',
+    captionActive: 'Vous vous êtes écrit pendant {{days}} jours, c’est pas rien 💬',
+  },
+  laugh: {
+    title: 'Combien de fois vous avez ri ensemble ?',
+    unit: 'fous rires',
+    caption: '{{total}} fous rires au total 😂 Le plus gros rieur : {{name}}',
+  },
+  silence: {
+    title: 'Le plus long silence 👻',
+    caption: 'Silence brisé par : {{name}} ({{date}})',
+  },
+  emoji: {
+    title: 'C’est quoi votre emoji préféré ?',
+    caption: 'Parfois, toute une émotion tient dans un seul emoji 💫',
+    note: '{{count}} emojis',
+  },
+  night: {
+    title: 'Qui est l’oiseau de nuit ? 🦉',
+    unit: 'messages',
+    caption: 'Messages envoyés entre minuit et 5 h',
+  },
+  words: {
+    title: 'Combien de mots par message ?',
+    captionLong: '{{name}} adore raconter les choses en détail 📜',
+    captionShort: 'Court et efficace, c’est votre style ✂️',
+  },
+  // Yalnız Türkçe sohbetlerde gösterilir
+  signals: {
+    title: 'Compteur Aynen & Tamam.',
+    note: '{{aynen}} "aynen" · {{tamam}} "Tamam." avec un point',
+    captionTamam: 'Un "Tamam." avec un point, c’est rarement bon signe 😬',
+    captionAynen: 'Aynen aynen 😄',
+  },
+  karne: {
+    title: 'Bulletin de discussion 📒',
+    interest: 'Intérêt & attention',
+    replySpeed: 'Rapidité de réponse',
+    humor: 'Humour',
+    trip: 'Drama',
+    caption: 'Premier·ère de la classe (intérêt) : {{name}} 🏅',
+  },
+  streak: {
+    title: 'Le plus de messages d’affilée sans réponse',
+    unit: 'messages',
+    caption: 'Record détenu par : {{name}} 📨',
+  },
+  awards: {
+    title: 'Les awards du groupe 🏆',
+    caption: 'Bravo, vous êtes tous des légendes',
+    talker: 'La pipelette',
+    organizer: 'L’organisateur·rice',
+    emoji: 'Machine à emojis',
+    joy: 'Rayon de soleil',
+    night: 'Oiseau de nuit',
+    quiet: 'Observateur·rice discret·ète',
+  },
+  teaser: {
+    title: 'La vraie histoire est dans l’IA 🔮',
+    romantic: ['Qui est le plus romantique ?', 'Qui ment le plus ? 🤥', 'Sous-entendus et non-dits', 'Bulletin IA avec preuves', 'Où va cette relation ?'],
+    other: ['Bulletin IA avec preuves', 'Qui ment le plus ? 🤥', 'Sous-entendus et non-dits', 'Qui porte la conversation ?', 'Idées de quoi répondre'],
+  },
+};

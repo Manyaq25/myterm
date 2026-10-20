@@ -1,1 +1,116 @@
-export default {};
+// Ücretsiz hikâye kartları (İtalyanca).
+export default {
+  viewer: {
+    shareDialog: 'Condividi la storia',
+    shareFailTitle: 'Condivisione non riuscita',
+    shareFailBody: 'Non siamo riusciti a creare l’immagine della card. Riprovi?',
+    close: 'Chiudi',
+    prev: 'Card precedente',
+    next: 'Card successiva',
+    openFull: 'Apri il report completo',
+    trialNote: 'Inizia con la prova gratuita · Annulli quando vuoi',
+    share: 'Condividi la storia',
+    counter: 'Gratis · {{index}} / {{total}}',
+  },
+  card: {
+    karneSticker: '🏅 ATTESTATO DI MERITO',
+    karneFootnote: 'Calcolato dalle statistiche · La pagella IA con le prove è in Pro',
+  },
+  // Süre birimleri: "3 h 12 min"
+  duration: {
+    sec: '{{n}} sec',
+    min: '{{n}} min',
+    hour: '{{h}} h',
+    hourMin: '{{h}} h {{m}} min',
+    day: '{{d}} gg',
+    dayHour: '{{d}} gg {{h}} h',
+  },
+  initiation: {
+    title: 'Chi scrive per primo?',
+    unit: 'volte',
+    captionNew: 'La chat è appena iniziata, chi la tiene viva è ancora tutto da vedere 👀',
+    captionLead: '{{name}} è il motore di questa chat 🚂',
+    captionKeen: '{{name}} sembra un po’ più entusiasta 😊',
+    captionBalanced: 'Equilibrio perfetto: entrambi iniziate la conversazione 🤝',
+  },
+  messages: {
+    title: 'Chi scrive di più?',
+    captionGroup: 'La chiacchierona del gruppo: {{name}} 🎤',
+    captionLead: '{{name}} scrive, scrive e scrive ✍️',
+    captionBalanced: 'Quasi lo stesso numero di messaggi, bell’equilibrio ⚖️',
+    note: '{{count}} messaggi',
+  },
+  reply: {
+    title: 'In quanto tempo rispondete, in media?',
+    captionClose: 'I vostri tempi di risposta sono vicinissimi, nessuno fa aspettare l’altro ⚡',
+    captionFaster: '{{fast}} risponde più in fretta, {{slow}} fa un po’ aspettare ⏳',
+    captionSlow: '{{name}} se la prende comoda nel rispondere… molto comoda 🐢',
+  },
+  days: {
+    titleRomantic: 'Da quanti giorni vi sentite?',
+    title: 'Quanti giorni ha questa chat?',
+    unit: 'giorni',
+    captionNew: 'Siete solo all’inizio, la storia si sta ancora scrivendo ✨',
+    captionSeasons: 'Una storia lunga {{seasons}} stagioni, e continua ❤️',
+    captionActive: 'Vi siete scritti in {{days}} giorni diversi, mica poco 💬',
+  },
+  laugh: {
+    title: 'Quante volte avete riso insieme?',
+    unit: 'risate',
+    caption: '{{total}} risate in tutto 😂 Chi ride di più: {{name}}',
+  },
+  silence: {
+    title: 'Il silenzio più lungo 👻',
+    caption: 'A rompere il silenzio: {{name}} ({{date}})',
+  },
+  emoji: {
+    title: 'Qual è la vostra emoji preferita?',
+    caption: 'A volte un’intera emozione sta in una sola emoji 💫',
+    note: '{{count}} emoji',
+  },
+  night: {
+    title: 'Chi è il nottambulo? 🦉',
+    unit: 'messaggi',
+    caption: 'Messaggi inviati tra mezzanotte e le 5',
+  },
+  words: {
+    title: 'Quante parole per messaggio?',
+    captionLong: '{{name}} ama raccontare tutto nei dettagli 📜',
+    captionShort: 'Brevi e diretti, è il vostro stile ✂️',
+  },
+  // Yalnız Türkçe sohbetlerde gösterilir
+  signals: {
+    title: 'Contatore di Aynen e Tamam.',
+    note: '{{aynen}} "aynen" · {{tamam}} "Tamam." col punto',
+    captionTamam: 'Un "Tamam." col punto raramente è un buon segno 😬',
+    captionAynen: 'Aynen aynen 😄',
+  },
+  karne: {
+    title: 'Pagella della chat 📒',
+    interest: 'Interesse e attenzione',
+    replySpeed: 'Velocità di risposta',
+    humor: 'Simpatia',
+    trip: 'Drama',
+    caption: 'Prima della classe (interesse): {{name}} 🏅',
+  },
+  streak: {
+    title: 'Più messaggi di fila senza risposta',
+    unit: 'messaggi',
+    caption: 'Record di: {{name}} 📨',
+  },
+  awards: {
+    title: 'Premi del gruppo 🏆',
+    caption: 'Complimenti, siete tutti delle leggende',
+    talker: 'Chiacchierone',
+    organizer: 'Organizzatore',
+    emoji: 'Macchina di emoji',
+    joy: 'Raggio di sole',
+    night: 'Nottambulo',
+    quiet: 'Osservatore silenzioso',
+  },
+  teaser: {
+    title: 'La vera storia è nell’IA 🔮',
+    romantic: ['Chi è più romantico?', 'Chi dice più bugie? 🤥', 'Frecciatine e non detti', 'Pagella IA con le prove', 'Dove sta andando questa relazione?'],
+    other: ['Pagella IA con le prove', 'Chi dice più bugie? 🤥', 'Frecciatine e non detti', 'Chi porta avanti la conversazione?', 'Suggerimenti su cosa scrivere'],
+  },
+};

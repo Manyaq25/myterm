@@ -1,1 +1,92 @@
-export default {};
+// Dışa aktarma rehberi (Fransızca). Menü adları WhatsApp / Telegram'ın
+// Fransızca arayüzündeki adlarla aynı.
+export default {
+  eyebrow: '● GUIDE D’EXPORT',
+  close: 'Fermer',
+  stepOf: 'Étape {{step}} / {{total}}',
+  gotIt: 'Compris',
+  next: 'Suivant',
+  back: 'Retour',
+  // Çizimlerdeki örnek kişi ve mesajlar
+  name: 'Léa',
+  online: 'en ligne',
+  msgIn: 'Un café demain à 15 h ? ☕',
+  msgOut: 'Trop bien, j’y serai ! 🧁',
+  scrollHint: '⬇ fais défiler tout en bas',
+  fileName: 'Discussion WhatsApp avec {{name}}.zip',
+  iphone: {
+    s1: { title: 'Ouvre la discussion et touche le nom du contact', text: 'Dans WhatsApp, ouvre la discussion à analyser et touche le nom tout en haut.' },
+    s2: { title: 'Fais défiler tout en bas', text: 'Descends jusqu’en bas de la fiche du contact.' },
+    s3: { title: 'Touche "Exporter la discussion"', text: 'C’est juste au-dessus des options en rouge.' },
+    s4: { title: 'Choisis "Sans médias"', text: 'Pas besoin des photos : le fichier reste léger et l’analyse va plus vite.' },
+    s5: {
+      title: 'Choisis Unwrap dans le menu de partage',
+      text: 'La discussion s’ouvre directement dans Unwrap. Pas dans la liste ? Fais glisser vers la gauche et touche "Plus", ou choisis "Enregistrer dans Fichiers" puis touche "Choisir un fichier" ici.',
+    },
+  },
+  android: {
+    s1: { title: 'Ouvre la discussion et touche le menu ⋮ en haut à droite', text: 'Dans WhatsApp, ouvre la discussion à analyser.' },
+    s2: { title: 'Touche "Plus"', text: 'C’est tout en bas du menu.' },
+    s3: { title: 'Choisis "Exporter la discussion"' },
+    s4: { title: 'Choisis "Sans médias"', text: 'Le fichier reste léger et l’analyse va plus vite.' },
+    s5: {
+      title: 'Enregistre le fichier, puis "Choisir un fichier" dans Unwrap',
+      text: 'Dans le menu de partage, choisis "Fichiers" ou Drive ; reviens ensuite dans Unwrap et sélectionne le fichier .txt.',
+    },
+  },
+  telegram: {
+    s1: { title: 'Ouvre Telegram Desktop sur ton ordi', text: 'L’appli mobile Telegram ne permet pas d’exporter les discussions ; c’est possible seulement dans l’appli pour ordinateur.' },
+    s2: { title: 'Ouvre la discussion et clique sur le menu ⋮ en haut à droite' },
+    s3: { title: '"Exporter l’historique de discussion"', text: 'Décoche les photos et les vidéos.' },
+    s4: { title: 'Choisis le format "JSON"', text: 'Clique ensuite sur "Exporter" ; un fichier result.json est créé.' },
+    s5: { title: 'Envoie le fichier sur ton téléphone, puis "Choisir un fichier" dans Unwrap', text: 'Envoie-le-toi par e-mail ou via Drive, puis sélectionne le fichier result.json.' },
+  },
+  // WhatsApp iPhone ekranları
+  ios: {
+    media: 'Médias, liens et docs',
+    starred: 'Messages importants',
+    notifications: 'Notifications',
+    export: 'Exporter la discussion',
+    clear: 'Effacer la discussion',
+    block: 'Bloquer le contact',
+    report: 'Signaler le contact',
+    sheetTitle: 'Joindre des médias créera une archive de discussion plus volumineuse.',
+    attach: 'Joindre les médias',
+    without: 'Sans médias',
+    cancel: 'Annuler',
+    messages: 'Messages',
+    mail: 'Mail',
+    files: 'Enregistrer dans Fichiers',
+  },
+  // WhatsApp Android ekranları
+  droid: {
+    viewContact: 'Afficher le contact',
+    search: 'Rechercher',
+    mute: 'Mettre en sourdine',
+    more: 'Plus',
+    report: 'Signaler',
+    block: 'Bloquer',
+    clear: 'Effacer la discussion',
+    export: 'Exporter la discussion',
+    dialogTitle: 'Exporter la discussion ?',
+    without: 'Sans médias',
+    include: 'Inclure les médias',
+    files: 'Fichiers',
+  },
+  // Telegram Desktop ekranları
+  tg: {
+    mute: 'Désactiver les notifications',
+    search: 'Rechercher',
+    export: 'Exporter l’historique de discussion',
+    settings: 'Paramètres d’exportation',
+    photos: 'Photos',
+    videos: 'Vidéos',
+    voice: 'Messages vocaux',
+    format: 'Format',
+    html: 'HTML lisible',
+    json: 'JSON lisible par une machine',
+    group: 'Les potes',
+    mom: 'Maman',
+    placeholder: '💻 Telegram Desktop sur ton ordi',
+  },
+};

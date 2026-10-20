@@ -1,1 +1,46 @@
-export default {};
+// Ortak metinler (Almanca).
+export default {
+  back: 'Zurück',
+  cancel: 'Abbrechen',
+  delete: 'Löschen',
+  tabs: {
+    home: 'Start',
+    coach: 'Coach',
+    settings: 'Einstellungen',
+  },
+  relations: {
+    sevgili: 'Partner:in',
+    es: 'Verheiratet',
+    nisanli: 'Verlobt',
+    flort: 'Dating',
+    crush: 'Crush',
+    situationship: 'Situationship',
+    eski: 'Ex',
+    bestie: 'Bestie',
+    arkadas: 'Freundschaft',
+    aile: 'Familie',
+    is: 'Arbeit',
+    diger: 'Sonstiges',
+    grup: 'Gruppe',
+    chat: 'Chat',
+  },
+  apiErrors: {
+    proRequired: 'Das gibt’s mit Unwrap Pro.',
+    slowDown: 'Wow, ganz schön viel auf einmal! Versuch’s in einer Minute nochmal?',
+    freeLimit: 'Deine kostenlosen Fragen für heute sind aufgebraucht. Mit Unwrap Pro kannst du Mila so viel fragen, wie du willst.',
+    dailyLimit: 'Für heute ist das Limit erreicht. Versuch’s morgen wieder!',
+    noAnswer: 'Zu diesem Chat ist uns keine Antwort eingefallen. Probier mal eine andere Frage?',
+    network: 'Keine Verbindung. Check dein Internet und versuch’s nochmal?',
+    generic: 'Da ist was schiefgelaufen. Versuch’s gleich nochmal?',
+  },
+  importErrors: {
+    emptyChat: 'In dieser Datei haben wir keine Nachrichten gefunden. Wähl die Datei aus, die du in WhatsApp über "Chat exportieren" erstellt hast.',
+    noChatInZip: 'In dieser ZIP-Datei haben wir keinen Chat gefunden.',
+    fallback: 'Diese Datei können wir nicht lesen. Exportier sie nochmal mit den Schritten aus der Anleitung.',
+  },
+  groupTitle: 'Gruppe mit {{count}} Personen',
+  importing: {
+    opening: 'Dein Chat wird geöffnet…',
+    failedTitle: 'Datei konnte nicht gelesen werden',
+  },
+};

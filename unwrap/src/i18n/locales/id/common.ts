@@ -1,1 +1,46 @@
-export default {};
+// Ortak metinler (Endonezce).
+export default {
+  back: 'Kembali',
+  cancel: 'Batal',
+  delete: 'Hapus',
+  tabs: {
+    home: 'Beranda',
+    coach: 'Coach',
+    settings: 'Pengaturan',
+  },
+  relations: {
+    sevgili: 'Pacar',
+    es: 'Suami / Istri',
+    nisanli: 'Tunangan',
+    flort: 'PDKT',
+    crush: 'Crush',
+    situationship: 'Situationship',
+    eski: 'Mantan',
+    bestie: 'Bestie',
+    arkadas: 'Teman',
+    aile: 'Keluarga',
+    is: 'Kerja',
+    diger: 'Lainnya',
+    grup: 'Grup',
+    chat: 'Chat',
+  },
+  apiErrors: {
+    proRequired: 'Fitur ini kebuka dengan Unwrap Pro.',
+    slowDown: 'Wah, kecepetan nih! Coba lagi semenit lagi, ya?',
+    freeLimit: 'Jatah pertanyaan gratis kamu hari ini udah habis. Pakai Unwrap Pro biar bisa tanya Mila sepuasnya.',
+    dailyLimit: 'Batas hari ini udah tercapai. Coba lagi besok, ya!',
+    noAnswer: 'Kami belum bisa kasih jawaban buat chat ini. Coba tanya yang lain?',
+    network: 'Nggak bisa terhubung. Cek internet kamu terus coba lagi, ya?',
+    generic: 'Ada yang error nih. Coba lagi sebentar lagi, ya?',
+  },
+  importErrors: {
+    emptyChat: 'Kami nggak nemu pesan apa pun di file ini. Pastikan kamu pilih file dari “Ekspor chat” di WhatsApp.',
+    noChatInZip: 'Kami nggak nemu chat di dalam file ZIP ini.',
+    fallback: 'File ini nggak bisa dibaca. Coba ekspor ulang pakai langkah-langkah di panduan.',
+  },
+  groupTitle: 'Grup {{count}} orang',
+  importing: {
+    opening: 'Lagi buka chat kamu…',
+    failedTitle: 'File nggak bisa dibaca',
+  },
+};

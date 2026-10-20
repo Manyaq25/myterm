@@ -1,1 +1,21 @@
-export default {};
+// Yapay zekâ raporu (Fransızca).
+export default {
+  close: 'Fermer',
+  loadingTitle: 'Lecture de ta discussion…',
+  loadingBody: 'On rassemble les preuves une par une. Ça prend environ une demi-minute.',
+  retry: 'Réessayer',
+  summary: 'RÉSUMÉ',
+  tone: 'ANALYSE DU TON',
+  replies: 'QUE POURRAIS-TU RÉPONDRE ?',
+  askMila: 'Demande à Mila à propos de cette discussion',
+  disclaimer: 'Ces analyses sont des suppositions de l’IA, pas des verdicts. Les cartes « Mensonges », « Manipulation » et « Désir » sont juste pour rire.',
+  shareDialog: 'Partager la carte',
+  shareFailTitle: 'Partage impossible',
+  shareFailBody: 'On n’a pas pu créer l’image de la carte. Tu réessaies ?',
+  shareLabel: 'Partager la carte',
+  share: 'Partager',
+  funSticker: '😜 JUSTE POUR RIRE',
+  karneSticker: '🏅 TABLEAU D’HONNEUR',
+  karneTitle: 'Bulletin de discussion',
+  teacherNote: 'Appréciation du prof : {{note}}',
+};

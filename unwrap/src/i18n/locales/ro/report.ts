@@ -1,1 +1,21 @@
-export default {};
+// Yapay zekâ raporu ekranı (Rumence).
+export default {
+  close: 'Închide',
+  loadingTitle: 'Îți citim chatul…',
+  loadingBody: 'Strângem dovezile una câte una. Durează cam o jumătate de minut.',
+  retry: 'Încearcă din nou',
+  summary: 'REZUMAT',
+  tone: 'ANALIZA TONULUI',
+  replies: 'CE AI PUTEA SCRIE?',
+  askMila: 'Întreab-o pe Mila despre acest chat',
+  disclaimer: 'Sunt presupuneri ale AI-ului, nu verdicte definitive. Cardurile „Minciuni”, „Manipulare” și „Dorință” sunt doar de distracție.',
+  shareDialog: 'Distribuie cardul',
+  shareFailTitle: 'Nu s-a putut distribui',
+  shareFailBody: 'Nu am putut crea imaginea cardului. Mai încerci o dată?',
+  shareLabel: 'Distribuie cardul',
+  share: 'Distribuie',
+  funSticker: '😜 DOAR DE DISTRACȚIE',
+  karneSticker: '🏅 DIPLOMĂ DE MERIT',
+  karneTitle: 'Carnetul de note al chatului',
+  teacherNote: 'Observația dirigintelui: {{note}}',
+};

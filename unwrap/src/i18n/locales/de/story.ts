@@ -1,1 +1,116 @@
-export default {};
+// Ücretsiz hikâye kartları (Almanca).
+export default {
+  viewer: {
+    shareDialog: 'Story teilen',
+    shareFailTitle: 'Teilen fehlgeschlagen',
+    shareFailBody: 'Das Kartenbild konnte nicht erstellt werden. Nochmal versuchen?',
+    close: 'Schließen',
+    prev: 'Vorherige Karte',
+    next: 'Nächste Karte',
+    openFull: 'Ganzen Bericht öffnen',
+    trialNote: 'Starte mit dem kostenlosen Test · Jederzeit kündbar',
+    share: 'Story teilen',
+    counter: 'Kostenlos · {{index}} / {{total}}',
+  },
+  card: {
+    karneSticker: '🏅 EHRENURKUNDE',
+    karneFootnote: 'Aus den Statistiken berechnet · Das KI-Zeugnis mit Beweisen gibt’s in Pro',
+  },
+  // Süre birimleri: "3 Std. 12 Min."
+  duration: {
+    sec: '{{n}} Sek.',
+    min: '{{n}} Min.',
+    hour: '{{h}} Std.',
+    hourMin: '{{h}} Std. {{m}} Min.',
+    day: '{{d}} T.',
+    dayHour: '{{d}} T. {{h}} Std.',
+  },
+  initiation: {
+    title: 'Wer schreibt zuerst?',
+    unit: 'Mal',
+    captionNew: 'Der Chat hat gerade erst angefangen, wer ihn antreibt, ist noch offen 👀',
+    captionLead: '{{name}} ist der Motor dieses Chats 🚂',
+    captionKeen: '{{name}} wirkt ein bisschen motivierter 😊',
+    captionBalanced: 'Schön ausgeglichen: Ihr beide fangt Gespräche an 🤝',
+  },
+  messages: {
+    title: 'Wer schreibt mehr?',
+    captionGroup: 'Die größte Plaudertasche der Gruppe: {{name}} 🎤',
+    captionLead: '{{name}} tippt und tippt und tippt ✍️',
+    captionBalanced: 'Fast gleich viele Nachrichten, perfekte Balance ⚖️',
+    note: '{{count}} Nachrichten',
+  },
+  reply: {
+    title: 'Wie schnell antwortet ihr im Schnitt?',
+    captionClose: 'Eure Antwortzeiten sind fast gleich, keiner lässt den anderen warten ⚡',
+    captionFaster: '{{fast}} antwortet schneller, {{slow}} lässt sich etwas Zeit ⏳',
+    captionSlow: '{{name}} lässt sich beim Antworten Zeit… sehr viel Zeit 🐢',
+  },
+  days: {
+    titleRomantic: 'Seit wie vielen Tagen schreibt ihr?',
+    title: 'Wie alt ist dieser Chat?',
+    unit: 'Tage',
+    captionNew: 'Ihr steht noch ganz am Anfang, die Geschichte wird gerade geschrieben ✨',
+    captionSeasons: 'Eine Geschichte über {{seasons}} Jahreszeiten, und sie geht weiter ❤️',
+    captionActive: 'Ihr habt an {{days}} Tagen geschrieben, das ist nicht wenig 💬',
+  },
+  laugh: {
+    title: 'Wie oft habt ihr zusammen gelacht?',
+    unit: 'Lacher',
+    caption: 'Insgesamt {{total}} Lacher 😂 Am meisten gelacht hat: {{name}}',
+  },
+  silence: {
+    title: 'Die längste Funkstille 👻',
+    caption: 'Gebrochen von: {{name}} ({{date}})',
+  },
+  emoji: {
+    title: 'Was ist euer Lieblingsemoji?',
+    caption: 'Manchmal passt ein ganzes Gefühl in ein einziges Emoji 💫',
+    note: '{{count}} Emojis',
+  },
+  night: {
+    title: 'Wer ist die Nachteule? 🦉',
+    unit: 'Nachrichten',
+    caption: 'Nachrichten zwischen 0 und 5 Uhr nachts',
+  },
+  words: {
+    title: 'Wie viele Wörter pro Nachricht?',
+    captionLong: '{{name}} erzählt gern ausführlich 📜',
+    captionShort: 'Kurz und knackig, das ist euer Stil ✂️',
+  },
+  // Yalnız Türkçe sohbetlerde gösterilir
+  signals: {
+    title: 'Aynen- & Tamam.-Zähler',
+    note: '{{aynen}} "aynen" · {{tamam}} "Tamam." mit Punkt',
+    captionTamam: 'Ein "Tamam." mit Punkt ist selten ein gutes Zeichen 😬',
+    captionAynen: 'Aynen aynen 😄',
+  },
+  karne: {
+    title: 'Chat-Zeugnis 📒',
+    interest: 'Interesse & Einsatz',
+    replySpeed: 'Antworttempo',
+    humor: 'Humor',
+    trip: 'Drama',
+    caption: 'Klassenbeste:r (Interesse): {{name}} 🏅',
+  },
+  streak: {
+    title: 'Meiste Nachrichten am Stück ohne Antwort',
+    unit: 'Nachrichten',
+    caption: 'Rekordhalter:in: {{name}} 📨',
+  },
+  awards: {
+    title: 'Gruppen-Awards 🏆',
+    caption: 'Glückwunsch, ihr seid alle Legenden',
+    talker: 'Plaudertasche',
+    organizer: 'Orga-Profi',
+    emoji: 'Emoji-Maschine',
+    joy: 'Sonnenschein',
+    night: 'Nachteule',
+    quiet: 'Stille Mitlesende',
+  },
+  teaser: {
+    title: 'Die eigentliche Story steckt in der KI 🔮',
+    romantic: ['Wer ist romantischer?', 'Wer lügt mehr? 🤥', 'Anspielungen und Zwischentöne', 'KI-Zeugnis mit Beweisen', 'Wohin führt diese Beziehung?'],
+    other: ['KI-Zeugnis mit Beweisen', 'Wer lügt mehr? 🤥', 'Anspielungen und Zwischentöne', 'Wer trägt das Gespräch?', 'Was-schreiben-Vorschläge'],
+  },
+};

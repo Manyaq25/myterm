@@ -1,1 +1,46 @@
-export default {};
+// Ortak metinler (İspanyolca).
+export default {
+  back: 'Atrás',
+  cancel: 'Cancelar',
+  delete: 'Eliminar',
+  tabs: {
+    home: 'Inicio',
+    coach: 'Coach',
+    settings: 'Ajustes',
+  },
+  relations: {
+    sevgili: 'Pareja',
+    es: 'Esposo/a',
+    nisanli: 'Prometido/a',
+    flort: 'Ligue',
+    crush: 'Crush',
+    situationship: 'Situationship',
+    eski: 'Ex',
+    bestie: 'Bestie',
+    arkadas: 'Amistad',
+    aile: 'Familia',
+    is: 'Trabajo',
+    diger: 'Otro',
+    grup: 'Grupo',
+    chat: 'Chat',
+  },
+  apiErrors: {
+    proRequired: 'Esto se desbloquea con Unwrap Pro.',
+    slowDown: '¡Uf, vamos muy rápido! ¿Lo intentas de nuevo en un minuto?',
+    freeLimit: 'Ya usaste tus preguntas gratis de hoy. Con Unwrap Pro puedes preguntarle a Mila todo lo que quieras.',
+    dailyLimit: 'Llegaste al límite de hoy. ¡Vuelve mañana!',
+    noAnswer: 'No pudimos generar una respuesta para este chat. ¿Pruebas con otra pregunta?',
+    network: 'No hay conexión. Revisa tu internet y vuelve a intentarlo.',
+    generic: 'Algo salió mal. ¿Lo intentas de nuevo en un ratito?',
+  },
+  importErrors: {
+    emptyChat: 'No encontramos mensajes en este archivo. Asegúrate de elegir el archivo que sale de “Exportar chat” en WhatsApp.',
+    noChatInZip: 'No encontramos ningún chat dentro de este ZIP.',
+    fallback: 'No pudimos leer este archivo. Vuelve a exportarlo siguiendo los pasos de la guía.',
+  },
+  groupTitle: 'Grupo de {{count}}',
+  importing: {
+    opening: 'Abriendo tu chat…',
+    failedTitle: 'No se pudo leer el archivo',
+  },
+};

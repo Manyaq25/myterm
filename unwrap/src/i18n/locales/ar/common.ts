@@ -1,1 +1,46 @@
-export default {};
+// Ortak metinler (Arapça).
+export default {
+  back: 'رجوع',
+  cancel: 'إلغاء',
+  delete: 'حذف',
+  tabs: {
+    home: 'الرئيسية',
+    coach: 'المدرّبة',
+    settings: 'الإعدادات',
+  },
+  relations: {
+    sevgili: 'الحبيب',
+    es: 'الزوج / الزوجة',
+    nisanli: 'الخطيب / الخطيبة',
+    flort: 'تعارف',
+    crush: 'كراش',
+    situationship: 'علاقة غير محددة',
+    eski: 'الحبيب السابق',
+    bestie: 'أعزّ صديق',
+    arkadas: 'صديق',
+    aile: 'العائلة',
+    is: 'العمل',
+    diger: 'أخرى',
+    grup: 'مجموعة',
+    chat: 'دردشة',
+  },
+  apiErrors: {
+    proRequired: 'هذه الميزة متاحة مع Unwrap Pro.',
+    slowDown: 'على مهلك! جرّب مرة أخرى بعد دقيقة؟',
+    freeLimit: 'انتهت أسئلتك المجانية لهذا اليوم. مع Unwrap Pro يمكنك سؤال Mila كما تشاء.',
+    dailyLimit: 'وصلت إلى الحد اليومي. عُد غدًا!',
+    noAnswer: 'لم نتمكن من إيجاد إجابة لهذه الدردشة. ما رأيك بسؤال مختلف؟',
+    network: 'تعذّر الاتصال. تحقّق من الإنترنت وحاول مرة أخرى.',
+    generic: 'حدث خطأ ما. حاول مرة أخرى بعد قليل؟',
+  },
+  importErrors: {
+    emptyChat: 'لم نجد أي رسائل في هذا الملف. تأكّد من أنه الملف الذي صدّرته عبر "تصدير الدردشة" في WhatsApp.',
+    noChatInZip: 'لم نجد أي دردشة داخل ملف ZIP هذا.',
+    fallback: 'تعذّرت قراءة هذا الملف. جرّب تصديره من جديد باتباع خطوات الدليل.',
+  },
+  groupTitle: 'مجموعة من {{count}} أشخاص',
+  importing: {
+    opening: 'جارٍ فتح دردشتك…',
+    failedTitle: 'تعذّرت قراءة الملف',
+  },
+};

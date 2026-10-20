@@ -1,1 +1,46 @@
-export default {};
+// Ortak metinler (Rumence).
+export default {
+  back: 'Înapoi',
+  cancel: 'Anulează',
+  delete: 'Șterge',
+  tabs: {
+    home: 'Acasă',
+    coach: 'Coach',
+    settings: 'Setări',
+  },
+  relations: {
+    sevgili: 'Partener',
+    es: 'Soț / Soție',
+    nisanli: 'Logodnic(ă)',
+    flort: 'Flirt',
+    crush: 'Crush',
+    situationship: 'Situationship',
+    eski: 'Fost(ă)',
+    bestie: 'Bestie',
+    arkadas: 'Prieten(ă)',
+    aile: 'Familie',
+    is: 'Serviciu',
+    diger: 'Altele',
+    grup: 'Grup',
+    chat: 'Chat',
+  },
+  apiErrors: {
+    proRequired: 'Asta se deblochează cu Unwrap Pro.',
+    slowDown: 'Ups, prea multe deodată! Mai încerci peste un minut?',
+    freeLimit: 'Ai folosit întrebările gratuite de azi. Cu Unwrap Pro o poți întreba pe Mila cât vrei.',
+    dailyLimit: 'Ai atins limita de azi. Revino mâine!',
+    noAnswer: 'Nu am reușit să găsim un răspuns pentru acest chat. Încerci altă întrebare?',
+    network: 'Nu există conexiune. Verifică-ți internetul și mai încearcă o dată.',
+    generic: 'Ceva n-a mers. Mai încerci puțin mai târziu?',
+  },
+  importErrors: {
+    emptyChat: 'Nu am găsit mesaje în acest fișier. Asigură-te că ai ales fișierul obținut cu „Exportă chat” din WhatsApp.',
+    noChatInZip: 'Nu am găsit niciun chat în acest fișier ZIP.',
+    fallback: 'Nu am putut citi acest fișier. Încearcă să-l exporți din nou după pașii din ghid.',
+  },
+  groupTitle: 'Grup de {{count}} persoane',
+  importing: {
+    opening: 'Se deschide chatul…',
+    failedTitle: 'Fișierul nu a putut fi citit',
+  },
+};

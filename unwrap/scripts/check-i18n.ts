@@ -15,7 +15,9 @@ function flat(o: Tree, pre = '', out: Record<string, string> = {}) {
   }
   return out;
 }
-const params = (s: string) => (s.match(/\{\{\w+\}\}/g) ?? []).sort().join(',');
+const params = (s: string) => s.match(/\{\{\w+\}\}/g) ?? [];
+// Çeviri kaynaktaki her {{param}}'ı taşımalı (fazlası serbest; kod onu da verir).
+const lost = (src: string, dst: string) => params(src).some((p) => !dst.includes(p));
 
 async function main() {
   const tr = flat((await import(join(dir, 'tr/index.ts'))).default.default ?? (await import(join(dir, 'tr/index.ts'))).default);
@@ -25,7 +27,7 @@ async function main() {
     const d = flat(mod.default ?? mod);
     const missing = Object.keys(tr).filter((k) => !(k in d));
     const extra = Object.keys(d).filter((k) => !(k in tr));
-    const wrong = Object.keys(tr).filter((k) => k in d && params(tr[k]) !== params(d[k]));
+    const wrong = Object.keys(tr).filter((k) => k in d && lost(tr[k], d[k]));
     const status = missing.length || extra.length || wrong.length ? 'HATA' : 'tamam';
     if (status === 'HATA') bad++;
     console.log(`${code}: ${status} (eksik ${missing.length}, fazla ${extra.length}, param ${wrong.length})`);

@@ -1,1 +1,116 @@
-export default {};
+// Ücretsiz hikâye kartları (Endonezce).
+export default {
+  viewer: {
+    shareDialog: 'Bagikan story',
+    shareFailTitle: 'Gagal membagikan',
+    shareFailBody: 'Gambar kartu nggak bisa dibuat. Coba lagi, ya?',
+    close: 'Tutup',
+    prev: 'Kartu sebelumnya',
+    next: 'Kartu berikutnya',
+    openFull: 'Buka laporan lengkap',
+    trialNote: 'Mulai dengan uji coba gratis · Batalkan kapan aja',
+    share: 'Bagikan story',
+    counter: 'Gratis · {{index}} / {{total}}',
+  },
+  card: {
+    karneSticker: '🏅 PIAGAM PENGHARGAAN',
+    karneFootnote: 'Dihitung dari statistik · Rapor AI lengkap dengan bukti ada di Pro',
+  },
+  // Süre birimleri: "3 jam 12 mnt"
+  duration: {
+    sec: '{{n}} dtk',
+    min: '{{n}} mnt',
+    hour: '{{h}} jam',
+    hourMin: '{{h}} jam {{m}} mnt',
+    day: '{{d}} hr',
+    dayHour: '{{d}} hr {{h}} jam',
+  },
+  initiation: {
+    title: 'Siapa yang chat duluan?',
+    unit: 'kali',
+    captionNew: 'Chat-nya baru mulai, belum ketahuan siapa motornya 👀',
+    captionLead: '{{name}} motor penggerak chat ini 🚂',
+    captionKeen: '{{name}} kelihatan sedikit lebih semangat 😊',
+    captionBalanced: 'Seimbang: dua-duanya sama-sama mulai obrolan 🤝',
+  },
+  messages: {
+    title: 'Siapa yang lebih banyak chat?',
+    captionGroup: 'Paling cerewet di grup: {{name}} 🎤',
+    captionLead: '{{name}} ngetik, ngetik, dan ngetik terus ✍️',
+    captionBalanced: 'Jumlah pesannya hampir sama, seimbang banget ⚖️',
+    note: '{{count}} pesan',
+  },
+  reply: {
+    title: 'Rata-rata berapa lama kalian balas?',
+    captionClose: 'Kecepatan balas kalian mirip banget, nggak ada yang digantung ⚡',
+    captionFaster: '{{fast}} balasnya lebih cepat, {{slow}} agak bikin nunggu ⏳',
+    captionSlow: '{{name}} santai banget kalau balas… santaaai banget 🐢',
+  },
+  days: {
+    titleRomantic: 'Udah berapa hari kalian ngobrol?',
+    title: 'Chat ini umurnya berapa hari?',
+    unit: 'hari',
+    captionNew: 'Kalian baru di awal perjalanan, ceritanya baru mulai ditulis ✨',
+    captionSeasons: 'Cerita sepanjang {{seasons}} musim, dan masih berlanjut ❤️',
+    captionActive: 'Kalian chat-an selama {{days}} hari, lumayan banget 💬',
+  },
+  laugh: {
+    title: 'Berapa kali kalian ketawa bareng?',
+    unit: 'tawa',
+    caption: 'Total {{total}} tawa 😂 Paling sering ketawa: {{name}}',
+  },
+  silence: {
+    title: 'Diam paling lama 👻',
+    caption: 'Yang memecah keheningan: {{name}} ({{date}})',
+  },
+  emoji: {
+    title: 'Emoji favorit kalian apa?',
+    caption: 'Kadang satu emoji udah cukup buat semua perasaan 💫',
+    note: '{{count}} emoji',
+  },
+  night: {
+    title: 'Siapa si burung hantu? 🦉',
+    unit: 'pesan',
+    caption: 'Pesan yang dikirim antara jam 00.00–05.00',
+  },
+  words: {
+    title: 'Berapa kata per pesan?',
+    captionLong: '{{name}} suka cerita panjang lebar 📜',
+    captionShort: 'Kalian nulisnya singkat, padat, jelas ✂️',
+  },
+  // Yalnız Türkçe sohbetlerde gösterilir
+  signals: {
+    title: 'Penghitung “Aynen” & “Tamam.”',
+    note: '{{aynen}} “aynen” · {{tamam}} “Tamam.” pakai titik',
+    captionTamam: '“Tamam.” pakai titik jarang jadi pertanda bagus 😬',
+    captionAynen: 'Aynen aynen 😄',
+  },
+  karne: {
+    title: 'Rapor Chat 📒',
+    interest: 'Perhatian & Usaha',
+    replySpeed: 'Kecepatan balas',
+    humor: 'Humor',
+    trip: 'Drama',
+    caption: 'Juara kelas (perhatian): {{name}} 🏅',
+  },
+  streak: {
+    title: 'Pesan beruntun terbanyak tanpa dibalas',
+    unit: 'pesan',
+    caption: 'Pemegang rekor: {{name}} 📨',
+  },
+  awards: {
+    title: 'Penghargaan grup 🏆',
+    caption: 'Selamat, kalian semua legenda',
+    talker: 'Paling cerewet',
+    organizer: 'Si tukang ngatur',
+    emoji: 'Mesin emoji',
+    joy: 'Sumber keceriaan',
+    night: 'Burung hantu',
+    quiet: 'Penonton setia',
+  },
+  teaser: {
+    title: 'Cerita aslinya ada di AI 🔮',
+    romantic: ['Siapa yang lebih romantis?', 'Siapa yang lebih sering bohong? 🤥', 'Pesan nyindir dan makna tersirat', 'Rapor AI lengkap dengan bukti', 'Hubungan ini mau dibawa ke mana?'],
+    other: ['Rapor AI lengkap dengan bukti', 'Siapa yang lebih sering bohong? 🤥', 'Pesan nyindir dan makna tersirat', 'Siapa yang menghidupkan obrolan?', 'Saran mau bales apa'],
+  },
+};

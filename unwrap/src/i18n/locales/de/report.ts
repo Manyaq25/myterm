@@ -1,1 +1,21 @@
-export default {};
+// Yapay zekâ raporu (Almanca).
+export default {
+  close: 'Schließen',
+  loadingTitle: 'Dein Chat wird gelesen…',
+  loadingBody: 'Wir sammeln die Beweise einzeln ein. Das dauert etwa eine halbe Minute.',
+  retry: 'Nochmal versuchen',
+  summary: 'ZUSAMMENFASSUNG',
+  tone: 'TON-ANALYSE',
+  replies: 'WAS KÖNNTEST DU SCHREIBEN?',
+  askMila: 'Frag Mila zu diesem Chat',
+  disclaimer: 'Die Einschätzungen sind KI-Vermutungen, keine endgültigen Urteile. Die Karten „Lügen“, „Manipulativ“ und „Verlangen“ sind nur zum Spaß.',
+  shareDialog: 'Karte teilen',
+  shareFailTitle: 'Teilen fehlgeschlagen',
+  shareFailBody: 'Das Kartenbild konnte nicht erstellt werden. Nochmal versuchen?',
+  shareLabel: 'Karte teilen',
+  share: 'Teilen',
+  funSticker: '😜 NUR ZUM SPASS',
+  karneSticker: '🏅 EHRENURKUNDE',
+  karneTitle: 'Chat-Zeugnis',
+  teacherNote: 'Bemerkung der Lehrkraft: {{note}}',
+};

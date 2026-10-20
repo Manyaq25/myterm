@@ -1,1 +1,21 @@
-export default {};
+// Yapay zekâ raporu ekranı (Hintçe).
+export default {
+  close: 'बंद करें',
+  loadingTitle: 'तुम्हारी चैट पढ़ी जा रही है…',
+  loadingBody: 'हम एक-एक करके सबूत जुटा रहे हैं। इसमें लगभग आधा मिनट लगता है।',
+  retry: 'फिर से ट्राई करें',
+  summary: 'सारांश',
+  tone: 'टोन एनालिसिस',
+  replies: 'तुम क्या लिख सकते हो?',
+  askMila: 'इस चैट के बारे में Mila से पूछो',
+  disclaimer: 'ये AI के अंदाज़े हैं, आख़िरी फ़ैसला नहीं। “झूठ”, “मैनिपुलेटिव” और “चाहत” वाले कार्ड सिर्फ़ मज़े के लिए हैं।',
+  shareDialog: 'कार्ड शेयर करें',
+  shareFailTitle: 'शेयर नहीं हो पाया',
+  shareFailBody: 'कार्ड की इमेज नहीं बन पाई। फिर से ट्राई करोगे?',
+  shareLabel: 'कार्ड शेयर करें',
+  share: 'शेयर करें',
+  funSticker: '😜 सिर्फ़ मज़े के लिए',
+  karneSticker: '🏅 सम्मान पत्र',
+  karneTitle: 'चैट रिपोर्ट कार्ड',
+  teacherNote: 'टीचर की राय: {{note}}',
+};

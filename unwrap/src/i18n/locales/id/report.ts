@@ -1,1 +1,21 @@
-export default {};
+// Yapay zekâ raporu ekranı (Endonezce).
+export default {
+  close: 'Tutup',
+  loadingTitle: 'Lagi baca chat kamu…',
+  loadingBody: 'Kami lagi ngumpulin bukti satu per satu. Kira-kira setengah menit.',
+  retry: 'Coba lagi',
+  summary: 'RINGKASAN',
+  tone: 'ANALISIS NADA',
+  replies: 'KAMU BISA BALAS APA?',
+  askMila: 'Tanya Mila soal chat ini',
+  disclaimer: 'Ini tebakan AI, bukan putusan final. Kartu “Bohong”, “Manipulatif”, dan “Hasrat” cuma buat seru-seruan.',
+  shareDialog: 'Bagikan kartu',
+  shareFailTitle: 'Gagal membagikan',
+  shareFailBody: 'Gambar kartu nggak bisa dibuat. Coba lagi, ya?',
+  shareLabel: 'Bagikan kartu',
+  share: 'Bagikan',
+  funSticker: '😜 BUAT SERU-SERUAN',
+  karneSticker: '🏅 PIAGAM PENGHARGAAN',
+  karneTitle: 'Rapor Chat',
+  teacherNote: 'Catatan guru: {{note}}',
+};

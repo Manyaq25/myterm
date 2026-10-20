@@ -1,1 +1,92 @@
-export default {};
+// Dışa aktarma rehberi (Almanca). Menü adları WhatsApp / Telegram'ın
+// Almanca arayüzündeki adlarla aynı.
+export default {
+  eyebrow: '● EXPORT-ANLEITUNG',
+  close: 'Schließen',
+  stepOf: 'Schritt {{step}} / {{total}}',
+  gotIt: 'Verstanden',
+  next: 'Weiter',
+  back: 'Zurück',
+  // Çizimlerdeki örnek kişi ve mesajlar
+  name: 'Lena',
+  online: 'online',
+  msgIn: 'Kaffee morgen um 15 Uhr? ☕',
+  msgOut: 'Klingt super, bin dabei! 🧁',
+  scrollHint: '⬇ ganz nach unten scrollen',
+  fileName: 'WhatsApp Chat - {{name}}.zip',
+  iphone: {
+    s1: { title: 'Öffne den Chat und tippe auf den Namen', text: 'Öffne in WhatsApp den Chat, den du analysieren willst, und tippe oben auf den Namen.' },
+    s2: { title: 'Scroll ganz nach unten', text: 'Geh bis ans Ende der Kontaktinfo-Seite.' },
+    s3: { title: 'Tippe auf "Chat exportieren"', text: 'Das steht direkt über den roten Optionen.' },
+    s4: { title: 'Wähle "Ohne Medien"', text: 'Fotos brauchen wir nicht; die Datei bleibt klein und die Analyse geht schneller.' },
+    s5: {
+      title: 'Wähle im Teilen-Menü Unwrap',
+      text: 'Der Chat öffnet sich direkt in Unwrap. Nicht in der Liste? Wisch nach links und tippe auf "Mehr", oder wähle "In Dateien sichern" und tippe dann hier auf "Datei wählen".',
+    },
+  },
+  android: {
+    s1: { title: 'Öffne den Chat und tippe oben rechts auf ⋮', text: 'Öffne in WhatsApp den Chat, den du analysieren willst.' },
+    s2: { title: 'Tippe auf "Mehr"', text: 'Das steht ganz unten im Menü.' },
+    s3: { title: 'Wähle "Chat exportieren"' },
+    s4: { title: 'Wähle "Ohne Medien"', text: 'Die Datei bleibt klein und die Analyse geht schneller.' },
+    s5: {
+      title: 'Speichere die Datei, dann in Unwrap "Datei wählen"',
+      text: 'Wähle im Teilen-Menü "Dateien" oder Drive; geh dann zurück zu Unwrap und wähle die .txt-Datei.',
+    },
+  },
+  telegram: {
+    s1: { title: 'Öffne Telegram Desktop am Computer', text: 'Die Telegram-App fürs Handy kann keine Chats exportieren; das geht nur in der Desktop-App.' },
+    s2: { title: 'Öffne den Chat und klicke oben rechts auf ⋮' },
+    s3: { title: '"Chatverlauf exportieren"', text: 'Entferne die Häkchen bei Bildern und Videos.' },
+    s4: { title: 'Wähle "JSON" als Format', text: 'Klicke dann auf "Exportieren"; eine result.json-Datei wird erstellt.' },
+    s5: { title: 'Schick die Datei aufs Handy, dann in Unwrap "Datei wählen"', text: 'Schick sie dir per E-Mail oder über Drive und wähle dann die Datei result.json.' },
+  },
+  // WhatsApp iPhone ekranları
+  ios: {
+    media: 'Medien, Links und Doks',
+    starred: 'Markierte Nachrichten',
+    notifications: 'Mitteilungen',
+    export: 'Chat exportieren',
+    clear: 'Chat leeren',
+    block: 'Kontakt blockieren',
+    report: 'Kontakt melden',
+    sheetTitle: 'Durch das Anhängen von Medien wird das Chat-Archiv größer.',
+    attach: 'Medien anhängen',
+    without: 'Ohne Medien',
+    cancel: 'Abbrechen',
+    messages: 'Nachrichten',
+    mail: 'Mail',
+    files: 'In Dateien sichern',
+  },
+  // WhatsApp Android ekranları
+  droid: {
+    viewContact: 'Kontakt anzeigen',
+    search: 'Suchen',
+    mute: 'Stummschalten',
+    more: 'Mehr',
+    report: 'Melden',
+    block: 'Blockieren',
+    clear: 'Chat leeren',
+    export: 'Chat exportieren',
+    dialogTitle: 'Chat exportieren?',
+    without: 'Ohne Medien',
+    include: 'Medien einbeziehen',
+    files: 'Dateien',
+  },
+  // Telegram Desktop ekranları
+  tg: {
+    mute: 'Stummschalten',
+    search: 'Suche',
+    export: 'Chatverlauf exportieren',
+    settings: 'Chat-Export-Einstellungen',
+    photos: 'Bilder',
+    videos: 'Videos',
+    voice: 'Sprachnachrichten',
+    format: 'Format',
+    html: 'Lesbares HTML',
+    json: 'Maschinenlesbares JSON',
+    group: 'Besties',
+    mom: 'Mama',
+    placeholder: '💻 Telegram Desktop am Computer',
+  },
+};

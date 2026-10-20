@@ -1,1 +1,21 @@
-export default {};
+// Yapay zekâ raporu (İtalyanca).
+export default {
+  close: 'Chiudi',
+  loadingTitle: 'Stiamo leggendo la tua chat…',
+  loadingBody: 'Raccogliamo le prove una per una. Ci vuole circa mezzo minuto.',
+  retry: 'Riprova',
+  summary: 'RIASSUNTO',
+  tone: 'ANALISI DEL TONO',
+  replies: 'COSA POTRESTI SCRIVERE?',
+  askMila: 'Chiedi a Mila di questa chat',
+  disclaimer: 'Le analisi sono ipotesi dell’IA, non verdetti definitivi. Le card “Bugie”, “Manipolazione” e “Desiderio” sono solo per divertimento.',
+  shareDialog: 'Condividi la card',
+  shareFailTitle: 'Condivisione non riuscita',
+  shareFailBody: 'Non siamo riusciti a creare l’immagine della card. Riprovi?',
+  shareLabel: 'Condividi la card',
+  share: 'Condividi',
+  funSticker: '😜 SOLO PER RIDERE',
+  karneSticker: '🏅 ATTESTATO DI MERITO',
+  karneTitle: 'Pagella della chat',
+  teacherNote: 'Giudizio del prof: {{note}}',
+};

@@ -1,1 +1,92 @@
-export default {};
+// Dışa aktarma rehberi (İtalyanca). Menü adları WhatsApp / Telegram'ın
+// İtalyanca arayüzündeki adlarla aynı.
+export default {
+  eyebrow: '● GUIDA ALL’ESPORTAZIONE',
+  close: 'Chiudi',
+  stepOf: 'Passo {{step}} / {{total}}',
+  gotIt: 'Ho capito',
+  next: 'Avanti',
+  back: 'Indietro',
+  // Çizimlerdeki örnek kişi ve mesajlar
+  name: 'Giulia',
+  online: 'online',
+  msgIn: 'Caffè domani alle 15? ☕',
+  msgOut: 'Perfetto, ci sono! 🧁',
+  scrollHint: '⬇ scorri fino in fondo',
+  fileName: 'Chat WhatsApp con {{name}}.zip',
+  iphone: {
+    s1: { title: 'Apri la chat e tocca il nome del contatto', text: 'Su WhatsApp, apri la chat che vuoi analizzare e tocca il nome in alto.' },
+    s2: { title: 'Scorri fino in fondo', text: 'Vai in fondo alla pagina Info contatto.' },
+    s3: { title: 'Tocca "Esporta chat"', text: 'Si trova subito sopra le opzioni in rosso.' },
+    s4: { title: 'Scegli "Senza media"', text: 'Le foto non ci servono: il file resta leggero e l’analisi è più veloce.' },
+    s5: {
+      title: 'Scegli Unwrap nel menu di condivisione',
+      text: 'La chat si apre direttamente in Unwrap. Non è nella lista? Scorri a sinistra e tocca "Altro", oppure scegli "Salva su File" e poi tocca "Scegli file" qui.',
+    },
+  },
+  android: {
+    s1: { title: 'Apri la chat e tocca il menu ⋮ in alto a destra', text: 'Su WhatsApp, apri la chat che vuoi analizzare.' },
+    s2: { title: 'Tocca "Altro"', text: 'Si trova in fondo al menu.' },
+    s3: { title: 'Scegli "Esporta chat"' },
+    s4: { title: 'Scegli "Senza media"', text: 'Il file resta leggero e l’analisi è più veloce.' },
+    s5: {
+      title: 'Salva il file, poi "Scegli file" in Unwrap',
+      text: 'Nel menu di condivisione scegli "File" o Drive; poi torna su Unwrap e seleziona il file .txt.',
+    },
+  },
+  telegram: {
+    s1: { title: 'Apri Telegram Desktop sul computer', text: 'L’app di Telegram per telefono non esporta le chat; si può fare solo dall’app per computer.' },
+    s2: { title: 'Apri la chat e clicca sul menu ⋮ in alto a destra' },
+    s3: { title: '"Esporta cronologia chat"', text: 'Togli la spunta a foto e video.' },
+    s4: { title: 'Scegli "JSON" come formato', text: 'Poi clicca su "Esporta": verrà creato il file result.json.' },
+    s5: { title: 'Manda il file al telefono, poi "Scegli file" in Unwrap', text: 'Invialo a te stesso via e-mail o con Drive, poi seleziona il file result.json.' },
+  },
+  // WhatsApp iPhone ekranları
+  ios: {
+    media: 'Media, link e documenti',
+    starred: 'Messaggi importanti',
+    notifications: 'Notifiche',
+    export: 'Esporta chat',
+    clear: 'Svuota chat',
+    block: 'Blocca contatto',
+    report: 'Segnala contatto',
+    sheetTitle: 'Allegando i media verrà generato un archivio chat più grande.',
+    attach: 'Allega media',
+    without: 'Senza media',
+    cancel: 'Annulla',
+    messages: 'Messaggi',
+    mail: 'Mail',
+    files: 'Salva su File',
+  },
+  // WhatsApp Android ekranları
+  droid: {
+    viewContact: 'Visualizza contatto',
+    search: 'Cerca',
+    mute: 'Silenzia notifiche',
+    more: 'Altro',
+    report: 'Segnala',
+    block: 'Blocca',
+    clear: 'Svuota chat',
+    export: 'Esporta chat',
+    dialogTitle: 'Esportare la chat?',
+    without: 'Senza media',
+    include: 'Includi media',
+    files: 'File',
+  },
+  // Telegram Desktop ekranları
+  tg: {
+    mute: 'Silenzia',
+    search: 'Cerca',
+    export: 'Esporta cronologia chat',
+    settings: 'Impostazioni esportazione chat',
+    photos: 'Foto',
+    videos: 'Video',
+    voice: 'Messaggi vocali',
+    format: 'Formato',
+    html: 'HTML leggibile',
+    json: 'JSON leggibile da macchina',
+    group: 'Gli amici',
+    mom: 'Mamma',
+    placeholder: '💻 Telegram Desktop sul computer',
+  },
+};

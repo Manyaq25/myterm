@@ -1,1 +1,21 @@
-export default {};
+// Yapay zekâ raporu ekranı (İspanyolca).
+export default {
+  close: 'Cerrar',
+  loadingTitle: 'Leyendo tu chat…',
+  loadingBody: 'Estamos juntando las pruebas una por una. Tarda como medio minuto.',
+  retry: 'Reintentar',
+  summary: 'RESUMEN',
+  tone: 'ANÁLISIS DEL TONO',
+  replies: '¿QUÉ PODRÍAS ESCRIBIR?',
+  askMila: 'Pregúntale a Mila sobre este chat',
+  disclaimer: 'Son suposiciones de la IA, no veredictos definitivos. Las tarjetas de “Mentiras”, “Manipulación” y “Deseo” son solo para divertirse.',
+  shareDialog: 'Compartir tarjeta',
+  shareFailTitle: 'No se pudo compartir',
+  shareFailBody: 'No pudimos crear la imagen de la tarjeta. ¿Lo intentas de nuevo?',
+  shareLabel: 'Compartir tarjeta',
+  share: 'Compartir',
+  funSticker: '😜 SOLO POR DIVERSIÓN',
+  karneSticker: '🏅 CUADRO DE HONOR',
+  karneTitle: 'Boleta del chat',
+  teacherNote: 'Comentario del profe: {{note}}',
+};

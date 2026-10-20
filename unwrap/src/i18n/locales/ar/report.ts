@@ -1,1 +1,21 @@
-export default {};
+// Yapay zekâ raporu ekranı (Arapça).
+export default {
+  close: 'إغلاق',
+  loadingTitle: 'نقرأ دردشتك…',
+  loadingBody: 'نجمع الأدلة واحدًا تلو الآخر. يستغرق ذلك نحو نصف دقيقة.',
+  retry: 'حاول مرة أخرى',
+  summary: 'الملخص',
+  tone: 'تحليل النبرة',
+  replies: 'ماذا يمكنك أن تكتب؟',
+  askMila: 'اسأل Mila عن هذه الدردشة',
+  disclaimer: 'هذه تقديرات من الذكاء الاصطناعي وليست أحكامًا نهائية. بطاقات «الكذب» و«التلاعب» و«الشغف» للتسلية فقط.',
+  shareDialog: 'مشاركة البطاقة',
+  shareFailTitle: 'تعذّرت المشاركة',
+  shareFailBody: 'لم نتمكن من إنشاء صورة البطاقة. نحاول مرة أخرى؟',
+  shareLabel: 'مشاركة البطاقة',
+  share: 'مشاركة',
+  funSticker: '😜 للتسلية فقط',
+  karneSticker: '🏅 شهادة تقدير',
+  karneTitle: 'بطاقة تقييم الدردشة',
+  teacherNote: 'ملاحظة المعلّم: {{note}}',
+};

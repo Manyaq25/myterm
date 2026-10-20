@@ -1,1 +1,92 @@
-export default {};
+// Dışa aktarma rehberi (Endonezce). Menü adları WhatsApp / Telegram'ın
+// Endonezce arayüzündeki adlara göre.
+export default {
+  eyebrow: '● PANDUAN EKSPOR',
+  close: 'Tutup',
+  stepOf: 'Langkah {{step}} / {{total}}',
+  gotIt: 'Oke, paham',
+  next: 'Berikutnya',
+  back: 'Kembali',
+  // Çizimlerdeki örnek kişi ve mesajlar
+  name: 'Putri',
+  online: 'online',
+  msgIn: 'Besok ngopi jam 15.00 bisa? ☕',
+  msgOut: 'Boleh banget, aku datang! 🧁',
+  scrollHint: '⬇ gulir ke paling bawah',
+  fileName: 'Chat WhatsApp dengan {{name}}.zip',
+  iphone: {
+    s1: { title: 'Buka chat-nya, lalu ketuk nama kontak', text: 'Di WhatsApp, buka chat yang mau kamu analisis dan ketuk nama di bagian atas.' },
+    s2: { title: 'Gulir ke paling bawah', text: 'Turun sampai bawah halaman Info Kontak.' },
+    s3: { title: 'Ketuk “Ekspor Chat”', text: 'Letaknya pas di atas pilihan yang berwarna merah.' },
+    s4: { title: 'Pilih “Tanpa Media”', text: 'Kami nggak butuh fotonya; file jadi kecil dan analisis lebih cepat.' },
+    s5: {
+      title: 'Pilih Unwrap di menu bagikan',
+      text: 'Chat langsung terbuka di Unwrap. Kalau nggak ada di daftar, geser ke kiri dan ketuk “Lainnya”, atau pilih “Simpan ke File” lalu ketuk “Pilih file” di sini.',
+    },
+  },
+  android: {
+    s1: { title: 'Buka chat-nya, lalu ketuk menu ⋮ di kanan atas', text: 'Di WhatsApp, buka chat yang mau kamu analisis.' },
+    s2: { title: 'Ketuk “Lainnya”', text: 'Ada di paling bawah menu.' },
+    s3: { title: 'Pilih “Ekspor chat”' },
+    s4: { title: 'Pilih “Tanpa media”', text: 'File jadi kecil dan analisis lebih cepat.' },
+    s5: {
+      title: 'Simpan file-nya, lalu ketuk “Pilih file” di Unwrap',
+      text: 'Di menu bagikan, pilih “File” atau Drive; terus balik ke Unwrap dan pilih file .txt-nya.',
+    },
+  },
+  telegram: {
+    s1: { title: 'Buka Telegram Desktop di komputer', text: 'Aplikasi Telegram di HP nggak bisa ekspor chat; fitur ini cuma ada di aplikasi desktop.' },
+    s2: { title: 'Buka chat-nya, lalu klik menu ⋮ di kanan atas' },
+    s3: { title: '“Ekspor riwayat obrolan”', text: 'Hapus centang foto dan video.' },
+    s4: { title: 'Pilih “JSON” sebagai format', text: 'Lalu klik “Ekspor”; file result.json akan dibuat.' },
+    s5: { title: 'Kirim file ke HP kamu, lalu ketuk “Pilih file” di Unwrap', text: 'Kirim lewat email ke diri sendiri atau lewat Drive, lalu pilih file result.json.' },
+  },
+  // WhatsApp iPhone ekranları
+  ios: {
+    media: 'Media, Tautan, dan Dokumen',
+    starred: 'Pesan Berbintang',
+    notifications: 'Notifikasi',
+    export: 'Ekspor Chat',
+    clear: 'Bersihkan Chat',
+    block: 'Blokir Kontak',
+    report: 'Laporkan Kontak',
+    sheetTitle: 'Melampirkan media akan menghasilkan arsip chat yang lebih besar.',
+    attach: 'Lampirkan Media',
+    without: 'Tanpa Media',
+    cancel: 'Batal',
+    messages: 'Pesan',
+    mail: 'Mail',
+    files: 'Simpan ke File',
+  },
+  // WhatsApp Android ekranları
+  droid: {
+    viewContact: 'Lihat kontak',
+    search: 'Cari',
+    mute: 'Bisukan notifikasi',
+    more: 'Lainnya',
+    report: 'Laporkan',
+    block: 'Blokir',
+    clear: 'Bersihkan chat',
+    export: 'Ekspor chat',
+    dialogTitle: 'Ekspor chat?',
+    without: 'Tanpa media',
+    include: 'Sertakan media',
+    files: 'File',
+  },
+  // Telegram Desktop ekranları
+  tg: {
+    mute: 'Bisukan',
+    search: 'Cari',
+    export: 'Ekspor riwayat obrolan',
+    settings: 'Pengaturan ekspor obrolan',
+    photos: 'Foto',
+    videos: 'Video',
+    voice: 'Pesan suara',
+    format: 'Format',
+    html: 'HTML yang dapat dibaca manusia',
+    json: 'JSON yang dapat dibaca mesin',
+    group: 'Geng Bestie',
+    mom: 'Mama',
+    placeholder: '💻 Telegram Desktop di komputer',
+  },
+};

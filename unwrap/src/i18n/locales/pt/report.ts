@@ -1,1 +1,21 @@
-export default {};
+// Yapay zekâ raporu ekranı (Brezilya Portekizcesi).
+export default {
+  close: 'Fechar',
+  loadingTitle: 'Lendo sua conversa…',
+  loadingBody: 'Estamos juntando as provas uma por uma. Leva uns trinta segundos.',
+  retry: 'Tentar de novo',
+  summary: 'RESUMO',
+  tone: 'ANÁLISE DO TOM',
+  replies: 'O QUE VOCÊ PODE MANDAR?',
+  askMila: 'Pergunte pra Mila sobre essa conversa',
+  disclaimer: 'São palpites da IA, não veredictos finais. Os cards de “Mentira”, “Manipulação” e “Desejo” são só pra diversão.',
+  shareDialog: 'Compartilhar card',
+  shareFailTitle: 'Não deu pra compartilhar',
+  shareFailBody: 'Não conseguimos criar a imagem do card. Tenta de novo?',
+  shareLabel: 'Compartilhar card',
+  share: 'Compartilhar',
+  funSticker: '😜 SÓ PRA DIVERSÃO',
+  karneSticker: '🏅 QUADRO DE HONRA',
+  karneTitle: 'Boletim da conversa',
+  teacherNote: 'Recado do professor: {{note}}',
+};
