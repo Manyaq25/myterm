@@ -61,4 +61,9 @@ jobs:
           # Veritabanı bağlantısı (sayaç Upstash'tan okunur)
           code=$(curl -s -o c.json -w '%{http_code}' "${{ steps.deploy.outputs.url }}/api/counter"); cat c.json; echo
           echo "sayaç: HTTP $code"; [ "$code" = "200" ]
+          # Hesap: boş gövde reddedilmeli, profil kimliksiz kapalı olmalı
+          code=$(curl -s -o a.json -w '%{http_code}' -X POST "${{ steps.deploy.outputs.url }}/api/hesap" -d ''); cat a.json; echo
+          echo "boş giriş: HTTP $code"; [ "$code" = "400" ]
+          code=$(curl -s -o p.json -w '%{http_code}' "${{ steps.deploy.outputs.url }}/api/profil"); cat p.json; echo
+          echo "kimliksiz profil: HTTP $code"; [ "$code" = "401" ]
           echo "Unwrap sunucusu: ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"

@@ -2,7 +2,7 @@
   "name": "unwrap-backend",
   "version": "1.0.0",
   "private": true,
-  "description": "Unwrap sunucusu (Vercel). Synvia sunucusundan tamamen ayr\u0131d\u0131r.",
+  "description": "Unwrap sunucusu (Vercel). Synvia sunucusundan tamamen ayrıdır.",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "tsx test/run.ts"
@@ -11,6 +11,7 @@
     "@anthropic-ai/sdk": "^0.117.1",
     "@upstash/redis": "^1.39.0",
     "google-auth-library": "^11.3.1",
+    "jose": "^5.10.0",
     "node-app-attest": "^1.0.1",
     "zod": "^4.6.7"
   },

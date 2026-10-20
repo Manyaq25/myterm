@@ -9,12 +9,12 @@ export function header(req: IncomingMessage, name: string): string | null {
 }
 
 /** Ham gövde metni (App Attest imzası bu metin üzerinden doğrulanır). */
-export async function readRawBody(req: IncomingMessage): Promise<string> {
+export async function readRawBody(req: IncomingMessage, maxBytes = MAX_BODY_BYTES): Promise<string> {
   const chunks: Buffer[] = [];
   let size = 0;
   for await (const chunk of req) {
     size += (chunk as Buffer).length;
-    if (size > MAX_BODY_BYTES) throw new HttpError(413, 'body_too_large');
+    if (size > maxBytes) throw new HttpError(413, 'body_too_large');
     chunks.push(chunk as Buffer);
   }
   return Buffer.concat(chunks).toString('utf8');
