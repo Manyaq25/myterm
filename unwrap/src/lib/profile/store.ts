@@ -4,20 +4,36 @@ import * as SecureStore from 'expo-secure-store';
 import { File, Paths } from 'expo-file-system';
 
 export type Avatar = { emoji: string; color: string };
-export type Profile = { name: string | null; avatar: Avatar | null; overrides: Record<string, string> };
+// shareKeys/shareColor: paylaşım kartı seçimi, yalnız telefonda (sunucuya gitmez).
+export type Profile = {
+  name: string | null;
+  avatar: Avatar | null;
+  overrides: Record<string, string>;
+  shareKeys: string[];
+  shareColor: string | null;
+};
 export type Account = { uid: string; token: string };
 
-const EMPTY: Profile = { name: null, avatar: null, overrides: {} };
+/** Karta ilk seferde konan eğlenceli istatistikler (kişi adı yok). */
+export const DEFAULT_SHARE_KEYS = ['ghosting', 'favoriteWord', 'favoriteEmoji', 'nightOwl', 'happiestMoment', 'laughs', 'medianReply', 'messages'];
+
+const empty = (): Profile => ({ name: null, avatar: null, overrides: {}, shareKeys: [...DEFAULT_SHARE_KEYS], shareColor: null });
 const profileFile = () => new File(Paths.document, 'profil.json');
 
 export function getProfile(): Profile {
   const f = profileFile();
-  if (!f.exists) return { ...EMPTY, overrides: {} };
+  if (!f.exists) return empty();
   try {
     const p = JSON.parse(f.textSync()) as Partial<Profile>;
-    return { name: p.name ?? null, avatar: p.avatar ?? null, overrides: p.overrides ?? {} };
+    return {
+      name: p.name ?? null,
+      avatar: p.avatar ?? null,
+      overrides: p.overrides ?? {},
+      shareKeys: Array.isArray(p.shareKeys) ? p.shareKeys.filter((k) => typeof k === 'string') : [...DEFAULT_SHARE_KEYS],
+      shareColor: typeof p.shareColor === 'string' ? p.shareColor : null,
+    };
   } catch {
-    return { ...EMPTY, overrides: {} };
+    return empty();
   }
 }
 

@@ -26,6 +26,7 @@ async function checkAuth(res: Response) {
   return res;
 }
 
+// Sunucuya yalnız ad, avatar ve elle yazılanlar gider (kart seçimi gitmez).
 // Sunucu sınırları: ad ≤40, elle yazılan ≤30 adet, anahtar/değer ≤80 karakter.
 const LIMIT = { name: 40, overrides: 30, text: 80 };
 function forServer(p: Profile) {
@@ -61,12 +62,15 @@ async function pullProfile(a: Account) {
   try {
     const res = await checkAuth(await fetch(`${config.apiUrl}/api/profil`, { headers: authed(a) }));
     if (!res.ok) return;
-    const { profile: remote } = (await res.json()) as { profile: Profile | null };
+    const { profile: remote } = (await res.json()) as { profile: Pick<Profile, 'name' | 'avatar' | 'overrides'> | null };
     if (remote) {
       writeProfile({
         name: remote.name ?? local.name,
         avatar: remote.avatar ?? local.avatar,
         overrides: { ...local.overrides, ...(remote.overrides ?? {}) },
+        // Kart seçimi yalnız yerelde
+        shareKeys: local.shareKeys,
+        shareColor: local.shareColor,
       });
       // Yerelde fazladan olan elle yazılanlar varsa sunucu da öğrensin.
       if (Object.keys(local.overrides).some((k) => !(k in (remote.overrides ?? {})))) await pushProfile(a, getProfile());
