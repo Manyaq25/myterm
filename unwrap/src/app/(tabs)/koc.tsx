@@ -44,35 +44,74 @@ const roles = (): { id: CoachRole | null; label: string; emoji: string }[] => [
 ];
 
 type Starter = { q: string; pro?: boolean };
+type Mode = 'general' | 'romantic' | 'group' | 'other';
 
-// pro: true olanlar ücretsiz sürümde soluk ve kilitli görünür.
-const generalStarters = (): Starter[] => [
-  { q: t('coach.general.firstMessage') },
-  { q: t('coach.general.makeUp') },
-  { q: t('coach.general.apology') },
-  { q: t('coach.general.compliment') },
-  { q: t('coach.general.firstDate') },
-  { q: t('coach.general.birthday') },
-  { q: t('coach.general.stuck'), pro: true },
-  { q: t('coach.general.hidesPhone'), pro: true },
-  { q: t('coach.general.cheating'), pro: true },
-  { q: t('coach.general.interested'), pro: true },
-  { q: t('coach.general.coldLately'), pro: true },
-  { q: t('coach.general.ex'), pro: true },
-  { q: t('coach.general.lying'), pro: true },
-  { q: t('coach.general.manipulating'), pro: true },
-];
+// Kategori emojileri; etiketler coach.categories.<id>.
+const CAT_EMOJI: Record<string, string> = {
+  top: '⭐',
+  flirt: '💘',
+  trust: '🔍',
+  cold: '🧊',
+  write: '💬',
+  fight: '⚡',
+  toxic: '🧠',
+  future: '💍',
+  social: '👯',
+  interest: '💞',
+  dynamics: '📊',
+  vibes: '😂',
+};
 
-// Seçili sohbete özel sorular sohbeti okumayı gerektirir; hepsi Pro.
-function starters(a: Analysis): Starter[] {
-  if (a.participants.length > 2)
-    return ['carries', 'supports', 'falloutRift', 'funniest'].map((k) => ({ q: t(`coach.group.${k}`), pro: true }));
-  if (isRomantic(a.relation))
-    return ['interested', 'whatToWrite', 'effort', 'stuck', 'hiding', 'cheating', 'whereGoing'].map((k) => ({
-      q: t(`coach.romantic.${k}`),
-      pro: true,
-    }));
-  return ['howGoing', 'tension', 'whatToWrite', 'effort'].map((k) => ({ q: t(`coach.other.${k}`), pro: true }));
+// Kategori → soru anahtarları (coach.starters.<mod>.<kategori>.<anahtar>).
+const SETS: Record<Mode, Record<string, string[]>> = {
+  general: {
+    flirt: ['firstMessage', 'firstDate', 'interested', 'mixedSignals', 'textFirst', 'askOut', 'friendZone', 'afterDate'],
+    trust: ['cheating', 'hidesPhone', 'lying', 'ex', 'deletesChats', 'jealous', 'trustAgain'],
+    cold: ['coldLately', 'lateReply', 'ghosted', 'seen', 'shortReplies', 'stuck', 'winBack'],
+    write: ['apology', 'compliment', 'birthday', 'flirty', 'missYou', 'afterGhost', 'boundary', 'goodnight'],
+    fight: ['makeUp', 'whoWrong', 'sameFight', 'silent', 'firstStep', 'calm'],
+    toxic: ['loveBombing', 'manipulating', 'gaslighting', 'redFlags', 'controlling', 'guilt', 'toxic'],
+    future: ['breakUp', 'whereGoing', 'serious', 'moveIn', 'marriage', 'longDistance', 'howToEnd'],
+    social: ['friendDistant', 'friendTension', 'goodFriend', 'leftOut', 'parents', 'familyBoundary'],
+  },
+  romantic: {
+    interest: ['interested', 'whoCares', 'effort', 'lastCare', 'initiates'],
+    trust: ['hiding', 'cheating', 'contradictions'],
+    cold: ['change', 'sinceWhen', 'replyTime', 'stuck'],
+    write: ['whatToWrite', 'replyLast', 'warmUp'],
+    fight: ['fights', 'whoApologizes'],
+    toxic: ['redFlags', 'manipulation', 'whoHurts'],
+    future: ['whereGoing', 'serious'],
+  },
+  group: {
+    dynamics: ['carries', 'supports', 'ignored', 'leftOut'],
+    vibes: ['funniest', 'closest', 'mood'],
+    fight: ['falloutRift', 'tension'],
+    write: ['smooth', 'plan'],
+  },
+  other: {
+    dynamics: ['howGoing', 'effort', 'initiates', 'lastCare'],
+    cold: ['distance', 'change'],
+    fight: ['tension', 'triggers', 'fix'],
+    toxic: ['redFlags', 'oneSided'],
+    write: ['whatToWrite', 'replyLast'],
+  },
+};
+
+// Genel modun "Popüler" sekmesi: önce ücretsiz 6 soru, sonra birkaç Pro vitrin sorusu.
+const FREE = ['flirt.firstMessage', 'flirt.firstDate', 'fight.makeUp', 'write.apology', 'write.compliment', 'write.birthday'];
+const HIGHLIGHTS = ['flirt.interested', 'cold.lateReply', 'trust.cheating', 'toxic.loveBombing', 'future.breakUp'];
+
+// pro: true olanlar ücretsiz sürümde soluk ve kilitli görünür. Seçili sohbete
+// özel sorular sohbeti okumayı gerektirir; hepsi Pro.
+function starterGroups(a: Analysis | null): { id: string; items: Starter[] }[] {
+  const mode: Mode = !a ? 'general' : a.participants.length > 2 ? 'group' : isRomantic(a.relation) ? 'romantic' : 'other';
+  const item = (path: string): Starter => ({
+    q: t(`coach.starters.${mode}.${path}`),
+    pro: mode !== 'general' || !FREE.includes(path),
+  });
+  const groups = Object.entries(SETS[mode]).map(([id, keys]) => ({ id, items: keys.map((k) => item(`${id}.${k}`)) }));
+  return mode === 'general' ? [{ id: 'top', items: [...FREE, ...HIGHLIGHTS].map(item) }, ...groups] : groups;
 }
 
 export default function Koc() {
@@ -85,10 +124,12 @@ export default function Koc() {
   const [sending, setSending] = useState(false);
   const [general, setGeneral] = useState(false);
   const [pro, setPro] = useState(false);
+  const [cat, setCat] = useState<string | null>(null);
   const listRef = useRef<FlatList<CoachTurn>>(null);
 
   /** 'genel' = sohbet seçmeden Mila ile konuşma. */
   const select = useCallback((id: string) => {
+    setCat(null);
     if (id === 'genel') {
       setGeneral(true);
       setAnalysis(null);
@@ -165,6 +206,8 @@ export default function Koc() {
 
   const oneToOne = analysis ? analysis.participants.length <= 2 : false;
   const other = analysis?.participants.find((p) => p !== analysis.me);
+  const groups = starterGroups(analysis);
+  const shown = groups.find((g) => g.id === cat) ?? groups[0];
 
   return (
     <SafeAreaView style={styles.safe} edges={['top']}>
@@ -213,15 +256,28 @@ export default function Koc() {
                   </Text>
                 </Card>
                 {!role ? (
-                  <View style={styles.starters}>
-                    {(analysis ? starters(analysis) : generalStarters()).map((s) => {
-                      const locked = s.pro && !pro;
-                      return (
-                        <View key={s.q} style={locked && styles.locked}>
-                          <Pill label={s.q} emoji={locked ? '🔒' : undefined} onPress={() => (locked ? router.push('/pro') : send(s.q))} />
-                        </View>
-                      );
-                    })}
+                  <View style={{ gap: space.sm }}>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
+                      {groups.map((g) => (
+                        <Pill
+                          key={g.id}
+                          label={t(`coach.categories.${g.id}`)}
+                          emoji={CAT_EMOJI[g.id]}
+                          active={g.id === shown.id}
+                          onPress={() => setCat(g.id)}
+                        />
+                      ))}
+                    </ScrollView>
+                    <View style={styles.starters}>
+                      {shown.items.map((s) => {
+                        const locked = s.pro && !pro;
+                        return (
+                          <View key={s.q} style={locked && styles.locked}>
+                            <Pill label={s.q} emoji={locked ? '🔒' : undefined} onPress={() => (locked ? router.push('/pro') : send(s.q))} />
+                          </View>
+                        );
+                      })}
+                    </View>
                   </View>
                 ) : null}
               </View>
