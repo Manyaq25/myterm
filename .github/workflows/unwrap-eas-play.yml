@@ -1,0 +1,62 @@
+# Unwrap Android mağaza derlemesi (AAB) + Google Play dahili teste gönderim.
+# Üretime (canlı) asla göndermez; o karar kullanıcıda. Synvia'dan ayrı EAS projesi.
+# Tetikleme: elle ya da unwrap/derle-play.txt değişince.
+# Google ilk yüklemeyi Play Console'dan elle ister: unwrap/play-ilk-yukleme.txt
+# içinde "yapildi" yazana kadar yalnız derler, göndermez.
+name: Unwrap Android derleme (Google Play dahili test)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**", main]
+    paths: ["unwrap/derle-play.txt"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: unwrap
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Uygulama ortam değişkenleri (herkese açık RevenueCat Android anahtarı)
+        env:
+          RC_ANDROID: ${{ secrets.UNWRAP_RC_ANDROID_KEY }}
+        run: |
+          if [ -n "$RC_ANDROID" ]; then
+            eas env:create --name EXPO_PUBLIC_RC_ANDROID_KEY --value "$RC_ANDROID" --environment production --visibility plaintext --force --non-interactive
+          else
+            echo "UYARI: UNWRAP_RC_ANDROID_KEY yok; Android'de satın alma kapalı derlenir"
+          fi
+      - name: Android imza anahtarı
+        run: |
+          pip install --quiet pexpect
+          python3 scripts/eas-credentials.py android production
+      - name: Google Play hizmet hesabı (yalnız bu çalışmada)
+        env:
+          SA: ${{ secrets.UNWRAP_PLAY_SA_JSON }}
+        run: |
+          [ -z "$SA" ] && { echo "UNWRAP_PLAY_SA_JSON yok"; exit 1; }
+          printf '%s' "$SA" > "$RUNNER_TEMP/play.json"
+          node -e '
+            const fs = require("fs");
+            const j = JSON.parse(fs.readFileSync("eas.json", "utf8"));
+            j.submit.production.android.serviceAccountKeyPath = process.env.RUNNER_TEMP + "/play.json";
+            fs.writeFileSync("eas.json", JSON.stringify(j, null, 2));
+          '
+      - name: Derle (ilk yüklemeden sonra dahili teste de gönder)
+        run: |
+          if grep -q yapildi play-ilk-yukleme.txt 2>/dev/null; then
+            eas build --platform android --profile production --non-interactive --auto-submit --no-wait
+          else
+            eas build --platform android --profile production --non-interactive --no-wait
+          fi

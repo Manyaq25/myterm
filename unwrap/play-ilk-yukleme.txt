@@ -1,0 +1,1 @@
+Google Play'e ilk elle yükleme yapılınca bu dosyaya 'yapildi' yaz.
