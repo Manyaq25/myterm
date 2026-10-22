@@ -12,6 +12,8 @@ export type Profile = {
   avatar: Avatar | null;
   frame: Frame | null;
   gender: Gender;
+  /** Hitap bilerek seçildi mi (seçilmediyse profilde uyarı çıkar). */
+  genderSet: boolean;
   overrides: Record<string, string>;
   shareKeys: string[];
   shareColor: string | null;
@@ -21,7 +23,7 @@ export type Account = { uid: string; token: string };
 /** Karta ilk seferde konan eğlenceli istatistikler (kişi adı yok). */
 export const DEFAULT_SHARE_KEYS = ['ghosting', 'favoriteWord', 'favoriteEmoji', 'nightOwl', 'happiestMoment', 'laughs', 'medianReply', 'messages'];
 
-const empty = (): Profile => ({ name: null, avatar: null, frame: null, gender: 'notr', overrides: {}, shareKeys: [...DEFAULT_SHARE_KEYS], shareColor: null });
+const empty = (): Profile => ({ name: null, avatar: null, frame: null, gender: 'notr', genderSet: false, overrides: {}, shareKeys: [...DEFAULT_SHARE_KEYS], shareColor: null });
 const profileFile = () => new File(Paths.document, 'profil.json');
 
 export function getProfile(): Profile {
@@ -35,6 +37,8 @@ export function getProfile(): Profile {
       avatar: parseAvatar(p.avatar),
       frame: parseFrame(p.frame),
       gender: parseGender(p.gender),
+      // Eski profillerde Kadın/Erkek seçilmişse seçilmiş sayılır.
+      genderSet: p.genderSet === true || (p.gender != null && parseGender(p.gender) !== 'notr'),
       overrides: p.overrides ?? {},
       shareKeys: Array.isArray(p.shareKeys) ? p.shareKeys.filter((k) => typeof k === 'string') : [...DEFAULT_SHARE_KEYS],
       shareColor: typeof p.shareColor === 'string' ? p.shareColor : null,

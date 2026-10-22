@@ -166,6 +166,7 @@ export default {
     },
   },
   gender: {
+    ask: 'Wähle deine Anrede, damit dein Badge-Titel richtig angezeigt wird',
     label: 'Anrede',
     note: 'Danach richten sich deine Badge-Titel (Königin / König).',
     kadin: 'Frau',

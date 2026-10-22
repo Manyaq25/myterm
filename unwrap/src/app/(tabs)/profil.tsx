@@ -242,6 +242,17 @@ export default function Profil() {
             </Pressable>
             <Text style={styles.name} numberOfLines={1}>{name}</Text>
             <BadgeTitle badge={bestBadge(badges)} gender={profile.gender} isPro={pro} onPress={() => router.push('/profil/rozetler')} />
+            {/* Hitap seçilmediyse: unvanlar (Kraliçe/Kral) için seçtir; seçince kaybolur. */}
+            {!profile.genderSet ? (
+              <View style={styles.genderAsk}>
+                <Text style={[type.label, { color: colors.text, textAlign: 'center' }]}>👑 {t('profile.gender.ask')}</Text>
+                <View style={[styles.genderRow, { justifyContent: 'center' }]}>
+                  {GENDERS.map((g) => (
+                    <Pill key={g} emoji={GENDER_EMOJI[g]} label={t(`profile.gender.${g}`)} onPress={() => update({ ...profile, gender: g, genderSet: true })} />
+                  ))}
+                </View>
+              </View>
+            ) : null}
             <Text style={[type.caption, { color: colors.textMuted }]}>✏️ {t('profile.tapToEdit')}</Text>
           </Card>
         </Pressable>
@@ -592,13 +603,15 @@ function ShareBuilder({ visible, profile, avatarProfile, name, tiles, onClose, o
 function EditProfile({ visible, profile, onClose, onSave }: { visible: boolean; profile: Profile; onClose: () => void; onSave: (p: Profile) => void }) {
   const [name, setName] = useState(profile.name ?? '');
   const [gender, setGender] = useState<Gender>(profile.gender);
+  const [genderTouched, setGenderTouched] = useState(false);
 
   // Her açılışta kayıtlı değerlerle başla.
   const onShow = () => {
     setName(profile.name ?? '');
     setGender(profile.gender);
+    setGenderTouched(false);
   };
-  const draft = (): Profile => ({ ...profile, name: name.trim() || null, gender });
+  const draft = (): Profile => ({ ...profile, name: name.trim() || null, gender, genderSet: profile.genderSet || genderTouched });
 
   // Avatar ayrı ekranda seçilir; yazılan ad kaybolmasın diye önce kaydedilir.
   const changeAvatar = () => {
@@ -628,7 +641,7 @@ function EditProfile({ visible, profile, onClose, onSave }: { visible: boolean; 
           <Text style={styles.label}>{t('profile.gender.label')}</Text>
           <View style={styles.genderRow}>
             {GENDERS.map((g) => (
-              <Pill key={g} emoji={GENDER_EMOJI[g]} label={t(`profile.gender.${g}`)} active={g === gender} onPress={() => setGender(g)} />
+              <Pill key={g} emoji={GENDER_EMOJI[g]} label={t(`profile.gender.${g}`)} active={g === gender} onPress={() => { setGender(g); setGenderTouched(true); }} />
             ))}
           </View>
           <Text style={[type.caption, { color: colors.textMuted }]}>{t('profile.gender.note')}</Text>
@@ -715,5 +728,6 @@ const styles = StyleSheet.create({
   label: { ...type.label, color: colors.textMuted },
   input: { ...type.body, color: colors.text, backgroundColor: colors.surface, borderRadius: radius.md, paddingHorizontal: space.md, paddingVertical: 12 },
   genderRow: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
+  genderAsk: { alignSelf: 'stretch', gap: space.sm, backgroundColor: colors.cardButter, borderRadius: radius.md, padding: space.md, marginTop: space.xs },
   selected: { borderColor: colors.purple },
 });

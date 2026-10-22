@@ -75,6 +75,7 @@ async function pullProfile(a: Account) {
         // Kart seçimi, çerçeve ve hitap yalnız yerelde
         frame: local.frame,
         gender: local.gender,
+        genderSet: local.genderSet,
         shareKeys: local.shareKeys,
         shareColor: local.shareColor,
       });

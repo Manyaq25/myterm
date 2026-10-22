@@ -166,6 +166,7 @@ export default {
     },
   },
   gender: {
+    ask: 'Alege cum să ți ne adresăm ca titlul insignei să apară corect',
     label: 'Cum să ți ne adresăm',
     note: 'Titlurile insignelor tale se scriu după asta (Regina / Regele).',
     kadin: 'Femeie',

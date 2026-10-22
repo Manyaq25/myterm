@@ -166,6 +166,7 @@ export default {
     },
   },
   gender: {
+    ask: 'Choisis comment on s’adresse à toi pour que ton titre de badge s’affiche bien',
     label: 'Comment on t’appelle',
     note: 'Tes titres de badges en dépendent (Reine / Roi).',
     kadin: 'Femme',

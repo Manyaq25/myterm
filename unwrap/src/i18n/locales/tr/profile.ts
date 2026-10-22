@@ -166,6 +166,7 @@ export default {
     },
   },
   gender: {
+    ask: 'Rozet unvanının doğru görünmesi için hitabını seç',
     label: 'Hitap',
     note: 'Rozet unvanların buna göre yazılır (Kraliçesi / Kralı).',
     kadin: 'Kadın',

@@ -166,6 +166,7 @@ export default {
     },
   },
   gender: {
+    ask: 'Elige cómo llamarte para que tu título de insignia se vea bien',
     label: 'Cómo te llamamos',
     note: 'Tus títulos de insignias se adaptan a esto (Reina / Rey).',
     kadin: 'Mujer',

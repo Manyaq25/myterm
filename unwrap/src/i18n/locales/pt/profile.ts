@@ -166,6 +166,7 @@ export default {
     },
   },
   gender: {
+    ask: 'Escolha como te chamar para seu título de conquista aparecer certinho',
     label: 'Como te chamamos',
     note: 'Seus títulos de conquista seguem isso (Rainha / Rei).',
     kadin: 'Mulher',

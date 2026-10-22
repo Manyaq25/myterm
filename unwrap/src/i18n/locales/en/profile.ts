@@ -165,6 +165,7 @@ export default {
     },
   },
   gender: {
+    ask: 'Pick how to address you so your badge title shows right',
     label: 'How to address you',
     note: 'Your badge titles use this (Queen / King).',
     kadin: 'Woman',

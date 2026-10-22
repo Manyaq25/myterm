@@ -166,6 +166,7 @@ export default {
     },
   },
   gender: {
+    ask: 'Pilih sapaanmu supaya gelar badge-mu tampil dengan benar',
     label: 'Panggilan',
     note: 'Gelar lencanamu ditulis sesuai pilihan ini (Ratu / Raja).',
     kadin: 'Perempuan',

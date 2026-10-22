@@ -166,6 +166,7 @@ export default {
     },
   },
   gender: {
+    ask: 'Kies hoe we je aanspreken, zodat je badgetitel goed verschijnt',
     label: 'Aanspreekvorm',
     note: 'Je badgetitels worden hierop afgestemd (Koningin / Koning).',
     kadin: 'Vrouw',

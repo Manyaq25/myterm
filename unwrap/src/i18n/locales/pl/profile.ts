@@ -166,6 +166,7 @@ export default {
     },
   },
   gender: {
+    ask: 'Wybierz formę zwracania się, żeby tytuł odznaki wyświetlał się poprawnie',
     label: 'Forma zwracania się',
     note: 'Według niej piszemy tytuły twoich odznak (Królowa / Król).',
     kadin: 'Kobieta',
