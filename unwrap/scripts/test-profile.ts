@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import { parseChat } from '../src/lib/chat/parse';
 import { computeStats, formatDuration } from '../src/lib/chat/stats';
+import { avatarForServer, parseAvatar, parseFrame, parseGender } from '../src/lib/profile/avatar';
 import { computeMyStats } from '../src/lib/profile/stats';
 import type { Analysis } from '../src/lib/store';
 import type { Report } from '../src/lib/ai/types';
@@ -73,5 +74,24 @@ analyses[0].report = report;
 const r = computeMyStats(analyses);
 assert.deepEqual(r.ai, [{ key: 'ilgi', title: 'İlgi', display: '%70', value: 70, chat: '1-soguyan-flort' }]);
 assert.equal(r.karneAvg, 7.5);
+
+// Avatar: eski {emoji, color} biçimi 'emoji' türüne geçer
+assert.deepEqual(parseAvatar({ emoji: '😎', color: '#E9E1FF' }), { kind: 'emoji', emoji: '😎', color: '#E9E1FF' });
+assert.deepEqual(parseAvatar({ kind: 'preset', id: 'f01', color: '#FDE3DD' }), { kind: 'preset', id: 'f01', color: '#FDE3DD' });
+assert.deepEqual(parseAvatar({ kind: 'photo', file: 'ben-1.jpg', color: '#FDE3DD' }), { kind: 'photo', file: 'ben-1.jpg', color: '#FDE3DD' });
+assert.equal(parseAvatar({ kind: 'photo', file: '../x.jpg', color: '#FDE3DD' }), null);
+assert.equal(parseAvatar({ kind: 'photo', file: 'ben-1.jpg', color: '#FDE3DD' }, false), null); // sunucudan fotoğraf gelmez
+assert.equal(parseAvatar(null), null);
+assert.equal(parseAvatar({ emoji: '123456789' }), null);
+// Sunucuya: emoji/hazır yeni biçimde, fotoğraf asla (null)
+assert.deepEqual(avatarForServer({ kind: 'emoji', emoji: '😎', color: '#E9E1FF' }), { kind: 'emoji', emoji: '😎', color: '#E9E1FF' });
+assert.deepEqual(avatarForServer({ kind: 'preset', id: 'm03', color: '#E9E1FF' }), { kind: 'preset', id: 'm03', color: '#E9E1FF' });
+assert.equal(avatarForServer({ kind: 'photo', file: 'ben-1.jpg', color: '#E9E1FF' }), null);
+assert.equal(avatarForServer({ kind: 'emoji', emoji: '😎', color: 'red' }), null);
+assert.deepEqual(parseFrame({ id: 'rings', partnerFile: 'es-2.jpg' }), { id: 'rings', partnerFile: 'es-2.jpg' });
+assert.deepEqual(parseFrame({ id: 'heart' }), { id: 'heart', partnerFile: null });
+assert.equal(parseFrame({}), null);
+assert.equal(parseGender('kadin'), 'kadin');
+assert.equal(parseGender(undefined), 'notr');
 
 console.log('\nPROFIL TESTLERI GEÇTİ');

@@ -11,20 +11,24 @@ import Purchases from 'react-native-purchases';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { captureRef } from 'react-native-view-shot';
 
-import { Button, Card, Sticker, useTopInset } from '@/components/ui';
+import { BadgeRing, BadgeTitle } from '@/components/Badges';
+import { FRAME_SCALE, ProfileAvatar } from '@/components/ProfileAvatar';
+import { Button, Card, Pill, Sticker, useTopInset } from '@/components/ui';
 import { locale, t } from '@/i18n';
 import { formatDuration } from '@/lib/chat/stats';
 import { appleAvailable, deleteAccount, saveProfile, signIn, signOut } from '@/lib/profile/account';
+import { getActivity, bump } from '@/lib/profile/activity';
+import { GENDERS, type Gender } from '@/lib/profile/avatar';
+import { bestBadge, computeBadges, type Badge } from '@/lib/profile/badges';
 import { computeMyStats, type Moment, type MyStats } from '@/lib/profile/stats';
 import { DEFAULT_SHARE_KEYS, getAccount, getProfile, writeProfile, type Account, type Profile } from '@/lib/profile/store';
 import { hasPro, initPurchases, managementUrl } from '@/lib/purchases';
 import { getAnalysis, listAnalyses, type Analysis } from '@/lib/store';
 import { colors, fonts, radius, space, type } from '@/theme';
 
-// Avatar seçenekleri: sunucu en çok 8 UTF-16 birimi kabul eder, birleşik emoji yok.
-const EMOJIS = ['🙂', '😎', '🤩', '🥳', '😇', '🤓', '😏', '🥰', '😈', '👻', '👽', '🤖', '🦄', '🐱', '🐶', '🦊', '🐼', '🐸', '🐵', '🌸', '🌈', '🔥', '⭐', '💎'];
-const AVATAR_COLORS = [colors.cardLilac, colors.cardPeach, colors.cardMint, colors.cardButter, colors.cardCoral, colors.lilac];
-const DEFAULT_AVATAR = { emoji: '🙂', color: colors.cardLilac };
+// Avatar seçimi /profil/avatar ekranında; burada yalnız çizilir (ProfileAvatar).
+const AVATAR_SIZE = 104;
+const GENDER_EMOJI: Record<Gender, string> = { kadin: '👩', erkek: '👨', notr: '🧑' };
 const TILE_BGS = [colors.cardPeach, colors.cardLilac, colors.cardMint, colors.cardButter, colors.cardCoral, colors.surface];
 // Paylaşım kartı: en çok 8 kutu, 4 zemin rengi, sabit genişlikte çizilip önizlemede küçültülür.
 const SHARE_MAX = 8;
@@ -120,6 +124,7 @@ export default function Profil() {
   const [sub, setSub] = useState<Sub | null>(null);
   const [stats, setStats] = useState<MyStats | null>(null);
   const [hasMe, setHasMe] = useState<boolean | null>(null);
+  const [badges, setBadges] = useState<Badge[]>([]);
   const [editing, setEditing] = useState(false);
   const [overrideTile, setOverrideTile] = useState<Tile | null>(null);
   const [sharing, setSharing] = useState(false);
@@ -137,12 +142,16 @@ export default function Profil() {
       appleAvailable().then(setApple);
       // Çok sohbette hesap uzun sürebilir: ekran çizildikten sonra başla.
       const timer = setTimeout(() => {
-        const all = listAnalyses()
-          .map((a) => getAnalysis(a.id))
-          .filter((a): a is Analysis => !!a);
+        const list = listAnalyses();
+        const all = list.map((a) => getAnalysis(a.id)).filter((a): a is Analysis => !!a);
         const mine = all.some((a) => !!a.me);
+        const my = mine ? computeMyStats(all) : null;
         setHasMe(mine);
-        setStats(mine ? computeMyStats(all) : null);
+        setStats(my);
+        // Rozetler: ilişki türüne göre analiz sayısı da gerekir.
+        const relationCounts: Record<string, number> = {};
+        for (const a of list) if (a.relation) relationCounts[a.relation] = (relationCounts[a.relation] ?? 0) + 1;
+        setBadges(computeBadges({ activity: getActivity(), stats: my, analysesCount: list.length, relationCounts, gender: getProfile().gender }));
       }, 50);
       return () => clearTimeout(timer);
     }, [refreshAccount]),
@@ -201,7 +210,11 @@ export default function Profil() {
 
   const manage = async () => WebBrowser.openBrowserAsync(await managementUrl());
 
-  const avatar = profile.avatar ?? DEFAULT_AVATAR;
+  const pro = !!sub?.pro;
+  // Çerçeve Pro: abonelik bittiyse yalnız avatar görünür (çerçeve kayıtlı kalır).
+  const shownProfile = sub && !sub.pro ? { ...profile, frame: null } : profile;
+  const avatarBox = shownProfile.frame ? Math.round(AVATAR_SIZE * FRAME_SCALE) : AVATAR_SIZE;
+  const openFrames = () => router.push({ pathname: '/profil/avatar', params: { tab: 'frames' } });
   const name = profile.name || t('profile.noName');
   const shown = (tile: Tile) => profile.overrides[tile.key] ?? tile.value ?? NONE();
 
@@ -216,12 +229,32 @@ export default function Profil() {
         {/* Avatar + ad */}
         <Pressable onPress={() => setEditing(true)} accessibilityRole="button" accessibilityHint={t('profile.tapToEdit')}>
           <Card style={styles.header}>
-            <View style={[styles.bigAvatar, { backgroundColor: avatar.color }]}>
-              <Text style={styles.bigAvatarEmoji}>{avatar.emoji}</Text>
+            <View style={{ width: avatarBox, height: avatarBox, alignItems: 'center', justifyContent: 'center' }}>
+              <ProfileAvatar profile={shownProfile} size={AVATAR_SIZE} />
+              {/* ROZETLER */}
+              <BadgeRing badges={badges} size={avatarBox} isPro={pro} />
             </View>
+            <Pressable onPress={openFrames} accessibilityRole="button" hitSlop={6} style={({ pressed }) => [styles.framePill, { opacity: pressed ? 0.8 : 1 }]}>
+              <Text style={[type.caption, { fontFamily: fonts.bold, color: colors.primary }]}>
+                {t(shownProfile.frame ? 'profile.frames.change' : 'profile.frames.add')}
+                {pro ? '' : ' 🔒'}
+              </Text>
+            </Pressable>
             <Text style={styles.name} numberOfLines={1}>{name}</Text>
+            <BadgeTitle badge={bestBadge(badges)} gender={profile.gender} isPro={pro} onPress={() => router.push('/profil/rozetler')} />
             <Text style={[type.caption, { color: colors.textMuted }]}>✏️ {t('profile.tapToEdit')}</Text>
           </Card>
+        </Pressable>
+
+        {/* Rozetler ekranı */}
+        <Pressable onPress={() => router.push('/profil/rozetler')} accessibilityRole="button" style={({ pressed }) => [styles.shareOpen, { backgroundColor: colors.cardButter, opacity: pressed ? 0.85 : 1 }]}>
+          <Text style={{ fontSize: 20 }}>🏅</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={[type.label, { color: colors.text }]}>{t('badges.screenTitle')}</Text>
+            <Text style={[type.caption, { color: colors.textMuted }]}>
+              {t('badges.earnedCount', { earned: badges.filter((b) => b.earned).length, total: badges.length })}
+            </Text>
+          </View>
         </Pressable>
 
         {/* Hesap: Apple girişi yalnız destekleyen cihazda */}
@@ -348,7 +381,7 @@ export default function Profil() {
       <ShareBuilder
         visible={sharing}
         profile={profile}
-        avatar={avatar}
+        avatarProfile={shownProfile}
         name={name}
         tiles={[...tiles, ...ai]}
         onClose={() => setSharing(false)}
@@ -393,15 +426,13 @@ function StatTile({ tile, index, value, edited, onPress }: { tile: Tile; index: 
 }
 
 /** Paylaşılabilir profil kartı: avatar, ad, seçilen kutular (en çok 8) ve marka. */
-function ShareCardView({ avatar, name, tiles, shown, bg }: { avatar: { emoji: string; color: string }; name: string; tiles: Tile[]; shown: (tile: Tile) => string | null; bg: string }) {
+function ShareCardView({ avatarProfile, name, tiles, shown, bg }: { avatarProfile: Pick<Profile, 'avatar' | 'frame'>; name: string; tiles: Tile[]; shown: (tile: Tile) => string | null; bg: string }) {
   // Tek sayıda kutuda sonuncusu tam genişlik olur, boşluk kalmaz.
   const odd = tiles.length % 2 === 1;
   return (
     <View style={[styles.shareable, { backgroundColor: bg }]}>
       <View style={styles.shareHead}>
-        <View style={[styles.smallAvatar, { backgroundColor: avatar.color }]}>
-          <Text style={{ fontSize: 30 }}>{avatar.emoji}</Text>
-        </View>
+        <ProfileAvatar profile={avatarProfile} size={56} />
         <Text style={[styles.name, { flex: 1 }]} numberOfLines={1}>{name}</Text>
       </View>
       <View style={styles.shareGrid}>
@@ -426,10 +457,10 @@ function ShareCardView({ avatar, name, tiles, shown, bg }: { avatar: { emoji: st
  * Değeri olmayan (null) kutu listede yok; karta uydurma değer girmez.
  * Seçim ve renk yalnız telefonda saklanır.
  */
-function ShareBuilder({ visible, profile, avatar, name, tiles, onClose, onChange }: {
+function ShareBuilder({ visible, profile, avatarProfile, name, tiles, onClose, onChange }: {
   visible: boolean;
   profile: Profile;
-  avatar: { emoji: string; color: string };
+  avatarProfile: Pick<Profile, 'avatar' | 'frame'>;
   name: string;
   tiles: Tile[];
   onClose: () => void;
@@ -474,6 +505,7 @@ function ShareBuilder({ visible, profile, avatar, name, tiles, onClose, onChange
     try {
       const uri = await captureRef(ref, { format: 'png', quality: 1 });
       await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: t('profile.share.dialog') });
+      bump('profile_shared');
     } catch {
       Alert.alert(t('profile.share.failTitle'), t('profile.share.failText'));
     } finally {
@@ -496,7 +528,7 @@ function ShareBuilder({ visible, profile, avatar, name, tiles, onClose, onChange
             <View style={{ position: 'absolute', top: 0, left: 0, width: CARD_W, transform: [{ scale }], transformOrigin: 'left top' }}>
               {/* Yalnız bu görünüm resme dönüşür */}
               <View ref={ref} collapsable={false} onLayout={(e) => setCardH(e.nativeEvent.layout.height)}>
-                <ShareCardView avatar={avatar} name={name} tiles={picked} shown={shown} bg={bg} />
+                <ShareCardView avatarProfile={avatarProfile} name={name} tiles={picked} shown={shown} bg={bg} />
               </View>
             </View>
           </View>
@@ -559,14 +591,19 @@ function ShareBuilder({ visible, profile, avatar, name, tiles, onClose, onChange
 
 function EditProfile({ visible, profile, onClose, onSave }: { visible: boolean; profile: Profile; onClose: () => void; onSave: (p: Profile) => void }) {
   const [name, setName] = useState(profile.name ?? '');
-  const [emoji, setEmoji] = useState(profile.avatar?.emoji ?? DEFAULT_AVATAR.emoji);
-  const [color, setColor] = useState(profile.avatar?.color ?? DEFAULT_AVATAR.color);
+  const [gender, setGender] = useState<Gender>(profile.gender);
 
   // Her açılışta kayıtlı değerlerle başla.
   const onShow = () => {
     setName(profile.name ?? '');
-    setEmoji(profile.avatar?.emoji ?? DEFAULT_AVATAR.emoji);
-    setColor(profile.avatar?.color ?? DEFAULT_AVATAR.color);
+    setGender(profile.gender);
+  };
+  const draft = (): Profile => ({ ...profile, name: name.trim() || null, gender });
+
+  // Avatar ayrı ekranda seçilir; yazılan ad kaybolmasın diye önce kaydedilir.
+  const changeAvatar = () => {
+    onSave(draft());
+    router.push('/profil/avatar');
   };
 
   return (
@@ -575,9 +612,10 @@ function EditProfile({ visible, profile, onClose, onSave }: { visible: boolean; 
         <Pressable style={styles.backdrop} onPress={onClose} accessibilityLabel={t('profile.override.close')} />
         <View style={styles.sheet}>
           <Text style={[type.title, { color: colors.text }]}>{t('profile.edit.title')}</Text>
-          <View style={[styles.bigAvatar, { backgroundColor: color, alignSelf: 'center' }]}>
-            <Text style={styles.bigAvatarEmoji}>{emoji}</Text>
-          </View>
+          <Pressable onPress={changeAvatar} accessibilityRole="button" accessibilityLabel={t('profile.avatar.change')} style={{ alignSelf: 'center', alignItems: 'center', gap: space.sm }}>
+            <ProfileAvatar profile={profile} size={AVATAR_SIZE} noFrame />
+            <Text style={[type.label, { color: colors.purple }]}>✏️ {t('profile.avatar.change')}</Text>
+          </Pressable>
           <Text style={styles.label}>{t('profile.edit.nameLabel')}</Text>
           <TextInput
             value={name}
@@ -587,21 +625,14 @@ function EditProfile({ visible, profile, onClose, onSave }: { visible: boolean; 
             maxLength={40}
             style={styles.input}
           />
-          <Text style={styles.label}>{t('profile.edit.emojiLabel')}</Text>
-          <View style={styles.emojiGrid}>
-            {EMOJIS.map((e) => (
-              <Pressable key={e} onPress={() => setEmoji(e)} accessibilityRole="button" accessibilityState={{ selected: e === emoji }} style={[styles.emojiCell, e === emoji && styles.selected]}>
-                <Text style={{ fontSize: 24 }}>{e}</Text>
-              </Pressable>
+          <Text style={styles.label}>{t('profile.gender.label')}</Text>
+          <View style={styles.genderRow}>
+            {GENDERS.map((g) => (
+              <Pill key={g} emoji={GENDER_EMOJI[g]} label={t(`profile.gender.${g}`)} active={g === gender} onPress={() => setGender(g)} />
             ))}
           </View>
-          <Text style={styles.label}>{t('profile.edit.colorLabel')}</Text>
-          <View style={styles.colorRow}>
-            {AVATAR_COLORS.map((c) => (
-              <Pressable key={c} onPress={() => setColor(c)} accessibilityRole="button" accessibilityState={{ selected: c === color }} style={[styles.swatch, { backgroundColor: c }, c === color && styles.selected]} />
-            ))}
-          </View>
-          <Button label={t('profile.edit.save')} onPress={() => onSave({ ...profile, name: name.trim() || null, avatar: { emoji, color } })} />
+          <Text style={[type.caption, { color: colors.textMuted }]}>{t('profile.gender.note')}</Text>
+          <Button label={t('profile.edit.save')} onPress={() => onSave(draft())} />
         </View>
       </KeyboardAvoidingView>
     </Modal>
@@ -645,9 +676,7 @@ const styles = StyleSheet.create({
   section: { fontFamily: fonts.extrabold, fontSize: 12, letterSpacing: 1, color: colors.primary, marginTop: space.md },
   heading: { ...type.title, color: colors.text, marginTop: space.md },
   header: { alignItems: 'center', gap: space.sm },
-  bigAvatar: { width: 104, height: 104, borderRadius: 52, alignItems: 'center', justifyContent: 'center' },
-  bigAvatarEmoji: { fontSize: 56 },
-  smallAvatar: { width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center' },
+  framePill: { backgroundColor: colors.cardPeach, borderRadius: radius.pill, paddingHorizontal: 12, paddingVertical: 5, marginTop: -2 },
   name: { ...type.headline, color: colors.text },
   appleButton: { height: 50, width: '100%' },
   dangerLink: { alignSelf: 'center', paddingVertical: space.sm },
@@ -685,9 +714,6 @@ const styles = StyleSheet.create({
   sheet: { backgroundColor: colors.background, borderTopLeftRadius: radius.lg, borderTopRightRadius: radius.lg, padding: space.lg, paddingBottom: space.xl, gap: space.md },
   label: { ...type.label, color: colors.textMuted },
   input: { ...type.body, color: colors.text, backgroundColor: colors.surface, borderRadius: radius.md, paddingHorizontal: space.md, paddingVertical: 12 },
-  emojiGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
-  emojiCell: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.surface, borderWidth: 2, borderColor: 'transparent' },
-  colorRow: { flexDirection: 'row', gap: space.md },
-  swatch: { width: 40, height: 40, borderRadius: 20, borderWidth: 2, borderColor: 'transparent' },
+  genderRow: { flexDirection: 'row', flexWrap: 'wrap', gap: space.sm },
   selected: { borderColor: colors.purple },
 });

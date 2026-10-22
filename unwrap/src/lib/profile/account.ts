@@ -6,6 +6,7 @@ import Purchases from 'react-native-purchases';
 
 import { config } from '../config';
 import { initPurchases } from '../purchases';
+import { avatarForServer, parseAvatar } from './avatar';
 import { clearAccount, clearProfile, getAccount, getProfile, saveAccount, writeProfile, type Account, type Profile } from './store';
 
 /** Apple girişi bu cihazda var mı (Android/web'de yok). */
@@ -26,7 +27,8 @@ async function checkAuth(res: Response) {
   return res;
 }
 
-// Sunucuya yalnız ad, avatar ve elle yazılanlar gider (kart seçimi gitmez).
+// Sunucuya yalnız ad, avatar ve elle yazılanlar gider (kart seçimi, çerçeve, hitap gitmez).
+// Fotoğraf avatarı asla gönderilmez: sunucuya null gider, fotoğraf telefonda kalır.
 // Sunucu sınırları: ad ≤40, elle yazılan ≤30 adet, anahtar/değer ≤80 karakter.
 const LIMIT = { name: 40, overrides: 30, text: 80 };
 function forServer(p: Profile) {
@@ -36,7 +38,7 @@ function forServer(p: Profile) {
       .slice(0, LIMIT.overrides)
       .map(([k, v]) => [k, v.slice(0, LIMIT.text)]),
   );
-  return { name: p.name ? p.name.slice(0, LIMIT.name) : null, avatar: p.avatar, overrides };
+  return { name: p.name ? p.name.slice(0, LIMIT.name) : null, avatar: avatarForServer(p.avatar), overrides };
 }
 
 async function pushProfile(a: Account, p: Profile) {
@@ -62,13 +64,17 @@ async function pullProfile(a: Account) {
   try {
     const res = await checkAuth(await fetch(`${config.apiUrl}/api/profil`, { headers: authed(a) }));
     if (!res.ok) return;
-    const { profile: remote } = (await res.json()) as { profile: Pick<Profile, 'name' | 'avatar' | 'overrides'> | null };
+    const { profile: remote } = (await res.json()) as { profile: (Pick<Profile, 'name' | 'overrides'> & { avatar: unknown }) | null };
     if (remote) {
+      // Yerel fotoğraf sunucuda hiç yok: o varsa korunur.
+      const remoteAvatar = parseAvatar(remote.avatar, false);
       writeProfile({
         name: remote.name ?? local.name,
-        avatar: remote.avatar ?? local.avatar,
+        avatar: local.avatar?.kind === 'photo' ? local.avatar : remoteAvatar ?? local.avatar,
         overrides: { ...local.overrides, ...(remote.overrides ?? {}) },
-        // Kart seçimi yalnız yerelde
+        // Kart seçimi, çerçeve ve hitap yalnız yerelde
+        frame: local.frame,
+        gender: local.gender,
         shareKeys: local.shareKeys,
         shareColor: local.shareColor,
       });

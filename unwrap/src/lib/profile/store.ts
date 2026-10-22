@@ -3,11 +3,15 @@
 import * as SecureStore from 'expo-secure-store';
 import { File, Paths } from 'expo-file-system';
 
-export type Avatar = { emoji: string; color: string };
-// shareKeys/shareColor: paylaşım kartı seçimi, yalnız telefonda (sunucuya gitmez).
+import { parseAvatar, parseFrame, parseGender, type Avatar, type Frame, type Gender } from './avatar';
+
+export type { Avatar, Frame, Gender } from './avatar';
+// shareKeys/shareColor: paylaşım kartı seçimi; frame ve gender de yalnız telefonda (sunucuya gitmez).
 export type Profile = {
   name: string | null;
   avatar: Avatar | null;
+  frame: Frame | null;
+  gender: Gender;
   overrides: Record<string, string>;
   shareKeys: string[];
   shareColor: string | null;
@@ -17,7 +21,7 @@ export type Account = { uid: string; token: string };
 /** Karta ilk seferde konan eğlenceli istatistikler (kişi adı yok). */
 export const DEFAULT_SHARE_KEYS = ['ghosting', 'favoriteWord', 'favoriteEmoji', 'nightOwl', 'happiestMoment', 'laughs', 'medianReply', 'messages'];
 
-const empty = (): Profile => ({ name: null, avatar: null, overrides: {}, shareKeys: [...DEFAULT_SHARE_KEYS], shareColor: null });
+const empty = (): Profile => ({ name: null, avatar: null, frame: null, gender: 'notr', overrides: {}, shareKeys: [...DEFAULT_SHARE_KEYS], shareColor: null });
 const profileFile = () => new File(Paths.document, 'profil.json');
 
 export function getProfile(): Profile {
@@ -27,7 +31,10 @@ export function getProfile(): Profile {
     const p = JSON.parse(f.textSync()) as Partial<Profile>;
     return {
       name: p.name ?? null,
-      avatar: p.avatar ?? null,
+      // Eski {emoji, color} biçimi 'emoji' türüne çevrilir.
+      avatar: parseAvatar(p.avatar),
+      frame: parseFrame(p.frame),
+      gender: parseGender(p.gender),
       overrides: p.overrides ?? {},
       shareKeys: Array.isArray(p.shareKeys) ? p.shareKeys.filter((k) => typeof k === 'string') : [...DEFAULT_SHARE_KEYS],
       shareColor: typeof p.shareColor === 'string' ? p.shareColor : null,
@@ -36,6 +43,9 @@ export function getProfile(): Profile {
     return empty();
   }
 }
+
+/** Hitap (rozet unvanları için): 'kadin' | 'erkek' | 'notr'. */
+export const getGender = (): Gender => getProfile().gender;
 
 export function writeProfile(p: Profile) {
   const f = profileFile();

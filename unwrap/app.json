@@ -117,6 +117,14 @@
           "resizeMode": "contain",
           "backgroundColor": "#FFF8F8"
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Profil fotoğrafı seçmek için galerine erişim gerekir.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
       ]
     ],
     "experiments": {
