@@ -41,10 +41,10 @@ export default {
       },
       cold: {
         coldLately: 'De ce s-a răcit atât în ultima vreme?',
-        lateReply: 'De ce mi-a răspuns la ultimul mesaj abia după 3 ore?',
+        lateReply: 'De ce îmi răspunde acum mai greu decât înainte?',
         ghosted: 'Mi-a dat ghost? Ce fac acum?',
         seen: 'Mă lasă pe seen. De ce?',
-        shortReplies: 'De ce răspunde brusc doar cu un cuvânt?',
+        shortReplies: 'De ce răspunsurile au devenit atât de scurte?',
         stuck: 'Conversația s-a blocat. Cum o pornesc iar?',
         winBack: 'Cum îi recâștig interesul?',
       },
@@ -107,7 +107,7 @@ export default {
         contradictions: 'Se contrazice în ce spune?',
       },
       cold: {
-        change: 'Ce s-a schimbat la persoana asta în ultimele săptămâni?',
+        change: 'Ce s-a schimbat la persoana asta în ultima perioadă?',
         sinceWhen: 'De când scrie mai rece?',
         replyTime: 'A început să răspundă mai greu?',
         stuck: 'De ce s-a blocat conversația noastră?',
@@ -160,7 +160,7 @@ export default {
         lastCare: 'Când mi-a arătat ultima dată interes cu adevărat?',
       },
       cold: {
-        distance: 'S-a pus distanță între noi în ultimele săptămâni?',
+        distance: 'Începe să se pună distanță între noi?',
         change: 'Ce s-a schimbat la persoana asta în ultima vreme?',
       },
       fight: {

@@ -41,10 +41,10 @@ export default {
       },
       cold: {
         coldLately: 'Kenapa akhir-akhir ini dia jadi dingin?',
-        lateReply: 'Kenapa pesan terakhirku baru dibales 3 jam kemudian?',
+        lateReply: 'Kenapa sekarang dia balesnya lebih lama dari biasanya?',
         ghosted: 'Aku di-ghosting ya? Sekarang harus gimana?',
         seen: 'Cuma di-read doang, nggak dibales, kenapa?',
-        shortReplies: 'Kenapa balasannya jadi cuma satu kata?',
+        shortReplies: 'Kenapa balasannya jadi singkat banget?',
         stuck: 'Obrolannya mentok, gimana biar jalan lagi?',
         winBack: 'Gimana cara bikin dia tertarik lagi?',
       },
@@ -107,7 +107,7 @@ export default {
         contradictions: 'Ada yang kontradiktif dari omongannya nggak?',
       },
       cold: {
-        change: 'Apa yang berubah dari dia beberapa minggu ini?',
+        change: 'Apa yang berubah dari dia belakangan ini?',
         sinceWhen: 'Sejak kapan chatnya jadi lebih dingin?',
         replyTime: 'Balasnya jadi makin lama nggak?',
         stuck: 'Kenapa obrolan kami mentok?',
@@ -160,7 +160,7 @@ export default {
         lastCare: 'Kapan terakhir kali dia beneran perhatian ke aku?',
       },
       cold: {
-        distance: 'Beberapa minggu ini ada jarak di antara kita nggak?',
+        distance: 'Apa mulai ada jarak di antara kita?',
         change: 'Apa yang berubah dari dia akhir-akhir ini?',
       },
       fight: {

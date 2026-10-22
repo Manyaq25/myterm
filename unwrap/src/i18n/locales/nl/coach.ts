@@ -41,10 +41,10 @@ export default {
       },
       cold: {
         coldLately: 'Waarom is het de laatste tijd zo koel?',
-        lateReply: 'Waarom kwam er pas na 3 uur antwoord op mijn laatste bericht?',
+        lateReply: 'Waarom duurt het tegenwoordig langer voordat er antwoord komt?',
         ghosted: 'Word ik geghost? Wat moet ik nu?',
         seen: 'Op gelezen gezet en geen antwoord. Waarom?',
-        shortReplies: 'Waarom krijg ik ineens alleen nog antwoorden van één woord?',
+        shortReplies: 'Waarom zijn de antwoorden ineens zo kort?',
         stuck: 'Ons gesprek loopt vast. Hoe krijg ik het weer op gang?',
         winBack: 'Hoe wek ik de interesse weer?',
       },
@@ -107,7 +107,7 @@ export default {
         contradictions: 'Spreekt die persoon zichzelf ergens tegen?',
       },
       cold: {
-        change: 'Wat is er de afgelopen weken aan die persoon veranderd?',
+        change: 'Wat is er recent aan die persoon veranderd?',
         sinceWhen: 'Sinds wanneer voelen de berichten kouder?',
         replyTime: 'Duurt het langer voordat er antwoord komt?',
         stuck: 'Waarom is ons gesprek stilgevallen?',
@@ -160,7 +160,7 @@ export default {
         lastCare: 'Wanneer toonde die persoon voor het laatst echt interesse in mij?',
       },
       cold: {
-        distance: 'Is er de afgelopen weken afstand tussen ons gekomen?',
+        distance: 'Begint er afstand tussen ons te groeien?',
         change: 'Wat is er de laatste tijd aan die persoon veranderd?',
       },
       fight: {

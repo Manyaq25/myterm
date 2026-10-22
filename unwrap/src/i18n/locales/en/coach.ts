@@ -41,10 +41,10 @@ export default {
       },
       cold: {
         coldLately: 'Why have they gone cold lately?',
-        lateReply: 'Why did they take 3 hours to reply to my last text?',
+        lateReply: 'Why are they taking longer to reply than they used to?',
         ghosted: 'Did they ghost me? What do I do now?',
         seen: 'They leave me on read. Why?',
-        shortReplies: 'Why are their replies suddenly one word?',
+        shortReplies: 'Why have their replies gotten so short?',
         stuck: 'Our conversation feels stuck. How do I keep it going?',
         winBack: 'How do I get their interest back?',
       },
@@ -107,7 +107,7 @@ export default {
         contradictions: 'Do they contradict themselves anywhere?',
       },
       cold: {
-        change: 'What’s changed about them in the last few weeks?',
+        change: 'What’s changed about them recently?',
         sinceWhen: 'Since when have their texts felt colder?',
         replyTime: 'Are they taking longer to reply?',
         stuck: 'Why did our conversation stall?',
@@ -160,7 +160,7 @@ export default {
         lastCare: 'When did they last show real interest in me?',
       },
       cold: {
-        distance: 'Has distance grown between us in the last few weeks?',
+        distance: 'Is distance starting to grow between us?',
         change: 'What’s changed about them lately?',
       },
       fight: {

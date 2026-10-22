@@ -41,10 +41,10 @@ export default {
       },
       cold: {
         coldLately: '¿Por qué se ha enfriado tanto últimamente?',
-        lateReply: '¿Por qué tardó 3 horas en contestar mi último mensaje?',
+        lateReply: '¿Por qué ahora tarda más en contestarme que antes?',
         ghosted: '¿Me ha hecho ghosting? ¿Y ahora qué hago?',
         seen: 'Me deja en visto. ¿Por qué?',
-        shortReplies: '¿Por qué de repente me contesta con monosílabos?',
+        shortReplies: '¿Por qué sus respuestas se han vuelto tan cortas?',
         stuck: 'La conversación se ha estancado. ¿Cómo la reactivo?',
         winBack: '¿Cómo recupero su interés?',
       },
@@ -107,7 +107,7 @@ export default {
         contradictions: '¿Se contradice en algo de lo que dice?',
       },
       cold: {
-        change: '¿Qué ha cambiado en esa persona en las últimas semanas?',
+        change: '¿Qué ha cambiado en esa persona recientemente?',
         sinceWhen: '¿Desde cuándo escribe más frío?',
         replyTime: '¿Ahora tarda más en contestar?',
         stuck: '¿Por qué se estancó nuestra conversación?',
@@ -160,7 +160,7 @@ export default {
         lastCare: '¿Cuándo fue la última vez que mostró interés de verdad por mí?',
       },
       cold: {
-        distance: '¿Nos hemos distanciado en las últimas semanas?',
+        distance: '¿Nos estamos empezando a distanciar?',
         change: '¿Qué ha cambiado en esa persona últimamente?',
       },
       fight: {

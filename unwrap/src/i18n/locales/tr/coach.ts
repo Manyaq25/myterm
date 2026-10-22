@@ -43,10 +43,10 @@ export default {
       },
       cold: {
         coldLately: 'Son zamanlarda neden soğudu?',
-        lateReply: 'Son mesajıma neden 3 saat sonra cevap verdi?',
+        lateReply: 'Neden eskisinden daha geç cevap veriyor?',
         ghosted: 'Beni ghostladı mı, şimdi ne yapmalıyım?',
         seen: 'Görüp cevap vermiyor, neden?',
-        shortReplies: 'Cevapları neden tek kelimeye düştü?',
+        shortReplies: 'Cevapları neden bu kadar kısaldı?',
         stuck: 'Sohbet tıkandı, nasıl ilerleyebilirim?',
         winBack: 'İlgisini yeniden nasıl kazanırım?',
       },
@@ -109,7 +109,7 @@ export default {
         contradictions: 'Söyledikleri arasında çelişki var mı?',
       },
       cold: {
-        change: 'Son haftalarda ondaki değişim ne?',
+        change: 'Onda son zamanlarda ne değişti?',
         sinceWhen: 'Ne zamandan beri daha soğuk yazıyor?',
         replyTime: 'Cevap verme süresi uzadı mı?',
         stuck: 'Sohbetimiz neden tıkandı?',
@@ -162,7 +162,7 @@ export default {
         lastCare: 'Bana en son ne zaman gerçekten ilgi gösterdi?',
       },
       cold: {
-        distance: 'Son haftalarda aramıza mesafe girdi mi?',
+        distance: 'Aramıza mesafe girmeye mi başladı?',
         change: 'Son zamanlarda ondaki değişim ne?',
       },
       fight: {
