@@ -8,6 +8,11 @@ on:
     branches: [main, "claude/**"]
     paths: ["unwrap/backend/**", ".github/workflows/unwrap-deploy-backend.yml"]
 
+# Aynı anda iki yayın çakışmasın (sağlık kontrolü yarım geçişte hata görüyordu).
+concurrency:
+  group: unwrap-backend-deploy
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
