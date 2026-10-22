@@ -12,6 +12,7 @@ import { Button, Card, Sticker, useTopInset } from '@/components/ui';
 import { t } from '@/i18n';
 import { ApiError, errorText, requestReport } from '@/lib/ai/api';
 import type { Report, ReportCard } from '@/lib/ai/types';
+import { bump } from '@/lib/profile/activity';
 import { isPro } from '@/lib/purchases';
 import { getAnalysis, updateAnalysis } from '@/lib/store';
 import { colors, fonts, radius, space, type } from '@/theme';
@@ -51,6 +52,11 @@ export default function Rapor() {
   useEffect(() => {
     if (!report) generate();
   }, [report, generate]);
+
+  // Rozet sayacı: rapor ekranda göründü
+  useEffect(() => {
+    if (report) bump('report_opened');
+  }, [report]);
 
   if (!analysis) return null;
 
@@ -144,6 +150,7 @@ function Shareable({ bg, children }: { bg: string; children: ReactNode }) {
     try {
       const uri = await captureRef(ref, { format: 'png', quality: 1 });
       await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: t('report.shareDialog') });
+      bump('card_shared');
     } catch {
       Alert.alert(t('report.shareFailTitle'), t('report.shareFailBody'));
     }

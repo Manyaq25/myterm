@@ -12,6 +12,7 @@ import { StoryCard } from '@/components/StoryCard';
 import { Button, useTopInset } from '@/components/ui';
 import { t } from '@/i18n';
 import { buildFreeCards } from '@/lib/cards/free';
+import { bump } from '@/lib/profile/activity';
 import { isPro } from '@/lib/purchases';
 import { getAnalysis } from '@/lib/store';
 import { colors, radius, space, type } from '@/theme';
@@ -39,6 +40,7 @@ export default function Hikaye() {
     try {
       const uri = await captureRef(shot, { format: 'png', quality: 1 });
       await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: t('story.viewer.shareDialog') });
+      bump('card_shared');
     } catch {
       Alert.alert(t('story.viewer.shareFailTitle'), t('story.viewer.shareFailBody'));
     }

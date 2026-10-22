@@ -1,6 +1,7 @@
 // Bir sohbet dosyasını okuyup yeni analiz olarak kaydeder. "Dosya seç" ve
 // WhatsApp paylaşım menüsünden gelen dosya aynı yoldan geçer.
 import { t } from '@/i18n';
+import { bump } from '../profile/activity';
 import { newId, saveAnalysis } from '../store';
 import { loadChatFile } from './load';
 import { computeStats } from './stats';
@@ -30,5 +31,6 @@ export async function importChatFile(uri: string, name?: string): Promise<string
     stats,
     messages: chat.messages,
   });
+  bump('analysis_created');
   return id;
 }

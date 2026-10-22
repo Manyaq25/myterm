@@ -11,6 +11,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
+import { recordOpen } from '@/lib/profile/activity';
 import { initPurchases } from '@/lib/purchases';
 import { colors } from '@/theme';
 
@@ -26,6 +27,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     initPurchases();
+    recordOpen();
   }, []);
 
   useEffect(() => {

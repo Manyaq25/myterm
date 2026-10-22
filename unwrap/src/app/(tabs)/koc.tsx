@@ -21,6 +21,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card, Pill } from '@/components/ui';
 import { ApiError, askCoach, errorText } from '@/lib/ai/api';
 import type { CoachRole, CoachTurn } from '@/lib/ai/types';
+import { bump } from '@/lib/profile/activity';
 import { isPro } from '@/lib/purchases';
 import { t } from '@/i18n';
 import { RELATIONS, isRomantic } from '@/lib/relations';
@@ -191,6 +192,7 @@ export default function Koc() {
       const done: CoachTurn[] = [...next, { role: 'assistant', text: answer.text, pro: answer.proRequired || undefined }];
       setHistory(done);
       save(analysis, role, done);
+      bump('mila_question');
     } catch (e) {
       setHistory(history);
       setInput(q);
