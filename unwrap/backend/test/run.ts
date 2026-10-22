@@ -125,6 +125,10 @@ test('oturum belirteci: rastgele, özeti kararlı, Bearer okunur', () => {
 test('profil şeması: geçerli gövdeler kabul edilir', () => {
   assert.ok(ProfileSchema.safeParse({ name: 'Ayşe', avatar: { emoji: '🦊', color: '#FF8800' }, overrides: { Ali: 'Ali Bey' } }).success);
   assert.ok(ProfileSchema.safeParse({ name: null, avatar: null, overrides: {} }).success);
+  assert.ok(ProfileSchema.safeParse({ name: 'A', avatar: { kind: 'emoji', emoji: '🦊', color: '#FF8800' }, overrides: {} }).success);
+  assert.ok(ProfileSchema.safeParse({ name: 'A', avatar: { kind: 'preset', id: 'f01', color: '#FF8800' }, overrides: {} }).success);
+  assert.ok(!ProfileSchema.safeParse({ name: 'A', avatar: { kind: 'preset', id: 'F 01!', color: '#FF8800' }, overrides: {} }).success);
+  assert.ok(!ProfileSchema.safeParse({ name: 'A', avatar: { kind: 'photo', file: 'x.jpg', color: '#FF8800' }, overrides: {} }).success);
 });
 
 test('profil şeması: hatalı gövdeler reddedilir', () => {
