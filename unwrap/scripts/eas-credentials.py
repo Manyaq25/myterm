@@ -7,7 +7,10 @@ import time
 
 import pexpect
 
-cmd = 'eas credentials:configure-build --platform ios --profile production'
+# Kullanım: eas-credentials.py [ios|android] [profil]
+platform = sys.argv[1] if len(sys.argv) > 1 else 'ios'
+profile = sys.argv[2] if len(sys.argv) > 2 else 'production'
+cmd = f'eas credentials:configure-build --platform {platform} --profile {profile}'
 child = pexpect.spawn(cmd, encoding='utf-8', timeout=300, dimensions=(50, 200))
 child.logfile_read = sys.stdout
 

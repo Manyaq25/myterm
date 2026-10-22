@@ -1,0 +1,34 @@
+# Unwrap Android test derlemesi: telefona doğrudan kurulan APK (Google Play gerekmez).
+# Mağaza değildir; satın alma Play'e bağlanınca ayrıca açılır. Synvia'dan ayrı EAS projesi.
+# Tetikleme: elle ya da unwrap/derle-android.txt değişince.
+name: Unwrap Android test derlemesi (APK)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**", main]
+    paths: ["unwrap/derle-android.txt"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: unwrap
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Android imza anahtarı (yoksa EAS üretir ve saklar)
+        run: |
+          pip install --quiet pexpect
+          python3 scripts/eas-credentials.py android android-test
+      - name: APK derle
+        run: eas build --platform android --profile android-test --non-interactive --no-wait

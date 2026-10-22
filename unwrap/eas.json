@@ -11,6 +11,13 @@
         "EXPO_PUBLIC_API_URL": "https://unwrap-backend.vercel.app"
       },
       "channel": "production"
+    },
+    "android-test": {
+      "extends": "production",
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
     }
   },
   "submit": {
