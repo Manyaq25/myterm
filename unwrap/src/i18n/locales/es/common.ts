@@ -44,4 +44,20 @@ export default {
     opening: 'Abriendo tu chat…',
     failedTitle: 'No se pudo leer el archivo',
   },
+  report: {
+    title: 'Reportar contenido',
+    subtitle: '¿Qué falla en esta respuesta de la IA? Solo se envía este texto, nunca tu chat.',
+    action: 'Reportar contenido',
+    notePlaceholder: '¿Algo que añadir? (opcional)',
+    send: 'Enviar',
+    thanksTitle: 'Gracias',
+    thanksText: 'Recibimos tu reporte. Lo revisaremos para mejorar a Mila.',
+    reasons: {
+      saldirgan: 'Ofensivo',
+      cinsel: 'Contenido sexual',
+      zararli: 'Dañino',
+      yanlis: 'Incorrecto',
+      diger: 'Otro',
+    },
+  },
 };

@@ -8,6 +8,7 @@ import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { captureRef } from 'react-native-view-shot';
 
+import { ReportSheet } from '@/components/ReportSheet';
 import { Button, Card, Sticker, useTopInset } from '@/components/ui';
 import { t } from '@/i18n';
 import { ApiError, errorText, requestReport } from '@/lib/ai/api';
@@ -21,6 +22,9 @@ const BAR_COLORS = [colors.coral, colors.purple, colors.green, colors.primary];
 const CARD_BG = [colors.cardPeach, colors.cardLilac, colors.cardButter, colors.cardCoral];
 const FUN = new Set(['yalan', 'manipulatif', 'arzu']);
 
+// Bildirime yalnız yapay zekâ metni gider (özet + kart başlık/açıklamaları; alıntılar sohbetten olduğu için gitmez).
+const reportText = (r: Report) => [r.summary, ...r.cards.map((c) => `${c.title}: ${c.caption}`)].join('\n').slice(0, 2000);
+
 export default function Rapor() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const analysis = useMemo(() => getAnalysis(id), [id]);
@@ -28,6 +32,7 @@ export default function Rapor() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const topInset = useTopInset();
+  const [reporting, setReporting] = useState<string | null>(null);
 
   const generate = useCallback(async () => {
     if (!analysis) return;
@@ -137,8 +142,12 @@ export default function Rapor() {
           <Text style={styles.disclaimer}>
             {t('report.disclaimer')}
           </Text>
+          <Pressable onPress={() => setReporting(reportText(report))} accessibilityRole="button" hitSlop={8} style={styles.flag}>
+            <Text style={[type.caption, { color: colors.textMuted }]}>⚑ {t('common.report.action')}</Text>
+          </Pressable>
         </ScrollView>
       )}
+      <ReportSheet kind="rapor" text={reporting} onClose={() => setReporting(null)} />
     </SafeAreaView>
   );
 }
@@ -267,4 +276,5 @@ const styles = StyleSheet.create({
   karneSubject: { flex: 2, textAlign: 'left' },
   grade: { fontFamily: fonts.extrabold, fontSize: 20 },
   disclaimer: { ...type.caption, color: colors.textMuted, textAlign: 'center' },
+  flag: { alignSelf: 'center', paddingVertical: space.xs },
 });

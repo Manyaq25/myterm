@@ -44,4 +44,20 @@ export default {
     opening: 'Apertura della chat…',
     failedTitle: 'Impossibile leggere il file',
   },
+  report: {
+    title: 'Segnala contenuto',
+    subtitle: 'Cosa non va in questa risposta dell’IA? Inviamo solo questo testo, mai la tua chat.',
+    action: 'Segnala contenuto',
+    notePlaceholder: 'Vuoi aggiungere qualcosa? (facoltativo)',
+    send: 'Invia',
+    thanksTitle: 'Grazie',
+    thanksText: 'Abbiamo ricevuto la segnalazione. La esamineremo per migliorare Mila.',
+    reasons: {
+      saldirgan: 'Offensivo',
+      cinsel: 'Contenuto sessuale',
+      zararli: 'Dannoso',
+      yanlis: 'Inesatto',
+      diger: 'Altro',
+    },
+  },
 };

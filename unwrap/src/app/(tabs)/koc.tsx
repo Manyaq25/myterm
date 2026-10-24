@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { ReportSheet } from '@/components/ReportSheet';
 import { Card, Pill } from '@/components/ui';
 import { ApiError, askCoach, errorText } from '@/lib/ai/api';
 import type { CoachRole, CoachTurn } from '@/lib/ai/types';
@@ -127,6 +128,8 @@ export default function Koc() {
   const [pro, setPro] = useState(false);
   const [cat, setCat] = useState<string | null>(null);
   const listRef = useRef<FlatList<CoachTurn>>(null);
+  // Bildirilecek Mila cevabı (null: pencere kapalı).
+  const [reporting, setReporting] = useState<string | null>(null);
 
   /** 'genel' = sohbet seçmeden Mila ile konuşma. */
   const select = useCallback((id: string) => {
@@ -285,14 +288,26 @@ export default function Koc() {
               </View>
             }
             renderItem={({ item }) => (
-              <View style={[styles.bubble, item.role === 'user' ? styles.mine : styles.theirs]}>
+              <Pressable
+                onLongPress={item.role === 'assistant' ? () => setReporting(item.text) : undefined}
+                style={[styles.bubble, item.role === 'user' ? styles.mine : styles.theirs]}>
                 <Text style={[type.body, { color: item.role === 'user' ? colors.onPrimary : colors.text }]}>{item.text}</Text>
                 {item.pro && !pro ? (
                   <Pressable onPress={() => router.push('/pro')} style={styles.proCta}>
                     <Text style={[type.label, { color: colors.onPrimary }]}>{t('coach.unlockAnswer')}</Text>
                   </Pressable>
                 ) : null}
-              </View>
+                {item.role === 'assistant' ? (
+                  <Pressable
+                    onPress={() => setReporting(item.text)}
+                    accessibilityRole="button"
+                    accessibilityLabel={t('common.report.title')}
+                    hitSlop={10}
+                    style={styles.flag}>
+                    <Text style={[type.caption, { color: colors.textMuted }]}>⚑</Text>
+                  </Pressable>
+                ) : null}
+              </Pressable>
             )}
             ListFooterComponent={sending ? <ActivityIndicator color={colors.primary} style={{ marginTop: space.sm }} /> : null}
           />
@@ -317,6 +332,7 @@ export default function Koc() {
           </View>
         <Text style={styles.note}>{t('coach.note')}</Text>
       </KeyboardAvoidingView>
+      <ReportSheet kind="mila" text={reporting} onClose={() => setReporting(null)} />
     </SafeAreaView>
   );
 }
@@ -332,6 +348,7 @@ const styles = StyleSheet.create({
   proCta: { marginTop: space.sm, alignSelf: 'flex-start', backgroundColor: colors.coral, borderRadius: radius.pill, paddingHorizontal: 14, paddingVertical: 8 },
   bubble: { maxWidth: '85%', borderRadius: radius.md, paddingVertical: space.sm, paddingHorizontal: space.md },
   mine: { alignSelf: 'flex-end', backgroundColor: colors.primary, borderBottomRightRadius: 6 },
+  flag: { alignSelf: 'flex-end', marginTop: 2 },
   theirs: { alignSelf: 'flex-start', backgroundColor: colors.surface, borderBottomLeftRadius: 6 },
   inputRow: { flexDirection: 'row', alignItems: 'flex-end', gap: space.sm, paddingHorizontal: space.md, paddingTop: space.sm },
   input: {

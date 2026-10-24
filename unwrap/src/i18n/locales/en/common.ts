@@ -44,4 +44,20 @@ export default {
     opening: 'Opening your chat…',
     failedTitle: 'Couldn’t read the file',
   },
+  report: {
+    title: 'Report content',
+    subtitle: 'What’s wrong with this AI response? Only this text is sent to us, never your chat.',
+    action: 'Report content',
+    notePlaceholder: 'Anything to add? (optional)',
+    send: 'Send',
+    thanksTitle: 'Thank you',
+    thanksText: 'We got your report. We’ll review it and use it to improve Mila.',
+    reasons: {
+      saldirgan: 'Offensive',
+      cinsel: 'Sexual content',
+      zararli: 'Harmful',
+      yanlis: 'Inaccurate',
+      diger: 'Other',
+    },
+  },
 };

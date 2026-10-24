@@ -44,4 +44,20 @@ export default {
     opening: 'Abrindo sua conversa…',
     failedTitle: 'Não deu pra ler o arquivo',
   },
+  report: {
+    title: 'Denunciar conteúdo',
+    subtitle: 'O que há de errado nesta resposta da IA? Só este texto é enviado, nunca a sua conversa.',
+    action: 'Denunciar conteúdo',
+    notePlaceholder: 'Quer acrescentar algo? (opcional)',
+    send: 'Enviar',
+    thanksTitle: 'Obrigado',
+    thanksText: 'Recebemos sua denúncia. Vamos analisá-la para melhorar a Mila.',
+    reasons: {
+      saldirgan: 'Ofensivo',
+      cinsel: 'Conteúdo sexual',
+      zararli: 'Prejudicial',
+      yanlis: 'Incorreto',
+      diger: 'Outro',
+    },
+  },
 };

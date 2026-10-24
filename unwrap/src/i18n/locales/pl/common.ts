@@ -44,4 +44,20 @@ export default {
     opening: 'Otwieramy twój czat…',
     failedTitle: 'Nie udało się odczytać pliku',
   },
+  report: {
+    title: 'Zgłoś treść',
+    subtitle: 'Co jest nie tak z tą odpowiedzią AI? Wysyłamy tylko ten tekst, nigdy Twojego czatu.',
+    action: 'Zgłoś treść',
+    notePlaceholder: 'Chcesz coś dodać? (opcjonalnie)',
+    send: 'Wyślij',
+    thanksTitle: 'Dziękujemy',
+    thanksText: 'Otrzymaliśmy zgłoszenie. Przejrzymy je i wykorzystamy, by ulepszyć Milę.',
+    reasons: {
+      saldirgan: 'Obraźliwe',
+      cinsel: 'Treści seksualne',
+      zararli: 'Szkodliwe',
+      yanlis: 'Nieprawdziwe',
+      diger: 'Inne',
+    },
+  },
 };

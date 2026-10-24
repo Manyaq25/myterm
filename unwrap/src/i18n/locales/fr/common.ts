@@ -44,4 +44,20 @@ export default {
     opening: 'Ouverture de ta discussion…',
     failedTitle: 'Fichier illisible',
   },
+  report: {
+    title: 'Signaler le contenu',
+    subtitle: 'Quel est le problème avec cette réponse de l’IA ? Seul ce texte nous est envoyé, jamais ta conversation.',
+    action: 'Signaler le contenu',
+    notePlaceholder: 'Quelque chose à ajouter ? (facultatif)',
+    send: 'Envoyer',
+    thanksTitle: 'Merci',
+    thanksText: 'Ton signalement nous est parvenu. Nous l’examinerons pour améliorer Mila.',
+    reasons: {
+      saldirgan: 'Offensant',
+      cinsel: 'Contenu sexuel',
+      zararli: 'Dangereux',
+      yanlis: 'Inexact',
+      diger: 'Autre',
+    },
+  },
 };

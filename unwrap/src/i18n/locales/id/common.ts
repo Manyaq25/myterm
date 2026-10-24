@@ -44,4 +44,20 @@ export default {
     opening: 'Lagi buka chat kamu…',
     failedTitle: 'File nggak bisa dibaca',
   },
+  report: {
+    title: 'Laporkan konten',
+    subtitle: 'Apa yang salah dengan jawaban AI ini? Hanya teks ini yang dikirim, bukan chat kamu.',
+    action: 'Laporkan konten',
+    notePlaceholder: 'Ada yang ingin ditambahkan? (opsional)',
+    send: 'Kirim',
+    thanksTitle: 'Terima kasih',
+    thanksText: 'Laporanmu sudah kami terima. Kami akan meninjaunya untuk memperbaiki Mila.',
+    reasons: {
+      saldirgan: 'Menyinggung',
+      cinsel: 'Konten seksual',
+      zararli: 'Berbahaya',
+      yanlis: 'Tidak akurat',
+      diger: 'Lainnya',
+    },
+  },
 };

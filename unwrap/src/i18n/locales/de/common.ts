@@ -44,4 +44,20 @@ export default {
     opening: 'Dein Chat wird geöffnet…',
     failedTitle: 'Datei konnte nicht gelesen werden',
   },
+  report: {
+    title: 'Inhalt melden',
+    subtitle: 'Was stimmt mit dieser KI-Antwort nicht? Nur dieser Text wird gesendet, nie dein Chat.',
+    action: 'Inhalt melden',
+    notePlaceholder: 'Möchtest du etwas ergänzen? (optional)',
+    send: 'Senden',
+    thanksTitle: 'Danke',
+    thanksText: 'Deine Meldung ist angekommen. Wir prüfen sie und verbessern damit Mila.',
+    reasons: {
+      saldirgan: 'Beleidigend',
+      cinsel: 'Sexueller Inhalt',
+      zararli: 'Schädlich',
+      yanlis: 'Falsch',
+      diger: 'Sonstiges',
+    },
+  },
 };

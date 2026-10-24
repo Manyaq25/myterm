@@ -1,0 +1,62 @@
+# Unwrap Google Play kurulumu: mağaza kaydı (metin + görsel + ayrıntılar), unwrap_pro aboneliği
+# (aylik / yillik + 7 gün deneme) ve RevenueCat ürün/paket bağlantıları. Tekrar çalıştırılabilir.
+# KESİN KURAL: hiçbir yayın kanalına (production dahil) sürüm oluşturmaz ya da değiştirmez.
+# Synvia'dan ayrı; yalnız com.aydinapp.unwrap.
+# Tetikleme: elle ya da unwrap/play-kurulum.txt değişince.
+name: Unwrap Google Play kurulumu
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Adımlar (virgülle): listings,subscriptions"
+        default: "listings,subscriptions"
+      not_send_for_review:
+        description: "Mağaza kaydını incelemeye gönderme (Play Console'dan elle gönderilir)"
+        type: boolean
+        default: false
+      reprice:
+        description: "Var olan temel planların bölge fiyatlarını yeniden hesapla"
+        type: boolean
+        default: false
+      revenuecat:
+        description: "RevenueCat adımını da çalıştır"
+        type: boolean
+        default: true
+  push:
+    branches: ["claude/**", main]
+    paths: ["unwrap/play-kurulum.txt"]
+
+concurrency:
+  group: unwrap-play-setup
+  cancel-in-progress: false
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: unwrap
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet google-auth requests
+      - name: Giriş kontrolü (çevrimdışı)
+        run: python3 scripts/play-setup.py --dry-run || echo "UYARI - dry-run eksik/hatalı giriş buldu, ayrıntı yukarıda"
+      - name: Google Play (mağaza kaydı + abonelik)
+        env:
+          PLAY_SA_JSON: ${{ secrets.UNWRAP_PLAY_SA_JSON }}
+          PLAY_CONTACT_EMAIL: ${{ vars.UNWRAP_PLAY_CONTACT_EMAIL }}
+          PLAY_NOT_SEND_FOR_REVIEW: ${{ inputs.not_send_for_review && '1' || '' }}
+          PLAY_REPRICE: ${{ inputs.reprice && '1' || '' }}
+        run: |
+          [ -z "$PLAY_SA_JSON" ] && { echo "UNWRAP_PLAY_SA_JSON yok"; exit 1; }
+          python3 scripts/play-setup.py --only "${{ inputs.only || 'listings,subscriptions' }}"
+      - name: RevenueCat (en iyi çaba)
+        if: always() && (github.event_name == 'push' || inputs.revenuecat)
+        env:
+          RC_SECRET_KEY: ${{ secrets.UNWRAP_REVENUECAT_SECRET_KEY }}
+          RC_PROJECT_ID: ${{ vars.UNWRAP_RC_PROJECT_ID }}
+        run: python3 scripts/play-setup.py --only revenuecat

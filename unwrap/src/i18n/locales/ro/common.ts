@@ -44,4 +44,20 @@ export default {
     opening: 'Se deschide chatul…',
     failedTitle: 'Fișierul nu a putut fi citit',
   },
+  report: {
+    title: 'Raportează conținutul',
+    subtitle: 'Ce nu e în regulă cu acest răspuns AI? Trimitem doar acest text, niciodată conversația ta.',
+    action: 'Raportează conținutul',
+    notePlaceholder: 'Vrei să adaugi ceva? (opțional)',
+    send: 'Trimite',
+    thanksTitle: 'Mulțumim',
+    thanksText: 'Am primit raportul. Îl vom analiza ca s-o îmbunătățim pe Mila.',
+    reasons: {
+      saldirgan: 'Ofensator',
+      cinsel: 'Conținut sexual',
+      zararli: 'Dăunător',
+      yanlis: 'Incorect',
+      diger: 'Altceva',
+    },
+  },
 };

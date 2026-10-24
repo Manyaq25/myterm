@@ -86,6 +86,14 @@ export async function askCoach(
   return { text, proRequired: Boolean(proRequired) };
 }
 
+export type ReportKind = 'mila' | 'rapor';
+export type ReportReason = 'saldirgan' | 'cinsel' | 'zararli' | 'yanlis' | 'diger';
+
+/** Yapay zekâ içeriğini bildirir (yalnız yapay zekâ metni gider, sohbet gitmez). */
+export async function reportContent(r: { kind: ReportKind; reason: ReportReason; text: string; note?: string }) {
+  await post<{ ok: true }>('/api/bildir', { ...r, text: r.text.slice(0, 2000), note: r.note?.slice(0, 300), lang: lang() });
+}
+
 /** "Bu hafta X sohbet analiz edildi" — sayı henüz anlamlı değilse null. */
 export async function weeklyCount(): Promise<number | null> {
   try {

@@ -44,4 +44,20 @@ export default {
     opening: 'Je chat wordt geopend…',
     failedTitle: 'Bestand niet leesbaar',
   },
+  report: {
+    title: 'Inhoud melden',
+    subtitle: 'Wat klopt er niet aan dit AI-antwoord? Alleen deze tekst wordt verstuurd, nooit je chat.',
+    action: 'Inhoud melden',
+    notePlaceholder: 'Iets toe te voegen? (optioneel)',
+    send: 'Versturen',
+    thanksTitle: 'Bedankt',
+    thanksText: 'Je melding is binnen. We bekijken hem en gebruiken hem om Mila te verbeteren.',
+    reasons: {
+      saldirgan: 'Beledigend',
+      cinsel: 'Seksuele inhoud',
+      zararli: 'Schadelijk',
+      yanlis: 'Onjuist',
+      diger: 'Anders',
+    },
+  },
 };

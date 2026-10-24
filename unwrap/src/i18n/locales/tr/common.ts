@@ -44,4 +44,20 @@ export default {
     opening: 'Sohbetin açılıyor…',
     failedTitle: 'Dosya okunamadı',
   },
+  report: {
+    title: 'İçeriği bildir',
+    subtitle: 'Bu yapay zekâ cevabında sorun ne? Yalnız bu metin bize iletilir, sohbetin gönderilmez.',
+    action: 'İçeriği bildir',
+    notePlaceholder: 'Eklemek istediğin bir not (isteğe bağlı)',
+    send: 'Gönder',
+    thanksTitle: 'Teşekkürler',
+    thanksText: 'Bildirimin bize ulaştı. İnceleyip Mila’yı iyileştirmek için kullanacağız.',
+    reasons: {
+      saldirgan: 'Saldırgan',
+      cinsel: 'Cinsel içerik',
+      zararli: 'Zararlı',
+      yanlis: 'Yanlış bilgi',
+      diger: 'Diğer',
+    },
+  },
 };
