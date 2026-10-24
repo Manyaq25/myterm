@@ -1,0 +1,471 @@
+<!doctype html>
+<!--
+  Unwrap Google Play telefon ekran görüntüsü şablonu (1080×1920).
+  Kullanım: template.html?lang=tr&n=1   (lang: tr | en, n: 1..6)
+  render.mjs bu sayfayı Chromium ile açıp PNG'ye çevirir.
+  Ekrandaki tüm isimler ve değerler örnektir; gerçek kişi verisi yoktur.
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<title>Unwrap screenshot</title>
+<style>
+  @font-face { font-family: 'PJS'; font-weight: 500; src: url('../../../node_modules/@expo-google-fonts/plus-jakarta-sans/500Medium/PlusJakartaSans_500Medium.ttf'); }
+  @font-face { font-family: 'PJS'; font-weight: 600; src: url('../../../node_modules/@expo-google-fonts/plus-jakarta-sans/600SemiBold/PlusJakartaSans_600SemiBold.ttf'); }
+  @font-face { font-family: 'PJS'; font-weight: 700; src: url('../../../node_modules/@expo-google-fonts/plus-jakarta-sans/700Bold/PlusJakartaSans_700Bold.ttf'); }
+  @font-face { font-family: 'PJS'; font-weight: 800; src: url('../../../node_modules/@expo-google-fonts/plus-jakarta-sans/800ExtraBold/PlusJakartaSans_800ExtraBold.ttf'); }
+
+  :root {
+    --bg: #FFF8F8; --surface: #FFFFFF; --low: #FBF1F2; --mid: #F5ECED; --high: #EFE6E7;
+    --text: #1E1B1C; --muted: #584140; --outline: #E0BFBD; --primary: #AE2F34; --coral: #FF6B6B;
+    --purple: #674BB5; --lilac: #E8DDFF; --green: #00B35C; --mint: #6DFE9C;
+    --peach: #FDE3DD; --cLilac: #E9E1FF; --cMint: #7DF5A4; --butter: #FFF1BF; --cCoral: #FFD6D2;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; }
+  body { font-family: 'PJS', 'Noto Color Emoji', sans-serif; color: var(--text); background: var(--bg); -webkit-font-smoothing: antialiased; }
+  .emoji { font-family: 'Noto Color Emoji'; }
+
+  /* ---------- Canvas ---------- */
+  .canvas { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+  .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .55; }
+  .head { position: absolute; left: 70px; right: 70px; top: 96px; text-align: center; z-index: 3; }
+  .eyebrow { display: inline-block; font-weight: 800; font-size: 30px; letter-spacing: 3px; color: var(--primary);
+    background: rgba(255,255,255,.85); padding: 14px 28px; border-radius: 999px; box-shadow: 0 8px 24px rgba(174,47,52,.12); }
+  .headline { margin-top: 34px; font-weight: 800; font-size: 104px; line-height: 1.06; letter-spacing: -3.5px; white-space: pre-line; }
+  .sub { margin-top: 24px; font-weight: 600; font-size: 36px; line-height: 1.3; color: var(--muted); }
+
+  .dark .eyebrow { color: #fff; background: rgba(255,255,255,.18); box-shadow: none; }
+  .dark .headline { color: #fff; }
+  .dark .sub { color: rgba(255,255,255,.88); }
+
+  /* ---------- Phone ---------- */
+  .phone { position: absolute; left: 140px; top: 640px; width: 800px; height: 1700px; border-radius: 112px;
+    background: #1A1718; padding: 18px; z-index: 2;
+    box-shadow: 0 40px 90px rgba(90,20,24,.28), inset 0 0 0 3px #3a3335; }
+  .screen { position: relative; width: 764px; height: 1664px; border-radius: 96px; overflow: hidden; background: var(--bg); }
+  .island { position: absolute; top: 22px; left: 50%; width: 220px; height: 64px; margin-left: -110px; background: #000; border-radius: 40px; z-index: 9; }
+  /* Uygulama 390 pt genişlikte çizilir, ekrana ölçeklenir */
+  .app { position: absolute; left: 0; top: 0; width: 390px; height: 850px; transform: scale(1.959); transform-origin: 0 0; }
+
+  /* ---------- Floating stickers (canvas scale) ---------- */
+  .float { position: absolute; z-index: 4; font-weight: 800; font-size: 34px; letter-spacing: .5px; padding: 18px 28px; border-radius: 34px;
+    box-shadow: 0 16px 36px rgba(30,27,28,.18); white-space: nowrap; }
+
+  /* ---------- App UI (logical pt) ---------- */
+  .status { height: 54px; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 30px 6px 34px; font-weight: 700; font-size: 15px; }
+  .status svg { display: block; }
+  .sicons { display: flex; gap: 6px; align-items: center; }
+  .appbar { display: flex; align-items: center; gap: 10px; padding: 10px 20px 8px; }
+  .back { width: 36px; height: 36px; border-radius: 18px; background: var(--mid); display: flex; align-items: center; justify-content: center; flex: none; }
+  .apptitle { font-weight: 800; font-size: 22px; letter-spacing: -.4px; flex: 1; }
+  .apptitle small { display: block; font-weight: 600; font-size: 12px; color: var(--muted); letter-spacing: 0; }
+  .pro { font-weight: 800; font-size: 11px; letter-spacing: 1px; color: #fff; background: var(--primary); padding: 5px 9px; border-radius: 999px; }
+  .sample { position: absolute; top: 37px; left: 84px; font-weight: 800; font-size: 9px; letter-spacing: 1.2px; color: var(--muted); background: var(--high); padding: 3px 7px; border-radius: 6px; z-index: 8; }
+  .content { padding: 6px 20px 0; display: flex; flex-direction: column; gap: 14px; }
+  .card { position: relative; background: var(--surface); border-radius: 26px; padding: 20px; box-shadow: 0 8px 20px rgba(174,47,52,.10); }
+  .ctitle { font-weight: 800; font-size: 20px; letter-spacing: -.3px; line-height: 1.2; }
+  .sticker { display: inline-block; font-weight: 800; font-size: 12px; letter-spacing: .5px; padding: 7px 12px; border-radius: 16px; box-shadow: 0 4px 8px rgba(0,0,0,.12); white-space: nowrap; }
+  .stTR { position: absolute; top: -12px; right: 14px; z-index: 2; }
+  .row { display: flex; align-items: center; gap: 8px; background: var(--low); border-radius: 12px; padding: 9px 10px; margin-top: 6px; }
+  .row .i { font-size: 16px; }
+  .row .l { font-weight: 700; font-size: 13px; flex: 1; }
+  .row .v { font-weight: 800; font-size: 13px; }
+  .quote { background: var(--mid); border-radius: 12px; padding: 10px 12px; margin-top: 8px; font-weight: 500; font-size: 13px; line-height: 1.45; }
+  .caption { font-weight: 600; font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.4; }
+  .track { height: 12px; border-radius: 6px; background: var(--lilac); overflow: hidden; margin-top: 6px; }
+  .fill { height: 12px; border-radius: 6px; background: var(--coral); }
+  .legend { display: flex; justify-content: space-between; font-weight: 600; font-size: 12px; color: var(--muted); margin-top: 5px; }
+  .lbl { font-weight: 700; font-size: 14px; margin-top: 12px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  /* Story viewer */
+  .segs { display: flex; gap: 4px; padding: 6px 20px 0; }
+  .segs i { flex: 1; height: 3px; border-radius: 2px; background: rgba(30,27,28,.15); }
+  .segs i.on { background: var(--text); }
+  .storyhdr { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px 8px; font-weight: 700; font-size: 13px; color: var(--muted); }
+  .karne { background: var(--butter); border-radius: 28px; padding: 22px 20px 18px; position: relative; box-shadow: 0 10px 24px rgba(174,47,52,.12); }
+  .karne h2 { font-weight: 800; font-size: 26px; letter-spacing: -.6px; }
+  .ktable { margin-top: 14px; background: rgba(255,255,255,.7); border-radius: 18px; padding: 6px 14px; }
+  .krow { display: flex; align-items: center; height: 44px; border-bottom: 1px dashed rgba(88,65,64,.22); }
+  .krow:last-child { border-bottom: 0; }
+  .krow .s { flex: 1; font-weight: 600; font-size: 15px; }
+  .krow .c { width: 62px; text-align: center; font-weight: 800; font-size: 22px; }
+  .krow.h .c { font-weight: 700; font-size: 13px; color: var(--muted); }
+  .g5 { color: var(--green); } .g2 { color: var(--primary); } .g3 { color: var(--text); }
+  .kfoot { font-weight: 600; font-size: 11px; color: var(--muted); margin-top: 12px; }
+
+  /* Fun */
+  .fun { border-radius: 24px; padding: 18px; position: relative; box-shadow: 0 8px 18px rgba(174,47,52,.10); }
+  .duo { display: flex; gap: 8px; margin-top: 12px; }
+  .duo div { border-radius: 14px; padding: 10px 12px; flex: 1; background: rgba(255,255,255,.75); }
+  .duo b { display: block; font-weight: 800; font-size: 24px; }
+  .duo span { font-weight: 700; font-size: 12px; color: var(--muted); }
+  .duo .win { background: #fff; outline: 2px solid var(--coral); }
+  .meter { position: relative; height: 14px; border-radius: 7px; margin-top: 14px; background: linear-gradient(90deg, #7DF5A4, #FFF1BF 50%, #FF6B6B); }
+  .meter i { position: absolute; top: -5px; width: 24px; height: 24px; border-radius: 12px; background: #fff; border: 4px solid var(--purple); margin-left: -12px; }
+
+  /* Chat */
+  .bubbles { display: flex; flex-direction: column; gap: 10px; padding: 4px 18px; }
+  .b { max-width: 82%; border-radius: 20px; padding: 10px 14px; font-weight: 500; font-size: 14.5px; line-height: 1.42; }
+  .b.me { align-self: flex-end; background: var(--primary); color: #fff; border-bottom-right-radius: 6px; }
+  .b.them { align-self: flex-start; background: var(--surface); border-bottom-left-radius: 6px; box-shadow: 0 4px 12px rgba(174,47,52,.08); }
+  .b.role { align-self: flex-start; background: var(--cLilac); border-bottom-left-radius: 6px; }
+  .who { font-weight: 800; font-size: 11px; letter-spacing: .6px; color: var(--purple); margin-bottom: 3px; }
+  .sys { align-self: center; font-weight: 700; font-size: 12px; color: var(--purple); background: var(--lilac); padding: 7px 12px; border-radius: 999px; }
+  .seg { display: flex; gap: 6px; padding: 2px 20px 10px; }
+  .seg span { font-weight: 700; font-size: 12.5px; padding: 8px 12px; border-radius: 999px; background: var(--mid); color: var(--muted); }
+  .seg span.on { background: var(--text); color: #fff; }
+  .avatarM { width: 40px; height: 40px; border-radius: 20px; background: linear-gradient(135deg, #E8DDFF, #FFD6D2); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; color: var(--purple); flex: none; }
+  .input { margin: 12px 18px 0; display: flex; align-items: center; gap: 8px; background: var(--surface); border-radius: 999px; padding: 8px 8px 8px 16px; box-shadow: 0 4px 12px rgba(174,47,52,.08); font-weight: 500; font-size: 14px; color: var(--muted); }
+  .send { margin-left: auto; width: 34px; height: 34px; border-radius: 17px; background: var(--primary); display: flex; align-items: center; justify-content: center; }
+
+  /* Profile */
+  .prof { display: flex; flex-direction: column; align-items: center; padding-top: 6px; }
+  .frame { position: relative; width: 220px; height: 150px; }
+  .av { position: absolute; top: 18px; width: 112px; height: 112px; border-radius: 56px; display: flex; align-items: center; justify-content: center; font-size: 60px; border: 5px solid #fff; box-shadow: 0 6px 16px rgba(174,47,52,.18); }
+  .av.a { left: 12px; background: var(--cLilac); }
+  .av.b { right: 12px; background: var(--butter); }
+  .fh { position: absolute; font-size: 26px; }
+  .pname { font-weight: 800; font-size: 26px; letter-spacing: -.5px; margin-top: 2px; }
+  .badgegrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+  .badge { text-align: center; }
+  .medal { width: 60px; height: 60px; margin: 0 auto; border-radius: 30px; display: flex; align-items: center; justify-content: center; font-size: 28px; }
+  .gold { background: radial-gradient(circle at 35% 30%, #FFF1BF, #F5C451); box-shadow: inset 0 0 0 3px #E8B13A; }
+  .silver { background: radial-gradient(circle at 35% 30%, #FFFFFF, #CFCFD6); box-shadow: inset 0 0 0 3px #B7B7C2; }
+  .bronze { background: radial-gradient(circle at 35% 30%, #FDE3DD, #E3A27F); box-shadow: inset 0 0 0 3px #C9825E; }
+  .legend2 { background: radial-gradient(circle at 35% 30%, #E9E1FF, #9C84E0); box-shadow: inset 0 0 0 3px #674BB5; }
+  .badge b { display: block; font-weight: 700; font-size: 11px; margin-top: 6px; line-height: 1.2; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat { background: var(--surface); border-radius: 20px; padding: 14px; box-shadow: 0 6px 14px rgba(174,47,52,.08); }
+  .stat span { display: block; font-weight: 600; font-size: 12px; color: var(--muted); }
+  .stat b { display: block; font-weight: 800; font-size: 22px; margin-top: 6px; letter-spacing: -.4px; }
+  .stat em { font-style: normal; font-weight: 600; font-size: 11px; color: var(--muted); }
+  .sec { font-weight: 800; font-size: 13px; letter-spacing: 1.2px; color: var(--muted); display: flex; justify-content: space-between; }
+
+  /* Privacy */
+  .lockhero { width: 120px; height: 120px; border-radius: 36px; margin: 6px auto 0; background: linear-gradient(135deg, #FF6B6B, #AE2F34); display: flex; align-items: center; justify-content: center; font-size: 58px; box-shadow: 0 14px 30px rgba(174,47,52,.3); }
+  .check { display: flex; gap: 10px; align-items: flex-start; padding: 11px 0; border-bottom: 1px solid var(--mid); font-weight: 600; font-size: 14px; line-height: 1.4; }
+  .check:last-child { border-bottom: 0; }
+  .tick { flex: none; width: 24px; height: 24px; border-radius: 12px; background: var(--green); display: flex; align-items: center; justify-content: center; }
+  .nos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .no { border-radius: 18px; padding: 14px 6px; text-align: center; font-weight: 800; font-size: 13px; }
+  .no .emoji { display: block; font-size: 28px; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+// ---------------- Copy (headlines from src/i18n/locales/*/onboarding.ts) ----------------
+const COPY = {
+  tr: {
+    sample: 'ÖRNEK',
+    heads: [
+      { eyebrow: '✨ MERAK EDİLENLER MASADA', title: 'Sohbetinin\nkarnesini al', sub: 'İlgi, hız, espri, trip… herkese not.' },
+      { eyebrow: '🤫 SATIR ARALARI', title: 'Sohbetinde\nneler saklı?', sub: 'Yalan ölçer, romantiklik, manipülasyon radarı' },
+      { eyebrow: '🔍 KANITIYLA', title: 'Laf değil,\nalıntı', sub: 'Her yorumun altında gerçek mesaj, tarihiyle' },
+      { eyebrow: '💬 MİLA', title: 'Ne yazacağını\nbilemedin mi?', sub: 'Mila’ya sor ya da sevgilin gibi rol yaptır' },
+      { eyebrow: '🏆 PROFİLİN', title: 'Rozetlerini topla,\nçerçeveni seç', sub: 'Kendi istatistiklerin, unvanların, çift çerçeven' },
+      { eyebrow: '🔒 ÖNCE GİZLİLİK', title: 'Sohbetlerin\ntelefonunda kalır', sub: 'Reklam yok. Jeton yok. Tek paket.' },
+    ],
+    me: 'Sen', them: 'Can',
+    s1: { counter: 'Ücretsiz · 3 / 9', sticker: '🏅 TAKDİR BELGESİ', title: 'Sohbet Karnesi 📒',
+      subjects: [['İlgi & Alaka', 5, 4], ['Cevap hızı', 4, 3], ['Espri', 5, 5], ['Trip', 2, 4]],
+      caption: 'Sınıf birincisi (ilgi): Sen 🏅', foot: 'İstatistikten hesaplandı · Kanıtlı yapay zekâ karnesi Pro’da',
+      rows: [['⏱️', 'Ortalama cevap', '2 dk', ''], ['🌙', '02:00 sonrası felsefe', 'Aşırı yüksek', 'var(--purple)']],
+      note: '💬 Bilirkişi notu: “Trip seviyesi zararsız dozda.”',
+      floats: [['⚡ Hız: 4', 'var(--cMint)', -6], ['😂 Espri: 5', 'var(--cCoral)', 7]] },
+    s2: { title: 'Yapay zekâ raporu', subtitle: 'Can & Sen · 4.812 mesaj', fun: '😜 EĞLENCE AMAÇLI',
+      liar: '🤥 Kim daha çok yalan söylüyor?', liarCap: '“5 dakikaya oradayım” 14 kez yazılmış 🙃',
+      romantic: '💘 Kim daha romantik?', romWin: 'Sen 💘', romCap: 'Kalpli mesajların %71’i senden',
+      manip: '🕵️ Manipülasyon radarı', manipVal: 'Düşük · 2/10', manipCap: 'İçin rahat olsun, radar sakin 😌',
+      chips: [['🦉 Gece kuşu kim?', 'var(--peach)', -3], ['😂 En komik mesaj', 'var(--cMint)', 2]],
+      floats: [['🔥 Arzu ölçer', 'var(--butter)', -7], ['🙄 İmalı mesajlar', 'var(--cLilac)', 6]] },
+    s3: { title: 'Yapay zekâ raporu', subtitle: 'Can & Sen · Kanıtlı', sticker: '🔍 KANITLI', ctitle: 'Kim daha çok çabalıyor?',
+      starter: 'Sohbeti kim başlatıyor?', pct: 72, share: (n, p) => `${n} %${p}`,
+      quote: '“Tamam.”', qtime: '16.10 · 23:48 · Can', qnote: 'Noktalı “Tamam.” Türkçede pek iyiye işaret değil 😬',
+      c2: '👻 En uzun sessizlik', c2val: '3 gün 4 sa', q2: '“Kusura bakma, çok yoğundum 🙈”', q2time: '21.09 · 10:12 · Can',
+      disc: 'Yorumlar yapay zekâ tahminidir, kesin hüküm değildir.',
+      floats: [['🧾 Gerçek alıntı', 'var(--butter)', -6], ['📅 Tarihiyle', 'var(--cMint)', 6]] },
+    s4: { roleCoach: 'Mila (koç)', roleThem: 'Can gibi konuş', ask: 'Bana ilgisi var mı? 🤔',
+      answer: 'Sohbeti çoğunlukla sen başlatıyorsun ama o da uzun cevaplar yazıyor; bu iyi bir işaret olabilir 💬',
+      roleplay: 'Sevgilim gibi cevap ver, barışmayı prova edelim 💘', sys: '🎭 Şimdi Can gibi konuşuyorum',
+      roleName: 'CAN (ROL)', roleMsg: 'Ben de seni kırmak istemedim aslında… Yarın kahve içelim mi? ☕', me2: 'Olur, 6’da? 😊',
+      input: 'Mesajını yaz…', floats: [['💬 AI koç', 'var(--cLilac)', -6], ['🎭 Rol yaptır', 'var(--butter)', 7]] },
+    s5: { title: 'Profil', name: 'Sen', badgeTitle: '🦉 Gece Kuşu', frame: '💞 Çift çerçevesi',
+      badges: 'Rozetlerin', count: '9/38', items: [['🦉', 'Gece Kuşu', 'gold'], ['⚡', 'Hız Canavarı', 'silver'], ['🕵️', 'Dedektif', 'legend2'], ['🚂', 'Sohbet Başlatıcı', 'bronze']],
+      statsT: 'Benim istatistiklerim',
+      stats: [['Favori emojin', '😂', '1.204 kez'], ['Senin kelimen', '“aynen”', '312 kez'], ['En aktif saatin', '23:00', ''], ['Ortalama cevap süren', '3 dk', '']],
+      floats: [['🏆 Rozetler', 'var(--butter)', -6], ['💞 Çift çerçeveleri', 'var(--cCoral)', 5]] },
+    s6: { title: 'Gizlilik', hero: 'Sohbetin bu telefonda',
+      checks: ['İstatistikler telefonunda hesaplanır', 'Sohbetin sunucularda saklanmaz', 'Pro analizde telefon, IBAN, e-posta gizlenir', 'Tüm analizleri istediğin an sil'],
+      nos: [['🚫', 'Reklam yok', 'var(--cCoral)'], ['🪙', 'Jeton yok', 'var(--butter)'], ['✨', 'Tek paket', 'var(--cLilac)']],
+      foot: 'Reklam yok. Jeton yok. Tüm özellikler tek pakette.',
+      floats: [['📱 Telefonunda', '#FFFFFF', -6], ['🙈 Kişisel bilgi gizli', 'var(--butter)', 6]] },
+  },
+  en: {
+    sample: 'SAMPLE',
+    heads: [
+      { eyebrow: '✨ ALL THE TEA, SERVED', title: 'Get your chat’s\nreport card', sub: 'Interest, speed, humor, drama: everyone gets graded.' },
+      { eyebrow: '🤫 READ BETWEEN THE LINES', title: 'What’s hiding\nin your chat?', sub: 'Lie detector, romance score, manipulation radar' },
+      { eyebrow: '🔍 WITH RECEIPTS', title: 'No guesses.\nJust receipts.', sub: 'A real message under every insight, timestamp included' },
+      { eyebrow: '💬 MILA', title: 'Not sure what\nto text back?', sub: 'Ask Mila, or have her roleplay your partner' },
+      { eyebrow: '🏆 YOUR PROFILE', title: 'Collect badges,\nframe your duo', sub: 'Your own stats, your titles, your couple frame' },
+      { eyebrow: '🔒 PRIVACY FIRST', title: 'Your chats stay\non your phone', sub: 'No ads. No tokens. One plan.' },
+    ],
+    me: 'You', them: 'Alex',
+    s1: { counter: 'Free · 3 / 9', sticker: '🏅 HONOR ROLL', title: 'Chat Report Card 📒',
+      subjects: [['Interest', 5, 4], ['Reply speed', 4, 3], ['Humor', 5, 5], ['Drama', 2, 4]],
+      caption: 'Top of the class (interest): You 🏅', foot: 'Calculated from stats · Evidence-backed AI report card in Pro',
+      rows: [['⏱️', 'Avg. reply time', '2 min', ''], ['🌙', 'Deep talks after 2 AM', 'Off the charts', 'var(--purple)']],
+      note: '💬 Expert verdict: “Drama levels: mostly harmless.”',
+      floats: [['⚡ Speed: 4', 'var(--cMint)', -6], ['😂 Humor: 5', 'var(--cCoral)', 7]] },
+    s2: { title: 'AI report', subtitle: 'Alex & You · 4,812 messages', fun: '😜 JUST FOR FUN',
+      liar: '🤥 Who lies more?', liarCap: '“Be there in 5” was sent 14 times 🙃',
+      romantic: '💘 Who’s the romantic one?', romWin: 'You 💘', romCap: '71% of the heart messages came from you',
+      manip: '🕵️ Manipulation radar', manipVal: 'Low · 2/10', manipCap: 'Relax, the radar is calm 😌',
+      chips: [['🦉 Who’s the night owl?', 'var(--peach)', -3], ['😂 Funniest message', 'var(--cMint)', 2]],
+      floats: [['🔥 Desire meter', 'var(--butter)', -7], ['🙄 Passive-aggressive', 'var(--cLilac)', 6]] },
+    s3: { title: 'AI report', subtitle: 'Alex & You · With receipts', sticker: '🔍 RECEIPTS', ctitle: 'Who’s trying harder?',
+      starter: 'Who texts first?', pct: 72, share: (n, p) => `${n} ${p}%`,
+      quote: '“Ok.”', qtime: 'Oct 16 · 11:48 PM · Alex', qnote: '“Ok.” with a period is never a good sign 😬',
+      c2: '👻 Longest silence', c2val: '3 d 4 h', q2: '“Sorry, been super busy 🙈”', q2time: 'Sep 21 · 10:12 AM · Alex',
+      disc: 'AI insights are estimates, not verdicts.',
+      floats: [['🧾 Real quotes', 'var(--butter)', -6], ['📅 Timestamped', 'var(--cMint)', 6]] },
+    s4: { roleCoach: 'Mila (coach)', roleThem: 'Talk like Alex', ask: 'Are they into me? 🤔',
+      answer: 'You usually text first, but they send long replies, and that can be a really good sign 💬',
+      roleplay: 'Reply like my partner would, let’s rehearse making up 💘', sys: '🎭 Now talking like Alex',
+      roleName: 'ALEX (ROLEPLAY)', roleMsg: 'Honestly, I never meant to hurt you… Coffee tomorrow? ☕', me2: 'Sure, at 6? 😊',
+      input: 'Type your message…', floats: [['💬 AI coach', 'var(--cLilac)', -6], ['🎭 Roleplay', 'var(--butter)', 7]] },
+    s5: { title: 'Profile', name: 'You', badgeTitle: '🦉 Night Owl', frame: '💞 Couple frame',
+      badges: 'Your badges', count: '9/38', items: [['🦉', 'Night Owl', 'gold'], ['⚡', 'Speed Demon', 'silver'], ['🕵️', 'Detective', 'legend2'], ['🚂', 'Conversation Starter', 'bronze']],
+      statsT: 'My stats',
+      stats: [['Favorite emoji', '😂', '1,204 times'], ['Your word', '“literally”', '312 times'], ['Your busiest hour', '11 PM', ''], ['Your avg. reply time', '3 min', '']],
+      floats: [['🏆 Badges', 'var(--butter)', -6], ['💞 Couple frames', 'var(--cCoral)', 5]] },
+    s6: { title: 'Privacy', hero: 'Your chat stays on this phone',
+      checks: ['Stats are calculated on your phone', 'Your chat isn’t stored on servers', 'Pro analysis masks phone numbers, IBANs and emails', 'Delete all analyses any time'],
+      nos: [['🚫', 'No ads', 'var(--cCoral)'], ['🪙', 'No tokens', 'var(--butter)'], ['✨', 'One plan', 'var(--cLilac)']],
+      foot: 'No ads. No tokens. Everything in one plan.',
+      floats: [['📱 On your phone', '#FFFFFF', -6], ['🙈 Personal info masked', 'var(--butter)', 6]] },
+  },
+};
+
+// ---------------- Helpers ----------------
+const q = new URLSearchParams(location.search);
+const lang = q.get('lang') === 'en' ? 'en' : 'tr';
+const n = Math.min(6, Math.max(1, Number(q.get('n')) || 1));
+const C = COPY[lang];
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+const ICON = {
+  back: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1E1B1C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+  close: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#584140" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  share: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E1B1C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>',
+  gear: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E1B1C" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1H3a2 2 0 110-4h.1a1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.6 1.6 0 001.8.3H9a1.6 1.6 0 001-1.5V3a2 2 0 114 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8V9a1.6 1.6 0 001.5 1H21a2 2 0 110 4h-.1a1.6 1.6 0 00-1.5 1z"/></svg>',
+  sendArrow: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
+  tick: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>',
+};
+const statusBar = () => `
+  <div class="status"><span>9:41</span><span class="sicons">
+    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#1E1B1C"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#1E1B1C"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#1E1B1C"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#1E1B1C"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5l2.4-2.9a3.6 3.6 0 00-4.8 0L8 11.5z M3.6 6.3a6.5 6.5 0 018.8 0l1.4-1.7a8.8 8.8 0 00-11.6 0l1.4 1.7z M.4 2.5l1.4 1.6a10.6 10.6 0 0112.4 0l1.4-1.6a12.8 12.8 0 00-15.2 0z" fill="#1E1B1C"/></svg>
+    <svg width="26" height="12" viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="#1E1B1C" opacity=".4"/><rect x="2" y="2" width="17" height="8" rx="2" fill="#1E1B1C"/><rect x="24" y="4" width="1.6" height="4" rx=".8" fill="#1E1B1C" opacity=".4"/></svg>
+  </span></div>`;
+const sticker = (text, bg, rot, cls = '') => `<span class="sticker ${cls}" style="background:${bg};transform:rotate(${rot}deg)">${esc(text)}</span>`;
+const gradeCls = (g) => (g >= 4 ? 'g5' : g <= 2 ? 'g2' : 'g3');
+
+// ---------------- Screens ----------------
+const screens = {
+  1: () => {
+    const s = C.s1;
+    return `${statusBar()}
+      <div class="segs">${Array.from({ length: 9 }, (_, i) => `<i class="${i < 3 ? 'on' : ''}"></i>`).join('')}</div>
+      <div class="storyhdr"><span>${esc(s.counter)}</span><span style="display:flex;gap:14px">${ICON.share}${ICON.close}</span></div>
+      <div class="content">
+        <div class="karne">
+          ${sticker(s.sticker, '#fff', 8, 'stTR')}
+          <h2>${esc(s.title)}</h2>
+          <div class="ktable">
+            <div class="krow h"><span class="s"></span><span class="c">${C.me}</span><span class="c">${C.them}</span></div>
+            ${s.subjects.map(([sub, a, b]) => `<div class="krow"><span class="s">${esc(sub)}</span><span class="c ${gradeCls(a)}">${a}</span><span class="c ${gradeCls(b)}">${b}</span></div>`).join('')}
+          </div>
+          <div class="caption" style="color:var(--text);font-weight:700;font-size:14px">${esc(s.caption)}</div>
+          <div class="kfoot">${esc(s.foot)}</div>
+        </div>
+        <div class="card" style="padding:14px 14px 16px">
+          ${s.rows.map(([i, l, v, c]) => `<div class="row"><span class="i">${i}</span><span class="l">${esc(l)}</span><span class="v" style="${c ? `color:${c}` : ''}">${esc(v)}</span></div>`).join('')}
+          <div class="quote">${esc(s.note)}</div>
+        </div>
+      </div>`;
+  },
+  2: () => {
+    const s = C.s2;
+    return `${statusBar()}
+      <div class="appbar"><span class="back">${ICON.back}</span><span class="apptitle">${esc(s.title)}<small>${esc(s.subtitle)}</small></span><span class="pro">PRO</span></div>
+      <div class="content" style="gap:16px;padding-top:10px">
+        <div class="fun" style="background:var(--cCoral)">
+          ${sticker(s.fun, 'var(--butter)', 6, 'stTR')}
+          <div class="ctitle">${esc(s.liar)}</div>
+          <div class="duo"><div class="win"><b>%</b><span></span></div><div><b></b><span></span></div></div>
+          <div class="caption">${esc(s.liarCap)}</div>
+        </div>
+        <div class="fun" style="background:var(--peach)">
+          <div class="ctitle">${esc(s.romantic)}</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:10px"><span style="font-weight:800;font-size:30px;letter-spacing:-.6px">${esc(s.romWin)}</span></div>
+          <div class="caption" style="margin-top:4px">${esc(s.romCap)}</div>
+        </div>
+        <div class="fun" style="background:var(--cLilac)">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><div class="ctitle">${esc(s.manip)}</div><span style="font-weight:800;font-size:14px;color:var(--purple)">${esc(s.manipVal)}</span></div>
+          <div class="meter"><i style="left:20%"></i></div>
+          <div class="caption">${esc(s.manipCap)}</div>
+        </div>
+        <div class="chips">${s.chips.map(([t, bg, r]) => sticker(t, bg, r)).join('')}</div>
+      </div>`;
+  },
+  3: () => {
+    const s = C.s3;
+    return `${statusBar()}
+      <div class="appbar"><span class="back">${ICON.back}</span><span class="apptitle">${esc(s.title)}<small>${esc(s.subtitle)}</small></span><span class="pro">PRO</span></div>
+      <div class="content" style="gap:16px;padding-top:12px">
+        <div class="card">
+          ${sticker(s.sticker, 'var(--butter)', 6, 'stTR')}
+          <div class="ctitle">${esc(s.ctitle)}</div>
+          <div class="lbl">${esc(s.starter)}</div>
+          <div class="track"><div class="fill" style="width:${s.pct}%"></div></div>
+          <div class="legend"><span>${esc(s.share(C.me, s.pct))}</span><span>${esc(s.share(C.them, 100 - s.pct))}</span></div>
+          <div class="quote" style="background:var(--low);border-left:4px solid var(--coral);margin-top:14px">
+            <div style="font-weight:800;font-size:18px">${esc(s.quote)}</div>
+            <div style="font-weight:600;font-size:11px;color:var(--muted);margin:2px 0 6px">${esc(s.qtime)}</div>
+            <div>${esc(s.qnote)}</div>
+          </div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><div class="ctitle">${esc(s.c2)}</div><span style="font-weight:800;font-size:18px;color:var(--purple)">${esc(s.c2val)}</span></div>
+          <div class="quote" style="background:var(--low);border-left:4px solid var(--purple);margin-top:12px">
+            <div style="font-weight:700;font-size:15px">${esc(s.q2)}</div>
+            <div style="font-weight:600;font-size:11px;color:var(--muted);margin-top:3px">${esc(s.q2time)}</div>
+          </div>
+        </div>
+        <div style="font-weight:600;font-size:11px;color:var(--muted);text-align:center">${esc(s.disc)}</div>
+      </div>`;
+  },
+  4: () => {
+    const s = C.s4;
+    return `${statusBar()}
+      <div class="appbar"><span class="avatarM">M</span><span class="apptitle">Mila<small>AI</small></span>${ICON.gear}</div>
+      <div class="seg"><span class="on">${esc(s.roleCoach)}</span><span>${esc(s.roleThem)}</span></div>
+      <div class="bubbles">
+        <div class="b me">${esc(s.ask)}</div>
+        <div class="b them">${esc(s.answer)}</div>
+        <div class="b me">${esc(s.roleplay)}</div>
+        <div class="sys">${esc(s.sys)}</div>
+        <div class="b role"><div class="who">${esc(s.roleName)}</div>${esc(s.roleMsg)}</div>
+        <div class="b me">${esc(s.me2)}</div>
+      </div>
+      <div class="input">${esc(s.input)}<span class="send">${ICON.sendArrow}</span></div>`;
+  },
+  5: () => {
+    const s = C.s5;
+    return `${statusBar()}
+      <div class="appbar"><span class="apptitle" style="font-size:26px">${esc(s.title)}</span>${ICON.gear}</div>
+      <div class="prof">
+        <div class="frame">
+          <div class="av a">🦊</div><div class="av b">🐻</div>
+          <span class="fh" style="left:94px;top:0">💞</span>
+          <span class="fh" style="left:-4px;top:108px;font-size:20px">💗</span>
+          <span class="fh" style="right:-2px;top:6px;font-size:20px">💖</span>
+          <span class="fh" style="left:98px;top:112px;font-size:22px">❤️</span>
+        </div>
+        <div class="pname">${esc(s.name)}</div>
+        <div style="display:flex;gap:8px;margin-top:8px">${sticker(s.badgeTitle, 'var(--butter)', -3)}</div>
+      </div>
+      <div class="content" style="margin-top:14px">
+        <div class="card" style="padding:16px">
+          <div class="sec"><span>${esc(s.badges)}</span><span style="color:var(--primary)">${esc(s.count)}</span></div>
+          <div class="badgegrid">${s.items.map(([e, t, c]) => `<div class="badge"><div class="medal ${c}">${e}</div><b>${esc(t)}</b></div>`).join('')}</div>
+        </div>
+        <div class="sec" style="padding:0 4px">${esc(s.statsT)}</div>
+        <div class="stats">${s.stats.map(([l, v, e]) => `<div class="stat"><span>${esc(l)}</span><b>${esc(v)}</b>${e ? `<em>${esc(e)}</em>` : ''}</div>`).join('')}</div>
+      </div>`;
+  },
+  6: () => {
+    const s = C.s6;
+    return `${statusBar()}
+      <div class="appbar"><span class="back">${ICON.back}</span><span class="apptitle">${esc(s.title)}</span></div>
+      <div class="content" style="gap:16px">
+        <div class="card" style="text-align:center;padding:22px 20px 10px">
+          <div class="lockhero">🔒</div>
+          <div class="ctitle" style="margin-top:14px;font-size:22px">${esc(s.hero)}</div>
+          <div style="text-align:left;margin-top:8px">${s.checks.map((c) => `<div class="check"><span class="tick">${ICON.tick}</span><span>${esc(c)}</span></div>`).join('')}</div>
+        </div>
+        <div class="nos">${s.nos.map(([e, t, bg]) => `<div class="no" style="background:${bg}"><span class="emoji">${e}</span>${esc(t)}</div>`).join('')}</div>
+      </div>`;
+  },
+};
+
+// Backgrounds per screen
+const BG = {
+  1: { bg: 'linear-gradient(170deg,#FFF1BF 0%,#FFF8F8 62%)', blobs: [['#FFD6D2', 120, 1400, 520], ['#FFE58A', 820, 380, 420]] },
+  2: { bg: 'linear-gradient(170deg,#E9E1FF 0%,#FFF8F8 62%)', blobs: [['#FFD6D2', 860, 1300, 520], ['#CDBBFF', -60, 420, 420]] },
+  3: { bg: 'linear-gradient(170deg,#FDE3DD 0%,#FFF8F8 62%)', blobs: [['#FFF1BF', -80, 1350, 520], ['#FFC2BC', 860, 300, 420]] },
+  4: { bg: 'linear-gradient(170deg,#E8DDFF 0%,#FDE3DD 70%)', blobs: [['#CDBBFF', 860, 1250, 520], ['#FFD6D2', -80, 300, 420]] },
+  5: { bg: 'linear-gradient(170deg,#D9FBE5 0%,#FFF8F8 62%)', blobs: [['#7DF5A4', -100, 1300, 460], ['#FFF1BF', 860, 380, 420]] },
+  6: { bg: 'linear-gradient(160deg,#FF6B6B 0%,#C8414A 55%,#AE2F34 100%)', dark: true, blobs: [['#FF9A8F', 880, 260, 460], ['#7A1E2A', -120, 1500, 560]] },
+};
+
+// Floating sticker positions (canvas px): left edge and right edge of phone
+const FLOAT_POS = [{ left: 44, top: 572 }, { right: 40, top: 586 }];
+
+function render() {
+  const h = C.heads[n - 1];
+  const bg = BG[n];
+  const s = C[`s${n}`];
+  const floats = (s.floats || []).map(([t, b, r], i) => {
+    const p = FLOAT_POS[i];
+    const pos = Object.entries(p).map(([k, v]) => `${k}:${v}px`).join(';');
+    return `<div class="float" style="${pos};background:${b};transform:rotate(${r}deg)">${esc(t)}</div>`;
+  }).join('');
+  document.getElementById('root').innerHTML = `
+    <div class="canvas ${bg.dark ? 'dark' : ''}" style="background:${bg.bg}">
+      ${bg.blobs.map(([c, x, y, r]) => `<div class="blob" style="background:${c};left:${x - r / 2}px;top:${y - r / 2}px;width:${r}px;height:${r}px"></div>`).join('')}
+      <div class="head">
+        <span class="eyebrow">${esc(h.eyebrow)}</span>
+        <div class="headline" id="hl">${esc(h.title).replace(/,/g, '<span style="margin-left:-.12em">,</span>')}</div>
+        <div class="sub">${esc(h.sub)}</div>
+      </div>
+      <div class="phone"><div class="screen"><div class="island"></div><div class="sample">${C.sample}</div><div class="app">${screens[n]()}</div></div></div>
+      ${floats}
+    </div>`;
+
+  // Screen-2 duo values filled here to keep the template above readable
+  if (n === 2) {
+    const duo = document.querySelectorAll('.duo div');
+    const fmt = (name, p) => (lang === 'tr' ? `%${p}` : `${p}%`);
+    duo[0].innerHTML = `<b>${fmt(C.them, 64)}</b><span>${esc(C.them)} 🤥</span>`;
+    duo[0].className = 'win';
+    duo[1].innerHTML = `<b>${fmt(C.me, 36)}</b><span>${esc(C.me)}</span>`;
+  }
+}
+
+// Headline auto-fit: shrink until every line fits and it is at most 2 lines
+async function fit() {
+  await document.fonts.ready;
+  const el = document.getElementById('hl');
+  const max = el.parentElement.clientWidth;
+  let size = 104;
+  const test = document.createElement('span');
+  test.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;font-weight:800;letter-spacing:-3.5px;font-family:PJS';
+  document.body.appendChild(test);
+  const lines = el.textContent.split('\n');
+  const widest = () => Math.max(...lines.map((l) => { test.textContent = l; test.style.fontSize = size + 'px'; return test.getBoundingClientRect().width; }));
+  while (widest() > max && size > 60) size -= 2;
+  el.style.fontSize = size + 'px';
+  test.remove();
+  document.body.dataset.ready = '1';
+}
+
+render();
+fit();
+</script>
+</body>
+</html>

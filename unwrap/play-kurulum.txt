@@ -1,0 +1,2 @@
+Google Play kurulumu (mağaza kaydı + abonelik + RevenueCat). Değiştirince .github/workflows/unwrap-play-setup.yml çalışır.
+1

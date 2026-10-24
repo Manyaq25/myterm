@@ -34,7 +34,7 @@ from pathlib import Path
 
 PACKAGE = 'com.aydinapp.unwrap'
 DEFAULT_LANGUAGE = 'tr-TR'
-CONTACT_WEBSITE = 'https://unwrap-backend.vercel.app'
+CONTACT_WEBSITE = 'https://aydinapp.com.tr'
 FALLBACK_SCREENSHOT_LANG = 'en-US'
 
 ROOT = Path(__file__).resolve().parent.parent  # unwrap/

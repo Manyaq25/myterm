@@ -1,0 +1,64 @@
+<!doctype html>
+<!-- Unwrap Google Play öne çıkan görseli (1024×500). render.mjs ile PNG'ye çevrilir. -->
+<html>
+<head>
+<meta charset="utf-8">
+<title>Unwrap feature graphic</title>
+<style>
+  @font-face { font-family: 'PJS'; font-weight: 600; src: url('../../../node_modules/@expo-google-fonts/plus-jakarta-sans/600SemiBold/PlusJakartaSans_600SemiBold.ttf'); }
+  @font-face { font-family: 'PJS'; font-weight: 800; src: url('../../../node_modules/@expo-google-fonts/plus-jakarta-sans/800ExtraBold/PlusJakartaSans_800ExtraBold.ttf'); }
+  :root { --text: #1E1B1C; --muted: #584140; --primary: #AE2F34; --green: #00B35C; --purple: #674BB5;
+    --butter: #FFF1BF; --cLilac: #E9E1FF; --cMint: #7DF5A4; --cCoral: #FFD6D2; --peach: #FDE3DD; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1024px; height: 500px; overflow: hidden; background: #AE2F34; }
+  body { font-family: 'PJS', 'Noto Color Emoji', sans-serif; -webkit-font-smoothing: antialiased; }
+  .c { position: relative; width: 1024px; height: 500px; overflow: hidden;
+    background: linear-gradient(135deg, #FF6B6B 0%, #D9474E 50%, #AE2F34 100%); }
+  .blob { position: absolute; border-radius: 50%; filter: blur(50px); }
+  .left { position: absolute; left: 64px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; z-index: 3; }
+  .brand { display: flex; align-items: center; gap: 22px; }
+  .brand img { width: 112px; height: 112px; border-radius: 28px; box-shadow: 0 14px 30px rgba(80,10,15,.35); }
+  .name { font-weight: 800; font-size: 104px; letter-spacing: -4px; color: #fff; line-height: 1; }
+  .tag { margin-top: 26px; font-weight: 800; font-size: 40px; letter-spacing: -1px; color: #fff; line-height: 1.12; }
+  .pill { margin-top: 22px; align-self: flex-start; font-weight: 800; font-size: 17px; letter-spacing: 1px; color: #fff; background: rgba(255,255,255,.18); padding: 10px 18px; border-radius: 999px; }
+  .st { position: absolute; z-index: 4; font-weight: 800; font-size: 21px; padding: 13px 20px; border-radius: 22px; color: var(--text);
+    box-shadow: 0 12px 26px rgba(60,8,12,.28); white-space: nowrap; }
+  .karne { position: absolute; z-index: 3; right: 58px; top: 112px; width: 290px; background: var(--butter); border-radius: 26px; padding: 20px 20px 16px;
+    transform: rotate(4deg); box-shadow: 0 18px 40px rgba(60,8,12,.32); }
+  .karne h3 { font-weight: 800; font-size: 23px; letter-spacing: -.5px; color: var(--text); }
+  .kr { display: flex; align-items: center; height: 36px; border-bottom: 1px dashed rgba(88,65,64,.25); }
+  .kr:last-child { border-bottom: 0; }
+  .kr span { flex: 1; font-weight: 600; font-size: 16px; color: var(--text); }
+  .kr b { width: 44px; text-align: center; font-weight: 800; font-size: 21px; }
+  .kt { margin-top: 10px; background: rgba(255,255,255,.7); border-radius: 16px; padding: 4px 12px; }
+  .badge { position: absolute; top: -14px; right: 14px; font-weight: 800; font-size: 12px; background: #fff; padding: 6px 11px; border-radius: 14px; transform: rotate(8deg); box-shadow: 0 4px 10px rgba(0,0,0,.14); }
+</style>
+</head>
+<body>
+<div class="c">
+  <div class="blob" style="background:#FF9A8F;width:380px;height:380px;left:-120px;top:-160px;opacity:.6"></div>
+  <div class="blob" style="background:#7A1E2A;width:420px;height:420px;right:120px;bottom:-260px;opacity:.5"></div>
+  <div class="left">
+    <div class="brand"><img src="../../../assets/images/icon.png" alt=""><span class="name">Unwrap</span></div>
+    <div class="tag">Sohbetinde neler saklı? 👀</div>
+    <div class="pill">🔒 SOHBETLERİN TELEFONUNDA KALIR</div>
+  </div>
+
+  <div class="karne">
+    <span class="badge">🏅 TAKDİR BELGESİ</span>
+    <h3>Sohbet Karnesi 📒</h3>
+    <div class="kt">
+      <div class="kr"><span>İlgi</span><b style="color:var(--green)">5</b><b style="color:var(--green)">4</b></div>
+      <div class="kr"><span>Espri</span><b style="color:var(--green)">5</b><b>3</b></div>
+      <div class="kr"><span>Trip</span><b style="color:var(--primary)">2</b><b style="color:var(--green)">4</b></div>
+    </div>
+  </div>
+
+  <div class="st" style="background:var(--cCoral);right:330px;top:50px;transform:rotate(-6deg)">🤥 Kim daha çok yalan söylüyor?</div>
+  <div class="st" style="background:var(--cLilac);right:262px;top:318px;transform:rotate(5deg)">🕵️ Manipülasyon radarı</div>
+  <div class="st" style="background:var(--peach);right:34px;top:392px;transform:rotate(-4deg)">💘 Kim daha romantik?</div>
+  <div class="st" style="background:var(--cMint);right:24px;top:38px;transform:rotate(7deg);font-size:19px">💬 Mila</div>
+</div>
+<script>document.fonts.ready.then(() => { document.body.dataset.ready = '1'; });</script>
+</body>
+</html>

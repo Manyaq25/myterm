@@ -1,0 +1,44 @@
+{
+  "_not": "Google Play aboneliği (scripts/play-setup.py okur). Avantajlar en çok 4 madde ve her biri en çok 40 karakter; açıklama en çok 80 karakter.",
+  "productId": "unwrap_pro",
+  "listings": {
+    "tr-TR": {
+      "title": "Unwrap Pro",
+      "benefits": [
+        "Kanıtlı yapay zekâ analiz kartları",
+        "Herkese not veren sohbet karnesi",
+        "Sınırsız Mila: soru sor, rol yaptır",
+        "Rozetler, çerçeveler ve özel analizler"
+      ],
+      "description": "Unwrap'in tüm özellikleri tek abonelikte. Jeton yok, ek ücret yok."
+    },
+    "en-US": {
+      "title": "Unwrap Pro",
+      "benefits": [
+        "AI insight cards backed by real quotes",
+        "Chat report card that grades everyone",
+        "Unlimited Mila: ask or role-play",
+        "Badges, frames and fun deep dives"
+      ],
+      "description": "Every Unwrap feature in one plan. No tokens, no extra fees."
+    }
+  },
+  "basePlans": [
+    {
+      "basePlanId": "aylik",
+      "billingPeriodDuration": "P1M",
+      "gracePeriodDuration": "P3D",
+      "priceTRY": "149.99"
+    },
+    {
+      "basePlanId": "yillik",
+      "billingPeriodDuration": "P1Y",
+      "gracePeriodDuration": "P3D",
+      "priceTRY": "999.99"
+    }
+  ],
+  "trialOffer": {
+    "offerId": "deneme-7-gun",
+    "duration": "P7D"
+  }
+}
