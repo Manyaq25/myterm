@@ -47,6 +47,10 @@ API = 'https://androidpublisher.googleapis.com/androidpublisher/v3/applications/
 UPLOAD_API = 'https://androidpublisher.googleapis.com/upload/androidpublisher/v3/applications/' + PACKAGE
 SCOPE = 'https://www.googleapis.com/auth/androidpublisher'
 RC_API = 'https://api.revenuecat.com'
+# App Store ürünleri (App Store Connect'te tanımlı)
+IOS_BUNDLE = 'com.aydinapp.unwrap'
+IOS_PRODUCTS = {'monthly': 'unwrap_pro_monthly', 'yearly': 'unwrap_pro_yearly'}
+IOS_PACKAGES = {'monthly': '$rc_monthly', 'yearly': '$rc_annual'}
 
 # Google Play sınırları
 LIMITS = {'title': 30, 'shortDescription': 80, 'fullDescription': 4000}
@@ -778,77 +782,96 @@ def step_revenuecat(dry_run):
         log(f'  proje: {proj.get("name")} ({proj["id"]})')
 
         apps = rc.all(f'{P}/apps')
-        app = next((a for a in apps if a.get('type') == 'play_store'
-                    and (a.get('play_store') or {}).get('package_name') == PACKAGE), None)
-        if not app:
-            fail(step, f'Play Store uygulaması ({PACKAGE}) RevenueCat projesinde yok')
-            return
-        log(f'  Play uygulaması: {app.get("name")} ({app["id"]})')
+        log('  uygulamalar: ' + ', '.join(f'{a.get("name")} [{a.get("type")}]' for a in apps))
+        # Her mağaza: (uygulama seçici, {plan: mağaza ürün kimliği}, {plan: paket})
+        stores = [
+            ('Play', lambda a: a.get('type') == 'play_store' and (a.get('play_store') or {}).get('package_name') == PACKAGE,
+             wanted, plan_pkg),
+            ('App Store', lambda a: a.get('type') == 'app_store' and (a.get('app_store') or {}).get('bundle_id') == IOS_BUNDLE,
+             IOS_PRODUCTS, {k: v for k, v in IOS_PACKAGES.items()}),
+        ]
 
-        products = rc.all(f'{P}/products', params={'app_id': app['id'], 'limit': 100})
-        by_store = {p['store_identifier']: p for p in products if p.get('app_id') == app['id']}
-        ids = {}
-        for bid, sid in wanted.items():
-            if sid in by_store:
-                ids[bid] = by_store[sid]['id']
-                ok(step, f'ürün {sid} zaten var ({ids[bid]})')
-                continue
-            try:
-                p = rc.call('POST', f'{P}/products', body={
-                    'store_identifier': sid, 'app_id': app['id'], 'type': 'subscription',
-                    'display_name': f'Unwrap Pro {"Aylık" if bid == "aylik" else "Yıllık"}'})
-                ids[bid] = p['id']
-                ok(step, f'ürün {sid} oluşturuldu ({p["id"]})')
-            except ApiError as e:
-                fail(step, f'ürün {sid}: {e}')
-
+        # Entitlement: yoksa 'pro' oluşturulur.
         ents = [e for e in rc.all(f'{P}/entitlements') if e.get('state', 'active') == 'active']
-        if not ents:
-            fail(step, 'etkin entitlement yok')
-        else:
+        if ents:
             ent = ents[0] if len(ents) == 1 else next(
                 (e for e in ents if 'pro' in (e.get('lookup_key') or '').lower()), ents[0])
-            log(f'  entitlement: {ent.get("lookup_key")} ({ent["id"]})' +
-                (f' — {len(ents)} etkin entitlement vardı' if len(ents) > 1 else ''))
-            attached = {p['id'] for p in rc.all(f'{P}/entitlements/{ent["id"]}/products')}
+        else:
+            ent = rc.call('POST', f'{P}/entitlements', body={'lookup_key': 'pro', 'display_name': 'Unwrap Pro'})
+            ok(step, 'entitlement "pro" oluşturuldu')
+        log(f'  entitlement: {ent.get("lookup_key")} ({ent["id"]})')
+
+        # Geçerli offering: yoksa 'default' oluşturulur.
+        offerings = rc.all(f'{P}/offerings')
+        cur = next((o for o in offerings if o.get('is_current')), None)
+        if not cur:
+            cur = rc.call('POST', f'{P}/offerings', body={'lookup_key': 'default', 'display_name': 'Unwrap Pro'})
+            warn(step, 'geçerli offering yoktu; "default" oluşturuldu — RevenueCat panelinde "current" yapılması gerekebilir')
+        log(f'  offering: {cur.get("lookup_key")} ({cur["id"]})')
+        packages = {pk['lookup_key']: pk for pk in rc.all(f'{P}/offerings/{cur["id"]}/packages')}
+        for lk, name in (('$rc_monthly', 'Aylık'), ('$rc_annual', 'Yıllık')):
+            if lk not in packages:
+                try:
+                    packages[lk] = rc.call('POST', f'{P}/offerings/{cur["id"]}/packages',
+                                           body={'lookup_key': lk, 'display_name': name, 'position': len(packages) + 1})
+                    ok(step, f'paket {lk} oluşturuldu')
+                except ApiError as e:
+                    fail(step, f'paket {lk} oluşturulamadı: {e}')
+
+        attached = {pr['id'] for pr in rc.all(f'{P}/entitlements/{ent["id"]}/products')}
+        for store_name, pick, want, pkgs in stores:
+            app = next((a for a in apps if pick(a)), None)
+            if not app:
+                fail(step, f'{store_name} uygulaması RevenueCat projesinde yok')
+                continue
+            log(f'  {store_name} uygulaması: {app.get("name")} ({app["id"]})')
+            products = rc.all(f'{P}/products', params={'app_id': app['id'], 'limit': 100})
+            by_store = {pr['store_identifier']: pr for pr in products if pr.get('app_id') == app['id']}
+            ids = {}
+            for bid, sid in want.items():
+                if sid in by_store:
+                    ids[bid] = by_store[sid]['id']
+                    ok(step, f'{store_name} ürün {sid} var ({ids[bid]})')
+                    continue
+                try:
+                    pr = rc.call('POST', f'{P}/products', body={
+                        'store_identifier': sid, 'app_id': app['id'], 'type': 'subscription',
+                        'display_name': f'Unwrap Pro {"Aylık" if bid in ("aylik", "monthly") else "Yıllık"}'})
+                    ids[bid] = pr['id']
+                    ok(step, f'{store_name} ürün {sid} oluşturuldu ({pr["id"]})')
+                except ApiError as e:
+                    fail(step, f'{store_name} ürün {sid}: {e}')
             todo = [i for i in ids.values() if i not in attached]
             if todo:
                 try:
                     rc.call('POST', f'{P}/entitlements/{ent["id"]}/actions/attach_products', body={'product_ids': todo})
-                    ok(step, f'{len(todo)} ürün "{ent.get("lookup_key")}" entitlement\'ına bağlandı')
+                    attached.update(todo)
+                    ok(step, f'{store_name}: {len(todo)} ürün "{ent.get("lookup_key")}" entitlement\'ına bağlandı')
                 except ApiError as e:
-                    fail(step, f'entitlement bağlama: {e}')
+                    fail(step, f'{store_name} entitlement bağlama: {e}')
             else:
-                ok(step, f'ürünler zaten "{ent.get("lookup_key")}" entitlement\'ında')
-
-        offerings = rc.all(f'{P}/offerings')
-        cur = next((o for o in offerings if o.get('is_current')), None)
-        if not cur:
-            fail(step, 'geçerli (current) offering yok')
-            return
-        log(f'  offering: {cur.get("lookup_key")} ({cur["id"]})')
-        packages = {p['lookup_key']: p for p in rc.all(f'{P}/offerings/{cur["id"]}/packages')}
-        for bid, prod_id in ids.items():
-            lk = plan_pkg.get(bid)
-            pk = packages.get(lk)
-            if not pk:
-                fail(step, f'paket {lk} offering\'de yok (oluşturulmadı; RevenueCat panelinden eklenmeli)')
-                continue
-            assoc = rc.all(f'{P}/packages/{pk["id"]}/products')
-            same_app = [a['product'] for a in assoc if a.get('product', {}).get('app_id') == app['id']]
-            if any(p['id'] == prod_id for p in same_app):
-                ok(step, f'{lk} zaten {wanted[bid]} içeriyor')
-                continue
-            if same_app:
-                warn(step, f'{lk} pakette bu Play uygulaması için başka ürün var '
-                           f'({same_app[0].get("store_identifier")}); değiştirilmedi')
-                continue
-            try:
-                rc.call('POST', f'{P}/packages/{pk["id"]}/actions/attach_products',
-                        body={'products': [{'product_id': prod_id, 'eligibility_criteria': 'all'}]})
-                ok(step, f'{wanted[bid]} → {lk} paketine eklendi')
-            except ApiError as e:
-                fail(step, f'paket {lk}: {e}')
+                ok(step, f'{store_name}: ürünler entitlement\'ta')
+            for bid, prod_id in ids.items():
+                lk = pkgs.get(bid)
+                pk = packages.get(lk)
+                if not pk:
+                    fail(step, f'paket {lk} yok')
+                    continue
+                assoc = rc.all(f'{P}/packages/{pk["id"]}/products')
+                same_app = [x['product'] for x in assoc if x.get('product', {}).get('app_id') == app['id']]
+                if any(x['id'] == prod_id for x in same_app):
+                    ok(step, f'{store_name}: {lk} zaten {want[bid]} içeriyor')
+                    continue
+                if same_app:
+                    warn(step, f'{store_name}: {lk} pakette başka ürün var '
+                               f'({same_app[0].get("store_identifier")}); değiştirilmedi')
+                    continue
+                try:
+                    rc.call('POST', f'{P}/packages/{pk["id"]}/actions/attach_products',
+                            body={'products': [{'product_id': prod_id, 'eligibility_criteria': 'all'}]})
+                    ok(step, f'{store_name}: {want[bid]} → {lk}')
+                except ApiError as e:
+                    fail(step, f'{store_name} paket {lk}: {e}')
     except RcAuthError as e:
         skip(step, f'RevenueCat anahtarı API v2 için geçersiz ya da yetkisiz ({e}). '
                    'v2 gizli anahtar gerekir; izinler: project_configuration:projects:read, apps:read, '
