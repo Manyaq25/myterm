@@ -7,6 +7,6 @@ export const config = {
   revenueCatAndroidKey: process.env.EXPO_PUBLIC_RC_ANDROID_KEY ?? '',
   // Google Cloud proje numarası (Play Integrity). Boşsa Android kontrolü atlanır.
   playCloudProjectNumber: process.env.EXPO_PUBLIC_PLAY_CLOUD_PROJECT ?? '',
-  privacyUrl: process.env.EXPO_PUBLIC_PRIVACY_URL ?? 'https://unwrap-backend.vercel.app/gizlilik',
-  termsUrl: process.env.EXPO_PUBLIC_TERMS_URL ?? 'https://unwrap-backend.vercel.app/kosullar',
+  privacyUrl: process.env.EXPO_PUBLIC_PRIVACY_URL ?? 'https://aydinapp.com.tr/apps/unwrap/privacy-policy.html',
+  termsUrl: process.env.EXPO_PUBLIC_TERMS_URL ?? 'https://aydinapp.com.tr/apps/unwrap/terms.html',
 };
