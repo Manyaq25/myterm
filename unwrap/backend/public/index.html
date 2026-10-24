@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unwrap</title>
+<meta name="description" content="Unwrap: WhatsApp ve Telegram sohbetlerini eğlenceli istatistiklere ve yapay zekâ raporlarına dönüştürür.">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #FFF8F8; --surface: #FFFFFF; --surface-low: #FBF1F2; --text: #1E1B1C; --muted: #584140;
+    --outline: #E0BFBD; --primary: #AE2F34; --accent: #FF6B6B; --on-primary: #FFFFFF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1A1718; --surface: #241F20; --surface-low: #2C2526; --text: #F5ECED; --muted: #D6C2C1;
+      --outline: #4D3D3D; --primary: #FF8A85; --accent: #FF6B6B; --on-primary: #1A1718;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+  header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+  .brand { font-weight: 800; font-size: 20px; letter-spacing: -0.3px; color: var(--primary); text-decoration: none; }
+  .brand span { color: var(--accent); }
+  nav.lang a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 14px; padding: 6px 10px; border: 1px solid var(--outline); border-radius: 999px; }
+  h1 { font-size: 30px; line-height: 1.2; letter-spacing: -0.5px; margin: 24px 0 4px; }
+  h2 { font-size: 20px; line-height: 1.3; margin: 32px 0 8px; }
+  h3 { font-size: 17px; margin: 20px 0 6px; }
+  p, li { color: var(--text); }
+  .meta { color: var(--muted); font-size: 14px; margin: 0 0 16px; }
+  a { color: var(--primary); }
+  .card { background: var(--surface); border: 1px solid var(--outline); border-radius: 20px; padding: 16px 20px; margin: 16px 0; }
+  .card.soft { background: var(--surface-low); }
+  .card > :first-child { margin-top: 0; }
+  .card > :last-child { margin-bottom: 0; }
+  ul, ol { padding-left: 22px; }
+  li { margin: 4px 0; }
+  .table { overflow-x: auto; margin: 12px 0; border: 1px solid var(--outline); border-radius: 16px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--outline); }
+  tr:last-child td { border-bottom: 0; }
+  th { background: var(--surface-low); font-weight: 700; }
+  .lang-divider { margin: 56px 0 0; border: 0; border-top: 2px dashed var(--outline); }
+  .links { list-style: none; padding: 0; }
+  .links li { margin: 10px 0; }
+  .links a { display: block; background: var(--surface); border: 1px solid var(--outline); border-radius: 20px; padding: 14px 18px; text-decoration: none; font-weight: 700; color: var(--text); }
+  .links a small { display: block; font-weight: 400; color: var(--muted); }
+  footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
+  code { font-size: 0.95em; }
+</style>
+</head>
+<body>
+<main>
+<header class="top">
+  <a class="brand" href="/">Unwrap<span>.</span></a>
+</header>
+
+<h1>Unwrap</h1>
+<p lang="tr">WhatsApp ve Telegram sohbetlerini telefonunda eğlenceli istatistiklere, paylaşım kartlarına ve yapay zekâ raporlarına dönüştürür.</p>
+<p lang="en" class="meta">Turns your WhatsApp and Telegram chats into fun stats, share cards and AI reports, right on your phone.</p>
+
+<ul class="links">
+  <li><a href="/gizlilik">Gizlilik Politikası <small>Privacy Policy</small></a></li>
+  <li><a href="/kosullar">Kullanım Koşulları <small>Terms of Use</small></a></li>
+  <li><a href="/hesap-silme">Hesap ve veri silme <small>Account and data deletion</small></a></li>
+</ul>
+
+<footer>
+  <p>İbrahim Aydın · <a href="mailto:aydinibrahim25@gmail.com">aydinibrahim25@gmail.com</a></p>
+</footer>
+</main>
+</body>
+</html>

@@ -48,7 +48,7 @@ jobs:
       - name: Google Play (mağaza kaydı + abonelik)
         env:
           PLAY_SA_JSON: ${{ secrets.UNWRAP_PLAY_SA_JSON }}
-          PLAY_CONTACT_EMAIL: ${{ vars.UNWRAP_PLAY_CONTACT_EMAIL }}
+          PLAY_CONTACT_EMAIL: ${{ vars.UNWRAP_PLAY_CONTACT_EMAIL || 'aydinibrahim25@gmail.com' }}
           PLAY_NOT_SEND_FOR_REVIEW: ${{ inputs.not_send_for_review && '1' || '' }}
           PLAY_REPRICE: ${{ inputs.reprice && '1' || '' }}
         run: |

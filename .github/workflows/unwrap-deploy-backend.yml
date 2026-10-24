@@ -59,6 +59,10 @@ jobs:
         run: |
           curl -sS --max-time 20 "${{ steps.deploy.outputs.url }}/api/health" | tee h.json
           grep -q '"service":"unwrap"' h.json
+          # Yasal sayfalar (mağazalar bu adresleri ister)
+          for pg in gizlilik kosullar hesap-silme; do
+            c=$(curl -s -o /dev/null -w '%{http_code}' "${{ steps.deploy.outputs.url }}/$pg"); echo "/$pg: HTTP $c"; [ "$c" = "200" ]
+          done
           # Güvenlik yaması (Ekim 2026, Brotli RCE): Node 22.23.4 ve üstü bekleniyor.
           node -e 'const v=require("./h.json").node.slice(1).split(".").map(Number);const ok=v[0]>22||(v[0]===22&&(v[1]>23||(v[1]===23&&v[2]>=4)));console.log("Sunucu Node:",v.join("."),ok?"(yamalı)":"(YAMASIZ: Vercel henüz güncellememiş)");if(!ok)console.log("::warning::Vercel Node sürümü yamasız");'
           # Abonelik olmadan ücretli uç kapalı olmalı

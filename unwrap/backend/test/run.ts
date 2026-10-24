@@ -148,6 +148,28 @@ test('profil şeması: hatalı gövdeler reddedilir', () => {
     assert.equal(ProfileSchema.safeParse(b).success, false, JSON.stringify(b).slice(0, 80));
 });
 
+const publicDir = path.resolve(__dirname, '../public');
+const LEGAL_PAGES = ['index.html', 'gizlilik.html', 'kosullar.html', 'hesap-silme.html'];
+
+test('yasal sayfalar var, TODO kalmamış, Türkçe + İngilizce', () => {
+  for (const f of LEGAL_PAGES) {
+    const html = readFileSync(path.join(publicDir, f), 'utf8');
+    assert.ok(!/TODO/i.test(html), `${f}: TODO kalmış`);
+    assert.match(html, /<html lang="tr">/, f);
+    assert.match(html, /name="viewport"/, f);
+    assert.ok(!/<script/i.test(html), `${f}: dış betik olmamalı`);
+    if (f !== 'index.html') assert.match(html, /id="en"/, `${f}: İngilizce bölüm (#en) yok`);
+  }
+});
+
+test('vercel.json: geçerli, işlev ayarları ve temiz adresler yerinde', () => {
+  const cfg = JSON.parse(readFileSync(path.resolve(__dirname, '../vercel.json'), 'utf8'));
+  assert.equal(cfg.cleanUrls, true);
+  assert.equal(cfg.outputDirectory, 'public');
+  assert.equal(cfg.functions['api/report.ts'].maxDuration, 60);
+  assert.equal(cfg.functions['api/coach.ts'].maxDuration, 30);
+});
+
 (async () => {
   for (const [name, fn] of queue) {
     await fn();
@@ -158,4 +180,23 @@ test('profil şeması: hatalı gövdeler reddedilir', () => {
 })().catch((e) => {
   console.error(e);
   process.exit(1);
+});
+
+// Sona eklendi: test() kuyruğu çalışırken de dolar (for…of canlı dizi).
+test('bildirim şeması: kabul ve red', async () => {
+  const { BildirSchema } = await import('../lib/bildir');
+  const ok = { kind: 'mila', reason: 'saldirgan', text: 'kötü cevap', lang: 'en' };
+  assert.ok(BildirSchema.safeParse(ok).success);
+  assert.ok(BildirSchema.safeParse({ ...ok, kind: 'rapor', reason: 'yanlis', note: 'not' }).success);
+  assert.equal(BildirSchema.parse({ kind: 'mila', reason: 'diger', text: 'x' }).lang, 'tr');
+  for (const b of [
+    { ...ok, kind: 'koc' },
+    { ...ok, reason: 'spam' },
+    { ...ok, text: '' },
+    { ...ok, text: 'x'.repeat(2001) },
+    { ...ok, note: 'x'.repeat(301) },
+    { ...ok, lang: 'xx' },
+    { kind: 'mila', reason: 'diger' },
+  ])
+    assert.equal(BildirSchema.safeParse(b).success, false, JSON.stringify(b).slice(0, 80));
 });
