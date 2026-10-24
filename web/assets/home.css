@@ -438,11 +438,11 @@ ul { margin: 0; padding: 0; list-style: none; }
 .app-card.soon { display: flex; flex-direction: column; justify-content: space-between; gap: 30px; min-height: 480px; padding: 36px; background: repeating-linear-gradient(135deg, rgba(121, 248, 227, .025) 0 12px, transparent 12px 24px), #0a1513; border: 1px dashed rgba(121, 248, 227, .2); }
 .soon-art { position: relative; width: 130px; height: 130px; margin: 20px auto; }
 .soon-art i { position: absolute; inset: 0; border-radius: 34px; background: conic-gradient(from var(--a, 0deg), var(--teal), var(--coral), #7a5cff, var(--teal)); filter: blur(22px); opacity: .55; animation: hue 6s linear infinite; }
-.soon-art b { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 34px; background: rgba(10, 21, 19, .55); border: 1px solid rgba(255, 255, 255, .12); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); font-size: 44px; font-weight: 800; color: rgba(228, 240, 236, .7); }
+.soon-art img { position: relative; width: 100%; height: 100%; border-radius: 34px; border: 1px solid rgba(255, 255, 255, .12); box-shadow: 0 14px 40px rgba(0, 0, 0, .5); }
 @property --a { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
 @keyframes hue { to { --a: 360deg; } }
 .app-card.soon h3 { font-size: 1.6rem; font-weight: 800; }
-.app-card.soon p { color: var(--muted); }
+.app-card.soon p { color: var(--muted); margin-top: 8px; }
 .app-card.soon .badge { background: rgba(255, 180, 163, .12); color: var(--coral-soft); }
 @media (max-width: 900px) {
   .apps { padding-block: 110px 100px; }

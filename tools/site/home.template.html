@@ -45,7 +45,7 @@
     <nav class="nav" aria-label="{{navLabel}}">
       <a href="#nasil">{{navHow}}</a>
       <a href="#ozellikler">{{navFeatures}}</a>
-      <a href="#uygulamalar">{{navApps}}</a>
+      <a href="{{appsPath}}">{{navApps}}</a>
       <a href="#hakkimda">{{navAbout}}</a>
     </nav>
     <div class="hdr-r">
@@ -282,8 +282,11 @@
       <div class="app-card soon">
         <span class="glare"></span>
         <span class="badge mono">{{soonBadge}}</span>
-        <div class="soon-art" aria-hidden="true"><i></i><b>?</b></div>
-        <div><h3>{{soonTitle}}</h3><p>{{soonText}}</p></div>
+        <div class="soon-art" aria-hidden="true"><i></i><img src="/apps/unwrap/icon-192.webp" alt="" width="192" height="192" loading="lazy"></div>
+        <div><h3>Unwrap</h3><p>{{unwrapText}}</p></div>
+        <div class="links-row">
+          <a href="{{unwrapSupportHref}}">{{support}}</a><a href="{{unwrapPrivacyHref}}">{{privacy}}</a><a href="{{unwrapTermsHref}}">{{terms}}</a><a href="{{appsPath}}">{{allApps}}</a>
+        </div>
       </div>
     </div>
   </div>
@@ -327,6 +330,7 @@
     <div class="wrap foot-in">
       <span>{{footerRights}}</span>
       <nav aria-label="{{footNavLabel}}">
+        <a href="{{appsPath}}">{{navApps}}</a>
         <a href="{{synviaPath}}">Synvia AI</a>
         <a href="{{changelogPath}}">{{navNews}}</a>
         <a href="{{supportHref}}">{{support}}</a>
