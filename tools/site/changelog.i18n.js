@@ -7,7 +7,7 @@ const synvia = require('./synvia.i18n.js');
 
 const SHARED = [
   'homePath', 'navBase', 'backHome', 'navHow', 'navFeatures', 'navFaq', 'navNews', 'navDownload', 'changelogPath', 'appsPath', 'navAppsHub',
-  'supportHref', 'privacyHref', 'deleteHref', 'footerSupport', 'footerPrivacy', 'footerDelete', 'footerRights',
+  'supportHref', 'privacyHref', 'termsHref', 'deleteHref', 'footerSupport', 'footerPrivacy', 'footerTerms', 'footerDelete', 'footerRights',
   'appStore', 'playSoon', 'playGet', 'androidSoon',
 ];
 const pick = (t) => Object.fromEntries(SHARED.map((k) => [k, t[k]]));

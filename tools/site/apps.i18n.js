@@ -1,4 +1,4 @@
-// Uygulamalar sayfası: /uygulamalar/ (TR) ve /en/apps/ (EN). Her uygulama için bir kart ve destek/gizlilik/silme bağlantıları.
+// Uygulamalar sayfası: /uygulamalar/ (TR) ve /en/apps/ (EN). Her uygulama için bir kart ve aynı dört bağlantı: destek, gizlilik, koşullar, veri silme.
 // Şablon: apps.template.html (stil: web/assets/legal.css + web/assets/apps.css) — üretmek için: tools/site/build.sh
 // Yeni uygulama eklenince: kartı şablona, sayfalarını web/apps/<ad>/ ve web/en/apps/<ad>/ altına ekle; sitemap.xml'i güncelle.
 // Unwrap mağazaya çıkınca: "Yakında" rozetini ve unwrapStores kutusunu mağaza bağlantılarıyla değiştir.
@@ -18,7 +18,7 @@ module.exports = {
     title: 'Uygulamalar · aydinapp',
     description: 'İbrahim Aydın’ın uygulamaları: Synvia AI ve Unwrap. Destek, gizlilik politikası, kullanım koşulları ve veri silme sayfaları.',
     pageTitle: 'Uygulamalar',
-    lede: 'Geliştirdiğim uygulamalar ve her birinin destek, gizlilik ve veri silme sayfaları.',
+    lede: 'Geliştirdiğim uygulamalar ve her birinin destek, gizlilik, kullanım koşulları ve veri silme sayfaları.',
     liveBadge: 'Yayında',
     soonBadge: 'Yakında',
     synviaIconAlt: 'Synvia AI uygulama ikonu',
@@ -50,7 +50,7 @@ module.exports = {
     title: 'Apps · aydinapp',
     description: 'Apps by İbrahim Aydın: Synvia AI and Unwrap. Support, privacy policy, terms of use and data deletion pages.',
     pageTitle: 'Apps',
-    lede: 'The apps I’ve built, with the support, privacy and data deletion pages for each.',
+    lede: 'The apps I’ve built, with the support, privacy, terms of use and data deletion pages for each.',
     liveBadge: 'Live',
     soonBadge: 'Coming soon',
     synviaIconAlt: 'Synvia AI app icon',

@@ -508,7 +508,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .store-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 .mail a { color: var(--fg); border-bottom: 1px solid rgba(121, 248, 227, .4); }
 .mail a:hover { color: var(--teal-hi); }
-.links-row { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 4px; font-size: 14px; color: var(--muted); }
+.links-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 4px; font-size: 14px; color: var(--muted); }
 .links-row a:hover { color: var(--teal-hi); }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 @media (max-width: 420px) { .btn-play { width: 100%; justify-content: center; } }

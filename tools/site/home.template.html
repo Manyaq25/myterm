@@ -271,10 +271,10 @@
             <a class="btn-play" data-play-btn data-get-label="{{playGet}}" aria-disabled="true" title="{{androidSoon}}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597zm-13.09-7.84L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"/></svg><span data-play-label>{{playSoon}}</span></a>
           </div>
           <div class="links-row">
-            <a class="go" href="{{synviaPath}}"><i>{{icon:arrow_outward}}</i>{{learnMore}}</a>
+            <a class="go" href="{{synviaPath}}"><i>{{icon:arrow_outward}}</i>{{learnMore}}</a><a href="{{changelogPath}}">{{navNews}}</a>
           </div>
           <div class="links-row">
-            <a href="{{changelogPath}}">{{navNews}}</a><a href="{{supportHref}}">{{support}}</a><a href="{{privacyHref}}">{{privacy}}</a>
+            <a href="{{supportHref}}">{{support}}</a><a href="{{privacyHref}}">{{privacy}}</a><a href="{{termsHref}}">{{terms}}</a><a href="{{deleteHref}}">{{deleteData}}</a>
           </div>
         </div>
         <div class="shot"><img src="/apps/synvia-ai/screens/ai-metin.webp" alt="{{shotAlt}}" width="660" height="1434" loading="lazy"></div>
@@ -285,7 +285,10 @@
         <div class="soon-art" aria-hidden="true"><i></i><img src="/apps/unwrap/icon-192.webp" alt="" width="192" height="192" loading="lazy"></div>
         <div><h3>Unwrap</h3><p>{{unwrapText}}</p></div>
         <div class="links-row">
-          <a href="{{unwrapSupportHref}}">{{support}}</a><a href="{{unwrapPrivacyHref}}">{{privacy}}</a><a href="{{unwrapTermsHref}}">{{terms}}</a><a href="{{appsPath}}">{{allApps}}</a>
+          <a href="{{unwrapSupportHref}}">{{support}}</a><a href="{{unwrapPrivacyHref}}">{{privacy}}</a><a href="{{unwrapTermsHref}}">{{terms}}</a><a href="{{unwrapDeleteHref}}">{{deleteData}}</a>
+        </div>
+        <div class="links-row">
+          <a href="{{appsPath}}">{{allApps}} &rarr;</a>
         </div>
       </div>
     </div>
@@ -335,6 +338,7 @@
         <a href="{{changelogPath}}">{{navNews}}</a>
         <a href="{{supportHref}}">{{support}}</a>
         <a href="{{privacyHref}}">{{privacy}}</a>
+        <a href="{{termsHref}}">{{terms}}</a>
         <a href="{{deleteHref}}">{{deleteData}}</a>
       </nav>
     </div>
