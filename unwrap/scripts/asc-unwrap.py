@@ -468,6 +468,22 @@ def fill_subscriptions():
                     print(f'  ✗ {code}:', e)
 
 
+def fill_price():
+    """Uygulamanın kendisini ücretsiz yapar (abonelik fiyatlarına dokunmaz)."""
+    pts = get(f'/apps/{APP_ID}/appPricePoints', **{'filter[territory]': 'USA', 'limit': 200})['data']
+    free = next(p for p in pts if float(p['attributes']['customerPrice']) == 0)
+    call('POST', '/appPriceSchedules', {
+        'data': {'type': 'appPriceSchedules', 'relationships': {
+            'app': {'data': {'type': 'apps', 'id': APP_ID}},
+            'baseTerritory': {'data': {'type': 'territories', 'id': 'USA'}},
+            'manualPrices': {'data': [{'type': 'appPrices', 'id': '${free}'}]}}},
+        'included': [{'type': 'appPrices', 'id': '${free}', 'attributes': {'startDate': None},
+                      'relationships': {'appPricePoint': {'data': {'type': 'appPricePoints', 'id': free['id']}}}}]})
+    sched = get(f'/apps/{APP_ID}/appPriceSchedule')['data']
+    manual = get(f"/appPriceSchedules/{sched['id']}/manualPrices", include='appPricePoint', limit=5)
+    print('  uygulama fiyatı: ücretsiz', [i['attributes'].get('customerPrice') for i in manual.get('included', [])])
+
+
 def fill():
     for u in ['/apps/unwrap/support.html', '/apps/unwrap/privacy-policy.html', '/apps/unwrap/terms.html', '/apps/unwrap/ornek-sohbet.txt',
               '/en/apps/unwrap/support.html', '/en/apps/unwrap/privacy-policy.html', '/en/apps/unwrap/terms.html', '/uygulamalar/', '/en/apps/']:
@@ -484,6 +500,7 @@ def fill():
     step('Sürüm, telif, derleme', fill_version)
     step('Açıklama / anahtar kelime / destek / ekran görüntüleri (diller)', fill_version_locs)
     step('İnceleme bilgileri', fill_review)
+    step('Uygulama fiyatı', fill_price)
     step('Ülke bulunabilirliği', fill_availability)
     step('Abonelik dilleri', fill_subscriptions)
     print('\nHATALI ADIMLAR:', FAILED or 'yok')
@@ -493,4 +510,4 @@ def fill():
 
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else 'audit'
-    {'audit': audit, 'fill': fill, 'review': lambda: (step('İnceleme bilgileri', fill_review), audit())}[cmd]()
+    {'audit': audit, 'fill': fill, 'price': lambda: (step('Uygulama fiyatı', fill_price), audit()), 'review': lambda: (step('İnceleme bilgileri', fill_review), audit())}[cmd]()
