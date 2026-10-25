@@ -48,6 +48,11 @@ jobs:
       # yerelde derleme (--prebuilt) yer tutucu değerlerle çalışırdı.
       - name: Yerel kalıntıları temizle
         run: rm -f .env.local .vercel/.env.production.local
+      - name: Node sürümü (proje ayarı; package.json engines ile aynı)
+        run: |
+          code=$(curl -s -o np.json -w '%{http_code}' -X PATCH "https://api.vercel.com/v9/projects/unwrap-backend?slug=manyaq26" \
+            -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" -d '{"nodeVersion":"24.x"}')
+          echo "Vercel proje Node ayarı: HTTP $code $(grep -o '"nodeVersion":"[^"]*"' np.json | head -1)"
       - name: Yayınla
         id: deploy
         run: |
