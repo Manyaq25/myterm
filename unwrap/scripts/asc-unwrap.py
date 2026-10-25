@@ -117,7 +117,7 @@ def audit():
         age = safe(get, f"/appInfos/{info['id']}/ageRatingDeclaration")
         if age:
             aa = age['data']['attributes']
-            optional = {'kidsAgeBand', 'socialMediaAgeRestricted', 'gracRatingClassificationNumber', 'developerAgeRatingInfoUrl',
+            optional = {'kidsAgeBand', 'gracRatingClassificationNumber', 'developerAgeRatingInfoUrl',
                         'ageRatingOverride', 'ageRatingOverrideV2', 'koreaAgeRatingOverride'}
             empty = [k for k, v in aa.items() if v is None and k not in optional]
             print('  yaş derecelendirme:', {k: v for k, v in aa.items() if v not in (None, 'NONE', False)})
@@ -322,7 +322,7 @@ def fill_info_locs():
 
 AGE = {
     'advertising': False, 'ageAssurance': False, 'gambling': False, 'healthOrWellnessTopics': False, 'lootBox': False,
-    'messagingAndChat': False, 'parentalControls': False, 'socialMedia': False, 'unrestrictedWebAccess': False,
+    'messagingAndChat': False, 'parentalControls': False, 'socialMedia': False, 'socialMediaAgeRestricted': False, 'unrestrictedWebAccess': False,
     'userGeneratedContent': False,
     'alcoholTobaccoOrDrugUseOrReferences': 'NONE', 'contests': 'NONE', 'gamblingSimulated': 'NONE',
     'gunsOrOtherWeapons': 'NONE', 'horrorOrFearThemes': 'NONE', 'medicalOrTreatmentInformation': 'NONE',
