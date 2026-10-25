@@ -1,0 +1,33 @@
+# Unwrap: dahili testteki en yeni sürümü Google Play kapalı teste (alpha) taşır.
+# KESİN KURAL: üretim kanalına dokunmaz. Synvia'dan ayrı; yalnız com.aydinapp.unwrap.
+# Tetikleme: elle ya da unwrap/kapali-test.txt değişince.
+name: Unwrap Google Play kapalı test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**", main]
+    paths: ["unwrap/kapali-test.txt"]
+
+concurrency:
+  group: unwrap-play-setup
+  cancel-in-progress: false
+
+jobs:
+  closed-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: unwrap
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet google-auth requests
+      - name: Kapalı teste taşı
+        env:
+          PLAY_SA_JSON: ${{ secrets.UNWRAP_PLAY_SA_JSON }}
+        run: |
+          [ -z "$PLAY_SA_JSON" ] && { echo "UNWRAP_PLAY_SA_JSON yok"; exit 1; }
+          python3 scripts/play-closed-test.py
