@@ -57,7 +57,13 @@ jobs:
           echo "url=$url" >> "$GITHUB_OUTPUT"
       - name: Sağlık kontrolü
         run: |
-          curl -sS --max-time 20 "${{ steps.deploy.outputs.url }}/api/health" | tee h.json
+          # Adres geçişi birkaç saniye sürebilir: sağlık ucu cevap verene kadar en çok 60 sn bekle.
+          for i in $(seq 1 12); do
+            curl -sS --max-time 20 "${{ steps.deploy.outputs.url }}/api/health" > h.json || true
+            grep -q '"service":"unwrap"' h.json && break
+            echo "sağlık ucu henüz hazır değil ($i)"; sleep 5
+          done
+          cat h.json; echo
           grep -q '"service":"unwrap"' h.json
           # Yasal sayfalar (mağazalar bu adresleri ister)
           for pg in gizlilik kosullar hesap-silme; do
