@@ -16,10 +16,6 @@ NOTES = {
     'tr-TR': 'Kapalı test sürümü: sohbet karnesi, kanıtlı yapay zekâ raporu, Mila, profil ve rozetler. Geri bildirimin bizim için çok değerli.',
     'en-US': 'Closed test build: chat report card, evidence-based AI report, Mila, profile and badges. Your feedback means a lot.',
 }
-# Uygulamanın dillerine göre ülkeler (kapalı test için; mağaza yayını değildir)
-COUNTRIES = ['TR', 'US', 'GB', 'DE', 'AT', 'CH', 'NL', 'BE', 'FR', 'ES', 'IT', 'PT', 'BR', 'MX', 'AR', 'CO', 'PL',
-             'RO', 'UA', 'ID', 'IN', 'AE', 'SA', 'EG', 'AZ', 'CY']
-
 
 def main():
     assert TRACK != 'production'
@@ -35,17 +31,14 @@ def main():
         sys.exit('dahili testte sürüm yok')
     vc = str(max(codes))
     release = {
-        'name': f'1.0.0 ({vc})', 'versionCodes': [vc], 'status': 'completed',
+        # Hiç yayınlanmamış (taslak) uygulamada API yalnız taslak sürüm kabul ediyor; ülke ve test
+        # kullanıcıları seçildikten sonra Play Console'dan "İncelemeye gönder" ile tamamlanır.
+        'name': f'1.0.0 ({vc})', 'versionCodes': [vc], 'status': 'draft',
         'releaseNotes': [{'language': k, 'text': v} for k, v in NOTES.items()],
     }
-    body = {'track': TRACK, 'releases': [dict(release, countryTargeting={'countries': COUNTRIES, 'includeRestOfWorld': False})]}
-    try:
-        play.call('PUT', f'{ps.API}/edits/{edit}/tracks/{TRACK}', body=body)
-        print(f'kapalı test: sürüm {vc} eklendi ({len(COUNTRIES)} ülke)')
-    except ps.ApiError as e:
-        print('ülke hedefi kabul edilmedi, ülkeler Play Console\'dan seçilecek:', e)
-        play.call('PUT', f'{ps.API}/edits/{edit}/tracks/{TRACK}', body={'track': TRACK, 'releases': [release]})
-        print(f'kapalı test: sürüm {vc} eklendi')
+    # Ülke seçimi API'de yalnız kademeli sürümlerde var; kapalı testte Play Console'dan seçilir.
+    play.call('PUT', f'{ps.API}/edits/{edit}/tracks/{TRACK}', body={'track': TRACK, 'releases': [release]})
+    print(f'kapalı test: sürüm {vc} taslak olarak eklendi')
     if ps.production_has_pending(play, edit):
         # Üretimde bekleyen bir şey varsa onu da incelemeye taşımamak için gönderme
         play.call('POST', f'{ps.API}/edits/{edit}:commit', params={'changesNotSentForReview': 'true'})
