@@ -117,7 +117,9 @@ def audit():
         age = safe(get, f"/appInfos/{info['id']}/ageRatingDeclaration")
         if age:
             aa = age['data']['attributes']
-            empty = [k for k, v in aa.items() if v is None]
+            optional = {'kidsAgeBand', 'socialMediaAgeRestricted', 'gracRatingClassificationNumber', 'developerAgeRatingInfoUrl',
+                        'ageRatingOverride', 'ageRatingOverrideV2', 'koreaAgeRatingOverride'}
+            empty = [k for k, v in aa.items() if v is None and k not in optional]
             print('  yaş derecelendirme:', {k: v for k, v in aa.items() if v not in (None, 'NONE', False)})
             need(not empty, f'Yaş derecelendirme anketi (boş: {", ".join(empty)})' if empty else 'Yaş derecelendirme anketi')
 
@@ -230,12 +232,35 @@ def site_urls(loc):
             'marketing': SITE + ('/uygulamalar/' if loc['site'] == 'tr' else '/en/apps/')}
 
 
+def is_emoji(ch):
+    o = ord(ch)
+    return (o >= 0x1F000 or 0x2600 <= o <= 0x27BF or 0x2B00 <= o <= 0x2BFF or o in (0xFE0F, 0x200D, 0x20E3)
+            or 0x2190 <= o <= 0x21FF or 0x2300 <= o <= 0x23FF)
+
+
+def strip_emoji(text):
+    """App Store açıklaması emoji kabul etmiyor: satır başı emojileri '•' (rakamlı tuşlar '1.') olur, diğerleri silinir."""
+    out = []
+    for line in text.split('\n'):
+        i = 0
+        while i < len(line) and (is_emoji(line[i]) or (line[i].isdigit() and i + 1 < len(line) and line[i + 1] in '\ufe0f\u20e3')):
+            i += 1
+        head, rest = line[:i], line[i:].lstrip()
+        digits = ''.join(c for c in head if c.isdigit())
+        rest = ''.join(c for c in rest if not is_emoji(c))
+        title = any(c.isalpha() for c in rest) and rest == rest.upper()  # BÖLÜM BAŞLIĞI madde işareti almaz
+        prefix = f'{digits}. ' if digits else ('• ' if head and not title else '')
+        rest = ' '.join(rest.split(' ')).replace('  ', ' ').rstrip()
+        out.append(prefix + rest)
+    return '\n'.join(out)
+
+
 def description(code, loc):
     full = json.loads((PLAY_LISTINGS / f"{loc['play']}.json").read_text())['fullDescription']
     paras = [loc['billing'] if 'Google Play' in p else p for p in full.split('\n')]
     assert loc['billing'] in paras, f'{code}: Google Play paragrafı bulunamadı'
     u = site_urls(loc)
-    text = '\n'.join(paras).rstrip() + f"\n\n{loc['terms']}: {u['terms']}\n{loc['privacy']}: {u['privacy']}"
+    text = strip_emoji('\n'.join(paras)).rstrip() + f"\n\n{loc['terms']}: {u['terms']}\n{loc['privacy']}: {u['privacy']}"
     assert 'google' not in text.lower() and 'android' not in text.lower()
     assert len(text) <= 4000
     return text
