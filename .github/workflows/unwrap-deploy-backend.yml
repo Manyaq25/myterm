@@ -69,8 +69,8 @@ jobs:
           for pg in gizlilik kosullar hesap-silme; do
             c=$(curl -s -o /dev/null -w '%{http_code}' "${{ steps.deploy.outputs.url }}/$pg"); echo "/$pg: HTTP $c"; [ "$c" = "200" ]
           done
-          # Güvenlik yaması (Ekim 2026, Brotli RCE): Node 22.23.4 ve üstü bekleniyor.
-          node -e 'const v=require("./h.json").node.slice(1).split(".").map(Number);const ok=v[0]>22||(v[0]===22&&(v[1]>23||(v[1]===23&&v[2]>=4)));console.log("Sunucu Node:",v.join("."),ok?"(yamalı)":"(YAMASIZ: Vercel henüz güncellememiş)");if(!ok)console.log("::warning::Vercel Node sürümü yamasız");'
+          # Güvenlik yaması (Ekim 2026, Brotli RCE): Node 22.23.4+ ya da 24.22.1+ bekleniyor.
+          node -e 'const v=require("./h.json").node.slice(1).split(".").map(Number);const ok=v[0]>24||(v[0]===24&&(v[1]>22||(v[1]===22&&v[2]>=1)))||(v[0]===22&&(v[1]>23||(v[1]===23&&v[2]>=4)));console.log("Sunucu Node:",v.join("."),ok?"(yamalı)":"(YAMASIZ: Vercel henüz güncellememiş)");if(!ok)console.log("::warning::Vercel Node sürümü yamasız");'
           # Abonelik olmadan ücretli uç kapalı olmalı
           code=$(curl -s -o r.json -w '%{http_code}' -X POST "${{ steps.deploy.outputs.url }}/api/report" -H 'x-app-user-id: ci-test' -d '{}')
           echo "abonesiz rapor: HTTP $code"; head -c 300 r.json; echo
