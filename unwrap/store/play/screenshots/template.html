@@ -252,6 +252,13 @@ const COPY = {
 
 // ---------------- Helpers ----------------
 const q = new URLSearchParams(location.search);
+// App Store (iPhone 6.9") için uzun tuval: ?h=2347 → render.mjs 1.2222 ölçekle 1320×2868 çeker
+if (q.get('h')) {
+  const h = Number(q.get('h'));
+  const st = document.createElement('style');
+  st.textContent = `html, body, .canvas { height: ${h}px !important; } .phone { top: ${640 + (h - 1920) / 4}px; }`;
+  document.head.appendChild(st);
+}
 const lang = q.get('lang') === 'en' ? 'en' : 'tr';
 const n = Math.min(6, Math.max(1, Number(q.get('n')) || 1));
 const C = COPY[lang];

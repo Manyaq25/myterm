@@ -32,8 +32,8 @@ const browser = await chromium.launch({
   args: ['--allow-file-access-from-files', '--font-render-hinting=none'],
 });
 
-async function shot(url, width, height, file, { omitBackground = false } = {}) {
-  const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: 1 });
+async function shot(url, width, height, file, { omitBackground = false, scale = 1 } = {}) {
+  const page = await browser.newPage({ viewport: { width, height }, deviceScaleFactor: scale });
   await page.goto(url);
   await page.waitForFunction(() => document.body.dataset.ready === '1', null, { timeout: 15000 });
   await page.waitForTimeout(150);
@@ -58,14 +58,20 @@ for (const [code, dir] of Object.entries(LANGS)) {
     const url = `${pathToFileURL(join(here, 'template.html')).href}?lang=${code}&n=${n}`;
     await shot(url, 1080, 1920, join(out, 'phone', dir, `${String(n).padStart(2, '0')}.png`));
     toRgb(join(out, 'phone', dir, `${String(n).padStart(2, '0')}.png`));
+    // App Store iPhone 6.9" (1320×2868)
+    const ios = join(out, 'ios', dir, `${String(n).padStart(2, '0')}.png`);
+    await shot(`${url}&h=2347`, 1080, 2347, ios, { scale: 1320 / 1080 });
+    toRgb(ios, [1320, 2868]);
   }
 }
 await browser.close();
 
 // Play ekran görüntüleri ve öne çıkan görselde alfa istenmez: PIL ile RGB'ye çevir.
-function toRgb(file) {
+function toRgb(file, size) {
+  // size verilirse tam o boyuta kırpar (ölçekli çekimde 1 piksellik yuvarlama farkı için)
+  const crop = size ? `.crop((0,0,${size[0]},${size[1]}))` : '';
   try {
-    execFileSync('python3', ['-I', '-c', 'import sys;from PIL import Image;im=Image.open(sys.argv[1]);im.convert("RGB").save(sys.argv[1],optimize=True)', file]);
+    execFileSync('python3', ['-I', '-c', `import sys;from PIL import Image;im=Image.open(sys.argv[1])${crop};im.convert("RGB").save(sys.argv[1],optimize=True)`, file]);
   } catch (e) {
     console.warn('! RGB dönüşümü yapılamadı (PIL yok?):', file);
   }

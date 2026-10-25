@@ -1,0 +1,151 @@
+{
+  "_not": "App Store metinleri. Açıklama store/play/listings/<play>.json'dan alınır; Google Play satırı 'billing' ile değiştirilir ve sona yasal bağlantılar eklenir (scripts/asc-unwrap.py fill). subtitle ≤30, keywords ≤100 (virgülle, boşluksuz), promo ≤170.",
+  "locales": {
+    "tr": {
+      "play": "tr-TR", "site": "tr",
+      "subtitle": "Sohbet karnesi ve AI koç Mila",
+      "keywords": "whatsapp,mesaj,ilişki,sevgili,crush,istatistik,yapay zeka,koç,analiz,arkadaş,grup,telegram,rapor",
+      "promo": "Sohbetini yükle, saniyeler içinde karnesini al. Kim daha ilgili, kim daha hızlı cevap veriyor? Sohbetin telefonunda kalır.",
+      "billing": "Unwrap’i indirmek ve istatistik kartları ücretsiz. Unwrap Pro, 7 gün ücretsiz denemeli ve otomatik yenilenen bir aboneliktir (aylık veya yıllık). Ödeme, satın alma onaylandığında Apple Kimliği hesabından alınır. Abonelik, dönem bitmeden en az 24 saat önce iptal edilmezse otomatik yenilenir. Ayarlar > Apple Kimliği > Abonelikler’den istediğin an iptal edebilirsin; deneme bitmeden iptal edersen ücret alınmaz.",
+      "terms": "Kullanım Koşulları", "privacy": "Gizlilik Politikası"
+    },
+    "en-US": {
+      "play": "en-US", "site": "en",
+      "subtitle": "Chat report card & AI coach",
+      "keywords": "whatsapp,texts,relationship,crush,dating,stats,ai,coach,analyzer,friends,group,telegram,insights",
+      "promo": "Import a chat and get its report card in seconds. Who’s more into it? Who replies faster? Your chats stay on your phone.",
+      "billing": "Unwrap is free to download and the stat cards are free. Unwrap Pro is an auto-renewing subscription (monthly or yearly) with a 7-day free trial. Payment is charged to your Apple ID account at confirmation of purchase. The subscription renews automatically unless cancelled at least 24 hours before the end of the current period. Manage or cancel any time in Settings > Apple ID > Subscriptions; if you cancel before the trial ends, you won’t be charged.",
+      "terms": "Terms of Use", "privacy": "Privacy Policy"
+    },
+    "de-DE": {
+      "play": "de-DE", "site": "en",
+      "subtitle": "Chat-Zeugnis & KI-Coach",
+      "keywords": "whatsapp,nachrichten,beziehung,crush,dating,statistik,ki,coach,analyse,freunde,gruppe,telegram",
+      "promo": "Chat importieren und in Sekunden das Zeugnis bekommen. Wer ist interessierter? Wer antwortet schneller? Deine Chats bleiben auf deinem Handy.",
+      "billing": "Der Download von Unwrap und die Statistik-Karten sind kostenlos. Unwrap Pro ist ein sich automatisch verlängerndes Abo (monatlich oder jährlich) mit 7 Tagen kostenlosem Test. Die Zahlung wird bei Kaufbestätigung über deinen Apple-ID-Account abgerechnet. Das Abo verlängert sich automatisch, wenn es nicht mindestens 24 Stunden vor Ende des Zeitraums gekündigt wird. Kündigen kannst du jederzeit unter Einstellungen > Apple-ID > Abonnements; kündigst du vor Ende des Tests, zahlst du nichts.",
+      "terms": "Nutzungsbedingungen", "privacy": "Datenschutzerklärung"
+    },
+    "es-ES": {
+      "play": "es-ES", "site": "en",
+      "subtitle": "Boletín del chat y coach IA",
+      "keywords": "whatsapp,mensajes,relación,pareja,crush,ligar,estadísticas,ia,coach,análisis,amigos,grupo,telegram",
+      "promo": "Importa un chat y recibe su boletín en segundos. ¿Quién está más interesado? ¿Quién responde antes? Tus chats se quedan en tu móvil.",
+      "billing": "Descargar Unwrap y las tarjetas de estadísticas es gratis. Unwrap Pro es una suscripción de renovación automática (mensual o anual) con 7 días de prueba gratis. El pago se carga a tu cuenta de Apple ID al confirmar la compra. La suscripción se renueva automáticamente salvo que la canceles al menos 24 horas antes del final del periodo. Cancélala cuando quieras en Ajustes > Apple ID > Suscripciones; si cancelas antes de que acabe la prueba, no se te cobra nada.",
+      "terms": "Condiciones de uso", "privacy": "Política de privacidad"
+    },
+    "es-MX": {
+      "play": "es-419", "site": "en",
+      "subtitle": "Boleta del chat y coach IA",
+      "keywords": "whatsapp,mensajes,relación,pareja,crush,ligue,estadísticas,ia,coach,análisis,amigos,grupo,telegram",
+      "promo": "Importa un chat y recibe su boleta en segundos. ¿Quién está más interesado? ¿Quién responde más rápido? Tus chats se quedan en tu celular.",
+      "billing": "Descargar Unwrap y las tarjetas de estadísticas es gratis. Unwrap Pro es una suscripción de renovación automática (mensual o anual) con 7 días de prueba gratis. El pago se carga a tu cuenta de Apple ID al confirmar la compra. La suscripción se renueva automáticamente a menos que la canceles al menos 24 horas antes de que termine el periodo. Cancélala cuando quieras en Configuración > Apple ID > Suscripciones; si cancelas antes de que termine la prueba, no se te cobra nada.",
+      "terms": "Términos de uso", "privacy": "Política de privacidad"
+    },
+    "fr-FR": {
+      "play": "fr-FR", "site": "en",
+      "subtitle": "Bulletin de chat et coach IA",
+      "keywords": "whatsapp,messages,couple,relation,crush,drague,stats,ia,coach,analyse,amis,groupe,telegram",
+      "promo": "Importe une conversation et obtiens son bulletin en quelques secondes. Qui est le plus intéressé ? Qui répond le plus vite ? Tes chats restent sur ton téléphone.",
+      "billing": "Le téléchargement d’Unwrap et les cartes de stats sont gratuits. Unwrap Pro est un abonnement à renouvellement automatique (mensuel ou annuel) avec 7 jours d’essai gratuit. Le paiement est débité de ton compte Apple ID à la confirmation de l’achat. L’abonnement se renouvelle automatiquement sauf résiliation au moins 24 heures avant la fin de la période. Résilie à tout moment dans Réglages > Apple ID > Abonnements ; si tu résilies avant la fin de l’essai, tu ne paies rien.",
+      "terms": "Conditions d’utilisation", "privacy": "Politique de confidentialité"
+    },
+    "it": {
+      "play": "it-IT", "site": "en",
+      "subtitle": "Pagella della chat e coach IA",
+      "keywords": "whatsapp,messaggi,relazione,coppia,crush,flirt,statistiche,ia,coach,analisi,amici,gruppo,telegram",
+      "promo": "Importa una chat e ricevi la sua pagella in pochi secondi. Chi è più interessato? Chi risponde prima? Le tue chat restano sul tuo telefono.",
+      "billing": "Scaricare Unwrap e le card di statistiche è gratis. Unwrap Pro è un abbonamento con rinnovo automatico (mensile o annuale) con 7 giorni di prova gratuita. Il pagamento viene addebitato sul tuo account Apple ID alla conferma dell’acquisto. L’abbonamento si rinnova automaticamente se non viene disdetto almeno 24 ore prima della fine del periodo. Disdici quando vuoi da Impostazioni > ID Apple > Abbonamenti; se disdici prima della fine della prova, non paghi nulla.",
+      "terms": "Condizioni d’uso", "privacy": "Informativa sulla privacy"
+    },
+    "nl-NL": {
+      "play": "nl-NL", "site": "en",
+      "subtitle": "Chatrapport en AI-coach",
+      "keywords": "whatsapp,berichten,relatie,crush,daten,statistieken,ai,coach,analyse,vrienden,groep,telegram",
+      "promo": "Importeer een chat en krijg binnen seconden het rapport. Wie is meer geïnteresseerd? Wie reageert sneller? Je chats blijven op je telefoon.",
+      "billing": "Unwrap downloaden en de statistiekkaarten zijn gratis. Unwrap Pro is een automatisch verlengend abonnement (maandelijks of jaarlijks) met 7 dagen gratis proberen. De betaling wordt bij bevestiging van de aankoop via je Apple ID-account afgeschreven. Het abonnement wordt automatisch verlengd, tenzij je minstens 24 uur voor het einde van de periode opzegt. Opzeggen kan altijd via Instellingen > Apple ID > Abonnementen; zeg je op voordat de proefperiode afloopt, dan betaal je niets.",
+      "terms": "Gebruiksvoorwaarden", "privacy": "Privacybeleid"
+    },
+    "pl": {
+      "play": "pl-PL", "site": "en",
+      "subtitle": "Świadectwo czatu i coach AI",
+      "keywords": "whatsapp,wiadomości,związek,crush,randki,statystyki,ai,coach,analiza,przyjaciele,grupa,telegram",
+      "promo": "Zaimportuj czat i w kilka sekund dostań jego świadectwo. Kto bardziej się angażuje? Kto odpisuje szybciej? Twoje czaty zostają na telefonie.",
+      "billing": "Pobranie Unwrap i karty ze statystykami są bezpłatne. Unwrap Pro to automatycznie odnawiana subskrypcja (miesięczna lub roczna) z 7-dniowym bezpłatnym okresem próbnym. Płatność jest pobierana z konta Apple ID po potwierdzeniu zakupu. Subskrypcja odnawia się automatycznie, jeśli nie zostanie anulowana co najmniej 24 godziny przed końcem okresu. Anuluj w każdej chwili w Ustawienia > Apple ID > Subskrypcje; jeśli anulujesz przed końcem okresu próbnego, nic nie zapłacisz.",
+      "terms": "Warunki korzystania", "privacy": "Polityka prywatności"
+    },
+    "pt-BR": {
+      "play": "pt-BR", "site": "en",
+      "subtitle": "Boletim do chat e coach IA",
+      "keywords": "whatsapp,mensagens,relacionamento,crush,namoro,estatísticas,ia,coach,análise,amigos,grupo,telegram",
+      "promo": "Importe uma conversa e receba o boletim em segundos. Quem está mais interessado? Quem responde mais rápido? Suas conversas ficam no seu celular.",
+      "billing": "Baixar o Unwrap e os cards de estatísticas é grátis. O Unwrap Pro é uma assinatura com renovação automática (mensal ou anual) e 7 dias de teste grátis. O pagamento é cobrado na sua conta Apple ID na confirmação da compra. A assinatura é renovada automaticamente, a menos que seja cancelada pelo menos 24 horas antes do fim do período. Cancele quando quiser em Ajustes > ID Apple > Assinaturas; se cancelar antes do fim do teste, você não paga nada.",
+      "terms": "Termos de uso", "privacy": "Política de privacidade"
+    },
+    "ro": {
+      "play": "ro", "site": "en",
+      "subtitle": "Carnetul chatului și coach AI",
+      "keywords": "whatsapp,mesaje,relație,iubit,crush,statistici,ai,coach,analiză,prieteni,grup,telegram",
+      "promo": "Importă o conversație și primește carnetul ei în câteva secunde. Cine e mai interesat? Cine răspunde mai repede? Conversațiile rămân pe telefonul tău.",
+      "billing": "Descărcarea Unwrap și cardurile cu statistici sunt gratuite. Unwrap Pro este un abonament cu reînnoire automată (lunar sau anual) cu 7 zile de probă gratuită. Plata se debitează din contul Apple ID la confirmarea achiziției. Abonamentul se reînnoiește automat dacă nu este anulat cu cel puțin 24 de ore înainte de sfârșitul perioadei. Îl poți anula oricând din Configurări > ID Apple > Abonamente; dacă anulezi înainte să se termine perioada de probă, nu plătești nimic.",
+      "terms": "Termeni de utilizare", "privacy": "Politica de confidențialitate"
+    },
+    "ru": {
+      "play": "ru-RU", "site": "en",
+      "subtitle": "Табель переписки и ИИ-коуч",
+      "keywords": "whatsapp,сообщения,отношения,парень,девушка,краш,статистика,ии,коуч,анализ,друзья,группа,telegram",
+      "promo": "Загрузи переписку и получи её табель за секунды. Кто больше заинтересован? Кто отвечает быстрее? Твои чаты остаются на телефоне.",
+      "billing": "Скачать Unwrap и пользоваться карточками со статистикой можно бесплатно. Unwrap Pro — подписка с автопродлением (на месяц или на год) и бесплатным пробным периодом 7 дней. Оплата списывается с учётной записи Apple ID при подтверждении покупки. Подписка продлевается автоматически, если её не отменить как минимум за 24 часа до конца периода. Отменить можно в любой момент в Настройки > Apple ID > Подписки; если отменишь до конца пробного периода, деньги не спишутся.",
+      "terms": "Условия использования", "privacy": "Политика конфиденциальности"
+    },
+    "uk": {
+      "play": "uk", "site": "en",
+      "subtitle": "Табель листування і ШІ-коуч",
+      "keywords": "whatsapp,повідомлення,стосунки,хлопець,дівчина,краш,статистика,ші,коуч,аналіз,друзі,група,telegram",
+      "promo": "Завантаж листування й отримай його табель за секунди. Хто більше зацікавлений? Хто відповідає швидше? Твої чати залишаються на телефоні.",
+      "billing": "Завантажити Unwrap і користуватися картками зі статистикою можна безкоштовно. Unwrap Pro — підписка з автоматичним продовженням (на місяць або на рік) і безкоштовним пробним періодом 7 днів. Оплата списується з облікового запису Apple ID під час підтвердження покупки. Підписка продовжується автоматично, якщо її не скасувати щонайменше за 24 години до кінця періоду. Скасувати можна будь-коли в Параметри > Apple ID > Підписки; якщо скасуєш до кінця пробного періоду, кошти не спишуться.",
+      "terms": "Умови використання", "privacy": "Політика конфіденційності"
+    },
+    "ar-SA": {
+      "play": "ar", "site": "en",
+      "subtitle": "شهادة المحادثة ومدرب ذكاء",
+      "keywords": "واتساب,رسائل,علاقة,حب,كراش,إحصائيات,ذكاء اصطناعي,مدرب,تحليل,أصدقاء,مجموعة,تيليجرام",
+      "promo": "استورد محادثة واحصل على شهادتها في ثوانٍ. من المهتم أكثر؟ من يرد أسرع؟ محادثاتك تبقى على هاتفك.",
+      "billing": "تنزيل Unwrap وبطاقات الإحصائيات مجاني. Unwrap Pro اشتراك يتجدد تلقائيًا (شهري أو سنوي) مع تجربة مجانية لمدة 7 أيام. يُخصم المبلغ من حساب Apple ID عند تأكيد الشراء. يتجدد الاشتراك تلقائيًا ما لم يُلغَ قبل 24 ساعة على الأقل من نهاية الفترة الحالية. يمكنك الإلغاء في أي وقت من الإعدادات > Apple ID > الاشتراكات؛ وإذا ألغيت قبل انتهاء التجربة فلن تُحاسَب.",
+      "terms": "شروط الاستخدام", "privacy": "سياسة الخصوصية"
+    },
+    "hi": {
+      "play": "hi-IN", "site": "en",
+      "subtitle": "चैट रिपोर्ट कार्ड और AI कोच",
+      "keywords": "whatsapp,मैसेज,रिश्ता,क्रश,डेटिंग,आंकड़े,ai,कोच,विश्लेषण,दोस्त,ग्रुप,telegram",
+      "promo": "चैट इम्पोर्ट करो और सेकंडों में उसका रिपोर्ट कार्ड पाओ। कौन ज़्यादा इंटरेस्टेड है? कौन जल्दी जवाब देता है? तुम्हारी चैट तुम्हारे फ़ोन पर रहती है।",
+      "billing": "Unwrap डाउनलोड करना और स्टैट कार्ड फ़्री हैं। Unwrap Pro एक ऑटो-रिन्यू होने वाला सब्सक्रिप्शन है (मंथली या ईयरली), जिसमें 7 दिन का फ़्री ट्रायल है। ख़रीदारी कन्फ़र्म होने पर पेमेंट Apple ID अकाउंट से लिया जाता है। मौजूदा अवधि ख़त्म होने से कम से कम 24 घंटे पहले कैंसल न करने पर सब्सक्रिप्शन अपने आप रिन्यू हो जाता है। Settings > Apple ID > Subscriptions में कभी भी कैंसल करो; ट्रायल ख़त्म होने से पहले कैंसल किया तो कोई चार्ज नहीं लगेगा।",
+      "terms": "उपयोग की शर्तें", "privacy": "गोपनीयता नीति"
+    },
+    "id": {
+      "play": "id", "site": "en",
+      "subtitle": "Rapor chat & coach AI",
+      "keywords": "whatsapp,pesan,hubungan,pacar,gebetan,crush,statistik,ai,coach,analisis,teman,grup,telegram",
+      "promo": "Impor chat dan dapatkan rapornya dalam hitungan detik. Siapa yang lebih tertarik? Siapa yang balas lebih cepat? Chatmu tetap di ponselmu.",
+      "billing": "Unwrap gratis diunduh dan kartu statistiknya gratis. Unwrap Pro adalah langganan yang diperpanjang otomatis (bulanan atau tahunan) dengan uji coba gratis 7 hari. Pembayaran ditagihkan ke akun Apple ID saat pembelian dikonfirmasi. Langganan diperpanjang otomatis kecuali dibatalkan paling lambat 24 jam sebelum periode berakhir. Batalkan kapan saja di Pengaturan > ID Apple > Langganan; kalau kamu membatalkan sebelum masa uji coba berakhir, kamu tidak akan ditagih.",
+      "terms": "Ketentuan Penggunaan", "privacy": "Kebijakan Privasi"
+    }
+  },
+  "subscription": {
+    "tr": ["Kanıtlı AI raporu, sınırsız Mila"],
+    "en-US": ["AI reports with receipts, unlimited Mila"],
+    "de-DE": ["KI-Berichte mit Belegen, Mila ohne Limit"],
+    "es-ES": ["Informes IA con pruebas y Mila ilimitada"],
+    "es-MX": ["Reportes IA con pruebas y Mila ilimitada"],
+    "fr-FR": ["Rapports IA avec preuves, Mila illimitée"],
+    "it": ["Report IA con prove e Mila illimitata"],
+    "nl-NL": ["AI-rapporten met bewijs, onbeperkt Mila"],
+    "pl": ["Raporty AI z dowodami, Mila bez limitu"],
+    "pt-BR": ["Relatórios IA com provas e Mila ilimitada"],
+    "ro": ["Rapoarte AI cu dovezi, Mila nelimitat"],
+    "ru": ["ИИ-отчёты с цитатами и Mila без лимита"],
+    "uk": ["ШІ-звіти з цитатами і Mila без ліміту"],
+    "ar-SA": ["تقارير ذكاء اصطناعي بالأدلة وMila بلا حدود"],
+    "hi": ["सबूत वाली AI रिपोर्ट, अनलिमिटेड Mila"],
+    "id": ["Laporan AI dengan bukti, Mila tanpa batas"]
+  }
+}

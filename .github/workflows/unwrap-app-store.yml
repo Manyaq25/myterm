@@ -33,6 +33,7 @@ jobs:
           ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
           ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
           ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+          REVIEW_PHONE: ${{ vars.UNWRAP_REVIEW_PHONE }}
         run: |
           CMD="${{ inputs.command }}"
           [ -z "$CMD" ] && CMD=$(head -1 app-store.txt)
