@@ -182,10 +182,12 @@ def audit():
     for g in groups:
         print(' grup', g['attributes']['referenceName'])
         glocs = get(f"/subscriptionGroups/{g['id']}/subscriptionGroupLocalizations", limit=50)['data']
-        print('  grup dilleri:', ', '.join(f"{l['attributes']['locale']}={l['attributes'].get('name')!r}" for l in glocs))
+        print('  grup dilleri:', ', '.join(f"{l['attributes']['locale']}={l['attributes'].get('name')!r}/{l['attributes'].get('state')}" for l in glocs))
+        print('  grup ham:', {k: v for k, v in g['attributes'].items()})
         need(glocs, 'Abonelik grubu yerelleştirmesi')
         for s in get(f"/subscriptionGroups/{g['id']}/subscriptions", limit=20)['data']:
             sa = s['attributes']
+            print('   abonelik dil durumları:', [(l['attributes']['locale'], l['attributes'].get('state')) for l in get(f"/subscriptions/{s['id']}/subscriptionLocalizations", limit=50)['data']])
             print(f"  {sa['productId']}: durum={sa['state']} süre={sa.get('subscriptionPeriod')} aile={sa.get('familySharable')} not={bool(sa.get('reviewNote'))}")
             slocs = get(f"/subscriptions/{s['id']}/subscriptionLocalizations", limit=50)['data']
             print('   diller:', ', '.join(l['attributes']['locale'] for l in slocs))
