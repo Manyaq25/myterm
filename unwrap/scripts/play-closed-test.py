@@ -25,6 +25,13 @@ def main():
     tracks = play.call('GET', f'{ps.API}/edits/{edit}/tracks').get('tracks', [])
     for t in tracks:
         print('kanal', t['track'], [(r.get('name'), r.get('status'), r.get('versionCodes')) for r in t.get('releases', [])])
+    if '--status' in sys.argv:  # yalnız okur; düzenlemeyi kaydetmeden siler
+        try:
+            print('test kullanıcıları:', play.call('GET', f'{ps.API}/edits/{edit}/testers/{TRACK}'))
+        except ps.ApiError as e:
+            print('test kullanıcıları okunamadı:', e)
+        play.call('DELETE', f'{ps.API}/edits/{edit}')
+        return
     internal = next((t for t in tracks if t['track'] == 'internal'), None)
     codes = [int(c) for r in (internal or {}).get('releases', []) for c in r.get('versionCodes', [])]
     if not codes:

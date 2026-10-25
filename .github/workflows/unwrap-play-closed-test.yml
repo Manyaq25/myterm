@@ -30,4 +30,4 @@ jobs:
           PLAY_SA_JSON: ${{ secrets.UNWRAP_PLAY_SA_JSON }}
         run: |
           [ -z "$PLAY_SA_JSON" ] && { echo "UNWRAP_PLAY_SA_JSON yok"; exit 1; }
-          python3 scripts/play-closed-test.py
+          python3 scripts/play-closed-test.py $(grep -q durum kapali-test.txt && echo --status)
