@@ -1,0 +1,39 @@
+# Unwrap App Store Connect işleri. Yalnız Unwrap (6824578615); Synvia'ya dokunmaz.
+# KESİN KURAL: incelemeye göndermez. Tetikleme: elle ya da unwrap/app-store.txt değişince
+# (dosyanın ilk satırı komuttur: audit | fill).
+name: Unwrap App Store
+
+on:
+  workflow_dispatch:
+    inputs:
+      command:
+        description: 'Komut: audit | fill'
+        default: 'audit'
+  push:
+    branches: ["claude/**"]
+    paths: ["unwrap/app-store.txt"]
+
+concurrency:
+  group: unwrap-app-store
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: unwrap
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pyjwt cryptography requests
+      - env:
+          ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          CMD="${{ inputs.command }}"
+          [ -z "$CMD" ] && CMD=$(head -1 app-store.txt)
+          python3 scripts/asc-unwrap.py $CMD
