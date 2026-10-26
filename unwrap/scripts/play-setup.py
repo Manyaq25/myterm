@@ -886,42 +886,70 @@ PLAY_LANG = {'tr': 'tr-TR', 'en-US': 'en-US'}
 
 
 def step_onetime(play, dry_run):
-    """Ömür boyu Pro + hediye ürünü (Play yönetilen ürün). Var olan ürünün fiyatına dokunmaz."""
+    """Ömür boyu Pro + hediye ürünü (Play yeni tek seferlik ürün API'si: oneTimeProducts).
+    Var olan ürünün fiyatına dokunmaz (yalnız metinler); yoksa TRY fiyatından tüm bölgeler çevrilir."""
     step = '4-tek-seferlik'
     header('4) Tek seferlik ürünler (Ömür boyu Pro, hediye)')
     cfg = json.loads(ONETIME_FILE.read_text(encoding='utf-8'))
     for key in ('lifetime', 'gift'):
         item = cfg[key]
-        sku = item['productId']
-        listings = {PLAY_LANG[k]: {'title': v['title'][:55], 'description': v['description'][:200]} for k, v in item['listings'].items()}
-        micros = str(int(Decimal(item['priceTRY']) * 1_000_000))
-        body = {
-            'packageName': PACKAGE, 'sku': sku, 'status': 'active', 'purchaseType': 'managedUser',
-            'defaultLanguage': 'tr-TR', 'listings': listings,
-            'defaultPrice': {'priceMicros': micros, 'currency': 'TRY'},
-        }
-        log(f'  {sku}: {item["priceTRY"]} TRY · {", ".join(listings)}')
+        pid = item['productId']
+        listings = [{'languageCode': PLAY_LANG[k], 'title': v['title'][:55], 'description': v['description'][:200]}
+                    for k, v in item['listings'].items()]
+        log(f'  {pid}: {item["priceTRY"]} TRY · {", ".join(x["languageCode"] for x in listings)}')
         if dry_run:
-            ok(step, f'{sku} hazır (çevrimdışı)')
+            ok(step, f'{pid} hazır (çevrimdışı)')
             continue
+        url = f'{API}/oneTimeProducts/{pid}'
         try:
-            cur = play.call('GET', f'{API}/inappproducts/{sku}')
+            cur = play.call('GET', url)
         except ApiError as e:
-            cur = None if e.status == 404 else e
-        if isinstance(cur, ApiError):
-            fail(step, f'{sku} okunamadı: {cur}')
+            if e.status != 404:
+                fail(step, f'{pid} okunamadı: {e}')
+                continue
+            cur = None
+        try:
+            conv = play.call('POST', f'{API}/pricing:convertRegionPrices', body={'price': money(item['priceTRY'], 'TRY')})
+        except ApiError as e:
+            fail(step, f'{pid} convertRegionPrices: {e}')
             continue
+        version = (conv.get('regionVersion') or {}).get('version')
+        if cur:
+            # Fiyat ve satın alma seçenekleri korunur; yalnız metinler güncellenir.
+            body = {**cur, 'listings': listings}
+            mask = 'listings'
+        else:
+            regional = {code: {'regionCode': code, 'price': cp['price'], 'availability': 'AVAILABLE'}
+                        for code, cp in (conv.get('convertedRegionPrices') or {}).items()}
+            regional['TR'] = {'regionCode': 'TR', 'price': money(item['priceTRY'], 'TRY'), 'availability': 'AVAILABLE'}
+            option = {'purchaseOptionId': 'standart', 'buyOption': {'legacyCompatible': True, 'multiQuantityEnabled': False},
+                      'regionalPricingAndAvailabilityConfigs': list(regional.values())}
+            other = conv.get('convertedOtherRegionsPrice') or {}
+            if other.get('usdPrice') and other.get('eurPrice'):
+                option['newRegionsConfig'] = {'usdPrice': other['usdPrice'], 'eurPrice': other['eurPrice'], 'availability': 'AVAILABLE'}
+            body = {'packageName': PACKAGE, 'productId': pid, 'listings': listings, 'purchaseOptions': [option]}
+            mask = 'listings,purchaseOptions'
         try:
-            if cur:
-                # Fiyat korunur (elle değişmiş olabilir); yalnız metinler ve durum güncellenir.
-                patch = {**body, 'defaultPrice': cur.get('defaultPrice', body['defaultPrice']), 'prices': cur.get('prices', {})}
-                play.call('PUT', f'{API}/inappproducts/{sku}', params={'autoConvertMissingPrices': 'true'}, body=patch)
-                ok(step, f'{sku} güncellendi')
-            else:
-                play.call('POST', f'{API}/inappproducts', params={'autoConvertMissingPrices': 'true'}, body=body)
-                ok(step, f'{sku} oluşturuldu ({item["priceTRY"]} TRY, diğer ülkeler otomatik çevrildi)')
+            play.call('PATCH', url, body=body, params={
+                'allowMissing': 'true', 'updateMask': mask, 'regionsVersion.version': version,
+                'latencyTolerance': LATENCY})
+            ok(step, f'{pid} {"güncellendi" if cur else "oluşturuldu"}' + ('' if cur else f' ({item["priceTRY"]} TRY, {len(body["purchaseOptions"][0]["regionalPricingAndAvailabilityConfigs"])} bölge)'))
         except ApiError as e:
-            fail(step, f'{sku}: {e}')
+            fail(step, f'{pid}: {e}')
+            continue
+        # Satın alma seçeneği etkin değilse etkinleştir
+        try:
+            prod = play.call('GET', url)
+            for po in prod.get('purchaseOptions', []):
+                if po.get('state') == 'ACTIVE':
+                    ok(step, f'{pid}/{po["purchaseOptionId"]} etkin')
+                    continue
+                play.call('POST', f'{url}/purchaseOptions:batchUpdateStates', body={'requests': [{
+                    'activatePurchaseOptionRequest': {'packageName': PACKAGE, 'productId': pid,
+                                                      'purchaseOptionId': po['purchaseOptionId'], 'latencyTolerance': LATENCY}}]})
+                ok(step, f'{pid}/{po["purchaseOptionId"]} etkinleştirildi')
+        except ApiError as e:
+            fail(step, f'{pid} etkinleştirme: {e}')
 
 
 def step_revenuecat_onetime(dry_run):
