@@ -126,6 +126,7 @@
           "microphonePermission": false
         }
       ],
+      "./plugins/no-push.js",
       [
         "expo-notifications",
         {
