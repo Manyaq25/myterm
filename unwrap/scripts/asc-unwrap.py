@@ -589,6 +589,36 @@ def fill_iap():
         print('  durum:', x['attributes']['productId'], x['attributes'].get('state'))
 
 
+TEST_NOTES = {
+    'tr': ('1.1.0 yenilikleri: Yapay zekâ raporunda Red/Green flag, Uyum %, "Kim daha çok seviyor?" düellosu, '
+           'grup ödülleri ve eski sevgili kartları · Raporda "Hikâye olarak oynat (Wrapped)" ve 9:16 paylaşım · '
+           'Profil → Arkadaşını getir (davet kodu, hediye Pro) · Paywall\'da Ömür boyu Pro · Ana sayfada haftanın meydan okuması · '
+           'Mila\'da Hakem (Çift Modu) · Ayarlar → Aylık rapor hatırlatıcısı.'),
+    'en-US': ('What\'s new in 1.1.0: red/green flags, compatibility %, "who loves more?" duel, group awards and ex cards in the AI report · '
+              '"Play as a story (Wrapped)" with 9:16 sharing · Profile → Invite a friend (invite codes, gift Pro) · Lifetime Pro on the paywall · '
+              'Challenge of the week on Home · Mila referee (Couple Mode) · Settings → monthly report reminder.'),
+}
+
+
+def test_notes():
+    """En yeni TestFlight derlemesine "Ne test edilecek" notu yazar."""
+    builds = get('/builds', **{'filter[app]': APP_ID, 'sort': '-uploadedDate', 'limit': 1, 'include': 'preReleaseVersion'})
+    if not builds['data']:
+        print('  derleme yok')
+        return
+    b = builds['data'][0]
+    pre = next((x for x in builds.get('included', []) if x['type'] == 'preReleaseVersions'), None)
+    print('  derleme', b['attributes']['version'], pre and pre['attributes'].get('version'), b['attributes'].get('processingState'))
+    locs = {l['attributes']['locale']: l for l in get(f"/builds/{b['id']}/betaBuildLocalizations", limit=20)['data']}
+    for loc, text in TEST_NOTES.items():
+        if loc in locs:
+            call('PATCH', f"/betaBuildLocalizations/{locs[loc]['id']}", {'data': {'type': 'betaBuildLocalizations', 'id': locs[loc]['id'], 'attributes': {'whatsNew': text}}})
+        else:
+            call('POST', '/betaBuildLocalizations', {'data': {'type': 'betaBuildLocalizations', 'attributes': {'locale': loc, 'whatsNew': text},
+                                                              'relationships': {'build': {'data': {'type': 'builds', 'id': b['id']}}}}})
+        print(f'  {loc}: not yazıldı')
+
+
 def fill():
     for u in ['/apps/unwrap/support.html', '/apps/unwrap/privacy-policy.html', '/apps/unwrap/terms.html', '/apps/unwrap/ornek-sohbet.txt',
               '/en/apps/unwrap/support.html', '/en/apps/unwrap/privacy-policy.html', '/en/apps/unwrap/terms.html', '/uygulamalar/', '/en/apps/']:
@@ -615,4 +645,4 @@ def fill():
 
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else 'audit'
-    {'audit': audit, 'fill': fill, 'iap': lambda: step('Tek seferlik ürünler', fill_iap), 'price': lambda: (step('Uygulama fiyatı', fill_price), audit()), 'review': lambda: (step('İnceleme bilgileri', fill_review), audit())}[cmd]()
+    {'audit': audit, 'fill': fill, 'testnote': lambda: step('TestFlight notu', test_notes), 'iap': lambda: step('Tek seferlik ürünler', fill_iap), 'price': lambda: (step('Uygulama fiyatı', fill_price), audit()), 'review': lambda: (step('İnceleme bilgileri', fill_review), audit())}[cmd]()
