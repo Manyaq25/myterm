@@ -201,35 +201,30 @@ test('bildirim şeması: kabul ve red', async () => {
     assert.equal(BildirSchema.safeParse(b).success, false, JSON.stringify(b).slice(0, 80));
 });
 
-test('rapor şeması: ek kartlar (bayrak, uyum, düello, ödül, eski) ve null kabul', async () => {
-  const { ReportSchema } = await import('../lib/report');
-  const base = {
-    summary: 's', cards: [], karne: { subjects: [], teacherNote: 'n' }, tone: [], replies: [], finale: { title: 't', text: 'x' },
-  };
-  const empty = { ...base, flags: null, compatibility: null, loveDuel: null, awards: null, ex: null };
-  assert.ok(ReportSchema.safeParse(empty).success);
-  const full = {
-    ...base,
-    flags: { red: [{ title: 'Noktalı Tamam', author: 'A', quote: 'Tamam.', date: '01.02' }], green: [], verdict: 'v' },
-    compatibility: { score: 87, title: 'Ruh ikizi', best: 'mizah', clash: 'plan', line: 'l' },
-    loveDuel: { rounds: [{ label: 'İlk mesaj', winner: 'A', detail: 'd' }], winner: 'DRAW', line: 'l' },
-    awards: [{ emoji: '🦉', title: 'Gece kuşu', name: 'B', reason: 'r' }],
-    ex: { story: 's', turningPoint: { author: 'A', quote: 'q', date: '01.01', note: 'n' }, lesson: 'l' },
-  };
-  assert.ok(ReportSchema.safeParse(full).success);
-  // Alanlar zorunlu (null olabilir): model her alanı açıkça doldurmalı
-  assert.equal(ReportSchema.safeParse(base).success, false);
+test('ek kart şemaları ilişki türüne göre: yalnız uygun alanlar', async () => {
+  const { ReportSchema, extrasSchema } = await import('../lib/report');
+  const base = { summary: 's', cards: [], karne: { subjects: [], teacherNote: 'n' }, tone: [], replies: [], finale: { title: 't', text: 'x' } };
+  assert.ok(ReportSchema.safeParse(base).success, 'ana rapor ek kartsız geçerli');
+  const flags = { red: [{ title: 'Noktalı Tamam', author: 'A', quote: 'Tamam.', date: '01.02' }], green: [], verdict: 'v' };
+  const compatibility = { score: 87, title: 'Ruh ikizi', best: 'mizah', clash: 'plan', line: 'l' };
+  const loveDuel = { rounds: [{ label: 'İlk mesaj', winner: 'A', detail: 'd' }], winner: 'DRAW', line: 'l' };
+  const ex = { story: 's', turningPoint: { author: 'A', quote: 'q', date: '01.01', note: 'n' }, lesson: 'l' };
+  assert.ok(extrasSchema('sevgili').safeParse({ flags, compatibility, loveDuel }).success);
+  assert.equal(extrasSchema('sevgili').safeParse({ flags, compatibility }).success, false, 'düello zorunlu');
+  assert.ok(extrasSchema('eski').safeParse({ flags, compatibility, ex }).success);
+  assert.ok(extrasSchema('grup').safeParse({ awards: [{ emoji: '🦉', title: 'Gece kuşu', name: 'B', reason: 'r' }] }).success);
+  assert.ok(extrasSchema('arkadas').safeParse({ flags, compatibility }).success);
+  assert.deepEqual(Object.keys(extrasSchema('grup').shape), ['awards']);
 });
 
-test('sistem istemi ilişki türüne göre ek kartları ister', () => {
-  const romantic = systemPrompt('sevgili');
-  assert.ok(romantic.includes('loveDuel: "Kim daha çok seviyor?"') && romantic.includes('awards: null'));
-  const group = systemPrompt('grup');
-  assert.ok(group.includes('awards: grup ödül töreni') && group.includes('compatibility: null'));
-  const ex = systemPrompt('eski');
-  assert.ok(ex.includes('ex: eski sevgiliyle') && ex.includes('loveDuel: null'));
-  assert.ok(systemPrompt('arkadas').includes('flags:'));
-  assert.ok(systemPrompt('sevgili', 'en').includes('award titles'));
+test('ek kart istemi ilişki türüne göre', async () => {
+  const { extrasSystemPrompt } = await import('../lib/report');
+  assert.ok(extrasSystemPrompt('sevgili').includes('loveDuel: "Kim daha çok seviyor?"'));
+  assert.ok(!extrasSystemPrompt('sevgili').includes('awards'));
+  assert.ok(extrasSystemPrompt('grup').includes('awards: grup ödül töreni') && !extrasSystemPrompt('grup').includes('flags'));
+  assert.ok(extrasSystemPrompt('eski').includes('ex: eski sevgiliyle'));
+  assert.ok(extrasSystemPrompt('sevgili', 'en').includes('OUTPUT LANGUAGE'));
+  assert.ok(!systemPrompt('sevgili').includes('loveDuel'), 'ana istem ek kartları istemez');
 });
 
 test('davet ve hediye kodları: biçim, karışan harf yok', async () => {

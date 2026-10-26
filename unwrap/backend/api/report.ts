@@ -13,7 +13,11 @@ export default route(['POST'], async (req, res) => {
   if (!parsed.success) throw new HttpError(400, 'invalid_request');
 
   const tier = await countReport(appUserId);
-  const { report, usage } = await generateReport(parsed.data, tier);
-  await Promise.all([recordUsage('report', usage), incrWithTtl(k('count', weekKey()), 21 * 86400)]);
+  const { report, usage, extrasUsage } = await generateReport(parsed.data, tier);
+  await Promise.all([
+    recordUsage('report', usage),
+    extrasUsage ? recordUsage('report', extrasUsage) : null,
+    incrWithTtl(k('count', weekKey()), 21 * 86400),
+  ]);
   send(res, 200, { report });
 });
