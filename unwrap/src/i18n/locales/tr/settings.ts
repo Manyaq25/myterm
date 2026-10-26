@@ -48,4 +48,15 @@ export default {
   rate: 'Uygulamayı değerlendir',
   privacy: 'Gizlilik politikası',
   terms: 'Kullanım koşulları',
+  notificationsSection: "BİLDİRİMLER",
+  reminder: {
+    title: "Aylık ilişki raporu hatırlatıcısı",
+    on: "Açık · Her ayın 1’inde akşam hatırlatırız",
+    off: "Kapalı · Açmak için dokun",
+    channel: "Aylık rapor",
+    pushTitle: "Aylık ilişki raporun zamanı! 💌",
+    pushBody: "Sohbetini yeniden yükle, bu ay neler değişti gör.",
+    deniedTitle: "Bildirim izni yok",
+    deniedText: "Telefon ayarlarından Unwrap’e bildirim izni verip tekrar dene.",
+  },
 };

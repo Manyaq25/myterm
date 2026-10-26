@@ -18,4 +18,30 @@ export default {
   karneSticker: '🏅 ATTESTATO DI MERITO',
   karneTitle: 'Pagella della chat',
   teacherNote: 'Giudizio del prof: {{note}}',
+  storyButton: "Guarda come storia (Wrapped)",
+  compat: {
+    sticker: "💘 TEST DI COMPATIBILITÀ",
+    storyTitle: "La vostra compatibilità",
+    best: "DOVE ANDATE PIÙ D’ACCORDO",
+    clash: "DOVE VI SCONTRATE DI PIÙ",
+  },
+  flags: {
+    title: "Red flag o green flag?",
+  },
+  duel: {
+    sticker: "⚔️ DUELLO",
+    title: "Chi ama di più?",
+    winner: "VINCITORE",
+    draw: "Pareggio",
+  },
+  awards: {
+    sticker: "🏆 PREMIAZIONE",
+    title: "Premi del gruppo",
+    caption: "Un applauso ai vincitori! 👏",
+  },
+  ex: {
+    title: "Analisi dell’ex",
+    turningPoint: "IL MOMENTO DELLA SVOLTA",
+    lesson: "UNA LEZIONE PER LA PROSSIMA VOLTA",
+  },
 };

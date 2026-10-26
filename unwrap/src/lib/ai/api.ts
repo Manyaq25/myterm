@@ -35,7 +35,7 @@ export function errorText(e: unknown): string {
   }
 }
 
-async function post<T>(path: string, body: unknown): Promise<T> {
+export async function post<T>(path: string, body: unknown): Promise<T> {
   const userId = await appUserId();
   if (!userId) throw new ApiError('pro_required', 402);
   const raw = JSON.stringify(body);
@@ -104,3 +104,11 @@ export async function weeklyCount(): Promise<number | null> {
     return null;
   }
 }
+
+export type InviteInfo = { code: string; rewards: number; max: number; redeemed: boolean };
+export type RedeemResult = { result: 'ok' | 'invalid' | 'own' | 'already'; inviterRewarded: boolean; gift?: boolean };
+export type GiftCode = { code: string; redeemed: boolean };
+
+export const inviteInfo = () => post<InviteInfo>('/api/davet', { action: 'code' });
+export const redeemInvite = (code: string) => post<RedeemResult>('/api/davet', { action: 'redeem', code });
+export const giftCodes = async () => (await post<{ gifts: GiftCode[] }>('/api/davet', { action: 'gifts' })).gifts;

@@ -33,4 +33,9 @@ export default {
     restoreTitle: "Geri yüklenemedi",
     restoreBody: "Birazdan tekrar dener misin?",
   },
+  lifetime: "Ömür boyu",
+  lifetimePrice: "{{price}} · tek ödeme",
+  lifetimeBadge: "ABONELİK YOK",
+  buyLifetime: "Ömür boyu Pro al",
+  lifetimeDisclosure: "{{price}} tek seferlik ödeme; abonelik değildir, yenilenmez. Ödeme mağaza hesabından alınır.",
 };

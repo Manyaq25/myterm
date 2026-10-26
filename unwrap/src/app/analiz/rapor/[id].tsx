@@ -1,14 +1,14 @@
 // Yapay zekâ raporu (Pro): kanıtlı kartlar, karne, ton, cevap önerileri ve
 // kapanış kartı. Rapor bir kez üretilir ve telefonda saklanır.
-import * as Sharing from 'expo-sharing';
 import { router, useLocalSearchParams } from 'expo-router';
-import { MessageCircleHeart, Share2, X } from 'lucide-react-native';
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Clapperboard, MessageCircleHeart, X } from 'lucide-react-native';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { captureRef } from 'react-native-view-shot';
 
+import { ReportExtras } from '@/components/ReportExtras';
 import { ReportSheet } from '@/components/ReportSheet';
+import { Shareable } from '@/components/Shareable';
 import { Button, Card, Sticker, useTopInset } from '@/components/ui';
 import { t } from '@/i18n';
 import { ApiError, errorText, requestReport } from '@/lib/ai/api';
@@ -23,7 +23,13 @@ const CARD_BG = [colors.cardPeach, colors.cardLilac, colors.cardButter, colors.c
 const FUN = new Set(['yalan', 'manipulatif', 'arzu']);
 
 // Bildirime yalnız yapay zekâ metni gider (özet + kart başlık/açıklamaları; alıntılar sohbetten olduğu için gitmez).
-const reportText = (r: Report) => [r.summary, ...r.cards.map((c) => `${c.title}: ${c.caption}`)].join('\n').slice(0, 2000);
+const reportText = (r: Report) =>
+  [
+    r.summary,
+    ...r.cards.map((c) => `${c.title}: ${c.caption}`),
+    r.flags?.verdict, r.compatibility?.line, r.loveDuel?.line, r.ex?.story,
+    ...(r.awards ?? []).map((a) => `${a.title}: ${a.reason}`),
+  ].filter(Boolean).join('\n').slice(0, 2000);
 
 export default function Rapor() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -98,6 +104,14 @@ export default function Rapor() {
             <Text style={[type.body, { color: colors.text }]}>{report.summary}</Text>
           </Card>
 
+          <Button
+            label={t('report.storyButton')}
+            icon={<Clapperboard color="#fff" size={20} />}
+            onPress={() => router.push({ pathname: '/analiz/[id]', params: { id: analysis.id, oynat: '1' } })}
+          />
+
+          <ReportExtras report={report} />
+
           {report.cards.map((c, i) => (
             <AiCard key={`${c.key}-${i}`} card={c} bg={CARD_BG[i % CARD_BG.length]} />
           ))}
@@ -149,32 +163,6 @@ export default function Rapor() {
       )}
       <ReportSheet kind="rapor" text={reporting} onClose={() => setReporting(null)} />
     </SafeAreaView>
-  );
-}
-
-/** Paylaşılabilir kart: içeriği resim olarak dışa aktarılır. */
-function Shareable({ bg, children }: { bg: string; children: ReactNode }) {
-  const ref = useRef<View>(null);
-  const share = async () => {
-    try {
-      const uri = await captureRef(ref, { format: 'png', quality: 1 });
-      await Sharing.shareAsync(uri, { mimeType: 'image/png', dialogTitle: t('report.shareDialog') });
-      bump('card_shared');
-    } catch {
-      Alert.alert(t('report.shareFailTitle'), t('report.shareFailBody'));
-    }
-  };
-  return (
-    <View>
-      <View ref={ref} collapsable={false} style={[styles.shareable, { backgroundColor: bg }]}>
-        {children}
-        <Text style={styles.brand}>Unwrap</Text>
-      </View>
-      <Pressable onPress={share} style={styles.shareBtn} accessibilityLabel={t('report.shareLabel')}>
-        <Share2 color={colors.text} size={16} />
-        <Text style={[type.label, { color: colors.text }]}>{t('report.share')}</Text>
-      </Pressable>
-    </View>
   );
 }
 
@@ -258,9 +246,6 @@ const styles = StyleSheet.create({
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: space.md, padding: space.xl },
   content: { padding: space.lg, gap: space.lg, paddingBottom: space.xl },
   section: { fontFamily: fonts.extrabold, fontSize: 12, letterSpacing: 1, color: colors.primary, marginBottom: space.sm },
-  shareable: { borderRadius: radius.lg, padding: space.lg, gap: space.md },
-  brand: { fontFamily: fonts.extrabold, fontSize: 13, color: colors.textMuted, alignSelf: 'flex-end' },
-  shareBtn: { flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-end', paddingVertical: space.sm, paddingHorizontal: space.md },
   cardTitle: { fontFamily: fonts.extrabold, fontSize: 22, lineHeight: 28, color: colors.text },
   fun: { ...type.caption, color: colors.purple, marginTop: -space.sm },
   rowHead: { flexDirection: 'row', justifyContent: 'space-between' },

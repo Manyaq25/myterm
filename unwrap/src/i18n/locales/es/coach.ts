@@ -194,4 +194,7 @@ export default {
   placeholderAsk: 'Pregúntale a Mila…',
   send: 'Enviar',
   note: 'Mila es una IA y puede equivocarse; no da veredictos definitivos.',
+  roleReferee: "Árbitro (Modo pareja)",
+  introReferee: "Modo pareja: ¡poned el móvil entre los dos! Escribid por turnos (\"Yo: …\", \"Él/Ella: …\"). Mila escucha a las dos partes como árbitro neutral y da su veredicto. ⚖️",
+  placeholderReferee: "Yo: … / Él/Ella: … (contad la discusión)",
 };

@@ -111,4 +111,18 @@ export default {
     romantic: ['¿Quién es más romántico?', '¿Quién miente más? 🤥', 'Indirectas y lo que se lee entre líneas', 'Boleta con IA y con pruebas', '¿A dónde va esta relación?'],
     other: ['Boleta con IA y con pruebas', '¿Quién miente más? 🤥', 'Indirectas y lo que se lee entre líneas', '¿Quién sostiene la conversación?', 'Sugerencias de qué escribir'],
   },
+  play: "Reproducir",
+  pause: "Pausa",
+  counterAll: "{{index}} / {{total}}",
+  month: {
+    title: "Este mes vs el mes pasado",
+    messages: "Mensajes",
+    days: "Días que hablasteis",
+    laughs: "Risas",
+    night: "Mensajes de madrugada",
+    vs: "Mes pasado {{before}} · {{change}}",
+    captionUp: "¡Este mes habéis hablado más! 🔥",
+    captionDown: "Este mes ha estado más tranquilo… 🌙",
+    captionSame: "Constantes como siempre, seguid así 👌",
+  },
 };

@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       only:
-        description: "Adımlar (virgülle): listings,subscriptions"
+        description: "Adımlar (virgülle): listings,subscriptions,onetime"
         default: "listings,subscriptions"
       not_send_for_review:
         description: "Mağaza kaydını incelemeye gönderme (Play Console'dan elle gönderilir)"
@@ -51,6 +51,9 @@ jobs:
           PLAY_CONTACT_EMAIL: ${{ vars.UNWRAP_PLAY_CONTACT_EMAIL || 'aydinibrahim25@gmail.com' }}
           PLAY_NOT_SEND_FOR_REVIEW: ${{ inputs.not_send_for_review && '1' || '' }}
           PLAY_REPRICE: ${{ inputs.reprice && '1' || '' }}
+          # Yalnız "onetime" adımı RevenueCat'e de yazar (tek seferlik ürünler)
+          RC_SECRET_KEY: ${{ secrets.UNWRAP_REVENUECAT_V2_KEY }}
+          RC_PROJECT_ID: ${{ vars.UNWRAP_RC_PROJECT_ID }}
         run: |
           [ -z "$PLAY_SA_JSON" ] && { echo "UNWRAP_PLAY_SA_JSON yok"; exit 1; }
           python3 scripts/play-setup.py --only "${{ inputs.only || 'listings,subscriptions' }}"

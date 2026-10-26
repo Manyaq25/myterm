@@ -268,6 +268,15 @@ export default function Profil() {
           </View>
         </Pressable>
 
+        {/* Arkadaşını getir */}
+        <Pressable onPress={() => router.push('/davet')} accessibilityRole="button" style={({ pressed }) => [styles.shareOpen, { backgroundColor: colors.cardLilac, opacity: pressed ? 0.85 : 1 }]}>
+          <Text style={{ fontSize: 20 }}>🎁</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={[type.label, { color: colors.text }]}>{t('invite.rowTitle')}</Text>
+            <Text style={[type.caption, { color: colors.textMuted }]}>{t('invite.rowNote')}</Text>
+          </View>
+        </Pressable>
+
         {/* Hesap: Apple girişi yalnız destekleyen cihazda */}
         {account || apple ? (
           <>

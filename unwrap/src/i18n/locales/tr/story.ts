@@ -113,4 +113,18 @@ export default {
     romantic: ['Kim daha romantik?', 'Kim daha çok yalan söylüyor? 🤥', 'İmalı mesajlar ve satır araları', 'Kanıtlı yapay zekâ karnesi', 'Bu ilişki nereye gider?'],
     other: ['Kanıtlı yapay zekâ karnesi', 'Kim daha çok yalan söylüyor? 🤥', 'İmalı mesajlar ve satır araları', 'Kim sohbeti taşıyor?', 'Ne yazmalı önerileri'],
   },
+  play: "Oynat",
+  pause: "Duraklat",
+  counterAll: "{{index}} / {{total}}",
+  month: {
+    title: "Bu ay vs geçen ay",
+    messages: "Mesaj",
+    days: "Konuşulan gün",
+    laughs: "Kahkaha",
+    night: "Gece mesajı",
+    vs: "Geçen ay {{before}} · {{change}}",
+    captionUp: "Bu ay daha çok konuştunuz! 🔥",
+    captionDown: "Bu ay biraz sessizdiniz… 🌙",
+    captionSame: "İstikrarlısınız, aynen böyle devam 👌",
+  },
 };

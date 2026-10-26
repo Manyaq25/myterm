@@ -11,6 +11,7 @@ import { Card } from '@/components/ui';
 import { LANGUAGES, lang, langInfo, saveLanguage, t, type LangCode } from '@/i18n';
 import { config } from '@/lib/config';
 import { isPro, managementUrl, restore } from '@/lib/purchases';
+import { disableReminder, enableReminder, reminderOn } from '@/lib/reminder';
 import { deleteAllAnalyses, deleteCoachHistory } from '@/lib/store';
 import { colors, fonts, space, type } from '@/theme';
 
@@ -28,6 +29,18 @@ function Row({ title, subtitle, onPress, danger }: { title: string; subtitle?: s
 export default function Ayarlar() {
   const [pro, setPro] = useState<boolean | null>(null);
   const [langOpen, setLangOpen] = useState(false);
+  const [reminder, setReminder] = useState(reminderOn);
+
+  const toggleReminder = async () => {
+    if (reminder) {
+      await disableReminder();
+      setReminder(false);
+      return;
+    }
+    const ok = await enableReminder().catch(() => false);
+    setReminder(ok);
+    if (!ok) Alert.alert(t('settings.reminder.deniedTitle'), t('settings.reminder.deniedText'));
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -104,6 +117,13 @@ export default function Ayarlar() {
             ))}
           </Card>
         ) : null}
+
+        <Text style={styles.section}>{t('settings.notificationsSection')}</Text>
+        <Row
+          title={`${reminder ? '🔔' : '🔕'} ${t('settings.reminder.title')}`}
+          subtitle={t(reminder ? 'settings.reminder.on' : 'settings.reminder.off')}
+          onPress={toggleReminder}
+        />
 
         <Text style={styles.section}>{t('settings.sections.data')}</Text>
         <Row title={t('settings.deleteCoach.title')} subtitle={t('settings.deleteCoach.subtitle')} onPress={confirmDeleteCoach} danger />

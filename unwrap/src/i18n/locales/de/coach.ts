@@ -194,4 +194,7 @@ export default {
   placeholderAsk: 'Frag Mila…',
   send: 'Senden',
   note: 'Mila ist eine KI und kann sich irren; sie fällt keine endgültigen Urteile.',
+  roleReferee: "Schiedsrichter (Paar-Modus)",
+  introReferee: "Paar-Modus: Legt das Handy zwischen euch! Schreibt abwechselnd (\"Ich: …\", \"Er/Sie: …\"). Mila hört beide Seiten als neutrale Schiedsrichterin an und trifft eine Entscheidung. ⚖️",
+  placeholderReferee: "Ich: … / Er/Sie: … (beschreibt den Streit)",
 };

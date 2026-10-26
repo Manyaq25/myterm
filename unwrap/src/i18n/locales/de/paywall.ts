@@ -33,4 +33,9 @@ export default {
     restoreTitle: "Wiederherstellen fehlgeschlagen",
     restoreBody: "Versuch’s gleich nochmal?",
   },
+  lifetime: "Lebenslang",
+  lifetimePrice: "{{price}} · einmalige Zahlung",
+  lifetimeBadge: "KEIN ABO",
+  buyLifetime: "Pro lebenslang holen",
+  lifetimeDisclosure: "{{price}} einmalige Zahlung; kein Abo, verlängert sich nie. Abgerechnet über dein Store-Konto.",
 };

@@ -200,3 +200,52 @@ test('bildirim şeması: kabul ve red', async () => {
   ])
     assert.equal(BildirSchema.safeParse(b).success, false, JSON.stringify(b).slice(0, 80));
 });
+
+test('rapor şeması: ek kartlar (bayrak, uyum, düello, ödül, eski) ve null kabul', async () => {
+  const { ReportSchema } = await import('../lib/report');
+  const base = {
+    summary: 's', cards: [], karne: { subjects: [], teacherNote: 'n' }, tone: [], replies: [], finale: { title: 't', text: 'x' },
+  };
+  const empty = { ...base, flags: null, compatibility: null, loveDuel: null, awards: null, ex: null };
+  assert.ok(ReportSchema.safeParse(empty).success);
+  const full = {
+    ...base,
+    flags: { red: [{ title: 'Noktalı Tamam', author: 'A', quote: 'Tamam.', date: '01.02' }], green: [], verdict: 'v' },
+    compatibility: { score: 87, title: 'Ruh ikizi', best: 'mizah', clash: 'plan', line: 'l' },
+    loveDuel: { rounds: [{ label: 'İlk mesaj', winner: 'A', detail: 'd' }], winner: 'DRAW', line: 'l' },
+    awards: [{ emoji: '🦉', title: 'Gece kuşu', name: 'B', reason: 'r' }],
+    ex: { story: 's', turningPoint: { author: 'A', quote: 'q', date: '01.01', note: 'n' }, lesson: 'l' },
+  };
+  assert.ok(ReportSchema.safeParse(full).success);
+  // Alanlar zorunlu (null olabilir): model her alanı açıkça doldurmalı
+  assert.equal(ReportSchema.safeParse(base).success, false);
+});
+
+test('sistem istemi ilişki türüne göre ek kartları ister', () => {
+  const romantic = systemPrompt('sevgili');
+  assert.ok(romantic.includes('loveDuel: "Kim daha çok seviyor?"') && romantic.includes('awards: null'));
+  const group = systemPrompt('grup');
+  assert.ok(group.includes('awards: grup ödül töreni') && group.includes('compatibility: null'));
+  const ex = systemPrompt('eski');
+  assert.ok(ex.includes('ex: eski sevgiliyle') && ex.includes('loveDuel: null'));
+  assert.ok(systemPrompt('arkadas').includes('flags:'));
+  assert.ok(systemPrompt('sevgili', 'en').includes('award titles'));
+});
+
+test('davet ve hediye kodları: biçim, karışan harf yok', async () => {
+  const { CODE, newCode } = await import('../lib/davet');
+  const { GIFT_CODE } = await import('../lib/hediye');
+  for (let i = 0; i < 200; i++) {
+    const c = newCode();
+    assert.ok(CODE.test(c), c);
+    assert.ok(!/[01IO]/.test(c), c);
+  }
+  assert.ok(GIFT_CODE.test('ABCDEFGH') && !GIFT_CODE.test('ABCDEF') && !CODE.test('ABCDEFGH'));
+  assert.equal(newCode(() => 0), 'AAAAAA');
+});
+
+test('koç: hakem (çift modu) rolü kabul edilir ve istemde hakem kuralı var', async () => {
+  const req = { relation: 'sevgili', me: 'A', other: 'B', context: '', role: 'hakem', history: [{ role: 'user', text: 'Ben: o geç kaldı. O: trafik vardı.' }] };
+  assert.ok(CoachSchema.safeParse(req).success);
+  assert.equal(CoachSchema.safeParse({ ...req, role: 'patron' }).success, false);
+});

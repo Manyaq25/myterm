@@ -196,4 +196,7 @@ export default {
   placeholderAsk: 'Mila’ya sor…',
   send: 'Gönder',
   note: 'Mila yapay zekâdır, yanılabilir; kesin hüküm vermez.',
+  roleReferee: "Hakem (Çift Modu)",
+  introReferee: "Çift Modu: Telefonu ortaya koyun! İkiniz de sırayla yazın (\"Ben: …\", \"O: …\"). Mila tarafsız hakem olarak iki tarafı dinler ve kararını verir. ⚖️",
+  placeholderReferee: "Ben: … / O: … (tartışmayı anlatın)",
 };

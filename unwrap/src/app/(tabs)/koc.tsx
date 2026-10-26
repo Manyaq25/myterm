@@ -2,7 +2,7 @@
 // kişinin üslubuyla cevap verir (yalnız iki kişilik sohbetlerde).
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { Send } from 'lucide-react-native';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -41,6 +41,7 @@ import { colors, fonts, radius, space, type } from '@/theme';
 // Etiketler dile göre değiştiği için çizim anında kurulur.
 const roles = (): { id: CoachRole | null; label: string; emoji: string }[] => [
   { id: null, label: t('coach.roleCoach'), emoji: '💬' },
+  { id: 'hakem', label: t('coach.roleReferee'), emoji: '⚖️' },
   ...RELATIONS.filter((r) => r.id !== 'is' && r.id !== 'diger').map((r) => ({ id: r.id as CoachRole, label: r.label, emoji: r.emoji })),
   { id: 'hayalimdeki', label: t('coach.roleDream'), emoji: '✨' },
 ];
@@ -117,7 +118,7 @@ function starterGroups(a: Analysis | null): { id: string; items: Starter[] }[] {
 }
 
 export default function Koc() {
-  const params = useLocalSearchParams<{ id?: string }>();
+  const params = useLocalSearchParams<{ id?: string; soru?: string }>();
   const [list, setList] = useState<AnalysisSummary[]>([]);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
   const [role, setRole] = useState<CoachRole | null>(null);
@@ -164,6 +165,15 @@ export default function Koc() {
       } else if (!general && (!currentId || !all.some((x) => x.id === currentId))) select(all[0].id);
     }, [params.id, currentId, general, select]),
   );
+
+  // Haftalık meydan okumadan gelindiyse soru kutuya hazır yazılır (gönderme kullanıcıda).
+  const handledQuestion = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    if (params.soru && params.soru !== handledQuestion.current) {
+      handledQuestion.current = params.soru;
+      setInput(params.soru);
+    }
+  }, [params.soru]);
 
   const save = (a: Analysis | null, r: CoachRole | null, h: CoachTurn[]) =>
     a ? updateAnalysis(a.id, { coach: { role: r, history: h } }) : saveGeneralCoach(h);
@@ -255,7 +265,9 @@ export default function Koc() {
                   <Text style={[type.body, { color: colors.text }]}>
                     {!analysis
                       ? t('coach.introGeneral')
-                      : role
+                      : role === 'hakem'
+                        ? t('coach.introReferee')
+                        : role
                         ? t('coach.introRole', { name: other ?? t('coach.otherPerson') })
                         : t('coach.introChat', { title: analysis.title })}
                   </Text>
@@ -317,7 +329,7 @@ export default function Koc() {
               style={styles.input}
               value={input}
               onChangeText={setInput}
-              placeholder={role ? t('coach.placeholderRole') : t('coach.placeholderAsk')}
+              placeholder={role === 'hakem' ? t('coach.placeholderReferee') : role ? t('coach.placeholderRole') : t('coach.placeholderAsk')}
               placeholderTextColor={colors.textMuted}
               multiline
               maxLength={1000}

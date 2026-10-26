@@ -48,4 +48,15 @@ export default {
   rate: 'Rate the app',
   privacy: 'Privacy policy',
   terms: 'Terms of use',
+  notificationsSection: "NOTIFICATIONS",
+  reminder: {
+    title: "Monthly relationship report reminder",
+    on: "On · We’ll remind you on the 1st of every month, in the evening",
+    off: "Off · Tap to turn on",
+    channel: "Monthly report",
+    pushTitle: "Time for your monthly relationship report! 💌",
+    pushBody: "Import your chat again and see what changed this month.",
+    deniedTitle: "Notifications are off",
+    deniedText: "Allow notifications for Unwrap in your phone settings and try again.",
+  },
 };

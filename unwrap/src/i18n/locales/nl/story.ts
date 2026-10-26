@@ -113,4 +113,18 @@ export default {
     romantic: ['Wie is het romantischst?', 'Wie liegt er meer? 🤥', 'Hints en wat er tussen de regels staat', 'AI-rapport met bewijs', 'Waar gaat deze relatie heen?'],
     other: ['AI-rapport met bewijs', 'Wie liegt er meer? 🤥', 'Hints en wat er tussen de regels staat', 'Wie houdt het gesprek gaande?', 'Tips voor wat je kunt sturen'],
   },
+  play: "Afspelen",
+  pause: "Pauzeren",
+  counterAll: "{{index}} / {{total}}",
+  month: {
+    title: "Deze maand vs vorige maand",
+    messages: "Berichten",
+    days: "Dagen contact",
+    laughs: "Lachjes",
+    night: "Nachtberichten",
+    vs: "Vorige maand {{before}} · {{change}}",
+    captionUp: "Jullie hebben deze maand meer gepraat! 🔥",
+    captionDown: "Deze maand was het wat stiller… 🌙",
+    captionSame: "Stabiel als altijd, ga zo door 👌",
+  },
 };

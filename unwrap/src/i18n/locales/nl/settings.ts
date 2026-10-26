@@ -48,4 +48,15 @@ export default {
   rate: 'Beoordeel de app',
   privacy: 'Privacybeleid',
   terms: 'Gebruiksvoorwaarden',
+  notificationsSection: "MELDINGEN",
+  reminder: {
+    title: "Herinnering maandelijks relatierapport",
+    on: "Aan · We herinneren je elke 1e van de maand ’s avonds",
+    off: "Uit · Tik om aan te zetten",
+    channel: "Maandrapport",
+    pushTitle: "Tijd voor je maandelijkse relatierapport! 💌",
+    pushBody: "Importeer je chat opnieuw en zie wat er deze maand veranderd is.",
+    deniedTitle: "Meldingen staan uit",
+    deniedText: "Sta meldingen voor Unwrap toe in de instellingen van je telefoon en probeer het opnieuw.",
+  },
 };

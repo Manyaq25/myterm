@@ -33,4 +33,9 @@ export default {
     restoreTitle: 'تعذّرت الاستعادة',
     restoreBody: 'حاول مرة أخرى بعد قليل؟',
   },
+  lifetime: "مدى الحياة",
+  lifetimePrice: "{{price}} · دفعة واحدة",
+  lifetimeBadge: "بلا اشتراك",
+  buyLifetime: "احصل على Pro مدى الحياة",
+  lifetimeDisclosure: "{{price}} دفعة واحدة؛ ليست اشتراكًا ولا تتجدد أبدًا. تُخصم من حساب المتجر.",
 };

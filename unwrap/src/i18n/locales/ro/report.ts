@@ -18,4 +18,30 @@ export default {
   karneSticker: '🏅 DIPLOMĂ DE MERIT',
   karneTitle: 'Carnetul de note al chatului',
   teacherNote: 'Observația dirigintelui: {{note}}',
+  storyButton: "Redă ca poveste (Wrapped)",
+  compat: {
+    sticker: "💘 TEST DE COMPATIBILITATE",
+    storyTitle: "Compatibilitatea voastră",
+    best: "UNDE VĂ POTRIVIȚI CEL MAI BINE",
+    clash: "UNDE VĂ CONTRAZICEȚI CEL MAI DES",
+  },
+  flags: {
+    title: "Red flag sau green flag?",
+  },
+  duel: {
+    sticker: "⚔️ DUEL",
+    title: "Cine iubește mai mult?",
+    winner: "CÂȘTIGĂTOR",
+    draw: "Egalitate",
+  },
+  awards: {
+    sticker: "🏆 GALA PREMIILOR",
+    title: "Premiile grupului",
+    caption: "Aplauze pentru câștigători! 👏",
+  },
+  ex: {
+    title: "Analiza fostului/fostei",
+    turningPoint: "MOMENTUL ÎN CARE S-A SCHIMBAT TOTUL",
+    lesson: "O LECȚIE PENTRU DATA VIITOARE",
+  },
 };

@@ -194,4 +194,7 @@ export default {
   placeholderAsk: 'Chiedi a Mila…',
   send: 'Invia',
   note: 'Mila è un’IA e può sbagliare; non dà verdetti definitivi.',
+  roleReferee: "Arbitro (Modalità coppia)",
+  introReferee: "Modalità coppia: mettete il telefono tra voi! Scrivete a turno (\"Io: …\", \"Lui/Lei: …\"). Mila ascolta entrambe le parti da arbitro neutrale e dà il suo verdetto. ⚖️",
+  placeholderReferee: "Io: … / Lui/Lei: … (raccontate la discussione)",
 };

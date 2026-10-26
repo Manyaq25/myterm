@@ -23,14 +23,23 @@ jobs:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
       - uses: actions/checkout@v4
+      # unwrap/backend/.yayin-bekle varsa yayın yapılmaz (önce canlı deneme için).
+      - name: Yayın beklemede mi?
+        id: hold
+        run: if [ -f .yayin-bekle ]; then echo 'hold=1' >> "$GITHUB_OUTPUT"; echo '::notice::.yayin-bekle var, yayın atlandı'; fi
       - uses: actions/setup-node@v4
+        if: steps.hold.outputs.hold != '1'
         with:
           node-version: 22
-      - run: npm ci && npx tsc --noEmit && npm test
-      - run: npm install --global vercel@latest
+      - if: steps.hold.outputs.hold != '1'
+        run: npm ci && npx tsc --noEmit && npm test
+      - if: steps.hold.outputs.hold != '1'
+        run: npm install --global vercel@latest
       - name: Vercel projesine bağlan
+        if: steps.hold.outputs.hold != '1'
         run: vercel link --yes --project unwrap-backend --token "$VERCEL_TOKEN"
       - name: Ortam değişkenleri
+        if: steps.hold.outputs.hold != '1'
         run: |
           set_env() {
             if [ -z "$2" ]; then echo "EKSİK (GitHub sırrı boş ya da adı farklı): $1"; return 0; fi
@@ -47,13 +56,16 @@ jobs:
       # Derleme Vercel'de yapılır: "Secret" türündeki değişkenler indirilemediği için
       # yerelde derleme (--prebuilt) yer tutucu değerlerle çalışırdı.
       - name: Yerel kalıntıları temizle
+        if: steps.hold.outputs.hold != '1'
         run: rm -f .env.local .vercel/.env.production.local
       - name: Node sürümü (proje ayarı; package.json engines ile aynı)
+        if: steps.hold.outputs.hold != '1'
         run: |
           code=$(curl -s -o np.json -w '%{http_code}' -X PATCH "https://api.vercel.com/v9/projects/unwrap-backend?slug=manyaq26" \
             -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" -d '{"nodeVersion":"24.x"}')
           echo "Vercel proje Node ayarı: HTTP $code $(grep -o '"nodeVersion":"[^"]*"' np.json | head -1)"
       - name: Yayınla
+        if: steps.hold.outputs.hold != '1'
         id: deploy
         run: |
           vercel deploy --prod --token "$VERCEL_TOKEN" 2>&1 | tee out.log
@@ -61,6 +73,7 @@ jobs:
           url=${url:-$(grep -Eo 'https://[a-zA-Z0-9.-]+\.vercel\.app' out.log | tail -n 1)}
           echo "url=$url" >> "$GITHUB_OUTPUT"
       - name: Sağlık kontrolü
+        if: steps.hold.outputs.hold != '1'
         run: |
           # Adres geçişi birkaç saniye sürebilir: sağlık ucu cevap verene kadar en çok 60 sn bekle.
           for i in $(seq 1 12); do
@@ -88,4 +101,7 @@ jobs:
           echo "boş giriş: HTTP $code"; [ "$code" = "400" ]
           code=$(curl -s -o p.json -w '%{http_code}' "${{ steps.deploy.outputs.url }}/api/profil"); cat p.json; echo
           echo "kimliksiz profil: HTTP $code"; [ "$code" = "401" ]
+          # Davet: kimliksiz istek reddedilmeli
+          code=$(curl -s -o d.json -w '%{http_code}' -X POST "${{ steps.deploy.outputs.url }}/api/davet" -d '{"action":"code"}'); cat d.json; echo
+          echo "kimliksiz davet: HTTP $code"; [ "$code" = "401" ]
           echo "Unwrap sunucusu: ${{ steps.deploy.outputs.url }}" >> "$GITHUB_STEP_SUMMARY"

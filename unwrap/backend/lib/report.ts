@@ -30,7 +30,7 @@ export const LangSchema = z.string().refine((c) => c in LANGS).default('tr');
 export const languageRule = (lang: string) =>
   lang === 'tr'
     ? ''
-    : `OUTPUT LANGUAGE: Write every user-facing string (summary, card titles, captions, notes, karne subjects, teacherNote, tone meanings, replies, finale, and your whole answer) in ${LANGS[lang]}. Translate the Turkish card titles and karne subject names below naturally into ${LANGS[lang]}. Evidence quotes must stay verbatim in the chat's original language. Apply the same cultural-nuance reading (sarcasm, cold one-word replies, teasing among friends) for ${LANGS[lang]}.`;
+    : `OUTPUT LANGUAGE: Write every user-facing string (summary, card titles, captions, notes, karne subjects, teacherNote, tone meanings, replies, finale, flag titles, verdict, compatibility texts, duel labels/details, award titles/reasons, ex story/lesson, and your whole answer) in ${LANGS[lang]}. Translate the Turkish card titles and karne subject names below naturally into ${LANGS[lang]}. Evidence quotes must stay verbatim in the chat's original language. Apply the same cultural-nuance reading (sarcasm, cold one-word replies, teasing among friends) for ${LANGS[lang]}.`;
 
 export const RequestSchema = z.object({
   lang: LangSchema,
@@ -44,6 +44,17 @@ export type ReportRequest = z.infer<typeof RequestSchema>;
 
 const Person = z.object({ name: z.string(), value: z.number(), display: z.string() });
 const Evidence = z.object({ author: z.string(), quote: z.string(), date: z.string(), note: z.string() });
+// Paylaşmalık ek kartlar. Hepsi nullable: ilişki türüne uymayan kart null döner (eski raporlarda hiç yoktur).
+const Flag = z.object({ title: z.string(), author: z.string(), quote: z.string(), date: z.string() });
+const Flags = z.object({ red: z.array(Flag), green: z.array(Flag), verdict: z.string() });
+const Compatibility = z.object({ score: z.number(), title: z.string(), best: z.string(), clash: z.string(), line: z.string() });
+const LoveDuel = z.object({
+  rounds: z.array(z.object({ label: z.string(), winner: z.string(), detail: z.string() })),
+  winner: z.string(),
+  line: z.string(),
+});
+const Award = z.object({ emoji: z.string(), title: z.string(), name: z.string(), reason: z.string() });
+const Ex = z.object({ story: z.string(), turningPoint: Evidence, lesson: z.string() });
 
 export const ReportSchema = z.object({
   summary: z.string(),
@@ -63,6 +74,11 @@ export const ReportSchema = z.object({
   tone: z.array(z.object({ quote: z.string(), author: z.string(), meaning: z.string() })),
   replies: z.array(z.string()),
   finale: z.object({ title: z.string(), text: z.string() }),
+  flags: Flags.nullable(),
+  compatibility: Compatibility.nullable(),
+  loveDuel: LoveDuel.nullable(),
+  awards: z.array(Award).nullable(),
+  ex: Ex.nullable(),
 });
 export type Report = z.infer<typeof ReportSchema>;
 
@@ -88,6 +104,32 @@ const RELATION_LABEL: Record<Relation, string> = {
   arkadas: 'arkadaş', aile: 'aile', is: 'iş arkadaşı', grup: 'arkadaş grubu', diger: 'diğer',
 };
 
+function extrasPlan(relation: Relation): string {
+  const flags =
+    'flags: sohbetteki davranışlardan 2-3 "red" (🚩 kırmızı bayrak: soğukluk, geç cevap, iğneleme, ilgisizlik gibi) ve 2-3 "green" (💚 yeşil bayrak: ilgi, destek, özen, espri) çıkar. title kısa ve esprili davranış adı (ör. "Noktalı Tamam ustası"); quote o davranışı gösteren BİREBİR mesaj, author ve date (GG.AA) ile. Kanıt yoksa o bayrağı koyma. verdict: tek cümlelik eğlenceli genel yorum. Eğlence amaçlıdır, kimseyi gerçekten yargılama.';
+  const compat =
+    'compatibility: iki kişinin sohbet uyumu. score 0-100 tam sayı (gerçekçi ol, herkese 90+ verme). title: skora uygun kısa esprili başlık. best: en çok uyduğunuz konu (kısa). clash: en çok çatıştığınız/uyuşmadığınız konu (kısa). line: paylaşmalık tek cümle.';
+  if (relation === 'eski') {
+    return [flags, compat,
+      'loveDuel: null. awards: null.',
+      'ex: eski sevgiliyle sohbetin hikâyesi. story: 2-3 cümle, neler oldu (sıcak, yargısız). turningPoint: işlerin değiştiği andaki BİREBİR mesaj (author, quote, date GG.AA, note kısa açıklama). lesson: kullanıcıya bir sonraki ilişki için tek cümlelik nazik ders.',
+    ].join('\n');
+  }
+  if (ROMANTIC.includes(relation)) {
+    return [flags, compat,
+      'loveDuel: "Kim daha çok seviyor?" düellosu, iki kişi arasında 4-5 tur. Her tur label (ör. "İlk mesajı atan", "Gece mesajları", "Seni seviyorum sayısı", "Emoji ve kalpler", "Özlem"), winner (tam olarak bir katılımcının adı ya da berabereyse İngilizce "DRAW"), detail (kısa, sayı varsa istatistikle tutarlı). winner: genel kazanan adı ya da "DRAW". line: tatlı, paylaşmalık tek cümle.',
+      'awards: null. ex: null.',
+    ].join('\n');
+  }
+  if (relation === 'grup') {
+    return [
+      'flags: null. compatibility: null. loveDuel: null. ex: null.',
+      'awards: grup ödül töreni, 5-6 ödül. Her ödül emoji (tek emoji), title (ör. "En geç cevap veren", "Sessiz takipçi", "Gece kuşu", "Drama kraliçesi/kralı", "Grubun esprisi", "Emoji makinesi"), name (tam olarak bir katılımcının adı; aynı kişiye en fazla 2 ödül), reason (istatistik ya da mesajla desteklenen kısa esprili gerekçe). Kimseyi aşağılama.',
+    ].join('\n');
+  }
+  return [flags, compat, 'loveDuel: null. awards: null. ex: null.'].join('\n');
+}
+
 export function systemPrompt(relation: Relation, lang = 'tr'): string {
   return [
     'Sen Unwrap adlı Türkçe sohbet ve ilişki analizi uygulamasının yapay zekâsısın. Kullanıcı kendi WhatsApp/Telegram sohbetini yükledi; telefonda hesaplanan istatistikleri ve seçilmiş mesajları alıyorsun.',
@@ -107,6 +149,9 @@ export function systemPrompt(relation: Relation, lang = 'tr'): string {
     'tone: dikkat çeken 2-4 ifade (birebir alıntı) ve ne anlama gelebileceği.',
     'replies: kullanıcının (istemde "Kullanıcı" olarak belirtilen kişi) gönderebileceği 2 doğal Türkçe mesaj önerisi.',
     'summary: 2-3 cümlelik özet. finale: ilişki türüne uygun kapanış kartı (romantikse "Bu ilişki nereye gider?"), sıcak ve umutlu bir başlık + 1-2 cümle.',
+    '',
+    'Paylaşmalık ek kartlar (alıntılar yine BİREBİR olmalı):',
+    extrasPlan(relation),
       languageRule(lang),
   ].join('\n');
 }

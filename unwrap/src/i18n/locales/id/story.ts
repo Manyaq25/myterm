@@ -113,4 +113,18 @@ export default {
     romantic: ['Siapa yang lebih romantis?', 'Siapa yang lebih sering bohong? 🤥', 'Pesan nyindir dan makna tersirat', 'Rapor AI lengkap dengan bukti', 'Hubungan ini mau dibawa ke mana?'],
     other: ['Rapor AI lengkap dengan bukti', 'Siapa yang lebih sering bohong? 🤥', 'Pesan nyindir dan makna tersirat', 'Siapa yang menghidupkan obrolan?', 'Saran mau bales apa'],
   },
+  play: "Putar",
+  pause: "Jeda",
+  counterAll: "{{index}} / {{total}}",
+  month: {
+    title: "Bulan ini vs bulan lalu",
+    messages: "Pesan",
+    days: "Hari ngobrol",
+    laughs: "Tawa",
+    night: "Pesan tengah malam",
+    vs: "Bulan lalu {{before}} · {{change}}",
+    captionUp: "Bulan ini kalian lebih banyak ngobrol! 🔥",
+    captionDown: "Bulan ini agak lebih sepi… 🌙",
+    captionSame: "Stabil seperti biasa, pertahankan 👌",
+  },
 };

@@ -18,4 +18,30 @@ export default {
   karneSticker: '🏅 PIAGAM PENGHARGAAN',
   karneTitle: 'Rapor Chat',
   teacherNote: 'Catatan guru: {{note}}',
+  storyButton: "Putar sebagai story (Wrapped)",
+  compat: {
+    sticker: "💘 TES KECOCOKAN",
+    storyTitle: "Kecocokan kalian",
+    best: "PALING NYAMBUNG DI SINI",
+    clash: "PALING SERING BENTROK DI SINI",
+  },
+  flags: {
+    title: "Red flag atau green flag?",
+  },
+  duel: {
+    sticker: "⚔️ DUEL",
+    title: "Siapa yang lebih sayang?",
+    winner: "PEMENANG",
+    draw: "Seri",
+  },
+  awards: {
+    sticker: "🏆 MALAM PENGHARGAAN",
+    title: "Penghargaan Grup",
+    caption: "Tepuk tangan untuk para pemenang! 👏",
+  },
+  ex: {
+    title: "Analisis mantan",
+    turningPoint: "SAAT SEMUANYA BERUBAH",
+    lesson: "PELAJARAN UNTUK LAIN KALI",
+  },
 };

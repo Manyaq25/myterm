@@ -194,4 +194,7 @@ export default {
   placeholderAsk: 'Tanya Mila…',
   send: 'Kirim',
   note: 'Mila itu AI dan bisa salah; dia nggak kasih putusan final.',
+  roleReferee: "Wasit (Mode Pasangan)",
+  introReferee: "Mode Pasangan: taruh ponsel di tengah kalian! Ketik bergantian (\"Aku: …\", \"Dia: …\"). Mila mendengarkan kedua pihak sebagai wasit netral lalu memberi keputusan. ⚖️",
+  placeholderReferee: "Aku: … / Dia: … (ceritakan pertengkarannya)",
 };

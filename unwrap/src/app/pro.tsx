@@ -34,7 +34,7 @@ function trialDays(pkg: PurchasesPackage): number | null {
 export default function Pro() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const [plans, setPlans] = useState<Plans | null>(null);
-  const [selected, setSelected] = useState<'yearly' | 'monthly'>('yearly');
+  const [selected, setSelected] = useState<'yearly' | 'monthly' | 'lifetime'>('yearly');
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function Pro() {
         setPlans(p);
         if (!p.yearly) setSelected('monthly');
       })
-      .catch(() => setPlans({ monthly: null, yearly: null }));
+      .catch(() => setPlans({ monthly: null, yearly: null, lifetime: null }));
   }, []);
 
   const done = () => {
@@ -51,8 +51,9 @@ export default function Pro() {
     else router.back();
   };
 
-  const pkg = plans ? (selected === 'yearly' ? plans.yearly : plans.monthly) : null;
-  const trial = pkg ? trialDays(pkg) : null;
+  const pkg = plans ? (selected === 'yearly' ? plans.yearly : selected === 'lifetime' ? plans.lifetime ?? null : plans.monthly) : null;
+  const lifetime = selected === 'lifetime';
+  const trial = pkg && selected !== 'lifetime' ? trialDays(pkg) : null;
   const monthly = plans?.monthly?.product.price;
   const yearly = plans?.yearly?.product.price;
   // Yıllık indirim, gerçek mağaza fiyatlarından hesaplanır.
@@ -84,7 +85,9 @@ export default function Pro() {
 
   const period = t(selected === 'yearly' ? 'paywall.period.year' : 'paywall.period.month');
   const disclosure = pkg
-    ? trial
+    ? lifetime
+      ? t('paywall.lifetimeDisclosure', { price: pkg.product.priceString })
+      : trial
       ? t('paywall.trialDisclosure', { days: trial, price: pkg.product.priceString, period })
       : t('paywall.disclosure', { price: pkg.product.priceString, period })
     : '';
@@ -136,6 +139,15 @@ export default function Pro() {
                 price={t('paywall.pricePer', { price: plans.monthly.product.priceString, period: t('paywall.period.month') })}
               />
             ) : null}
+            {plans.lifetime ? (
+              <PlanRow
+                active={lifetime}
+                onPress={() => setSelected('lifetime')}
+                title={t('paywall.lifetime')}
+                price={t('paywall.lifetimePrice', { price: plans.lifetime.product.priceString })}
+                badge={t('paywall.lifetimeBadge')}
+              />
+            ) : null}
           </View>
         )}
       </ScrollView>
@@ -143,7 +155,7 @@ export default function Pro() {
       <View style={styles.footer}>
         {disclosure ? <Text style={styles.disclosure}>{disclosure}</Text> : null}
         <Button
-          label={trial ? t('paywall.startTrial', { days: trial }) : t('paywall.subscribe')}
+          label={lifetime ? t('paywall.buyLifetime') : trial ? t('paywall.startTrial', { days: trial }) : t('paywall.subscribe')}
           variant="coral"
           onPress={purchase}
           loading={busy}

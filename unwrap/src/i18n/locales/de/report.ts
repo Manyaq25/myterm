@@ -18,4 +18,30 @@ export default {
   karneSticker: '🏅 EHRENURKUNDE',
   karneTitle: 'Chat-Zeugnis',
   teacherNote: 'Bemerkung der Lehrkraft: {{note}}',
+  storyButton: "Als Story abspielen (Wrapped)",
+  compat: {
+    sticker: "💘 KOMPATIBILITÄTSTEST",
+    storyTitle: "Eure Kompatibilität",
+    best: "HIER PASST IHR AM BESTEN",
+    clash: "HIER KRACHT ES AM MEISTEN",
+  },
+  flags: {
+    title: "Red Flag oder Green Flag?",
+  },
+  duel: {
+    sticker: "⚔️ DUELL",
+    title: "Wer liebt mehr?",
+    winner: "GEWINNER",
+    draw: "Unentschieden",
+  },
+  awards: {
+    sticker: "🏆 PREISVERLEIHUNG",
+    title: "Gruppen-Awards",
+    caption: "Applaus für die Gewinner! 👏",
+  },
+  ex: {
+    title: "Ex-Analyse",
+    turningPoint: "DER WENDEPUNKT",
+    lesson: "EINE LEKTION FÜRS NÄCHSTE MAL",
+  },
 };

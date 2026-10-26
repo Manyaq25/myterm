@@ -113,4 +113,18 @@ export default {
     romantic: ['Chi è più romantico?', 'Chi dice più bugie? 🤥', 'Frecciatine e non detti', 'Pagella IA con le prove', 'Dove sta andando questa relazione?'],
     other: ['Pagella IA con le prove', 'Chi dice più bugie? 🤥', 'Frecciatine e non detti', 'Chi porta avanti la conversazione?', 'Suggerimenti su cosa scrivere'],
   },
+  play: "Riproduci",
+  pause: "Pausa",
+  counterAll: "{{index}} / {{total}}",
+  month: {
+    title: "Questo mese vs il mese scorso",
+    messages: "Messaggi",
+    days: "Giorni in cui avete parlato",
+    laughs: "Risate",
+    night: "Messaggi notturni",
+    vs: "Mese scorso {{before}} · {{change}}",
+    captionUp: "Questo mese avete parlato di più! 🔥",
+    captionDown: "Questo mese un po’ più silenzioso… 🌙",
+    captionSame: "Costanti come sempre, continuate così 👌",
+  },
 };

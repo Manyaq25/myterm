@@ -48,4 +48,15 @@ export default {
   rate: 'Evaluează aplicația',
   privacy: 'Politica de confidențialitate',
   terms: 'Termeni de utilizare',
+  notificationsSection: "NOTIFICĂRI",
+  reminder: {
+    title: "Memento pentru raportul lunar al relației",
+    on: "Activat · Îți amintim pe 1 ale fiecărei luni, seara",
+    off: "Dezactivat · Atinge pentru a-l activa",
+    channel: "Raport lunar",
+    pushTitle: "E timpul pentru raportul lunar al relației! 💌",
+    pushBody: "Importă din nou conversația și vezi ce s-a schimbat luna asta.",
+    deniedTitle: "Notificările sunt dezactivate",
+    deniedText: "Permite notificările pentru Unwrap din setările telefonului și încearcă din nou.",
+  },
 };

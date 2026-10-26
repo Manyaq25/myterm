@@ -1,7 +1,7 @@
 // Abonelik (RevenueCat). Uygulamadaki "Pro" bilgisi yalnız ekranı göstermek
 // içindir; yapay zekâ isteklerinde sunucu aboneliği yeniden doğrular.
 import { Platform } from 'react-native';
-import Purchases, { type CustomerInfo, type PurchasesPackage } from 'react-native-purchases';
+import Purchases, { PRODUCT_CATEGORY, type CustomerInfo, type PurchasesPackage, type PurchasesStoreProduct } from 'react-native-purchases';
 
 import { config } from './config';
 
@@ -35,13 +35,33 @@ export async function isPro(): Promise<boolean> {
   }
 }
 
-export type Plans = { monthly: PurchasesPackage | null; yearly: PurchasesPackage | null };
+export type Plans = { monthly: PurchasesPackage | null; yearly: PurchasesPackage | null; lifetime?: PurchasesPackage | null };
 
 export async function getPlans(): Promise<Plans> {
-  if (!(await initPurchases())) return { monthly: null, yearly: null };
+  if (!(await initPurchases())) return { monthly: null, yearly: null, lifetime: null };
   const offerings = await Purchases.getOfferings();
   const current = offerings.current;
-  return { monthly: current?.monthly ?? null, yearly: current?.annual ?? null };
+  // Ömür boyu paket mağazada onaylanana kadar gelmez; o zaman gösterilmez.
+  return { monthly: current?.monthly ?? null, yearly: current?.annual ?? null, lifetime: current?.lifetime ?? null };
+}
+
+/** "1 ay Pro hediyesi" (tek seferlik ürün; mağazada yoksa null). */
+export const GIFT_PRODUCT = 'unwrap_gift_month';
+export async function giftProduct(): Promise<PurchasesStoreProduct | null> {
+  if (!(await initPurchases())) return null;
+  const list = await Purchases.getProducts([GIFT_PRODUCT], PRODUCT_CATEGORY.NON_SUBSCRIPTION).catch(() => []);
+  return list[0] ?? null;
+}
+
+/** Hediyeyi satın alır; iptal edilirse false. */
+export async function buyGift(product: PurchasesStoreProduct): Promise<boolean> {
+  try {
+    await Purchases.purchaseStoreProduct(product);
+    return true;
+  } catch (e) {
+    if ((e as { userCancelled?: boolean }).userCancelled) return false;
+    throw e;
+  }
 }
 
 export async function buy(pkg: PurchasesPackage): Promise<boolean> {

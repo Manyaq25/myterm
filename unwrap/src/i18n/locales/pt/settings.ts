@@ -48,4 +48,15 @@ export default {
   rate: 'Avalie o app',
   privacy: 'Política de privacidade',
   terms: 'Termos de uso',
+  notificationsSection: "NOTIFICAÇÕES",
+  reminder: {
+    title: "Lembrete do relatório mensal do relacionamento",
+    on: "Ativado · Lembramos você todo dia 1º, à noite",
+    off: "Desativado · Toque para ativar",
+    channel: "Relatório mensal",
+    pushTitle: "Hora do seu relatório mensal do relacionamento! 💌",
+    pushBody: "Importe a conversa de novo e veja o que mudou este mês.",
+    deniedTitle: "Notificações desativadas",
+    deniedText: "Permita notificações do Unwrap nos ajustes do celular e tente de novo.",
+  },
 };

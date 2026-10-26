@@ -32,4 +32,9 @@ export default {
     restoreTitle: 'रीस्टोर नहीं हो पाया',
     restoreBody: 'थोड़ी देर में फिर से ट्राई करोगे?',
   },
+  lifetime: "लाइफ़टाइम",
+  lifetimePrice: "{{price}} · एक बार का पेमेंट",
+  lifetimeBadge: "कोई सब्सक्रिप्शन नहीं",
+  buyLifetime: "लाइफ़टाइम Pro लो",
+  lifetimeDisclosure: "{{price}} एक बार का पेमेंट; यह सब्सक्रिप्शन नहीं है और कभी रिन्यू नहीं होता। पेमेंट स्टोर अकाउंट से लिया जाता है।",
 };

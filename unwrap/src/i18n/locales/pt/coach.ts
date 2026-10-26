@@ -194,4 +194,7 @@ export default {
   placeholderAsk: 'Pergunte pra Mila…',
   send: 'Enviar',
   note: 'A Mila é uma IA e pode errar; ela não dá veredictos finais.',
+  roleReferee: "Juiz (Modo casal)",
+  introReferee: "Modo casal: coloquem o celular entre vocês! Escrevam um de cada vez (\"Eu: …\", \"Ele/Ela: …\"). A Mila ouve os dois lados como juíza neutra e dá o veredito. ⚖️",
+  placeholderReferee: "Eu: … / Ele/Ela: … (contem a discussão)",
 };

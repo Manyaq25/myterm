@@ -113,4 +113,18 @@ export default {
     romantic: ['Qui est le plus romantique ?', 'Qui ment le plus ? 🤥', 'Sous-entendus et non-dits', 'Bulletin IA avec preuves', 'Où va cette relation ?'],
     other: ['Bulletin IA avec preuves', 'Qui ment le plus ? 🤥', 'Sous-entendus et non-dits', 'Qui porte la conversation ?', 'Idées de quoi répondre'],
   },
+  play: "Lire",
+  pause: "Pause",
+  counterAll: "{{index}} / {{total}}",
+  month: {
+    title: "Ce mois-ci vs le mois dernier",
+    messages: "Messages",
+    days: "Jours de discussion",
+    laughs: "Fous rires",
+    night: "Messages de nuit",
+    vs: "Mois dernier {{before}} · {{change}}",
+    captionUp: "Vous avez plus parlé ce mois-ci ! 🔥",
+    captionDown: "Un mois un peu plus calme… 🌙",
+    captionSame: "Toujours aussi réguliers, continuez 👌",
+  },
 };

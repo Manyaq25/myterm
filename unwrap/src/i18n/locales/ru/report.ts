@@ -18,4 +18,30 @@ export default {
   karneSticker: '🏅 ПОЧЁТНАЯ ГРАМОТА',
   karneTitle: 'Табель чата',
   teacherNote: 'Замечание учителя: {{note}}',
+  storyButton: "Смотреть как сторис (Wrapped)",
+  compat: {
+    sticker: "💘 ТЕСТ НА СОВМЕСТИМОСТЬ",
+    storyTitle: "Ваша совместимость",
+    best: "В ЧЁМ ВЫ СОВПАДАЕТЕ",
+    clash: "ГДЕ ВЫ ЧАЩЕ СПОРИТЕ",
+  },
+  flags: {
+    title: "Red flag или green flag?",
+  },
+  duel: {
+    sticker: "⚔️ ДУЭЛЬ",
+    title: "Кто любит сильнее?",
+    winner: "ПОБЕДИТЕЛЬ",
+    draw: "Ничья",
+  },
+  awards: {
+    sticker: "🏆 ЦЕРЕМОНИЯ НАГРАЖДЕНИЯ",
+    title: "Награды группы",
+    caption: "Аплодисменты победителям! 👏",
+  },
+  ex: {
+    title: "Анализ бывшего/бывшей",
+    turningPoint: "МОМЕНТ, КОГДА ВСЁ ИЗМЕНИЛОСЬ",
+    lesson: "УРОК НА БУДУЩЕЕ",
+  },
 };

@@ -13,6 +13,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { recordOpen } from '@/lib/profile/activity';
 import { initPurchases } from '@/lib/purchases';
+import { refreshReminder } from '@/lib/reminder';
 import { colors } from '@/theme';
 
 SplashScreen.preventAutoHideAsync();
@@ -28,6 +29,7 @@ export default function RootLayout() {
   useEffect(() => {
     initPurchases();
     recordOpen();
+    refreshReminder(); // bildirim metni seçili dilde kalsın
   }, []);
 
   useEffect(() => {

@@ -113,4 +113,18 @@ export default {
     romantic: ['Wer ist romantischer?', 'Wer lügt mehr? 🤥', 'Anspielungen und Zwischentöne', 'KI-Zeugnis mit Beweisen', 'Wohin führt diese Beziehung?'],
     other: ['KI-Zeugnis mit Beweisen', 'Wer lügt mehr? 🤥', 'Anspielungen und Zwischentöne', 'Wer trägt das Gespräch?', 'Was-schreiben-Vorschläge'],
   },
+  play: "Abspielen",
+  pause: "Pause",
+  counterAll: "{{index}} / {{total}}",
+  month: {
+    title: "Dieser Monat vs. letzter Monat",
+    messages: "Nachrichten",
+    days: "Tage mit Kontakt",
+    laughs: "Lacher",
+    night: "Nachrichten nachts",
+    vs: "Letzter Monat {{before}} · {{change}}",
+    captionUp: "Diesen Monat habt ihr mehr geschrieben! 🔥",
+    captionDown: "Diesen Monat war es etwas ruhiger… 🌙",
+    captionSame: "Konstant wie immer, weiter so 👌",
+  },
 };

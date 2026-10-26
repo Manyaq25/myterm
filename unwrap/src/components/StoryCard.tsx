@@ -64,6 +64,19 @@ export function StoryCard({ card }: { card: Card }) {
             </Text>
           </View>
         )}
+        {card.kind === 'list' && (
+          <View style={{ gap: space.sm }}>
+            {card.items.map((it, i) => (
+              <View key={i} style={[styles.listRow, it.tint ? { backgroundColor: it.tint } : null]}>
+                <Text style={{ fontSize: 22 }}>{it.emoji}</Text>
+                <View style={{ flex: 1, gap: 2 }}>
+                  <Text style={[type.label, { color: colors.text }]}>{it.title}</Text>
+                  {it.sub ? <Text style={[type.caption, { color: colors.textMuted }]} numberOfLines={3}>{it.sub}</Text> : null}
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
         {card.kind === 'teaser' && (
           <View style={{ gap: space.sm }}>
             {card.items.map((item) => (
@@ -121,6 +134,7 @@ const styles = StyleSheet.create({
   big: { fontFamily: fonts.extrabold, fontSize: 80, color: colors.text, letterSpacing: -2 },
   bigUnit: { ...type.title, color: colors.textMuted },
   award: { flexDirection: 'row', alignItems: 'center', gap: space.md, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: radius.md, padding: space.md },
+  listRow: { flexDirection: 'row', alignItems: 'center', gap: space.md, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: radius.md, padding: space.md },
   teaserRow: { flexDirection: 'row', alignItems: 'center', gap: space.sm, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: radius.md, padding: space.md },
   row: { backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: radius.md, padding: space.md, gap: 8 },
   rowHead: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline', gap: space.sm },

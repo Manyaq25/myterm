@@ -486,6 +486,109 @@ def fill_price():
     print('  uygulama fiyatı: ücretsiz', [i['attributes'].get('customerPrice') for i in manual.get('included', [])])
 
 
+ONETIME = json.loads((ROOT / 'store/onetime.json').read_text())
+
+
+def _review_shot_bytes():
+    """Abonelik inceleme ekran görüntüsünü indirir (ödeme ekranı; tek seferlik ürünlerde de kullanılır)."""
+    for g in get(f'/apps/{APP_ID}/subscriptionGroups', limit=5)['data']:
+        for sub in get(f"/subscriptionGroups/{g['id']}/subscriptions", limit=5)['data']:
+            shot = get(f"/subscriptions/{sub['id']}/appStoreReviewScreenshot").get('data')
+            asset = shot and shot['attributes'].get('imageAsset')
+            if asset:
+                url = asset['templateUrl'].replace('{w}', str(asset['width'])).replace('{h}', str(asset['height'])).replace('{f}', 'png')
+                r = requests.get(url, timeout=60)
+                r.raise_for_status()
+                return r.content
+    return None
+
+
+def fill_iap():
+    """Ömür boyu Pro (non-consumable) ve 1 ay hediye (consumable). Var olana dokunmaz, eksik parçayı tamamlar."""
+    existing = {x['attributes']['productId']: x for x in get(f'/apps/{APP_ID}/inAppPurchasesV2', limit=50)['data']}
+    terr = []
+    url = '/territories?limit=200'
+    while url:
+        page = get(url)
+        terr += [t['id'] for t in page['data']]
+        url = page.get('links', {}).get('next')
+    shot = None
+    for key in ('lifetime', 'gift'):
+        item = ONETIME[key]
+        pid = item['productId']
+        iap = existing.get(pid)
+        if not iap:
+            iap = call('POST', '/v2/inAppPurchases', {'data': {'type': 'inAppPurchases', 'attributes': {
+                'name': item['referenceName'], 'productId': pid, 'inAppPurchaseType': item['appleType'], 'familySharable': False,
+                'reviewNote': 'Unwrap Pro unlock (lifetime) / gift code generator. Test with a sandbox account in the paywall or the Invite screen.'},
+                'relationships': {'app': {'data': {'type': 'apps', 'id': APP_ID}}}}})['data']
+            print(f'  {pid}: oluşturuldu')
+        else:
+            print(f'  {pid}: var ({iap["attributes"].get("state")})')
+        iid = iap['id']
+        # Diller (tr, en-US) + diğer 14 dil İngilizce metinle
+        locs = {l['attributes']['locale']: l for l in get(f'/v2/inAppPurchases/{iid}/inAppPurchaseLocalizations', limit=50)['data']}
+        for loc in TEXTS['locales']:
+            src = item['listings']['tr' if loc == 'tr' else 'en-US']
+            if loc in locs:
+                continue
+            try:
+                call('POST', '/inAppPurchaseLocalizations', {'data': {'type': 'inAppPurchaseLocalizations', 'attributes': {
+                    'locale': loc, 'name': src['title'][:30], 'description': src['description'][:45]},
+                    'relationships': {'inAppPurchaseV2': {'data': {'type': 'inAppPurchases', 'id': iid}}}}})
+            except ApiError as e:
+                print(f'  ✗ {pid} {loc}:', e)
+        print(f'  {pid}: diller tamam')
+        # Fiyat: Türkiye temel bölge, diğerleri Apple'ın eşdeğeri
+        sched = safe(get, f'/v2/inAppPurchases/{iid}/iapPriceSchedule')
+        has_price = False
+        if sched and sched.get('data'):
+            manual = safe(get, f"/inAppPurchasePriceSchedules/{sched['data']['id']}/manualPrices", limit=1)
+            has_price = bool(manual and manual.get('data'))
+        if not has_price:
+            target = float(item['priceTRY'])
+            points, url = [], f'/v2/inAppPurchases/{iid}/pricePoints?filter[territory]=TUR&limit=200'
+            while url:
+                page = get(url)
+                points += page['data']
+                url = page.get('links', {}).get('next')
+            best = min(points, key=lambda p: abs(float(p['attributes']['customerPrice']) - target))
+            call('POST', '/inAppPurchasePriceSchedules', {
+                'data': {'type': 'inAppPurchasePriceSchedules', 'relationships': {
+                    'inAppPurchase': {'data': {'type': 'inAppPurchases', 'id': iid}},
+                    'baseTerritory': {'data': {'type': 'territories', 'id': 'TUR'}},
+                    'manualPrices': {'data': [{'type': 'inAppPurchasePrices', 'id': '${p0}'}]}}},
+                'included': [{'type': 'inAppPurchasePrices', 'id': '${p0}', 'attributes': {'startDate': None},
+                              'relationships': {'inAppPurchasePricePoint': {'data': {'type': 'inAppPurchasePricePoints', 'id': best['id']}}}}]})
+            print(f"  {pid}: fiyat {best['attributes']['customerPrice']} TRY")
+        # Bulunabilirlik
+        av = safe(get, f'/v2/inAppPurchases/{iid}/inAppPurchaseAvailability')
+        if not (av and av.get('data')):
+            call('POST', '/inAppPurchaseAvailabilities', {'data': {'type': 'inAppPurchaseAvailabilities',
+                'attributes': {'availableInNewTerritories': True},
+                'relationships': {'inAppPurchase': {'data': {'type': 'inAppPurchases', 'id': iid}},
+                                  'availableTerritories': {'data': [{'type': 'territories', 'id': t} for t in terr]}}}})
+            print(f'  {pid}: {len(terr)} ülkede')
+        # İnceleme ekran görüntüsü
+        rs = safe(get, f'/v2/inAppPurchases/{iid}/appStoreReviewScreenshot')
+        if not (rs and rs.get('data')):
+            shot = shot or _review_shot_bytes()
+            if not shot:
+                print(f'  ! {pid}: inceleme ekran görüntüsü bulunamadı')
+                continue
+            r = call('POST', '/inAppPurchaseAppStoreReviewScreenshots', {'data': {'type': 'inAppPurchaseAppStoreReviewScreenshots',
+                'attributes': {'fileName': f'{pid}.png', 'fileSize': len(shot)},
+                'relationships': {'inAppPurchaseV2': {'data': {'type': 'inAppPurchases', 'id': iid}}}}})['data']
+            for op in r['attributes']['uploadOperations']:
+                requests.request(op['method'], op['url'], data=shot[op['offset']:op['offset'] + op['length']],
+                                 headers={h['name']: h['value'] for h in op.get('requestHeaders', [])}, timeout=120).raise_for_status()
+            call('PATCH', f"/inAppPurchaseAppStoreReviewScreenshots/{r['id']}", {'data': {'type': 'inAppPurchaseAppStoreReviewScreenshots', 'id': r['id'],
+                'attributes': {'uploaded': True, 'sourceFileChecksum': hashlib.md5(shot).hexdigest()}}})
+            print(f'  {pid}: inceleme ekran görüntüsü yüklendi')
+    for x in get(f'/apps/{APP_ID}/inAppPurchasesV2', limit=50)['data']:
+        print('  durum:', x['attributes']['productId'], x['attributes'].get('state'))
+
+
 def fill():
     for u in ['/apps/unwrap/support.html', '/apps/unwrap/privacy-policy.html', '/apps/unwrap/terms.html', '/apps/unwrap/ornek-sohbet.txt',
               '/en/apps/unwrap/support.html', '/en/apps/unwrap/privacy-policy.html', '/en/apps/unwrap/terms.html', '/uygulamalar/', '/en/apps/']:
@@ -512,4 +615,4 @@ def fill():
 
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else 'audit'
-    {'audit': audit, 'fill': fill, 'price': lambda: (step('Uygulama fiyatı', fill_price), audit()), 'review': lambda: (step('İnceleme bilgileri', fill_review), audit())}[cmd]()
+    {'audit': audit, 'fill': fill, 'iap': lambda: step('Tek seferlik ürünler', fill_iap), 'price': lambda: (step('Uygulama fiyatı', fill_price), audit()), 'review': lambda: (step('İnceleme bilgileri', fill_review), audit())}[cmd]()

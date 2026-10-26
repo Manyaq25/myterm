@@ -18,4 +18,30 @@ export default {
   karneSticker: '🏅 ERECERTIFICAAT',
   karneTitle: 'Chatrapport',
   teacherNote: 'Opmerking van de leraar: {{note}}',
+  storyButton: "Afspelen als story (Wrapped)",
+  compat: {
+    sticker: "💘 MATCHTEST",
+    storyTitle: "Jullie match",
+    best: "HIER KLIKT HET HET MEEST",
+    clash: "HIER BOTST HET HET MEEST",
+  },
+  flags: {
+    title: "Red flag of green flag?",
+  },
+  duel: {
+    sticker: "⚔️ DUEL",
+    title: "Wie houdt het meest van de ander?",
+    winner: "WINNAAR",
+    draw: "Gelijkspel",
+  },
+  awards: {
+    sticker: "🏆 PRIJSUITREIKING",
+    title: "Groepsawards",
+    caption: "Applaus voor de winnaars! 👏",
+  },
+  ex: {
+    title: "Ex-analyse",
+    turningPoint: "HET KEERPUNT",
+    lesson: "EEN LES VOOR DE VOLGENDE KEER",
+  },
 };

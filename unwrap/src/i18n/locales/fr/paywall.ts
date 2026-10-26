@@ -33,4 +33,9 @@ export default {
     restoreTitle: "Restauration impossible",
     restoreBody: "Tu réessaies dans un instant ?",
   },
+  lifetime: "À vie",
+  lifetimePrice: "{{price}} · paiement unique",
+  lifetimeBadge: "SANS ABONNEMENT",
+  buyLifetime: "Obtenir Pro à vie",
+  lifetimeDisclosure: "{{price}} en paiement unique ; ce n’est pas un abonnement, rien ne se renouvelle. Débité sur ton compte de la boutique.",
 };

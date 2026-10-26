@@ -1,0 +1,26 @@
+{
+  "_not": "Tek seferlik ürünler (App Store: scripts/asc-unwrap.py iap · Google Play + RevenueCat: scripts/play-setup.py --only onetime). Ömür boyu Pro entitlement'a bağlanır; hediye ürünü bağlanmaz, satın alanın hediye kodu üretmesini sağlar (backend/lib/hediye.ts). Play: başlık ≤55, açıklama ≤200. Apple: ad ≤30, açıklama ≤45.",
+  "lifetime": {
+    "productId": "unwrap_pro_lifetime",
+    "rcType": "non_consumable",
+    "appleType": "NON_CONSUMABLE",
+    "priceTRY": "1999.99",
+    "package": "$rc_lifetime",
+    "referenceName": "Unwrap Pro Ömür Boyu",
+    "listings": {
+      "tr": { "title": "Unwrap Pro Ömür Boyu", "description": "Tek ödeme, abonelik yok: Pro hep açık." },
+      "en-US": { "title": "Unwrap Pro Lifetime", "description": "Pay once, no subscription: Pro forever." }
+    }
+  },
+  "gift": {
+    "productId": "unwrap_gift_month",
+    "rcType": "consumable",
+    "appleType": "CONSUMABLE",
+    "priceTRY": "149.99",
+    "referenceName": "Unwrap Pro 1 Ay Hediye",
+    "listings": {
+      "tr": { "title": "1 Ay Unwrap Pro Hediyesi", "description": "Sevdiğine 1 ay Pro hediye kodu." },
+      "en-US": { "title": "1-Month Unwrap Pro Gift", "description": "A 1-month Pro gift code for someone." }
+    }
+  }
+}

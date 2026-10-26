@@ -22,10 +22,14 @@ const SETUP: Record<string, { me: string; relation: string }> = {
 async function main() {
   if (!process.env.UNWRAP_ANTHROPIC_API_KEY) throw new Error('UNWRAP_ANTHROPIC_API_KEY yok');
   const out: string[] = ['# Unwrap canlı rapor denemesi', ''];
-  for (const f of readdirSync(dir).sort()) {
+  // Aynı ironik kavga sohbeti bir kez de "eski sevgili" olarak denenir (ex kartı).
+  const runs: [string, { me: string; relation: string }][] = [
+    ...readdirSync(dir).sort().map((f): [string, { me: string; relation: string }] => [f, SETUP[f]]),
+    ['4-ironik-kavga.txt', { me: 'Ozan', relation: 'eski' }],
+  ];
+  for (const [f, setup] of runs) {
     const chat = parseChat(readFileSync(path.join(dir, f), 'utf8'));
     const stats = computeStats(chat);
-    const setup = SETUP[f];
     const payload = RequestSchema.parse(
       buildReportPayload({ relation: setup.relation, me: setup.me, participants: chat.participants, stats, messages: chat.messages }),
     );
@@ -38,7 +42,12 @@ async function main() {
 
     // Kanıt kontrolü: alıntılar sohbette gerçekten geçiyor mu?
     const all = chat.messages.map((m) => m.text).join('\n');
-    const quotes = report.cards.flatMap((c) => c.evidence.map((e) => e.quote));
+    const quotes = [
+      ...report.cards.flatMap((c) => c.evidence.map((e) => e.quote)),
+      ...(report.flags ? [...report.flags.red, ...report.flags.green].map((f) => f.quote) : []),
+      ...(report.ex ? [report.ex.turningPoint.quote] : []),
+    ];
+    out.push(`Ek kartlar: bayrak ${report.flags ? report.flags.red.length + '+' + report.flags.green.length : '-'} · uyum ${report.compatibility?.score ?? '-'} · düello ${report.loveDuel?.rounds.length ?? '-'} · ödül ${report.awards?.length ?? '-'} · eski ${report.ex ? 'var' : '-'}`);
     const missing = quotes.filter((q) => !all.includes(q.replace(/^["“]|["”]$/g, '')));
     out.push(`Kanıt alıntıları: ${quotes.length - missing.length}/${quotes.length} sohbette birebir bulundu.`);
     if (missing.length) out.push('Bulunamayanlar: ' + missing.map((q) => `"${q}"`).join(' · '));

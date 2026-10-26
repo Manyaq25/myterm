@@ -17,4 +17,30 @@ export default {
   karneSticker: '🏅 HONOR ROLL',
   karneTitle: 'Chat Report Card',
   teacherNote: 'Teacher’s note: {{note}}',
+  storyButton: "Play as a story (Wrapped)",
+  compat: {
+    sticker: "💘 COMPATIBILITY TEST",
+    storyTitle: "Your compatibility",
+    best: "WHERE YOU CLICK",
+    clash: "WHERE YOU CLASH",
+  },
+  flags: {
+    title: "Red flag or green flag?",
+  },
+  duel: {
+    sticker: "⚔️ DUEL",
+    title: "Who loves more?",
+    winner: "WINNER",
+    draw: "Tie",
+  },
+  awards: {
+    sticker: "🏆 AWARDS NIGHT",
+    title: "Group Awards",
+    caption: "A round of applause for the winners! 👏",
+  },
+  ex: {
+    title: "Ex analysis",
+    turningPoint: "WHEN THINGS CHANGED",
+    lesson: "A LESSON FOR NEXT TIME",
+  },
 };

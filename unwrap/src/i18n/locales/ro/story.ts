@@ -111,4 +111,18 @@ export default {
     romantic: ['Cine e mai romantic?', 'Cine minte mai mult? 🤥', 'Aluzii și ce se citește printre rânduri', 'Carnet AI cu dovezi', 'Încotro merge relația asta?'],
     other: ['Carnet AI cu dovezi', 'Cine minte mai mult? 🤥', 'Aluzii și ce se citește printre rânduri', 'Cine duce conversația?', 'Sugestii de ce să scrii'],
   },
+  play: "Redă",
+  pause: "Pauză",
+  counterAll: "{{index}} / {{total}}",
+  month: {
+    title: "Luna asta vs luna trecută",
+    messages: "Mesaje",
+    days: "Zile în care ați vorbit",
+    laughs: "Râsete",
+    night: "Mesaje noaptea",
+    vs: "Luna trecută {{before}} · {{change}}",
+    captionUp: "Luna asta ați vorbit mai mult! 🔥",
+    captionDown: "Luna asta a fost mai liniștită… 🌙",
+    captionSame: "Constanți ca întotdeauna, continuați tot așa 👌",
+  },
 };

@@ -48,4 +48,15 @@ export default {
   rate: 'Califica la app',
   privacy: 'Política de privacidad',
   terms: 'Términos de uso',
+  notificationsSection: "NOTIFICACIONES",
+  reminder: {
+    title: "Recordatorio del informe mensual de pareja",
+    on: "Activado · Te avisamos el día 1 de cada mes por la tarde",
+    off: "Desactivado · Toca para activarlo",
+    channel: "Informe mensual",
+    pushTitle: "¡Hora de tu informe mensual de relación! 💌",
+    pushBody: "Vuelve a importar tu chat y mira qué ha cambiado este mes.",
+    deniedTitle: "Notificaciones desactivadas",
+    deniedText: "Permite las notificaciones de Unwrap en los ajustes del móvil y vuelve a intentarlo.",
+  },
 };

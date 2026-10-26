@@ -33,4 +33,9 @@ export default {
     restoreTitle: 'Não deu pra restaurar',
     restoreBody: 'Tenta de novo daqui a pouco?',
   },
+  lifetime: "Vitalício",
+  lifetimePrice: "{{price}} · pagamento único",
+  lifetimeBadge: "SEM ASSINATURA",
+  buyLifetime: "Quero o Pro vitalício",
+  lifetimeDisclosure: "{{price}} em pagamento único; não é assinatura e nunca renova. Cobrado na sua conta da loja.",
 };

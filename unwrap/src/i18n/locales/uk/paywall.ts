@@ -33,4 +33,9 @@ export default {
     restoreTitle: 'Не вдалося відновити',
     restoreBody: 'Спробуєш ще раз трохи згодом?',
   },
+  lifetime: "Назавжди",
+  lifetimePrice: "{{price}} · разовий платіж",
+  lifetimeBadge: "БЕЗ ПІДПИСКИ",
+  buyLifetime: "Купити Pro назавжди",
+  lifetimeDisclosure: "{{price}} разовим платежем; це не підписка й не подовжується. Списується з акаунта магазину застосунків.",
 };

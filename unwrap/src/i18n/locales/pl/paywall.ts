@@ -33,4 +33,9 @@ export default {
     restoreTitle: 'Nie udało się przywrócić',
     restoreBody: 'Spróbujesz za chwilę?',
   },
+  lifetime: "Dożywotnio",
+  lifetimePrice: "{{price}} · jednorazowa płatność",
+  lifetimeBadge: "BEZ SUBSKRYPCJI",
+  buyLifetime: "Kup Pro na zawsze",
+  lifetimeDisclosure: "{{price}} jednorazowo; to nie subskrypcja i nigdy się nie odnawia. Płatność pobierana z konta w sklepie.",
 };

@@ -194,4 +194,7 @@ export default {
   placeholderAsk: 'Vraag het Mila…',
   send: 'Versturen',
   note: 'Mila is een AI en kan zich vergissen; ze geeft geen definitieve oordelen.',
+  roleReferee: "Scheidsrechter (Koppelmodus)",
+  introReferee: "Koppelmodus: leg de telefoon tussen jullie in! Typ om de beurt (\"Ik: …\", \"Hij/Zij: …\"). Mila luistert als neutrale scheidsrechter naar beide kanten en doet een uitspraak. ⚖️",
+  placeholderReferee: "Ik: … / Hij/Zij: … (beschrijf de ruzie)",
 };

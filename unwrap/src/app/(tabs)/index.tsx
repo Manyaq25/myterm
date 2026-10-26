@@ -2,14 +2,16 @@
 import * as DocumentPicker from 'expo-document-picker';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Card, Pill, Sticker } from '@/components/ui';
 import { locale, t } from '@/i18n';
 import { weeklyCount } from '@/lib/ai/api';
+import { challengeOfWeek } from '@/lib/challenge';
 import { importChatFile, importErrorText } from '@/lib/chat/import';
 import { isRomantic, relationLabel } from '@/lib/relations';
+import { STORE_LINKS } from '@/lib/links';
 import { listAnalyses, type AnalysisSummary, type Relation } from '@/lib/store';
 import { colors, fonts, radius, space, type } from '@/theme';
 
@@ -75,6 +77,8 @@ export default function Home() {
         </View>
         <Text style={styles.privacy}>{t('home.privacy')}</Text>
 
+        <ChallengeCard hasChats={items.length > 0} />
+
         <Text style={styles.counter}>{t('home.weekly', { count: weekly == null ? '– –' : weekly.toLocaleString(locale()) })}</Text>
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: space.sm }}>
@@ -115,7 +119,37 @@ export default function Home() {
   );
 }
 
+/** Haftalık meydan okuma kartı: Mila'ya sor ya da arkadaşlara paylaş. */
+function ChallengeCard({ hasChats }: { hasChats: boolean }) {
+  const c = challengeOfWeek();
+  const title = t(`home.challenge.items.${c}.title`);
+  const share = () =>
+    Share.share({ message: t('home.challenge.shareText', { title, ios: STORE_LINKS.ios, android: STORE_LINKS.android }) }).catch(() => undefined);
+  return (
+    <View style={styles.challenge}>
+      <Sticker text={t('home.challenge.sticker')} rotate={-5} bg={colors.cardButter} style={styles.tileSticker} />
+      <Text style={styles.challengeTitle}>{title}</Text>
+      <Text style={[type.bodySm, { color: colors.textMuted }]}>{t('home.challenge.text')}</Text>
+      <View style={{ flexDirection: 'row', gap: space.sm }}>
+        <Pressable
+          onPress={() => (hasChats ? router.push({ pathname: '/koc', params: { soru: t(`home.challenge.items.${c}.question`) } }) : router.push('/rehber'))}
+          style={[styles.challengeBtn, { backgroundColor: colors.black }]}
+          accessibilityRole="button"
+        >
+          <Text style={[type.label, { color: '#fff' }]}>{t(hasChats ? 'home.challenge.ask' : 'home.challenge.start')}</Text>
+        </Pressable>
+        <Pressable onPress={share} style={[styles.challengeBtn, { backgroundColor: colors.surface }]} accessibilityRole="button">
+          <Text style={[type.label, { color: colors.text }]}>{t('home.challenge.share')}</Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
+  challenge: { backgroundColor: colors.cardCoral, borderRadius: radius.lg, padding: space.md, paddingTop: space.lg, gap: space.sm },
+  challengeTitle: { fontFamily: fonts.extrabold, fontSize: 22, lineHeight: 28, color: colors.text },
+  challengeBtn: { flex: 1, borderRadius: radius.pill, paddingVertical: 12, alignItems: 'center' },
   safe: { flex: 1, backgroundColor: colors.background },
   content: { padding: space.lg, gap: space.md, paddingBottom: space.xl },
   logo: { fontFamily: fonts.extrabold, fontSize: 26, color: colors.text },

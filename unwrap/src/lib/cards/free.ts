@@ -14,6 +14,7 @@ export type Card =
   | { id: string; kind: 'big'; title: string; bg: string; value: string; unit: string; caption: string }
   | { id: string; kind: 'awards'; title: string; bg: string; awards: { emoji: string; title: string; name: string }[]; caption: string }
   | { id: string; kind: 'teaser'; title: string; bg: string; items: string[] }
+  | { id: string; kind: 'list'; title: string; bg: string; items: { emoji: string; title: string; sub?: string; tint?: string }[]; caption: string }
   | { id: string; kind: 'karne'; title: string; bg: string; names: string[]; subjects: { subject: string; grades: (number | null)[] }[]; caption: string };
 
 const pct = (a: number, total: number) => (total ? Math.round((a / total) * 100) : 0);

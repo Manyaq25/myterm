@@ -111,4 +111,18 @@ export default {
     romantic: ['Kto jest bardziej romantyczny?', 'Kto częściej kłamie? 🤥', 'Aluzje i czytanie między wierszami', 'Świadectwo AI z dowodami', 'Dokąd zmierza ta relacja?'],
     other: ['Świadectwo AI z dowodami', 'Kto częściej kłamie? 🤥', 'Aluzje i czytanie między wierszami', 'Kto ciągnie rozmowę?', 'Podpowiedzi, co napisać'],
   },
+  play: "Odtwórz",
+  pause: "Pauza",
+  counterAll: "{{index}} / {{total}}",
+  month: {
+    title: "Ten miesiąc vs poprzedni",
+    messages: "Wiadomości",
+    days: "Dni rozmów",
+    laughs: "Śmiechy",
+    night: "Wiadomości nocą",
+    vs: "Poprzedni miesiąc {{before}} · {{change}}",
+    captionUp: "W tym miesiącu rozmawialiście więcej! 🔥",
+    captionDown: "Ten miesiąc był nieco cichszy… 🌙",
+    captionSame: "Stabilnie jak zawsze, tak trzymać 👌",
+  },
 };

@@ -194,4 +194,7 @@ export default {
   placeholderAsk: 'Întreab-o pe Mila…',
   send: 'Trimite',
   note: 'Mila e o inteligență artificială și poate greși; nu dă verdicte definitive.',
+  roleReferee: "Arbitru (Modul cuplu)",
+  introReferee: "Modul cuplu: puneți telefonul între voi! Scrieți pe rând (\"Eu: …\", \"El/Ea: …\"). Mila ascultă ambele părți ca arbitru neutru și dă verdictul. ⚖️",
+  placeholderReferee: "Eu: … / El/Ea: … (descrieți cearta)",
 };

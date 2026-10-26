@@ -48,4 +48,15 @@ export default {
   rate: 'Beri rating aplikasi',
   privacy: 'Kebijakan privasi',
   terms: 'Ketentuan penggunaan',
+  notificationsSection: "NOTIFIKASI",
+  reminder: {
+    title: "Pengingat laporan hubungan bulanan",
+    on: "Aktif · Kami ingatkan setiap tanggal 1, malam hari",
+    off: "Nonaktif · Ketuk untuk mengaktifkan",
+    channel: "Laporan bulanan",
+    pushTitle: "Saatnya laporan hubungan bulananmu! 💌",
+    pushBody: "Impor lagi chat-mu dan lihat apa yang berubah bulan ini.",
+    deniedTitle: "Notifikasi nonaktif",
+    deniedText: "Izinkan notifikasi untuk Unwrap di pengaturan ponsel, lalu coba lagi.",
+  },
 };

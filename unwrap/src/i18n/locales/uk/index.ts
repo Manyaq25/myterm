@@ -10,5 +10,6 @@ import paywall from './paywall';
 import settings from './settings';
 import profile from './profile';
 import badges from './badges';
+import invite from './invite';
 
-export default { common, onboarding, home, guide, setup, story, report, coach, paywall, settings, profile, badges };
+export default { common, onboarding, home, guide, setup, story, report, coach, paywall, settings, profile, badges, invite };

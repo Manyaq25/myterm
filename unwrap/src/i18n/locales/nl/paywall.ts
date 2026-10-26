@@ -33,4 +33,9 @@ export default {
     restoreTitle: "Herstellen mislukt",
     restoreBody: "Probeer je het zo nog eens?",
   },
+  lifetime: "Levenslang",
+  lifetimePrice: "{{price}} · eenmalige betaling",
+  lifetimeBadge: "GEEN ABONNEMENT",
+  buyLifetime: "Neem Pro voor altijd",
+  lifetimeDisclosure: "{{price}} eenmalige betaling; geen abonnement en wordt nooit verlengd. Afgerekend via je store-account.",
 };

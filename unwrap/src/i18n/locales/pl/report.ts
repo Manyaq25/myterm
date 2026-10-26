@@ -18,4 +18,30 @@ export default {
   karneSticker: '🏅 ŚWIADECTWO Z PASKIEM',
   karneTitle: 'Świadectwo czatu',
   teacherNote: 'Uwaga wychowawcy: {{note}}',
+  storyButton: "Odtwórz jako relację (Wrapped)",
+  compat: {
+    sticker: "💘 TEST DOPASOWANIA",
+    storyTitle: "Wasze dopasowanie",
+    best: "W CZYM PASUJECIE NAJBARDZIEJ",
+    clash: "GDZIE NAJCZĘŚCIEJ SIĘ ŚCIERACIE",
+  },
+  flags: {
+    title: "Red flag czy green flag?",
+  },
+  duel: {
+    sticker: "⚔️ POJEDYNEK",
+    title: "Kto kocha bardziej?",
+    winner: "ZWYCIĘZCA",
+    draw: "Remis",
+  },
+  awards: {
+    sticker: "🏆 GALA NAGRÓD",
+    title: "Nagrody grupy",
+    caption: "Brawa dla zwycięzców! 👏",
+  },
+  ex: {
+    title: "Analiza byłego/byłej",
+    turningPoint: "MOMENT ZWROTNY",
+    lesson: "LEKCJA NA PRZYSZŁOŚĆ",
+  },
 };

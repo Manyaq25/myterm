@@ -36,4 +36,9 @@ export default {
     restoreTitle: "Couldn’t restore",
     restoreBody: "Mind trying again in a moment?",
   },
+  lifetime: "Lifetime",
+  lifetimePrice: "{{price}} · one-time payment",
+  lifetimeBadge: "NO SUBSCRIPTION",
+  buyLifetime: "Get Lifetime Pro",
+  lifetimeDisclosure: "{{price}} one-time payment; not a subscription and never renews. Charged to your store account.",
 };

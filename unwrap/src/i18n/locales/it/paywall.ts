@@ -33,4 +33,9 @@ export default {
     restoreTitle: "Ripristino non riuscito",
     restoreBody: "Riprovi tra poco?",
   },
+  lifetime: "A vita",
+  lifetimePrice: "{{price}} · pagamento unico",
+  lifetimeBadge: "NESSUN ABBONAMENTO",
+  buyLifetime: "Prendi Pro a vita",
+  lifetimeDisclosure: "{{price}} in un unico pagamento; non è un abbonamento e non si rinnova mai. Addebitato sul tuo account dello store.",
 };

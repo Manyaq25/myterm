@@ -32,4 +32,9 @@ export default {
     restoreTitle: 'Gagal memulihkan',
     restoreBody: 'Coba lagi sebentar lagi, ya?',
   },
+  lifetime: "Seumur hidup",
+  lifetimePrice: "{{price}} · sekali bayar",
+  lifetimeBadge: "TANPA LANGGANAN",
+  buyLifetime: "Ambil Pro seumur hidup",
+  lifetimeDisclosure: "{{price}} sekali bayar; bukan langganan dan tidak pernah diperpanjang. Ditagihkan ke akun toko aplikasimu.",
 };

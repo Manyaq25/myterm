@@ -18,4 +18,30 @@ export default {
   karneSticker: '🏅 شهادة تقدير',
   karneTitle: 'بطاقة تقييم الدردشة',
   teacherNote: 'ملاحظة المعلّم: {{note}}',
+  storyButton: "تشغيل كقصة (Wrapped)",
+  compat: {
+    sticker: "💘 اختبار التوافق",
+    storyTitle: "توافقكما",
+    best: "أكثر ما تتفقان عليه",
+    clash: "أكثر ما تختلفان عليه",
+  },
+  flags: {
+    title: "علامة حمراء أم خضراء؟",
+  },
+  duel: {
+    sticker: "⚔️ مبارزة",
+    title: "من يحب أكثر؟",
+    winner: "الفائز",
+    draw: "تعادل",
+  },
+  awards: {
+    sticker: "🏆 حفل الجوائز",
+    title: "جوائز المجموعة",
+    caption: "تصفيق حار للفائزين! 👏",
+  },
+  ex: {
+    title: "تحليل الحبيب السابق",
+    turningPoint: "لحظة التحوّل",
+    lesson: "درس للمرة القادمة",
+  },
 };

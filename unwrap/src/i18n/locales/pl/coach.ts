@@ -194,4 +194,7 @@ export default {
   placeholderAsk: 'Zapytaj Milę…',
   send: 'Wyślij',
   note: 'Mila to AI i może się mylić; nie wydaje ostatecznych werdyktów.',
+  roleReferee: "Sędzia (Tryb dla par)",
+  introReferee: "Tryb dla par: połóżcie telefon między sobą! Piszcie na zmianę (\"Ja: …\", \"On/Ona: …\"). Mila jako bezstronny sędzia wysłucha obu stron i wyda werdykt. ⚖️",
+  placeholderReferee: "Ja: … / On/Ona: … (opiszcie kłótnię)",
 };

@@ -18,4 +18,30 @@ export default {
   karneSticker: '🏅 QUADRO DE HONRA',
   karneTitle: 'Boletim da conversa',
   teacherNote: 'Recado do professor: {{note}}',
+  storyButton: "Ver como story (Wrapped)",
+  compat: {
+    sticker: "💘 TESTE DE COMPATIBILIDADE",
+    storyTitle: "A compatibilidade de vocês",
+    best: "ONDE VOCÊS MAIS COMBINAM",
+    clash: "ONDE VOCÊS MAIS DISCORDAM",
+  },
+  flags: {
+    title: "Red flag ou green flag?",
+  },
+  duel: {
+    sticker: "⚔️ DUELO",
+    title: "Quem ama mais?",
+    winner: "VENCEDOR",
+    draw: "Empate",
+  },
+  awards: {
+    sticker: "🏆 PREMIAÇÃO",
+    title: "Prêmios do grupo",
+    caption: "Palmas para os vencedores! 👏",
+  },
+  ex: {
+    title: "Análise do ex",
+    turningPoint: "QUANDO TUDO MUDOU",
+    lesson: "UMA LIÇÃO PARA A PRÓXIMA",
+  },
 };

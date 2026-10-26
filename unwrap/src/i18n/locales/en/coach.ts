@@ -194,4 +194,7 @@ export default {
   placeholderAsk: 'Ask Mila…',
   send: 'Send',
   note: 'Mila is an AI and can make mistakes; she doesn’t give final verdicts.',
+  roleReferee: "Referee (Couple Mode)",
+  introReferee: "Couple Mode: put the phone between you! Take turns typing (\"Me: …\", \"Them: …\"). Mila listens to both sides as a neutral referee and makes the call. ⚖️",
+  placeholderReferee: "Me: … / Them: … (describe the argument)",
 };

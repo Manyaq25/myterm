@@ -879,6 +879,140 @@ def step_revenuecat(dry_run):
     except ApiError as e:
         fail(step, f'RevenueCat: {e}')
 
+# ---------------------------------------------------------------- 4. tek seferlik ürünler
+
+ONETIME_FILE = ROOT / 'store' / 'onetime.json'
+PLAY_LANG = {'tr': 'tr-TR', 'en-US': 'en-US'}
+
+
+def step_onetime(play, dry_run):
+    """Ömür boyu Pro + hediye ürünü (Play yönetilen ürün). Var olan ürünün fiyatına dokunmaz."""
+    step = '4-tek-seferlik'
+    header('4) Tek seferlik ürünler (Ömür boyu Pro, hediye)')
+    cfg = json.loads(ONETIME_FILE.read_text(encoding='utf-8'))
+    for key in ('lifetime', 'gift'):
+        item = cfg[key]
+        sku = item['productId']
+        listings = {PLAY_LANG[k]: {'title': v['title'][:55], 'description': v['description'][:200]} for k, v in item['listings'].items()}
+        micros = str(int(Decimal(item['priceTRY']) * 1_000_000))
+        body = {
+            'packageName': PACKAGE, 'sku': sku, 'status': 'active', 'purchaseType': 'managedUser',
+            'defaultLanguage': 'tr-TR', 'listings': listings,
+            'defaultPrice': {'priceMicros': micros, 'currency': 'TRY'},
+        }
+        log(f'  {sku}: {item["priceTRY"]} TRY · {", ".join(listings)}')
+        if dry_run:
+            ok(step, f'{sku} hazır (çevrimdışı)')
+            continue
+        try:
+            cur = play.call('GET', f'{API}/inappproducts/{sku}')
+        except ApiError as e:
+            cur = None if e.status == 404 else e
+        if isinstance(cur, ApiError):
+            fail(step, f'{sku} okunamadı: {cur}')
+            continue
+        try:
+            if cur:
+                # Fiyat korunur (elle değişmiş olabilir); yalnız metinler ve durum güncellenir.
+                patch = {**body, 'defaultPrice': cur.get('defaultPrice', body['defaultPrice']), 'prices': cur.get('prices', {})}
+                play.call('PUT', f'{API}/inappproducts/{sku}', params={'autoConvertMissingPrices': 'true'}, body=patch)
+                ok(step, f'{sku} güncellendi')
+            else:
+                play.call('POST', f'{API}/inappproducts', params={'autoConvertMissingPrices': 'true'}, body=body)
+                ok(step, f'{sku} oluşturuldu ({item["priceTRY"]} TRY, diğer ülkeler otomatik çevrildi)')
+        except ApiError as e:
+            fail(step, f'{sku}: {e}')
+
+
+def step_revenuecat_onetime(dry_run):
+    """RevenueCat: tek seferlik ürünleri iki mağazada da tanımlar; ömür boyu ürünü
+    entitlement'a ve $rc_lifetime paketine bağlar. Hediye ürünü yalnız tanımlanır."""
+    step = '4-revenuecat-tek'
+    header('4b) RevenueCat tek seferlik ürünler')
+    cfg = json.loads(ONETIME_FILE.read_text(encoding='utf-8'))
+    if dry_run:
+        ok(step, 'plan hazır (çevrimdışı)')
+        return
+    key = os.environ.get('RC_SECRET_KEY', '').strip()
+    if not key:
+        skip(step, 'RC_SECRET_KEY yok')
+        return
+    rc = RC(key)
+    try:
+        projects = rc.all('/v2/projects')
+        pid_env = os.environ.get('RC_PROJECT_ID', '').strip()
+        proj = next((p for p in projects if p['id'] == pid_env), None) if pid_env else None
+        proj = proj or next((p for p in projects if 'unwrap' in (p.get('name') or '').lower()), None)
+        if not proj:
+            fail(step, 'Unwrap projesi bulunamadı')
+            return
+        P = f'/v2/projects/{proj["id"]}'
+        apps = rc.all(f'{P}/apps')
+        picks = [
+            ('Play', next((a for a in apps if a.get('type') == 'play_store' and (a.get('play_store') or {}).get('package_name') == PACKAGE), None)),
+            ('App Store', next((a for a in apps if a.get('type') == 'app_store' and (a.get('app_store') or {}).get('bundle_id') == IOS_BUNDLE), None)),
+        ]
+        ents = [e for e in rc.all(f'{P}/entitlements') if e.get('state', 'active') == 'active']
+        ent = next((e for e in ents if 'pro' in (e.get('lookup_key') or '').lower()), ents[0] if ents else None)
+        offerings = rc.all(f'{P}/offerings')
+        cur = next((o for o in offerings if o.get('is_current')), None)
+        if not ent or not cur:
+            fail(step, 'entitlement ya da geçerli offering yok (önce revenuecat adımı)')
+            return
+        packages = {pk['lookup_key']: pk for pk in rc.all(f'{P}/offerings/{cur["id"]}/packages')}
+        life = cfg['lifetime']
+        if life['package'] not in packages:
+            try:
+                packages[life['package']] = rc.call('POST', f'{P}/offerings/{cur["id"]}/packages',
+                                                    body={'lookup_key': life['package'], 'display_name': 'Ömür boyu', 'position': len(packages) + 1})
+                ok(step, f'paket {life["package"]} oluşturuldu')
+            except ApiError as e:
+                fail(step, f'paket {life["package"]}: {e}')
+        attached = {pr['id'] for pr in rc.all(f'{P}/entitlements/{ent["id"]}/products')}
+        for store_name, app in picks:
+            if not app:
+                fail(step, f'{store_name} uygulaması yok')
+                continue
+            existing = {pr['store_identifier']: pr for pr in rc.all(f'{P}/products', params={'app_id': app['id'], 'limit': 100}) if pr.get('app_id') == app['id']}
+            for key in ('lifetime', 'gift'):
+                item = cfg[key]
+                sid = item['productId']
+                pr = existing.get(sid)
+                if not pr:
+                    try:
+                        pr = rc.call('POST', f'{P}/products', body={'store_identifier': sid, 'app_id': app['id'], 'type': item['rcType'], 'display_name': item['referenceName']})
+                        ok(step, f'{store_name} ürün {sid} oluşturuldu')
+                    except ApiError as e:
+                        fail(step, f'{store_name} ürün {sid}: {e}')
+                        continue
+                else:
+                    ok(step, f'{store_name} ürün {sid} var')
+                if key != 'lifetime':
+                    continue
+                if pr['id'] not in attached:
+                    try:
+                        rc.call('POST', f'{P}/entitlements/{ent["id"]}/actions/attach_products', body={'product_ids': [pr['id']]})
+                        attached.add(pr['id'])
+                        ok(step, f'{store_name}: {sid} entitlement\'a bağlandı')
+                    except ApiError as e:
+                        fail(step, f'{store_name} entitlement: {e}')
+                pk = packages.get(life['package'])
+                if pk:
+                    assoc = rc.all(f'{P}/packages/{pk["id"]}/products')
+                    if any(x.get('product', {}).get('id') == pr['id'] for x in assoc):
+                        ok(step, f'{store_name}: {life["package"]} zaten {sid} içeriyor')
+                    else:
+                        try:
+                            rc.call('POST', f'{P}/packages/{pk["id"]}/actions/attach_products',
+                                    body={'products': [{'product_id': pr['id'], 'eligibility_criteria': 'all'}]})
+                            ok(step, f'{store_name}: {sid} → {life["package"]}')
+                        except ApiError as e:
+                            fail(step, f'{store_name} paket: {e}')
+    except RcAuthError as e:
+        skip(step, f'RevenueCat anahtarı yetkisiz: {e}')
+    except ApiError as e:
+        fail(step, f'RevenueCat: {e}')
+
 # ---------------------------------------------------------------- ana akış
 
 
@@ -886,7 +1020,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('--dry-run', action='store_true', help='yalnız çevrimdışı giriş kontrolü')
     ap.add_argument('--only', default='listings,subscriptions,revenuecat',
-                    help='virgülle: listings,subscriptions,revenuecat')
+                    help='virgülle: listings,subscriptions,revenuecat,onetime')
     ap.add_argument('--store-dir', help='store/play yerine başka klasör (deneme için)')
     a = ap.parse_args()
     if a.store_dir:
@@ -899,7 +1033,7 @@ def main():
     log('Kural: yayın kanallarına (production dahil) dokunulmaz; yalnız mağaza kaydı ve abonelik.')
 
     play = None
-    if not a.dry_run and steps & {'listings', 'subscriptions'}:
+    if not a.dry_run and steps & {'listings', 'subscriptions', 'onetime'}:
         try:
             play = Play()
             log(f'Google hizmet hesabı: {play.email}')
@@ -907,7 +1041,7 @@ def main():
             header('Google kimlik doğrulama')
             fail('0-kimlik', f'hizmet hesabı yüklenemedi: {type(e).__name__}: {e}')
 
-    for name, fn in (('listings', step_listings), ('subscriptions', step_subscriptions)):
+    for name, fn in (('listings', step_listings), ('subscriptions', step_subscriptions), ('onetime', step_onetime)):
         if name not in steps:
             continue
         if not a.dry_run and play is None:
@@ -922,6 +1056,11 @@ def main():
             step_revenuecat(a.dry_run)
         except Exception as e:  # noqa: BLE001
             fail('3-revenuecat', f'beklenmeyen hata: {type(e).__name__}: {e}')
+    if 'onetime' in steps:
+        try:
+            step_revenuecat_onetime(a.dry_run)
+        except Exception as e:  # noqa: BLE001
+            fail('4-revenuecat-tek', f'beklenmeyen hata: {type(e).__name__}: {e}')
 
     write_summary(a.dry_run)
     sys.exit(1 if FAILED else 0)

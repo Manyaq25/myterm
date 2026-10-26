@@ -33,4 +33,9 @@ export default {
     restoreTitle: 'Не удалось восстановить',
     restoreBody: 'Попробуешь ещё раз чуть позже?',
   },
+  lifetime: "Навсегда",
+  lifetimePrice: "{{price}} · разовый платёж",
+  lifetimeBadge: "БЕЗ ПОДПИСКИ",
+  buyLifetime: "Купить Pro навсегда",
+  lifetimeDisclosure: "{{price}} разовым платежом; это не подписка и не продлевается. Списывается с аккаунта магазина приложений.",
 };

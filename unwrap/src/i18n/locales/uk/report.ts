@@ -18,4 +18,30 @@ export default {
   karneSticker: '🏅 ПОХВАЛЬНА ГРАМОТА',
   karneTitle: 'Табель чату',
   teacherNote: 'Зауваження вчителя: {{note}}',
+  storyButton: "Дивитися як сторіс (Wrapped)",
+  compat: {
+    sticker: "💘 ТЕСТ НА СУМІСНІСТЬ",
+    storyTitle: "Ваша сумісність",
+    best: "У ЧОМУ ВИ НАЙБІЛЬШЕ СХОЖІ",
+    clash: "ДЕ ВИ НАЙЧАСТІШЕ СПЕРЕЧАЄТЕСЯ",
+  },
+  flags: {
+    title: "Red flag чи green flag?",
+  },
+  duel: {
+    sticker: "⚔️ ДУЕЛЬ",
+    title: "Хто кохає сильніше?",
+    winner: "ПЕРЕМОЖЕЦЬ",
+    draw: "Нічия",
+  },
+  awards: {
+    sticker: "🏆 ЦЕРЕМОНІЯ НАГОРОДЖЕННЯ",
+    title: "Нагороди групи",
+    caption: "Оплески переможцям! 👏",
+  },
+  ex: {
+    title: "Аналіз колишнього/колишньої",
+    turningPoint: "МОМЕНТ, КОЛИ ВСЕ ЗМІНИЛОСЯ",
+    lesson: "УРОК НА МАЙБУТНЄ",
+  },
 };

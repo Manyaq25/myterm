@@ -18,4 +18,30 @@ export default {
   karneSticker: '🏅 TABLEAU D’HONNEUR',
   karneTitle: 'Bulletin de discussion',
   teacherNote: 'Appréciation du prof : {{note}}',
+  storyButton: "Lire en story (Wrapped)",
+  compat: {
+    sticker: "💘 TEST DE COMPATIBILITÉ",
+    storyTitle: "Votre compatibilité",
+    best: "LÀ OÙ VOUS VOUS ENTENDEZ LE MIEUX",
+    clash: "LÀ OÙ ÇA COINCE",
+  },
+  flags: {
+    title: "Red flag ou green flag ?",
+  },
+  duel: {
+    sticker: "⚔️ DUEL",
+    title: "Qui aime le plus ?",
+    winner: "GAGNANT",
+    draw: "Égalité",
+  },
+  awards: {
+    sticker: "🏆 CÉRÉMONIE",
+    title: "Les trophées du groupe",
+    caption: "On applaudit les gagnants ! 👏",
+  },
+  ex: {
+    title: "Analyse de l’ex",
+    turningPoint: "LE TOURNANT",
+    lesson: "UNE LEÇON POUR LA PROCHAINE FOIS",
+  },
 };

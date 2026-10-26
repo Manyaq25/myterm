@@ -48,4 +48,15 @@ export default {
   rate: 'Valuta l’app',
   privacy: 'Informativa sulla privacy',
   terms: 'Termini di utilizzo',
+  notificationsSection: "NOTIFICHE",
+  reminder: {
+    title: "Promemoria del report mensile di coppia",
+    on: "Attivo · Te lo ricordiamo il 1° di ogni mese, la sera",
+    off: "Disattivo · Tocca per attivarlo",
+    channel: "Report mensile",
+    pushTitle: "È ora del tuo report mensile di coppia! 💌",
+    pushBody: "Reimporta la chat e scopri cosa è cambiato questo mese.",
+    deniedTitle: "Notifiche disattivate",
+    deniedText: "Consenti le notifiche di Unwrap nelle impostazioni del telefono e riprova.",
+  },
 };

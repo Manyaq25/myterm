@@ -33,4 +33,9 @@ export default {
     restoreTitle: 'Nu s-a putut restabili',
     restoreBody: 'Mai încerci în câteva momente?',
   },
+  lifetime: "Pe viață",
+  lifetimePrice: "{{price}} · plată unică",
+  lifetimeBadge: "FĂRĂ ABONAMENT",
+  buyLifetime: "Ia Pro pe viață",
+  lifetimeDisclosure: "{{price}} plată unică; nu este abonament și nu se reînnoiește. Se debitează din contul magazinului.",
 };

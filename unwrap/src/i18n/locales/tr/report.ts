@@ -18,4 +18,30 @@ export default {
   karneSticker: '🏅 TAKDİR BELGESİ',
   karneTitle: 'Sohbet Karnesi',
   teacherNote: 'Öğretmen görüşü: {{note}}',
+  storyButton: "Hikâye olarak oynat (Wrapped)",
+  compat: {
+    sticker: "💘 UYUM TESTİ",
+    storyTitle: "Uyumunuz",
+    best: "EN ÇOK UYDUĞUNUZ",
+    clash: "EN ÇOK ÇATIŞTIĞINIZ",
+  },
+  flags: {
+    title: "Red flag mi, green flag mi?",
+  },
+  duel: {
+    sticker: "⚔️ DÜELLO",
+    title: "Kim daha çok seviyor?",
+    winner: "KAZANAN",
+    draw: "Berabere",
+  },
+  awards: {
+    sticker: "🏆 ÖDÜL TÖRENİ",
+    title: "Grup Ödülleri",
+    caption: "Kazananlara alkış! 👏",
+  },
+  ex: {
+    title: "Eski sevgili analizi",
+    turningPoint: "İŞLERİN DEĞİŞTİĞİ AN",
+    lesson: "BİR SONRAKİ İÇİN DERS",
+  },
 };

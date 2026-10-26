@@ -12,7 +12,7 @@ const MAX_REPLY_GAP = 48 * HOUR;
 
 const EMOJI = /\p{Extended_Pictographic}/gu;
 // Kahkaha: emoji + dillere göre yazımlar (haha, jaja, kkkk, rsrs, хаха, wkwk, ههه, mdr, xD…)
-const LAUGH = /(😂|🤣|😆|😹|(?<!\p{L})(?:a?ha(?:ha)+h?|he(?:he)+|ks(?:ks)+k?|sj(?:sj)+|js(?:js)+|ja(?:ja)+|je(?:je)+|k{4,}|rs(?:rs)+|lol|lmao|asdf\p{L}*|ahah\p{L}*|xd+|mdr|ptdr|wk(?:wk)+|х[аa](?:х[аa])+|а?ха(?:ха)+|ه{3,}|خخخ+)(?!\p{L}))/giu;
+export const LAUGH = /(😂|🤣|😆|😹|(?<!\p{L})(?:a?ha(?:ha)+h?|he(?:he)+|ks(?:ks)+k?|sj(?:sj)+|js(?:js)+|ja(?:ja)+|je(?:je)+|k{4,}|rs(?:rs)+|lol|lmao|asdf\p{L}*|ahah\p{L}*|xd+|mdr|ptdr|wk(?:wk)+|х[аa](?:х[аa])+|а?ха(?:ха)+|ه{3,}|خخخ+)(?!\p{L}))/giu;
 const AYNEN = /\baynen\b/giu;
 const COLD_TAMAM = /^tamam\.$/iu;
 

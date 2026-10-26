@@ -48,4 +48,15 @@ export default {
   rate: 'Oceń aplikację',
   privacy: 'Polityka prywatności',
   terms: 'Warunki korzystania',
+  notificationsSection: "POWIADOMIENIA",
+  reminder: {
+    title: "Przypomnienie o miesięcznym raporcie związku",
+    on: "Włączone · Przypomnimy 1. dnia każdego miesiąca wieczorem",
+    off: "Wyłączone · Dotknij, aby włączyć",
+    channel: "Raport miesięczny",
+    pushTitle: "Czas na miesięczny raport związku! 💌",
+    pushBody: "Zaimportuj czat ponownie i zobacz, co zmieniło się w tym miesiącu.",
+    deniedTitle: "Powiadomienia są wyłączone",
+    deniedText: "Zezwól Unwrap na powiadomienia w ustawieniach telefonu i spróbuj ponownie.",
+  },
 };

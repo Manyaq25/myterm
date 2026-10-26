@@ -110,4 +110,18 @@ export default {
     romantic: ['Who’s more romantic?', 'Who lies more? 🤥', 'Hidden hints and reading between the lines', 'AI report card with receipts', 'Where is this relationship going?'],
     other: ['AI report card with receipts', 'Who lies more? 🤥', 'Hidden hints and reading between the lines', 'Who carries the conversation?', 'What-to-text suggestions'],
   },
+  play: "Play",
+  pause: "Pause",
+  counterAll: "{{index}} / {{total}}",
+  month: {
+    title: "This month vs last month",
+    messages: "Messages",
+    days: "Days you talked",
+    laughs: "Laughs",
+    night: "Late-night texts",
+    vs: "Last month {{before}} · {{change}}",
+    captionUp: "You talked more this month! 🔥",
+    captionDown: "A bit quieter this month… 🌙",
+    captionSame: "Steady as ever, keep it up 👌",
+  },
 };

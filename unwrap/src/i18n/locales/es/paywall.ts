@@ -33,4 +33,9 @@ export default {
     restoreTitle: 'No se pudo restaurar',
     restoreBody: '¿Lo intentas de nuevo en un momento?',
   },
+  lifetime: "De por vida",
+  lifetimePrice: "{{price}} · pago único",
+  lifetimeBadge: "SIN SUSCRIPCIÓN",
+  buyLifetime: "Conseguir Pro de por vida",
+  lifetimeDisclosure: "{{price}} en un pago único; no es una suscripción y nunca se renueva. Se cobra en tu cuenta de la tienda.",
 };

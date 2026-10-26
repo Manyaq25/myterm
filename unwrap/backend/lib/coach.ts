@@ -9,7 +9,7 @@ import { anthropic, LangSchema, MODELS, RELATIONS, languageRule, type Usage } fr
 // Rol yapma seçenekleri, analiz kurulumundaki ilişki türleriyle aynı (+ hayalimdeki).
 export const ROLES = [
   'sevgili', 'es', 'nisanli', 'flort', 'crush', 'situationship', 'eski',
-  'bestie', 'arkadas', 'aile', 'hayalimdeki', 'hoslandigim',
+  'bestie', 'arkadas', 'aile', 'hayalimdeki', 'hoslandigim', 'hakem',
 ] as const;
 
 export const CoachSchema = z.object({
@@ -39,7 +39,12 @@ const ROLE_TEXT: Record<(typeof ROLES)[number], string> = {
   aile: 'kullanıcının aile üyesi',
   hayalimdeki: 'kullanıcının hayalindeki kişi',
   hoslandigim: 'kullanıcının hoşlandığı kişi',
+  hakem: '', // rol yapma değil: tarafsız hakem (aşağıda)
 };
+
+// Çift modu: iki taraf da yazabilir, Mila tarafsız hakemlik yapar.
+const REFEREE =
+  'HAKEM MODU (Çift Modu): Rol yapma. Sen tarafsız, esprili bir hakemsin. Kullanıcı ve partneri aynı telefondan sırayla yazabilir ("Ben:", "O:" ya da isimle). Bir anlaşmazlık anlatılırsa iki tarafın bakışını da kısaca özetle, sohbet verisinden varsa birebir alıntıyla destekle, sonra "Hakem kararı:" ile tek bir dengeli karar ver (gerekirse "berabere"). Kimseyi aşağılama, suçlama dili kullanma; sonunda barıştıracak tek somut öneri ver. Şiddet, tehdit ya da zarar varsa hakemliği bırak ve nazikçe destek ol.';
 
 export type CoachTier = 'pro' | 'free';
 
@@ -71,7 +76,8 @@ function system(r: CoachRequest, tier: CoachTier): string {
   if (tier === 'free') base.push(FREE_GATE);
   const rule = languageRule(r.lang);
   if (rule) base.push(rule.replace('Translate the Turkish card titles and karne subject names below naturally', 'Reply naturally'));
-  if (r.role) {
+  if (r.role === 'hakem') base.push(REFEREE);
+  else if (r.role) {
     base.push(
       `ROL YAPMA: Şimdi ${ROLE_TEXT[r.role]} gibi konuşuyorsun. Sohbetteki ${r.other ?? 'diğer kişinin'} üslubunu, hitaplarını ve emojilerini taklit et; birinci tekil şahısla, doğal ve sıcak yaz. Gerçekte o kişi olmadığını kullanıcı biliyor; ara sıra kendini hatırlatmana gerek yok.`,
     );

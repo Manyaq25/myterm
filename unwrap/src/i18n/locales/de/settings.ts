@@ -48,4 +48,15 @@ export default {
   rate: 'App bewerten',
   privacy: 'Datenschutzerklärung',
   terms: 'Nutzungsbedingungen',
+  notificationsSection: "BENACHRICHTIGUNGEN",
+  reminder: {
+    title: "Erinnerung an den monatlichen Beziehungsbericht",
+    on: "An · Wir erinnern dich jeden 1. des Monats am Abend",
+    off: "Aus · Zum Einschalten tippen",
+    channel: "Monatsbericht",
+    pushTitle: "Zeit für deinen monatlichen Beziehungsbericht! 💌",
+    pushBody: "Importiere deinen Chat erneut und sieh, was sich diesen Monat verändert hat.",
+    deniedTitle: "Keine Benachrichtigungen erlaubt",
+    deniedText: "Erlaube Unwrap in den Handy-Einstellungen Benachrichtigungen und versuche es erneut.",
+  },
 };

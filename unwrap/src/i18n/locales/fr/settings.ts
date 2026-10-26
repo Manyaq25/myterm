@@ -48,4 +48,15 @@ export default {
   rate: 'Noter l’appli',
   privacy: 'Politique de confidentialité',
   terms: 'Conditions d’utilisation',
+  notificationsSection: "NOTIFICATIONS",
+  reminder: {
+    title: "Rappel du rapport de couple mensuel",
+    on: "Activé · On te le rappelle le 1er de chaque mois, le soir",
+    off: "Désactivé · Touche pour l’activer",
+    channel: "Rapport mensuel",
+    pushTitle: "C’est l’heure de ton rapport de couple mensuel ! 💌",
+    pushBody: "Réimporte ta conversation et découvre ce qui a changé ce mois-ci.",
+    deniedTitle: "Notifications désactivées",
+    deniedText: "Autorise les notifications pour Unwrap dans les réglages du téléphone, puis réessaie.",
+  },
 };
