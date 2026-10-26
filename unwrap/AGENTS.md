@@ -39,3 +39,8 @@ Docs: https://docs.expo.dev/eas/index.md
 - If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
 - Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+
+# Expo iOS kotası dolunca (Ekim 2026)
+- Expo ücretsiz planın aylık iOS derleme hakkı biterse `unwrap/derle-yerel.txt` değiştirilir: `.github/workflows/unwrap-ios-local.yml` GitHub macOS makinesinde `eas build --local` ile derler (Expo kotası harcanmaz) ve TestFlight'a gönderir.
+- iOS'ta push izni kullanılmaz (`plugins/no-push.js`); yalnız yerel aylık hatırlatıcı bildirimi var.
+- Sunucu yayınını geçici durdurmak için `unwrap/backend/.yayin-bekle` dosyası (canlı model denemesinden önce kullanılır).
