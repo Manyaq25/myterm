@@ -38,6 +38,7 @@ export default {
     pro: 'Unwrap Pro',
     yearly: 'Formule annuelle',
     monthly: 'Formule mensuelle',
+    lifetime: 'À vie',
     trialEnds: 'L’essai se termine le {{date}}',
     renews: 'Renouvellement le {{date}}',
     expires: 'Se termine le {{date}}',

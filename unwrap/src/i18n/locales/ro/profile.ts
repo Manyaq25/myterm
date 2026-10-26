@@ -38,6 +38,7 @@ export default {
     pro: 'Unwrap Pro',
     yearly: 'Plan anual',
     monthly: 'Plan lunar',
+    lifetime: 'Pe viață',
     trialEnds: 'Perioada de probă se termină pe {{date}}',
     renews: 'Se reînnoiește pe {{date}}',
     expires: 'Se încheie pe {{date}}',

@@ -37,6 +37,7 @@ export default {
     pro: 'Unwrap Pro',
     yearly: 'Yearly plan',
     monthly: 'Monthly plan',
+    lifetime: 'Lifetime',
     trialEnds: 'Trial ends on {{date}}',
     renews: 'Renews on {{date}}',
     expires: 'Ends on {{date}}',

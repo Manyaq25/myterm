@@ -38,6 +38,7 @@ export default {
     pro: 'Unwrap Pro',
     yearly: 'Plano anual',
     monthly: 'Plano mensal',
+    lifetime: 'Vitalício',
     trialEnds: 'O teste termina em {{date}}',
     renews: 'Renova em {{date}}',
     expires: 'Termina em {{date}}',

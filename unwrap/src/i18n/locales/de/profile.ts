@@ -38,6 +38,7 @@ export default {
     pro: 'Unwrap Pro',
     yearly: 'Jahresabo',
     monthly: 'Monatsabo',
+    lifetime: 'Lebenslang',
     trialEnds: 'Test endet am {{date}}',
     renews: 'Verlängert sich am {{date}}',
     expires: 'Endet am {{date}}',

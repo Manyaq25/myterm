@@ -38,6 +38,7 @@ export default {
     pro: 'Unwrap Pro',
     yearly: 'Годовой план',
     monthly: 'Месячный план',
+    lifetime: 'Навсегда',
     trialEnds: 'Пробный период закончится {{date}}',
     renews: 'Продлится {{date}}',
     expires: 'Закончится {{date}}',

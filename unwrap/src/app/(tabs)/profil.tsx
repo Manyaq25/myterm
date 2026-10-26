@@ -104,7 +104,7 @@ async function loadSub(): Promise<Sub> {
     if (!hasPro(info)) return { pro: false, plan: null, line: null };
     const ent = Object.values(info.entitlements.active)[0];
     const id = ent.productIdentifier.toLowerCase();
-    const plan = t(id.includes('year') || id.includes('annual') ? 'profile.sub.yearly' : 'profile.sub.monthly');
+    const plan = t(id.includes('lifetime') ? 'profile.sub.lifetime' : id.includes('year') || id.includes('annual') ? 'profile.sub.yearly' : 'profile.sub.monthly');
     const date = ent.expirationDate ? new Date(ent.expirationDate).toLocaleDateString(locale(), { day: 'numeric', month: 'long', year: 'numeric' }) : null;
     const line = !date
       ? null

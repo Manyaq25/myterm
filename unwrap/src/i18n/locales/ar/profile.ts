@@ -38,6 +38,7 @@ export default {
     pro: 'Unwrap Pro',
     yearly: 'الخطة السنوية',
     monthly: 'الخطة الشهرية',
+    lifetime: 'مدى الحياة',
     trialEnds: 'تنتهي الفترة التجريبية في {{date}}',
     renews: 'يتجدد في {{date}}',
     expires: 'ينتهي في {{date}}',

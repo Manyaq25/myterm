@@ -38,6 +38,7 @@ export default {
     pro: 'Unwrap Pro',
     yearly: 'Yıllık plan',
     monthly: 'Aylık plan',
+    lifetime: 'Ömür boyu',
     trialEnds: 'Deneme {{date}} tarihinde bitiyor',
     renews: '{{date}} tarihinde yenilenir',
     expires: '{{date}} tarihinde sona erer',

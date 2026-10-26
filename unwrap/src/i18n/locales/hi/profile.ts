@@ -38,6 +38,7 @@ export default {
     pro: 'Unwrap Pro',
     yearly: 'सालाना प्लान',
     monthly: 'मंथली प्लान',
+    lifetime: 'लाइफ़टाइम',
     trialEnds: 'ट्रायल {{date}} को ख़त्म होगा',
     renews: '{{date}} को रिन्यू होगा',
     expires: '{{date}} को ख़त्म होगा',

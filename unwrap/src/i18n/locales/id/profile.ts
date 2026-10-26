@@ -38,6 +38,7 @@ export default {
     pro: 'Unwrap Pro',
     yearly: 'Paket tahunan',
     monthly: 'Paket bulanan',
+    lifetime: 'Seumur hidup',
     trialEnds: 'Uji coba berakhir {{date}}',
     renews: 'Diperpanjang {{date}}',
     expires: 'Berakhir {{date}}',

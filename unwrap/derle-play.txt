@@ -1,2 +1,1 @@
-Google Play AAB derlemesi için bu dosyayı değiştir. Thu Oct 22 19:21:44 UTC 2026
-Sat Oct 24 16:00:02 UTC 2026
+2026-10-26 12:27 1.1.0: yeni kartlar, Wrapped, davet/hediye/ömür boyu, aylık rapor, meydan okuma, hakem

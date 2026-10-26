@@ -38,6 +38,7 @@ export default {
     pro: 'Unwrap Pro',
     yearly: 'Plan roczny',
     monthly: 'Plan miesięczny',
+    lifetime: 'Dożywotnio',
     trialEnds: 'Okres próbny kończy się {{date}}',
     renews: 'Odnawia się {{date}}',
     expires: 'Kończy się {{date}}',
