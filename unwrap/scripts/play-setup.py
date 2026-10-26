@@ -930,7 +930,8 @@ def step_onetime(play, dry_run):
             body = {'packageName': PACKAGE, 'productId': pid, 'listings': listings, 'purchaseOptions': [option]}
             mask = 'listings,purchaseOptions'
         try:
-            play.call('PATCH', url, body=body, params={
+            # Not: patch yolu küçük harf (onetimeproducts), diğerleri oneTimeProducts (Google keşif belgesi)
+            play.call('PATCH', f'{API}/onetimeproducts/{pid}', body=body, params={
                 'allowMissing': 'true', 'updateMask': mask, 'regionsVersion.version': version,
                 'latencyTolerance': LATENCY})
             ok(step, f'{pid} {"güncellendi" if cur else "oluşturuldu"}' + ('' if cur else f' ({item["priceTRY"]} TRY, {len(body["purchaseOptions"][0]["regionalPricingAndAvailabilityConfigs"])} bölge)'))
