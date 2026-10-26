@@ -1,0 +1,77 @@
+# Unwrap iOS derlemesi GitHub'ın macOS makinesinde (eas build --local): Expo'nun aylık
+# ücretsiz derleme hakkını kullanmaz. Kimlik bilgileri EAS'tan okunur; .ipa TestFlight'a gönderilir.
+# Synvia'dan ayrı (@aydinapp/unwrap). Tetikleme: elle ya da unwrap/derle-yerel.txt değişince.
+name: Unwrap iOS yerel derleme (TestFlight)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**", main]
+    paths: ["unwrap/derle-yerel.txt"]
+
+concurrency:
+  group: unwrap-ios-local
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: unwrap
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - run: xcodebuild -version
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Uygulama ortam değişkenleri (herkese açık RevenueCat anahtarı)
+        env:
+          RC_IOS: ${{ secrets.UNWRAP_RC_IOS_KEY }}
+        run: |
+          [ -z "$RC_IOS" ] && { echo "UNWRAP_RC_IOS_KEY yok"; exit 1; }
+          eas env:create --name EXPO_PUBLIC_RC_IOS_KEY --value "$RC_IOS" --environment production --visibility plaintext --force --non-interactive
+      - name: App Store Connect anahtarı
+        env:
+          P8: ${{ secrets.ASC_KEY_P8 }}
+        run: printf '%s' "$P8" > "$RUNNER_TEMP/asc.p8"
+      - name: Gönderim profiline App Store Connect anahtarını ekle (yalnız bu çalışmada)
+        env:
+          KEY_ID: ${{ secrets.ASC_KEY_ID }}
+        run: |
+          node -e '
+            const fs = require("fs");
+            const j = JSON.parse(fs.readFileSync("eas.json", "utf8"));
+            Object.assign(j.submit.production.ios, {
+              ascApiKeyPath: process.env.RUNNER_TEMP + "/asc.p8",
+              ascApiKeyIssuerId: "3da2f4bd-3acd-404f-8748-c7e43756dd8d",
+              ascApiKeyId: process.env.KEY_ID,
+            });
+            fs.writeFileSync("eas.json", JSON.stringify(j, null, 2));
+          '
+      - name: Derle (bu makinede)
+        env:
+          EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
+          EXPO_ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          EXPO_ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
+          EXPO_APPLE_TEAM_ID: G2T885G2XY
+          EXPO_APPLE_TEAM_TYPE: INDIVIDUAL
+          EXPO_NO_CAPABILITY_SYNC: '1'
+        run: eas build --platform ios --profile production --local --non-interactive --freeze-credentials --output "$RUNNER_TEMP/unwrap.ipa"
+      - name: TestFlight'a gönder
+        env:
+          EXPO_ASC_API_KEY_PATH: ${{ runner.temp }}/asc.p8
+          EXPO_ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          EXPO_ASC_ISSUER_ID: 3da2f4bd-3acd-404f-8748-c7e43756dd8d
+          EXPO_APPLE_TEAM_ID: G2T885G2XY
+        run: eas submit --platform ios --profile production --path "$RUNNER_TEMP/unwrap.ipa" --non-interactive
