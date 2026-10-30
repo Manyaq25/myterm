@@ -1,32 +1,30 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
-<!-- Bu dosya tools/site/home.template.html şablonundan üretilir; doğrudan düzenleme. Stil: /assets/home.css, hareket: /assets/home.js -->
-<title>aydinapp · Synvia AI — Apps by İbrahim Aydın</title>
-<meta name="description" content="Synvia AI remembers your promises and tasks for you: share a screenshot, voice note or PDF and AI finds the tasks. Independent, ad-free apps by İbrahim Aydın.">
+<!-- Bu dosya tools/site/studio.template.html şablonundan üretilir; doğrudan düzenleme. Stil: /assets/home.css + /assets/studio.css, hareket: /assets/studio.js -->
+<title>aydinapp · Ad-free, smart apps by İbrahim Aydın</title>
+<meta name="description" content="Synvia AI and Unwrap: ad-free, AI-powered mobile apps that make everyday life easier. Your data stays on your phone, no surprise charges.">
 <link rel="canonical" href="https://aydinapp.com.tr/en/">
 <link rel="alternate" hreflang="tr" href="https://aydinapp.com.tr/">
 <link rel="alternate" hreflang="en" href="https://aydinapp.com.tr/en/">
 <link rel="alternate" hreflang="x-default" href="https://aydinapp.com.tr/en/">
 <meta name="theme-color" content="#060d0c">
-<!-- iPhone Safari'de sayfanın üstünde "App Store'da aç / İndir" şeridi -->
-<meta name="apple-itunes-app" content="app-id=6812456837">
-<!-- WhatsApp, iMessage, X vb. link önizlemesi -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="aydinapp">
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://aydinapp.com.tr/en/">
-<meta property="og:title" content="Synvia AI — Remember everything, always">
-<meta property="og:description" content="Talk, share a screenshot or a PDF: AI keeps track and reminds you when it’s time. Download free.">
+<meta property="og:title" content="aydinapp — Smart apps that make life easier">
+<meta property="og:description" content="Synvia AI and Unwrap. No ads, no surprise charges, your data stays on your phone.">
 <meta property="og:image" content="https://aydinapp.com.tr/og-en.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Synvia AI — Remember everything, always">
+<meta property="og:image:alt" content="aydinapp — Smart apps that make life easier">
 <meta name="twitter:card" content="summary_large_image">
 <link href="/favicon.svg" rel="icon" type="image/svg+xml">
 <link href="/apple-touch-icon.png" rel="apple-touch-icon">
 <link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/home.css?v=7487e81a5d">
-</head><body>
+<link rel="stylesheet" href="/assets/studio.css?v=cd9b7f57b8">
+</head><body class="studio">
 
 <div class="intro" aria-hidden="true">
   <svg viewBox="0 0 100 100"><defs><linearGradient id="ig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#59DBC7"/><stop offset="1" stop-color="#FF6B4A"/></linearGradient></defs><path d="M30 72L50 26L70 72M38 56H62"/><circle cx="50" cy="40" r="3.5"/></svg>
@@ -43,272 +41,167 @@
       <span>aydin<b>app</b></span>
     </a>
     <nav class="nav" aria-label="Sections">
-      <a href="#nasil">How it works</a>
-      <a href="#ozellikler">Features</a>
-      <a href="/en/apps/">Apps</a>
+      <a href="#uygulamalar">Apps</a>
+      <a href="#ilkeler">Principles</a>
       <a href="#hakkimda">About</a>
     </nav>
     <div class="hdr-r">
       <a class="pill" href="/" hreflang="tr" lang="tr" title="Türkçe"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M323-111.5Q250-143 196-197t-85-127.5Q80-398 80-482t31-156.5Q142-711 196-765t127-84.5Q396-880 480-880t157 30.5Q710-819 764-765t85 126.5Q880-566 880-482t-31 157.5Q818-251 764-197t-127 85.5Q564-80 480-80t-157-31.5ZM480-138q35-36 58.5-82.5T577-331H384q14 60 37.5 108t58.5 85Zm-85-12q-25-38-43-82t-30-99H172q38 71 88 111.5T395-150Zm171-1q72-23 129.5-69T788-331H639q-13 54-30.5 98T566-151ZM152-391h159q-3-27-3.5-48.5T307-482q0-25 1-44.5t4-43.5H152q-7 24-9.5 43t-2.5 45q0 26 2.5 46.5T152-391Zm221 0h215q4-31 5-50.5t1-40.5q0-20-1-38.5t-5-49.5H373q-4 31-5 49.5t-1 38.5q0 21 1 40.5t5 50.5Zm275 0h160q7-24 9.5-44.5T820-482q0-26-2.5-45t-9.5-43H649q3 35 4 53.5t1 34.5q0 22-1.5 41.5T648-391Zm-10-239h150q-33-69-90.5-115T565-810q25 37 42.5 80T638-630Zm-254 0h194q-11-53-37-102.5T480-820q-32 27-54 71t-42 119Zm-212 0h151q11-54 28-96.5t43-82.5q-75 19-131 64t-91 115Z"/></svg>TR</a>
-      <a class="pill solid magnetic" href="https://apps.apple.com/app/id6812456837" target="_blank" rel="noopener noreferrer" data-store-link data-android-href="#uygulamalar"><span data-store-label>Download</span></a>
+      <a class="pill solid magnetic" href="#uygulamalar">Apps</a>
     </div>
   </div>
 </header>
 
 <nav class="rail" id="rail" aria-hidden="true">
   <a href="#top" data-s="top" tabindex="-1"><i></i><span>01 Intro</span></a>
-  <a href="#nasil" data-s="nasil" tabindex="-1"><i></i><span>02 How it works</span></a>
-  <a href="#yollar" data-s="yollar" tabindex="-1"><i></i><span>03 Four ways</span></a>
-  <a href="#ozellikler" data-s="ozellikler" tabindex="-1"><i></i><span>04 Features</span></a>
-  <a href="#uygulamalar" data-s="uygulamalar" tabindex="-1"><i></i><span>05 Apps</span></a>
-  <a href="#hakkimda" data-s="hakkimda" tabindex="-1"><i></i><span>06 About</span></a>
+  <a href="#uygulamalar" data-s="uygulamalar" tabindex="-1"><i></i><span>02 Apps</span></a>
+  <a href="#ilkeler" data-s="ilkeler" tabindex="-1"><i></i><span>03 Principles</span></a>
+  <a href="#hakkimda" data-s="hakkimda" tabindex="-1"><i></i><span>04 About</span></a>
 </nav>
 
 <main>
-<!-- 1. AÇILIŞ -->
+<!-- 1. AÇILIŞ: stüdyo ve uygulamaların iki telefonu -->
 <section class="hero" id="top" data-sec>
   <canvas id="field" aria-hidden="true"></canvas>
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <p class="status mono fade-up d1"><span class="live-dot"></span>Synvia AI <b>1.1</b> on the App Store &amp; Google Play</p>
-      <h1 class="h-hero"><span class="ln"><span>Never let</span></span><span class="ln"><span>anything</span></span><span class="ln"><span class="grad-text">slip again.</span></span></h1>
-      <p class="lede fade-up d3">Share a screenshot of a chat, a voice note or a PDF. <strong>Synvia AI</strong> finds the tasks and promises inside and reminds you when it’s time.</p>
+      <p class="status mono fade-up d1"><span class="live-dot"></span>2 apps · Synvia AI is live, Unwrap is coming</p>
+      <h1 class="h-hero"><span class="ln"><span>Apps that</span></span><span class="ln"><span>make life</span></span><span class="ln"><span class="grad-text">easier.</span></span></h1>
+      <p class="lede fade-up d3">From Synvia AI, which reminds you of the promises you made, to Unwrap, which turns your chats into fun stats: ad-free, AI-powered apps that each do one thing really well.</p>
       <div class="cta-row fade-up d4">
-        <a class="btn-store magnetic" href="https://apps.apple.com/app/id6812456837" target="_blank" rel="noopener noreferrer" data-store-link data-android-href="#uygulamalar" data-android-label="Android coming soon"><svg class="apple" viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span><small>Download free</small><span data-store-label>App Store</span></span></a>
-        <a class="btn-ghost" href="#nasil">See how it works <svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M480-344 240-584l43-43 197 197 197-197 43 43-240 240Z"/></svg></a>
+        <a class="btn-store magnetic" href="#uygulamalar"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M179-179q-19-19-19-47t19-47q19-19 47-19t47 19q19 19 19 47t-19 47q-19 19-47 19t-47-19Zm254 0q-19-19-19-47t19-47q19-19 47-19t47 19q19 19 19 47t-19 47q-19 19-47 19t-47-19Zm254 0q-19-19-19-47t19-47q19-19 47-19t47 19q19 19 19 47t-19 47q-19 19-47 19t-47-19ZM179-433q-19-19-19-47t19-47q19-19 47-19t47 19q19 19 19 47t-19 47q-19 19-47 19t-47-19Zm254 0q-19-19-19-47t19-47q19-19 47-19t47 19q19 19 19 47t-19 47q-19 19-47 19t-47-19Zm254 0q-19-19-19-47t19-47q19-19 47-19t47 19q19 19 19 47t-19 47q-19 19-47 19t-47-19ZM179-687q-19-19-19-47t19-47q19-19 47-19t47 19q19 19 19 47t-19 47q-19 19-47 19t-47-19Zm254 0q-19-19-19-47t19-47q19-19 47-19t47 19q19 19 19 47t-19 47q-19 19-47 19t-47-19Zm254 0q-19-19-19-47t19-47q19-19 47-19t47 19q19 19 19 47t-19 47q-19 19-47 19t-47-19Z"/></svg><span><small>See them all</small>Explore the apps</span></a>
+        <a class="btn-ghost" href="#hakkimda">Who am I? <svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M480-344 240-584l43-43 197 197 197-197 43 43-240 240Z"/></svg></a>
       </div>
       <ul class="facts mono fade-up d5">
         <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M378-246 154-470l43-43 181 181 384-384 43 43-427 427Z"/></svg>No ads</li>
-        <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M378-246 154-470l43-43 181 181 384-384 43 43-427 427Z"/></svg>Records stay on your phone</li>
+        <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M378-246 154-470l43-43 181 181 384-384 43 43-427 427Z"/></svg>Your data stays on your phone</li>
         <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M378-246 154-470l43-43 181 181 384-384 43 43-427 427Z"/></svg>12 languages</li>
       </ul>
     </div>
-    <div class="hero-visual fade-up d2" id="hv">
-      <span class="plus" style="left:4%;top:4%"></span><span class="plus" style="right:4%;top:4%"></span><span class="plus" style="left:4%;bottom:4%"></span><span class="plus" style="right:4%;bottom:4%"></span>
-      <div class="tilt" id="tilt">
-        <div class="phone"><img src="/apps/synvia-ai/screens/home.webp" alt="Synvia AI home screen: overdue tasks" width="660" height="1434" fetchpriority="high"><span class="sheen"></span></div>
-        <div class="chip c1" aria-hidden="true"><span class="ico"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M120-566q0-90 40-165t107-125l36 48q-56 42-89.5 104.5T180-566h-60Zm660 0q0-75-33.5-137.5T657-808l36-48q67 50 107 125t40 165h-60ZM160-200v-60h80v-304q0-84 49.5-150.5T420-798v-22q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v22q81 17 130.5 83.5T720-564v304h80v60H160Zm320-302Zm0 422q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM300-260h360v-304q0-75-52.5-127.5T480-744q-75 0-127.5 52.5T300-564v304Z"/></svg></span><div><b>Ahmet was sending the report</b><span>Today 10:00 · Reminder</span></div></div>
-        <div class="chip c2" aria-hidden="true"><span class="ico"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="m162-121-42-42 326-326-185-46 192-120-16-225 173 145 209-84-85 209 146 173-226-17-119 192-46-185-327 326Zm25-544-67-67 68-68 67 67-68 68Zm372 251 63-102 120 9-78-92 45-111-111 45-92-78 9 120-102 64 117 29 29 116Zm174 294-67-68 67-67 67 68-67 67ZM578-579Z"/></svg></span><div><b>3 tasks found</b><span>From a screenshot</span></div></div>
-        <div class="chip c3" aria-hidden="true"><span class="ico"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M480-80q-85 0-158-30.5T195-195q-54-54-84.5-127T80-480q0-84 30.5-157T195-764q54-54 127-85t158-31q75 0 140 24t117 66l-43 43q-44-35-98-54t-116-19q-145 0-242.5 97.5T140-480q0 145 97.5 242.5T480-140q145 0 242.5-97.5T820-480q0-30-4.5-58.5T802-594l46-46q16 37 24 77t8 83q0 85-31 158t-85 127q-54 54-127 84.5T480-80Zm-59-218L256-464l45-45 120 120 414-414 46 45-460 460Z"/></svg></span><div><b>Done</b><span>Rent paid · monthly</span></div></div>
+    <div class="hero-visual" id="hv" aria-hidden="true">
+      <div class="tilt duo" id="tilt">
+        <div class="phone ph-a"><img src="/apps/synvia-ai/screens/home.webp" alt="" width="660" height="1434" fetchpriority="high"><span class="sheen"></span></div>
+        <div class="phone ph-b">
+          <div class="uw-screen">
+            <div class="uw-top"><img src="/apps/unwrap/icon-96.webp" alt="" width="96" height="96"><b>Unwrap</b><span class="mono">2026 recap</span></div>
+            <p class="uw-kick mono">Chat recap</p>
+            <p class="uw-big">12.480<small>messages</small></p>
+            <div class="uw-split"><span style="--w:58%"><b>You</b>58%</span><span style="--w:42%"><b>Ahmet</b>42%</span></div>
+            <div class="uw-tiles">
+              <div><small>Fastest reply</small><b>Ahmet</b><span>2 min</span></div>
+              <div><small>Night owl</small><b>You</b><span>01:40</span></div>
+            </div>
+            <p class="uw-kick mono">Favourite emojis</p>
+            <div class="uw-emo"><span>😂<i>412</i></span><span>❤️<i>288</i></span><span>🙏<i>97</i></span></div>
+            <div class="uw-share"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M220-80q-24 0-42-18t-18-42v-469q0-24 18-42t42-18h169v60H220v469h520v-469H569v-60h171q24 0 42 18t18 42v469q0 24-18 42t-42 18H220Zm229-267v-457l-88 88-43-43 161-161 161 161-43 43-88-88v457h-60Z"/></svg>Share the card</div>
+          </div>
+          <span class="sheen"></span>
+        </div>
+        <div class="chip c1"><span class="ico"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M120-566q0-90 40-165t107-125l36 48q-56 42-89.5 104.5T180-566h-60Zm660 0q0-75-33.5-137.5T657-808l36-48q67 50 107 125t40 165h-60ZM160-200v-60h80v-304q0-84 49.5-150.5T420-798v-22q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v22q81 17 130.5 83.5T720-564v304h80v60H160Zm320-302Zm0 422q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM300-260h360v-304q0-75-52.5-127.5T480-744q-75 0-127.5 52.5T300-564v304Z"/></svg></span><div><b>Ahmet was sending the report</b><span>Synvia · Today 10:00</span></div></div>
+        <div class="chip c2 uw"><span class="ico"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="m480-121-41-37q-105.77-97.12-174.88-167.56Q195-396 154-451.5T96.5-552Q80-597 80-643q0-90.15 60.5-150.58Q201-854 290-854q57 0 105.5 27t84.5 78q42-54 89-79.5T670-854q89 0 149.5 60.42Q880-733.15 880-643q0 46-16.5 91T806-451.5Q765-396 695.88-325.56 626.77-255.12 521-158l-41 37Zm0-79q101.24-93 166.62-159.5Q712-426 750.5-476t54-89.14q15.5-39.13 15.5-77.72 0-66.14-42-108.64T670.22-794q-51.52 0-95.37 31.5T504-674h-49q-26-56-69.85-88-43.85-32-95.37-32Q224-794 182-751.5t-42 108.82q0 38.68 15.5 78.18 15.5 39.5 54 90T314-358q66 66 166 158Zm0-297Z"/></svg></span><div><b>Fastest reply: Ahmet</b><span>Unwrap · 2 min on average</span></div></div>
       </div>
     </div>
   </div>
   <div class="hud hud-bl mono" aria-hidden="true"><i></i>Scroll</div>
-  <div class="hud hud-br mono" aria-hidden="true">Talk · Type · Screenshot · PDF</div>
+  <div class="hud hud-br mono" aria-hidden="true">02 apps</div>
 </section>
 
-<!-- 2. NASIL ÇALIŞIR: kaydırdıkça oynayan hikâye -->
-<section class="story" id="nasil" data-sec>
-  <div class="story-sticky">
-    <div class="wrap story-grid">
-      <div class="story-copy">
-        <p class="eyebrow mono">How it works</p>
-        <div class="steps">
-          <article class="step on"><span class="n mono">Step 1 / 4</span><h2>A message arrives</h2><p>Someone makes you a promise, or you take on a task. Usually it gets lost among hundreds of messages.</p></article>
-          <article class="step"><span class="n mono">Step 2 / 4</span><h2>AI reads it</h2><p>Share a screenshot of the chat with Synvia AI. In seconds it finds who will do what, and by when.</p></article>
-          <article class="step"><span class="n mono">Step 3 / 4</span><h2>It lands in your list</h2><p>The messy message becomes a tidy card with the person, date and time, right in your list. You type nothing.</p></article>
-          <article class="step"><span class="n mono">Step 4 / 4</span><h2>It reminds you on time</h2><p>On Friday morning you get a notification. Mark it done or snooze it without opening the app. AI can even write Ahmet a polite reminder.</p></article>
-        </div>
-        <div class="story-nav" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
-      </div>
-      <div class="stage-box" id="stageBox">
-        <div class="stage" id="stage" aria-hidden="true">
-          <div class="chat" id="chat">
-            <div class="chat-h"><span class="av">AY</span><div><b class="k" id="kPerson">Ahmet Yılmaz</b><small>online</small></div></div>
-            <div class="chat-b">
-              <div class="bub in">Got the meeting notes, thanks.<time>09:12</time></div>
-              <div class="bub in" id="msg">I’ll <span class="k" data-g="0">convert the sales report to Excel</span> and <span class="k" data-g="2">send it</span> <span class="k t" data-g="1">by Friday morning</span>, promise 👍<time>09:14</time></div>
-              <div class="bub out">Great, I’ll be waiting!<time>09:15</time></div>
-            </div>
-          </div>
-          <div class="scan" id="scan"></div>
-          <div class="ai" id="ai">
-            <div class="ai-h mono"><span><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="m162-121-42-42 326-326-185-46 192-120-16-225 173 145 209-84-85 209 146 173-226-17-119 192-46-185-327 326Zm25-544-67-67 68-68 67 67-68 68Zm372 251 63-102 120 9-78-92 45-111-111 45-92-78 9 120-102 64 117 29 29 116Zm174 294-67-68 67-67 67 68-67 67ZM578-579Z"/></svg>AI analysis</span><span id="aiPct">0%</span></div>
-            <dl>
-              <div class="ai-r"><dt>PERSON</dt><dd>Ahmet Yılmaz</dd></div>
-              <div class="ai-r"><dt>TASK</dt><dd>Convert the sales report to Excel and send it</dd></div>
-              <div class="ai-r"><dt>WHEN</dt><dd>Friday, 10:00</dd></div>
-              <div class="ai-r"><dt>LIST</dt><dd>Waiting for</dd></div>
-            </dl>
-          </div>
-          <div class="task" id="task">
-            <div class="card ok"><h4>Convert the sales report to Excel and send it</h4><div class="who"><i>AY</i>Ahmet Yılmaz</div><div class="meta"><span class="when"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M339.5-110q-65.5-28-114-76.5t-77-114Q120-366 120-440.73q0-74.74 28.5-140Q177-646 225.5-695t114-77Q405-800 479-800t139.5 28Q684-744 733-695t77 114.27q28 65.26 28 140 0 74.73-28 140.23-28 65.5-77 114T618.5-110Q553-82 479-82t-139.5-28ZM479-439Zm121 161 42-42-130-130v-190h-60v214l148 148ZM214-867l42 42L92-667l-42-42 164-158Zm530 0 164 158-42 42-164-158 42-42ZM479.04-142Q604-142 691-229.04q87-87.05 87-212Q778-566 690.96-653q-87.05-87-212-87Q354-740 267-652.96q-87 87.05-87 212Q180-316 267.04-229q87.05 87 212 87Z"/></svg>Friday, 10:00</span><span class="tag">Waiting for</span></div></div>
-          </div>
-          <div class="phone2" id="phone2">
-            <div class="scr">
-              <div class="isl"></div>
-              <div class="sb"><span>9:16</span><span>●●● 5G</span></div>
-              <div class="app-h"><span class="pill2">WED, OCTOBER 7</span><h5>What did I forget?</h5></div>
-              <div class="app-l" id="appList">
-                <div class="lbl" style="color:#0f7a6b">Upcoming</div>
-                <div class="slot" id="slot"><div class="card ok glow" id="slotCard"><h4>Convert the sales report to Excel and send it</h4><div class="who"><i>AY</i>Ahmet Yılmaz</div><div class="meta"><span class="when"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M339.5-110q-65.5-28-114-76.5t-77-114Q120-366 120-440.73q0-74.74 28.5-140Q177-646 225.5-695t114-77Q405-800 479-800t139.5 28Q684-744 733-695t77 114.27q28 65.26 28 140 0 74.73-28 140.23-28 65.5-77 114T618.5-110Q553-82 479-82t-139.5-28ZM479-439Zm121 161 42-42-130-130v-190h-60v214l148 148ZM214-867l42 42L92-667l-42-42 164-158Zm530 0 164 158-42 42-164-158 42-42ZM479.04-142Q604-142 691-229.04q87-87.05 87-212Q778-566 690.96-653q-87.05-87-212-87Q354-740 267-652.96q-87 87.05-87 212Q180-316 267.04-229q87.05 87 212 87Z"/></svg>Friday, 10:00</span><span class="tag">Waiting for</span></div></div></div>
-                <div class="card ok"><h4>Send the customer list to Selin</h4><div class="who"><i style="background:#0f7a6b">SK</i>Selin Kaya</div><div class="meta"><span class="when"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M339.5-110q-65.5-28-114-76.5t-77-114Q120-366 120-440.73q0-74.74 28.5-140Q177-646 225.5-695t114-77Q405-800 479-800t139.5 28Q684-744 733-695t77 114.27q28 65.26 28 140 0 74.73-28 140.23-28 65.5-77 114T618.5-110Q553-82 479-82t-139.5-28ZM479-439Zm121 161 42-42-130-130v-190h-60v214l148 148ZM214-867l42 42L92-667l-42-42 164-158Zm530 0 164 158-42 42-164-158 42-42ZM479.04-142Q604-142 691-229.04q87-87.05 87-212Q778-566 690.96-653q-87.05-87-212-87Q354-740 267-652.96q-87 87.05-87 212Q180-316 267.04-229q87.05 87 212 87Z"/></svg>Thursday, 14:00</span><span class="tag" style="background:#e6f4ff;color:#0b5394">I promised</span></div></div>
-                <div class="card ok"><h4>Pay the rent</h4><div class="who"><i style="background:#7a5cff">ME</i>Me</div><div class="meta"><span class="when"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M280-80 120-240l160-160 42 44-86 86h464v-160h60v220H236l86 86-42 44Zm-80-450v-220h524l-86-86 42-44 160 160-160 160-42-44 86-86H260v160h-60Z"/></svg>Monthly, on the 1st</span><span class="tag" style="background:#eef0f2;color:#3d4a47">To do</span></div></div>
-              </div>
-              <div class="lock" id="lock" data-days="[[&quot;Wednesday, October 7&quot;,&quot;18:42&quot;],[&quot;Thursday, October 8&quot;,&quot;13:05&quot;],[&quot;Friday, October 9&quot;,&quot;09:59&quot;],[&quot;Friday, October 9&quot;,&quot;10:00&quot;]]">
-                <div class="d" id="lockD">Wednesday, October 7</div>
-                <div class="t" id="lockT">18:42</div>
-                <div class="notif" id="notif"><div class="nh"><img src="/apps/synvia-ai/icon-96.webp" alt="" width="96" height="96">SYNVIA AI<span>now</span></div><b>Waiting for Ahmet</b><p>He was going to send the sales report by 10:00 today.</p></div>
-                <div class="acts" id="acts"><span>Done</span><span>Snooze 1 hour</span><span>Tomorrow</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="draft" id="draft"><small><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="m162-121-42-42 326-326-185-46 192-120-16-225 173 145 209-84-85 209 146 173-226-17-119 192-46-185-327 326Zm25-544-67-67 68-68 67 67-68 68Zm372 251 63-102 120 9-78-92 45-111-111 45-92-78 9 120-102 64 117 29 29 116Zm174 294-67-68 67-67 67 68-67 67ZM578-579Z"/></svg>Reminder written by AI</small>Hi Ahmet, could you send the sales report today? Thanks in advance 🙏<div class="tones"><i class="on">Friendly</i><i>Formal</i><i>Short</i></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 3. DÖRT YOL, TEK SONUÇ -->
-<section class="ways" id="yollar" data-sec>
-  <div class="wrap">
-    <header class="sec-head">
-      <p class="eyebrow mono">Four ways, one result</p>
-      <h2 class="h2">However you say it, Synvia AI gets it.</h2>
-      <p class="sub">No long forms to fill in. Share what’s on your mind the way that’s easiest for you; AI does the rest.</p>
-    </header>
-    <div class="ways-area" id="waysArea">
-      <svg class="lines" id="lines" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#59DBC7" stop-opacity=".1"/><stop offset="1" stop-color="#59DBC7" stop-opacity=".9"/></linearGradient></defs></svg>
-      <div class="ways-grid">
-        <div class="way"><div class="vis vis-type" aria-hidden="true"><span><span id="typed" data-lines="[&quot;Send Ahmet the offer tomorrow at 10&quot;,&quot;Call mom on Sunday&quot;,&quot;Pay the bill by the 15th&quot;]"></span><span class="tw"></span></span></div><h3><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/></svg>Type</h3><p>Write what’s on your mind in one sentence.</p></div>
-        <div class="way"><div class="vis vis-voice" aria-hidden="true"><span class="rec mono">Recording 0:07</span><div class="bars" id="bars"></div></div><h3><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M408-453.92q-29-30.91-29-75.08v-251q0-41.67 29.44-70.83Q437.88-880 479.94-880t71.56 29.17Q581-821.67 581-780v251q0 44.17-29 75.08Q523-423 480-423t-72-30.92ZM480-651Zm-30 531v-136q-106-11-178-89t-72-184h60q0 91 64.29 153t155.5 62q91.21 0 155.71-62Q700-438 700-529h60q0 106-72 184t-178 89v136h-60Zm59.5-376.5Q521-510 521-529v-251q0-17-11.79-28.5T480-820q-17.42 0-29.21 11.5T439-780v251q0 19 11.5 32.5T480-483q18 0 29.5-13.5Z"/></svg>Talk</h3><p>Leave a voice note; it recognizes your language on its own.</p></div>
-        <div class="way"><div class="vis vis-shot" aria-hidden="true"><span class="b">Your haircut is tomorrow at 3</span><span class="b o">OK, I won’t forget</span><span class="b">And pay the bill by Friday</span><span class="sl"></span></div><h3><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M600-320h160v-160h-40v120H600v40ZM200-560h40v-120h120v-40H200v160Zm130 440v-80H140q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H630v80H330ZM140-260h680v-520H140v520Zm0 0v-520 520Z"/></svg>Screenshot</h3><p>Share a screenshot of a conversation.</p></div>
-        <div class="way"><div class="vis vis-pdf" aria-hidden="true"><span class="lbl mono">PDF</span><div class="pages"><div class="pg"><i></i><i></i><i></i><i></i></div><div class="pg"><i></i><i></i><i></i></div><div class="pg"><i></i><i class="m"></i><i></i><i></i><i style="width:70%"></i></div></div></div><h3><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M331-431h37v-83h48q15.73 0 26.36-10.64Q453-535.28 453-551v-48q0-15.72-10.64-26.36Q431.73-636 416-636h-85v205Zm37-120v-48h48v48h-48Zm129 120h84q15 0 26-10.64 11-10.63 11-26.36v-131q0-15.72-11-26.36Q596-636 581-636h-84v205Zm37-37v-131h47v131h-47Zm133 37h37v-83h50v-37h-50v-48h50v-37h-87v205ZM260-200q-24 0-42-18t-18-42v-560q0-24 18-42t42-18h560q24 0 42 18t18 42v560q0 24-18 42t-42 18H260Zm0-60h560v-560H260v560ZM140-80q-24 0-42-18t-18-42v-620h60v620h620v60H140Zm120-740v560-560Z"/></svg>PDF</h3><p>A contract or a bill; it finds the dates and tasks inside.</p></div>
-      </div>
-      <div class="ways-result" id="waysResult">
-        <div class="res">
-          <div class="res-h mono"><span><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="m162-121-42-42 326-326-185-46 192-120-16-225 173 145 209-84-85 209 146 173-226-17-119 192-46-185-327 326Zm25-544-67-67 68-68 67 67-68 68Zm372 251 63-102 120 9-78-92 45-111-111 45-92-78 9 120-102 64 117 29 29 116Zm174 294-67-68 67-67 67 68-67 67ZM578-579Z"/></svg>Tasks found</span><span>3 new</span></div>
-          <div class="card ok"><h4>Haircut appointment</h4><div class="who"><i style="background:#7a5cff">ME</i>Me</div><div class="meta"><span class="when"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M339.5-110q-65.5-28-114-76.5t-77-114Q120-366 120-440.73q0-74.74 28.5-140Q177-646 225.5-695t114-77Q405-800 479-800t139.5 28Q684-744 733-695t77 114.27q28 65.26 28 140 0 74.73-28 140.23-28 65.5-77 114T618.5-110Q553-82 479-82t-139.5-28ZM479-439Zm121 161 42-42-130-130v-190h-60v214l148 148ZM214-867l42 42L92-667l-42-42 164-158Zm530 0 164 158-42 42-164-158 42-42ZM479.04-142Q604-142 691-229.04q87-87.05 87-212Q778-566 690.96-653q-87.05-87-212-87Q354-740 267-652.96q-87 87.05-87 212Q180-316 267.04-229q87.05 87 212 87Z"/></svg>Tomorrow, 15:00</span><span class="tag" style="background:#eef0f2;color:#3d4a47">To do</span></div></div>
-          <div class="card ok"><h4>Pay the electricity bill</h4><div class="who"><i style="background:#7a5cff">ME</i>Me</div><div class="meta"><span class="when"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M339.5-110q-65.5-28-114-76.5t-77-114Q120-366 120-440.73q0-74.74 28.5-140Q177-646 225.5-695t114-77Q405-800 479-800t139.5 28Q684-744 733-695t77 114.27q28 65.26 28 140 0 74.73-28 140.23-28 65.5-77 114T618.5-110Q553-82 479-82t-139.5-28ZM479-439Zm121 161 42-42-130-130v-190h-60v214l148 148ZM214-867l42 42L92-667l-42-42 164-158Zm530 0 164 158-42 42-164-158 42-42ZM479.04-142Q604-142 691-229.04q87-87.05 87-212Q778-566 690.96-653q-87.05-87-212-87Q354-740 267-652.96q-87 87.05-87 212Q180-316 267.04-229q87.05 87 212 87Z"/></svg>Friday, 18:00</span><span class="tag" style="background:#eef0f2;color:#3d4a47">To do</span></div></div>
-          <div class="card ok"><h4>Send the offer to Ahmet</h4><div class="who"><i>AY</i>Ahmet Yılmaz</div><div class="meta"><span class="when"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M339.5-110q-65.5-28-114-76.5t-77-114Q120-366 120-440.73q0-74.74 28.5-140Q177-646 225.5-695t114-77Q405-800 479-800t139.5 28Q684-744 733-695t77 114.27q28 65.26 28 140 0 74.73-28 140.23-28 65.5-77 114T618.5-110Q553-82 479-82t-139.5-28ZM479-439Zm121 161 42-42-130-130v-190h-60v214l148 148ZM214-867l42 42L92-667l-42-42 164-158Zm530 0 164 158-42 42-164-158 42-42ZM479.04-142Q604-142 691-229.04q87-87.05 87-212Q778-566 690.96-653q-87.05-87-212-87Q354-740 267-652.96q-87 87.05-87 212Q180-316 267.04-229q87.05 87 212 87Z"/></svg>Tomorrow, 10:00</span><span class="tag" style="background:#e6f4ff;color:#0b5394">I promised</span></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 4. BÜYÜK CÜMLE -->
-<section class="statement" id="cumle">
-  <div class="wrap"><p class="big" id="big">Focus on your work, your family, your life. Let <span data-g>Synvia</span> <span data-g>AI</span> remember who does what, and when.</p></div>
-</section>
-
-<!-- 5. ÖZELLİKLER: dikey kaydırınca yatay ilerleyen galeri -->
-<section class="hs" id="ozellikler" data-sec>
-  <div class="hs-sticky">
-    <div class="wrap hs-head">
-      <div><p class="eyebrow mono">Features</p><h2 class="h2">Small things that make life easier</h2></div>
-      <span class="hs-count mono" id="hsCount" aria-hidden="true"><b>01</b> / 06</span>
-    </div>
-    <div class="hs-view">
-      <div class="hs-track" id="track">
-        <article class="panel">
-          <span class="free mono">Free</span>
-          <div class="pv" aria-hidden="true"><span class="glowball" style="background:var(--teal);left:-60px;top:-80px"></span>
-            <div class="pv-notif" data-cycle="notif"><div class="nb"><div class="nh"><img src="/apps/synvia-ai/icon-96.webp" alt="" width="96" height="96">SYNVIA AI · now</div><b>Pay the bill</b><br>Last day today: electricity bill</div><div class="row"><span>Done</span><span>Snooze 1 hour</span><span>Tomorrow</span></div></div>
-          </div>
-          <div class="pt"><h3>Act from the notification</h3><p>When a reminder arrives, mark it done or snooze it without opening the app.</p></div>
-        </article>
-        <article class="panel">
-          <span class="free mono">Free</span>
-          <div class="pv" aria-hidden="true"><span class="glowball" style="background:var(--coral);right:-80px;bottom:-60px"></span>
-            <div class="pv-tone" data-cycle="tone" data-tones="[&quot;Hi Ahmet, could you send the sales report today? Thanks in advance 🙏&quot;,&quot;Hello Ahmet, I’d appreciate it if you could send the sales report today. Best regards.&quot;,&quot;Ahmet, report today?&quot;]"><div class="to"><span class="av">AY</span>To Ahmet Yılmaz</div><div class="tabs"><span class="on">Friendly</span><span>Formal</span><span>Short</span></div><div class="msg">Hi Ahmet, could you send the sales report today? Thanks in advance 🙏</div></div>
-          </div>
-          <div class="pt"><h3>Nudge the other person</h3><p>If someone forgot their promise, AI writes them a polite message; you send it via WhatsApp or SMS.</p></div>
-        </article>
-        <article class="panel">
-          <span class="free mono">Free</span>
-          <div class="pv" aria-hidden="true"><span class="glowball" style="background:var(--teal);left:30%;top:20%;opacity:.18"></span>
-            <div class="pv-rep"><div class="ring"></div><div class="ring r2"></div><div class="orb"><i></i></div><div class="orb o2"><i></i></div><div class="ctr"><div><b>Set it once</b><span>it handles the rest</span></div></div><span class="tag2 a">Rent<small>Monthly, on the 1st</small></span><span class="tag2 b">Medicine<small>Daily at 09:00</small></span></div>
-          </div>
-          <div class="pt"><h3>Repeating tasks</h3><p>When you finish one, the app creates the next one for you.</p></div>
-        </article>
-        <article class="panel">
-          <span class="free mono">Free</span>
-          <div class="pv"><span class="glowball" style="background:var(--coral);left:10%;bottom:-120px;opacity:.25"></span>
-            <div class="pv-person"><img src="/apps/synvia-ai/screens/person.webp" alt="Synvia AI person page: Ahmet Yılmaz" width="660" height="1434" loading="lazy"></div>
-          </div>
-          <div class="pt"><h3>Person pages</h3><p>Everything about someone on one page; call or message them in one tap.</p></div>
-        </article>
-        <article class="panel">
-          <span class="free mono">Free</span>
-          <div class="pv" aria-hidden="true"><span class="glowball" style="background:var(--teal);right:-60px;top:-60px;opacity:.25"></span>
-            <div class="pv-ask"><div class="q">What do I need to do today?</div><div class="a">You have two things today:<ul><li>You’re waiting for Ahmet’s sales report at 10:00.</li><li>You need to pay the electricity bill by 18:00.</li></ul></div></div>
-          </div>
-          <div class="pt"><h3>Ask your assistant</h3><p>Ask things like “What did I promise this week?” and it answers from your list.</p></div>
-        </article>
-        <article class="panel">
-          <span class="free mono">Free</span>
-          <div class="pv" aria-hidden="true"><span class="glowball" style="background:#7a5cff;left:20%;top:10%;opacity:.22"></span>
-            <div class="pv-lang" data-cycle="lang"><div class="hello">Hello</div><div class="codes mono"><span class="on">TR</span><span>EN</span><span>DE</span><span>ES</span><span>FR</span><span>IT</span><span>PT</span><span>RU</span><span>AR</span><span>JA</span><span>KO</span><span>ZH</span></div></div>
-          </div>
-          <div class="pt"><h3>In 12 languages</h3><p>The app and its AI speak your phone’s language.</p></div>
-        </article>
-      </div>
-    </div>
-    <div class="hs-progress" aria-hidden="true"><b id="hsBar"></b></div>
-  </div>
-</section>
-
-<!-- 6. UYGULAMALAR -->
-<section class="apps" id="uygulamalar" data-sec>
+<!-- 2. UYGULAMALAR: her uygulama kendi rengiyle büyük bir kart; tıklayınca tanıtım sayfası -->
+<section class="apps showcase" id="uygulamalar" data-sec>
   <div class="ghost" id="ghost" aria-hidden="true">APPS · APPS</div>
   <div class="wrap">
     <header class="sec-head">
       <p class="eyebrow mono">Apps</p>
-      <h2 class="h2">One app is live, more are on the way.</h2>
+      <h2 class="h2">Each one does one thing really well.</h2>
+      <p class="sub">Tap a card to get to know that app from start to finish.</p>
     </header>
-    <div class="apps-grid">
-      <div class="app-card live">
+    <div class="sc-grid">
+      <article class="sc-card synvia" style="--acc:#59dbc7;--acc2:#ff6b4a">
         <span class="glare"></span>
-        <div class="info">
-          <img class="ai-icon" src="/apps/synvia-ai/icon-192.webp" alt="Synvia AI app icon" width="192" height="192" loading="lazy">
-          <span class="badge mono"><span class="live-dot"></span>Live on the App Store &amp; Google Play</span>
-          <h3>Synvia AI</h3>
-          <p>An AI-powered reminder that remembers your promises and tasks for you.</p>
-          <div class="store-row" style="justify-content:flex-start">
-            <a class="btn-store magnetic" href="https://apps.apple.com/app/id6812456837" target="_blank" rel="noopener noreferrer"><svg class="apple" viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span><small>Download free</small>App Store</span></a>
-            <a class="btn-play" data-play-btn data-get-label="Google Play" aria-disabled="true" title="Android coming soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597zm-13.09-7.84L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"/></svg><span data-play-label>Google Play · Soon</span></a>
-          </div>
-          <div class="links-row">
-            <a class="go" href="/en/synvia/"><i><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="m242-246-42-42 412-412H234v-60h480v480h-60v-378L242-246Z"/></svg></i>Explore Synvia AI</a><a href="/en/synvia/whats-new/">What’s new</a>
-          </div>
-          <div class="links-row">
-            <a href="/en/apps/synvia-ai/support.html">Support</a><a href="/en/apps/synvia-ai/privacy-policy.html">Privacy</a><a href="/en/apps/synvia-ai/terms.html">Terms</a><a href="/en/apps/synvia-ai/delete-data.html">Data deletion</a>
+        <a class="sc-hit" href="/en/synvia/" aria-label="Synvia AI product page"></a>
+        <div class="sc-info">
+          <div class="sc-id"><img src="/apps/synvia-ai/icon-192.webp" alt="" width="192" height="192" loading="lazy"><div><span class="badge mono"><span class="live-dot"></span>Live</span><h3>Synvia AI</h3></div></div>
+          <p class="sc-tag">Remembers the promises you made and the things you need to do, for you.</p>
+          <ul class="sc-feat">
+            <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M600-320h160v-160h-40v120H600v40ZM200-560h40v-120h120v-40H200v160Zm130 440v-80H140q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H630v80H330ZM140-260h680v-520H140v520Zm0 0v-520 520Z"/></svg>Finds tasks in a screenshot</li>
+            <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M408-453.92q-29-30.91-29-75.08v-251q0-41.67 29.44-70.83Q437.88-880 479.94-880t71.56 29.17Q581-821.67 581-780v251q0 44.17-29 75.08Q523-423 480-423t-72-30.92ZM480-651Zm-30 531v-136q-106-11-178-89t-72-184h60q0 91 64.29 153t155.5 62q91.21 0 155.71-62Q700-438 700-529h60q0 106-72 184t-178 89v136h-60Zm59.5-376.5Q521-510 521-529v-251q0-17-11.79-28.5T480-820q-17.42 0-29.21 11.5T439-780v251q0 19 11.5 32.5T480-483q18 0 29.5-13.5Z"/></svg>Add by voice note or PDF</li>
+            <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M120-566q0-90 40-165t107-125l36 48q-56 42-89.5 104.5T180-566h-60Zm660 0q0-75-33.5-137.5T657-808l36-48q67 50 107 125t40 165h-60ZM160-200v-60h80v-304q0-84 49.5-150.5T420-798v-22q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v22q81 17 130.5 83.5T720-564v304h80v60H160Zm320-302Zm0 422q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM300-260h360v-304q0-75-52.5-127.5T480-744q-75 0-127.5 52.5T300-564v304Z"/></svg>Reminds you right on time</li>
+          </ul>
+          <div class="sc-act">
+            <a class="go" href="/en/synvia/"><i><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="m242-246-42-42 412-412H234v-60h480v480h-60v-378L242-246Z"/></svg></i>Meet the app</a>
+            <div class="store-row">
+              <a class="btn-store sm magnetic" href="https://apps.apple.com/app/id6812456837" target="_blank" rel="noopener noreferrer"><svg class="apple" viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span>App Store</span></a>
+              <a class="btn-play sm" data-play-btn data-get-label="Google Play" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597zm-13.09-7.84L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"/></svg><span data-play-label>Google Play</span></a>
+            </div>
           </div>
         </div>
-        <div class="shot"><img src="/apps/synvia-ai/screens/ai-metin.webp" alt="Synvia AI add-with-AI screen" width="660" height="1434" loading="lazy"></div>
-      </div>
-      <div class="app-card soon">
+        <div class="sc-shot"><img src="/apps/synvia-ai/screens/ai-metin.webp" alt="Synvia AI: tasks found in a message" width="660" height="1434" loading="lazy"></div>
+      </article>
+
+      <article class="sc-card unwrap" style="--acc:#ff8a85;--acc2:#ae2f34">
         <span class="glare"></span>
-        <span class="badge mono">Coming soon</span>
-        <div class="soon-art" aria-hidden="true"><i></i><img src="/apps/unwrap/icon-192.webp" alt="" width="192" height="192" loading="lazy"></div>
-        <div><h3>Unwrap</h3><p>Turns your WhatsApp and Telegram chats into fun stats, share cards and AI reports, right on your phone. Getting ready for the App Store and Google Play.</p></div>
-        <div class="links-row">
-          <a href="/en/apps/unwrap/support.html">Support</a><a href="/en/apps/unwrap/privacy-policy.html">Privacy</a><a href="/en/apps/unwrap/terms.html">Terms</a><a href="/en/apps/unwrap/delete-data.html">Data deletion</a>
+        <a class="sc-hit" href="/en/apps/unwrap/support.html" aria-label="Unwrap product page"></a>
+        <div class="sc-info">
+          <div class="sc-id"><img src="/apps/unwrap/icon-192.webp" alt="" width="192" height="192" loading="lazy"><div><span class="badge mono soon">Coming soon</span><h3>Unwrap</h3></div></div>
+          <p class="sc-tag">Turns your WhatsApp and Telegram chats into fun stats and shareable cards.</p>
+          <ul class="sc-feat">
+            <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M660-160v-280h140v280H660Zm-250 0v-640h140v640H410Zm-250 0v-440h140v440H160Z"/></svg>Who texts more, who replies faster</li>
+            <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M220-80q-24 0-42-18t-18-42v-469q0-24 18-42t42-18h169v60H220v469h520v-469H569v-60h171q24 0 42 18t18 42v469q0 24-18 42t-42 18H220Zm229-267v-457l-88 88-43-43 161-161 161 161-43 43-88-88v457h-60Z"/></svg>Shareable chat recap cards</li>
+            <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="m162-121-42-42 326-326-185-46 192-120-16-225 173 145 209-84-85 209 146 173-226-17-119 192-46-185-327 326Zm25-544-67-67 68-68 67 67-68 68Zm372 251 63-102 120 9-78-92 45-111-111 45-92-78 9 120-102 64 117 29 29 116Zm174 294-67-68 67-67 67 68-67 67ZM578-579Z"/></svg>AI reports and a relationship coach</li>
+          </ul>
+          <div class="sc-act">
+            <a class="go" href="/en/apps/unwrap/support.html"><i><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="m242-246-42-42 412-412H234v-60h480v480h-60v-378L242-246Z"/></svg></i>Meet the app</a>
+            <span class="soon-note mono">App Store and Google Play · Coming soon</span>
+          </div>
         </div>
-        <div class="links-row">
-          <a href="/en/apps/">All apps &rarr;</a>
+        <div class="sc-shot uw-mini" aria-hidden="true">
+          <div class="uw-screen">
+            <p class="uw-kick mono">Chat recap</p>
+            <p class="uw-big">12.480<small>messages</small></p>
+            <div class="uw-split"><span style="--w:58%"><b>You</b>58%</span><span style="--w:42%"><b>Ahmet</b>42%</span></div>
+            <div class="uw-tiles"><div><small>Fastest reply</small><b>Ahmet</b><span>2 min</span></div><div><small>Night owl</small><b>You</b><span>01:40</span></div></div>
+            <div class="uw-emo"><span>😂<i>412</i></span><span>❤️<i>288</i></span><span>🙏<i>97</i></span></div>
+          </div>
         </div>
-      </div>
+      </article>
+
+      <article class="sc-card next">
+        <div class="next-art" aria-hidden="true"><i></i><span>+</span></div>
+        <div><h3>The next app</h3><p>A new one is on the way. If you have an idea, or a “I wish there was an app for this”, write to me.</p></div>
+        <a class="next-mail" href="mailto:aydinibrahim25@gmail.com"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M140-160q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H140Zm340-302L140-685v465h680v-465L480-462Zm0-60 336-218H145l335 218ZM140-685v-55 520-465Z"/></svg>Send your idea</a>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- 7. HAKKIMDA -->
+<!-- 3. İLKELER: büyük cümle + dört söz -->
+<section class="statement" id="ilkeler" data-sec>
+  <div class="wrap">
+    <p class="eyebrow mono">Principles</p>
+    <p class="big" id="big">The same promise in every app: <span data-g>no</span> <span data-g>ads,</span> no surprise charges, your records stay on your phone.</p>
+    <ul class="vows">
+      <li><span><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M324-111.5Q251-143 197-197t-85.5-127Q80-397 80-480t31.5-156Q143-709 197-763t127-85.5Q397-880 480-880t156 31.5Q709-817 763-763t85.5 127Q880-563 880-480t-31.5 156Q817-251 763-197t-127 85.5Q563-80 480-80t-156-31.5ZM480-140q61.01 0 117.51-20.5Q654-181 699-220L220-699q-38 46-59 102.17T140-480q0 142.37 98.81 241.19Q337.63-140 480-140Zm259-121q37-45 59-101.49 22-56.5 22-117.51 0-142.38-98.81-241.19T480-820q-60.66 0-116.83 21T261-739l478 478ZM480-480Z"/></svg></span><b>No ads</b><p>Your screen is yours. Not a single ad gets in the way.</p></li>
+      <li><span><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M540-420q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35ZM220-280q-24.75 0-42.37-17.63Q160-315.25 160-340v-400q0-24.75 17.63-42.38Q195.25-800 220-800h640q24.75 0 42.38 17.62Q920-764.75 920-740v400q0 24.75-17.62 42.37Q884.75-280 860-280H220Zm100-60h440q0-42 29-71t71-29v-200q-42 0-71-29t-29-71H320q0 42-29 71t-71 29v200q42 0 71 29t29 71Zm480 180H100q-24.75 0-42.37-17.63Q40-195.25 40-220v-460h60v460h700v60ZM220-340v-400 400Z"/></svg></span><b>Clear pricing</b><p>You know what you pay up front. No tokens, no hidden fees, cancel in one tap.</p></li>
+      <li><span><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M220-80q-24.75 0-42.37-17.63Q160-115.25 160-140v-434q0-24.75 17.63-42.38Q195.25-634 220-634h70v-96q0-78.85 55.61-134.42Q401.21-920 480.11-920q78.89 0 134.39 55.58Q670-808.85 670-730v96h70q24.75 0 42.38 17.62Q800-598.75 800-574v434q0 24.75-17.62 42.37Q764.75-80 740-80H220Zm0-60h520v-434H220v434Zm314.5-162.03Q557-324.06 557-355q0-30-22.67-54.5t-54.5-24.5q-31.83 0-54.33 24.5t-22.5 55q0 30.5 22.67 52.5t54.5 22q31.83 0 54.33-22.03ZM350-634h260v-96q0-54.17-37.88-92.08-37.88-37.92-92-37.92T388-822.08q-38 37.91-38 92.08v96ZM220-140v-434 434Z"/></svg></span><b>Your data is yours</b><p>Your records stay on your own phone. No account needed.</p></li>
+      <li><span><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M323-111.5Q250-143 196-197t-85-127.5Q80-398 80-482t31-156.5Q142-711 196-765t127-84.5Q396-880 480-880t157 30.5Q710-819 764-765t85 126.5Q880-566 880-482t-31 157.5Q818-251 764-197t-127 85.5Q564-80 480-80t-157-31.5ZM480-138q35-36 58.5-82.5T577-331H384q14 60 37.5 108t58.5 85Zm-85-12q-25-38-43-82t-30-99H172q38 71 88 111.5T395-150Zm171-1q72-23 129.5-69T788-331H639q-13 54-30.5 98T566-151ZM152-391h159q-3-27-3.5-48.5T307-482q0-25 1-44.5t4-43.5H152q-7 24-9.5 43t-2.5 45q0 26 2.5 46.5T152-391Zm221 0h215q4-31 5-50.5t1-40.5q0-20-1-38.5t-5-49.5H373q-4 31-5 49.5t-1 38.5q0 21 1 40.5t5 50.5Zm275 0h160q7-24 9.5-44.5T820-482q0-26-2.5-45t-9.5-43H649q3 35 4 53.5t1 34.5q0 22-1.5 41.5T648-391Zm-10-239h150q-33-69-90.5-115T565-810q25 37 42.5 80T638-630Zm-254 0h194q-11-53-37-102.5T480-820q-32 27-54 71t-42 119Zm-212 0h151q11-54 28-96.5t43-82.5q-75 19-131 64t-91 115Z"/></svg></span><b>12 languages</b><p>From Turkish to Japanese, every app speaks 12 languages.</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 4. HAKKIMDA -->
 <section class="about" id="hakkimda" data-sec>
   <div class="about-in" id="aboutIn">
     <div class="wrap about-grid">
       <div>
         <p class="eyebrow mono">About</p>
-        <h2>My apps have <mark>no ads,</mark> no unnecessary data, just tools that <mark>get the job done</mark>.</h2>
+        <h2>My apps have <mark>no ads,</mark> no unnecessary data, just <mark>tools that work</mark>.</h2>
       </div>
       <div class="txt">
-        <p>Hi, I’m <strong>İbrahim Aydın</strong>. I build AI-powered mobile apps that make everyday life easier, on my own.</p>
+        <p>Hi, I’m <strong>İbrahim Aydın</strong>. I build AI-powered mobile apps that make everyday life easier, on my own. Each app is born to solve a real problem, often mine or that of people around me.</p>
         <ul class="princ">
-          <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M324-111.5Q251-143 197-197t-85.5-127Q80-397 80-480t31.5-156Q143-709 197-763t127-85.5Q397-880 480-880t156 31.5Q709-817 763-763t85.5 127Q880-563 880-480t-31.5 156Q817-251 763-197t-127 85.5Q563-80 480-80t-156-31.5ZM480-140q61.01 0 117.51-20.5Q654-181 699-220L220-699q-38 46-59 102.17T140-480q0 142.37 98.81 241.19Q337.63-140 480-140Zm259-121q37-45 59-101.49 22-56.5 22-117.51 0-142.38-98.81-241.19T480-820q-60.66 0-116.83 21T261-739l478 478ZM480-480Z"/></svg><div><b>No ads</b><span>Your screen is yours; nothing gets in the way.</span></div></li>
-          <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M220-80q-24.75 0-42.37-17.63Q160-115.25 160-140v-434q0-24.75 17.63-42.38Q195.25-634 220-634h70v-96q0-78.85 55.61-134.42Q401.21-920 480.11-920q78.89 0 134.39 55.58Q670-808.85 670-730v96h70q24.75 0 42.38 17.62Q800-598.75 800-574v434q0 24.75-17.62 42.37Q764.75-80 740-80H220Zm0-60h520v-434H220v434Zm314.5-162.03Q557-324.06 557-355q0-30-22.67-54.5t-54.5-24.5q-31.83 0-54.33 24.5t-22.5 55q0 30.5 22.67 52.5t54.5 22q31.83 0 54.33-22.03ZM350-634h260v-96q0-54.17-37.88-92.08-37.88-37.92-92-37.92T388-822.08q-38 37.91-38 92.08v96ZM220-140v-434 434Z"/></svg><div><b>Your records stay with you</b><span>Your tasks and promises are stored only on your own phone.</span></div></li>
           <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="m393-165 279-335H492l36-286-253 366h154l-36 255Zm-73 85 40-280H160l360-520h80l-40 320h240L400-80h-80Zm154-396Z"/></svg><div><b>Up-to-date AI</b><span>The latest models, fast and accurate.</span></div></li>
+          <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z"/></svg><div><b>Simple and clear</b><span>Usable in the first minute, no manual needed.</span></div></li>
+          <li><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M140-160q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H140Zm340-302L140-685v465h680v-465L480-462Zm0-60 336-218H145l335 218ZM140-685v-55 520-465Z"/></svg><div><b>Write to me directly</b><span>I read and answer every message myself.</span></div></li>
         </ul>
         <p class="sig">— İbrahim Aydın, aydinapp</p>
       </div>
@@ -317,37 +210,33 @@
   <div class="holo" aria-hidden="true"></div>
 </section>
 
-<!-- 8. KAPANIŞ -->
+<!-- 5. KAPANIŞ -->
 <section class="outro" id="iletisim">
   <div class="wrap outro-cta">
     <p class="eyebrow mono">Get started</p>
-    <h2>Add your first task in a minute, then forget about it.</h2>
+    <h2>Which one would you like to start with?</h2>
     <div class="store-row">
-      <a class="btn-store magnetic" href="https://apps.apple.com/app/id6812456837" target="_blank" rel="noopener noreferrer"><svg class="apple" viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span><small>Download free</small>App Store</span></a>
-      <a class="btn-play" data-play-btn data-get-label="Google Play" aria-disabled="true" title="Android coming soon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597zm-13.09-7.84L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"/></svg><span data-play-label>Google Play · Soon</span></a>
+      <a class="btn-store magnetic" href="/en/synvia/"><img class="btn-ic" src="/apps/synvia-ai/icon-96.webp" alt="" width="96" height="96"><span><small>Free · App Store and Google Play</small>Synvia AI</span></a>
+      <a class="btn-ghost" href="/en/apps/unwrap/support.html"><img class="btn-ic" src="/apps/unwrap/icon-96.webp" alt="" width="96" height="96">Unwrap · Coming soon</a>
     </div>
-    <p class="mail"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M140-160q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H140Zm340-302L140-685v465h680v-465L480-462Zm0-60 336-218H145l335 218ZM140-685v-55 520-465Z"/></svg>Got an idea or a problem? <a href="mailto:aydinibrahim25@gmail.com">aydinibrahim25@gmail.com</a></p>
+    <p class="mail"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M140-160q-24 0-42-18t-18-42v-520q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H140Zm340-302L140-685v465h680v-465L480-462Zm0-60 336-218H145l335 218ZM140-685v-55 520-465Z"/></svg>Have an idea or a problem? <a href="mailto:aydinibrahim25@gmail.com">aydinibrahim25@gmail.com</a></p>
   </div>
   <div class="word" id="word" aria-hidden="true"><span>a</span><span>y</span><span>d</span><span>i</span><span>n</span><span>a</span><span>p</span><span>p</span></div>
   <footer class="foot">
     <div class="wrap foot-in">
       <span>© 2026 İbrahim Aydın</span>
       <nav aria-label="Footer links">
-        <a href="/en/apps/">Apps</a>
         <a href="/en/synvia/">Synvia AI</a>
-        <a href="/en/synvia/whats-new/">What’s new</a>
-        <a href="/en/apps/synvia-ai/support.html">Support</a>
-        <a href="/en/apps/synvia-ai/privacy-policy.html">Privacy</a>
-        <a href="/en/apps/synvia-ai/terms.html">Terms</a>
-        <a href="/en/apps/synvia-ai/delete-data.html">Data deletion</a>
+        <a href="/en/synvia/whats-new/">Synvia what’s new</a>
+        <a href="/en/apps/unwrap/support.html">Unwrap</a>
+        <a href="/en/apps/">Support, privacy and terms</a>
       </nav>
     </div>
   </footer>
 </section>
 </main>
 
-<script src="/assets/home.js?v=a61ec1d691" defer></script>
+<script src="/assets/studio.js?v=3d68412f6d" defer></script>
 <script src="/assets/store.js?v=a63a1eff18" defer></script>
-<!-- Vercel Web Analytics: çerezsiz ziyaretçi sayacı (aynı alan adından yüklenir, CSP ile uyumlu) -->
 <script src="/_vercel/insights/script.js" defer></script>
 </body></html>

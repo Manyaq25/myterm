@@ -1,4 +1,4 @@
-// Ana sayfa (/) ve İngilizce ana sayfa (/en/) metinleri.
+// Synvia AI tanıtım sayfası (/synvia/) ve İngilizcesi (/en/synvia/). Ana sayfa artık vitrin: studio.i18n.js.
 // Şablon: home.template.html (stil: web/assets/home.css, hareket: web/assets/home.js) — üretmek için: tools/site/build.sh
 // Kural: metinler uygulamayı hiç bilmeyen biri için yazılır (iç terim, kısaltma yok).
 // "Nasıl çalışır" hikâyesindeki örnek (Ahmet'in raporu) iki dilde aynı olay; tarihler 7–9 Ekim haftası.
@@ -6,13 +6,14 @@ module.exports = {
   tr: {
     lang: 'tr',
     locale: 'tr_TR',
-    path: '/',
+    path: '/synvia/',
+    homePath: '/',
     altLang: 'en',
-    altPath: '/en/',
+    altPath: '/en/synvia/',
     altLabel: 'English',
     altShort: 'EN',
     ogImage: 'og.png',
-    title: 'aydinapp · Synvia AI — İbrahim Aydın\'ın uygulamaları',
+    title: 'Synvia AI — Verdiğin sözleri ve yapacağın işleri hatırlatan uygulama',
     description: 'Synvia AI verdiğin sözleri ve yapacağın işleri senin yerine hatırlar: ekran görüntüsü, sesli not veya PDF ver, işleri yapay zekâ bulsun. İbrahim Aydın’ın bağımsız, reklamsız uygulamaları.',
     ogTitle: 'Synvia AI — Her zaman, her şeyi hatırla',
     ogDescription: 'Konuş, ekran görüntüsü at ya da PDF paylaş: yapay zekâ takip etsin, zamanı gelince hatırlatsın. Ücretsiz indir.',
@@ -180,7 +181,7 @@ module.exports = {
     appText: 'Verdiğin sözleri ve yapacağın işleri senin yerine hatırlayan, yapay zekâ destekli hatırlatıcı.',
     playGet: 'Google Play',
     playSoon: 'Google Play · Yakında',
-    learnMore: 'Uygulamayı tanı',
+    learnMore: 'Tüm uygulamalar',
     support: 'Destek',
     privacy: 'Gizlilik',
     deleteData: 'Veri silme',
@@ -215,13 +216,14 @@ module.exports = {
   en: {
     lang: 'en',
     locale: 'en_US',
-    path: '/en/',
+    path: '/en/synvia/',
+    homePath: '/en/',
     altLang: 'tr',
-    altPath: '/',
+    altPath: '/synvia/',
     altLabel: 'Türkçe',
     altShort: 'TR',
     ogImage: 'og-en.png',
-    title: 'aydinapp · Synvia AI — Apps by İbrahim Aydın',
+    title: 'Synvia AI — The app that remembers your promises and tasks',
     description: 'Synvia AI remembers your promises and tasks for you: share a screenshot, voice note or PDF and AI finds the tasks. Independent, ad-free apps by İbrahim Aydın.',
     ogTitle: 'Synvia AI — Remember everything, always',
     ogDescription: 'Talk, share a screenshot or a PDF: AI keeps track and reminds you when it’s time. Download free.',
@@ -382,7 +384,7 @@ module.exports = {
     appText: 'An AI-powered reminder that remembers your promises and tasks for you.',
     playGet: 'Google Play',
     playSoon: 'Google Play · Soon',
-    learnMore: 'Explore Synvia AI',
+    learnMore: 'All apps',
     support: 'Support',
     privacy: 'Privacy',
     deleteData: 'Data deletion',

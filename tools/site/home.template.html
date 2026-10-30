@@ -1,11 +1,11 @@
 <!DOCTYPE html><html lang="{{lang}}"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
-<!-- Bu dosya tools/site/home.template.html şablonundan üretilir; doğrudan düzenleme. Stil: /assets/home.css, hareket: /assets/home.js -->
+<!-- Synvia AI tanıtım sayfası (/synvia/, /en/synvia/). Bu dosya tools/site/home.template.html şablonundan üretilir; doğrudan düzenleme. Stil: /assets/home.css, hareket: /assets/home.js -->
 <title>{{title}}</title>
 <meta name="description" content="{{description}}">
 <link rel="canonical" href="https://aydinapp.com.tr{{path}}">
-<link rel="alternate" hreflang="tr" href="https://aydinapp.com.tr/">
-<link rel="alternate" hreflang="en" href="https://aydinapp.com.tr/en/">
-<link rel="alternate" hreflang="x-default" href="https://aydinapp.com.tr/en/">
+<link rel="alternate" hreflang="tr" href="https://aydinapp.com.tr/synvia/">
+<link rel="alternate" hreflang="en" href="https://aydinapp.com.tr/en/synvia/">
+<link rel="alternate" hreflang="x-default" href="https://aydinapp.com.tr/en/synvia/">
 <meta name="theme-color" content="#060d0c">
 <!-- iPhone Safari'de sayfanın üstünde "App Store'da aç / İndir" şeridi -->
 <meta name="apple-itunes-app" content="app-id=6812456837">
@@ -38,14 +38,14 @@
 
 <header class="hdr" id="hdr">
   <div class="wrap hdr-in">
-    <a class="brand" href="#top" aria-label="{{brandLabel}}">
+    <a class="brand" href="{{homePath}}" aria-label="{{brandLabel}}">
       <svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#59DBC7"/><stop offset="1" stop-color="#FF6B4A"/></linearGradient></defs><rect width="100" height="100" rx="26" fill="#0B1614"/><rect x="1" y="1" width="98" height="98" rx="25" fill="none" stroke="url(#bg1)" stroke-opacity=".45" stroke-width="1.5"/><path d="M30 72L50 26L70 72M38 56H62" fill="none" stroke="url(#bg1)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="40" r="3.5" fill="#59DBC7"/></svg>
       <span>aydin<b>app</b></span>
     </a>
     <nav class="nav" aria-label="{{navLabel}}">
       <a href="#nasil">{{navHow}}</a>
       <a href="#ozellikler">{{navFeatures}}</a>
-      <a href="{{appsPath}}">{{navApps}}</a>
+      <a href="{{homePath}}#uygulamalar">{{navApps}}</a>
       <a href="#hakkimda">{{navAbout}}</a>
     </nav>
     <div class="hdr-r">
@@ -70,7 +70,7 @@
   <canvas id="field" aria-hidden="true"></canvas>
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <p class="status mono fade-up d1"><span class="live-dot"></span>{{statusA}} <b>1.1</b> {{statusB}}</p>
+      <p class="status mono fade-up d1"><span class="live-dot"></span>{{statusA}} <b>1.2</b> {{statusB}}</p>
       <h1 class="h-hero"><span class="ln"><span>{{heroL1}}</span></span><span class="ln"><span>{{heroL2}}</span></span><span class="ln"><span class="grad-text">{{heroL3}}</span></span></h1>
       <p class="lede fade-up d3">{{ledeA}}<strong>Synvia AI</strong>{{ledeB}}</p>
       <div class="cta-row fade-up d4">
@@ -271,7 +271,7 @@
             <a class="btn-play" data-play-btn data-get-label="{{playGet}}" aria-disabled="true" title="{{androidSoon}}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597zm-13.09-7.84L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"/></svg><span data-play-label>{{playSoon}}</span></a>
           </div>
           <div class="links-row">
-            <a class="go" href="{{synviaPath}}"><i>{{icon:arrow_outward}}</i>{{learnMore}}</a><a href="{{changelogPath}}">{{navNews}}</a>
+            <a class="go" href="{{homePath}}#uygulamalar"><i>{{icon:arrow_outward}}</i>{{learnMore}}</a><a href="{{changelogPath}}">{{navNews}}</a>
           </div>
           <div class="links-row">
             <a href="{{supportHref}}">{{support}}</a><a href="{{privacyHref}}">{{privacy}}</a><a href="{{termsHref}}">{{terms}}</a><a href="{{deleteHref}}">{{deleteData}}</a>
