@@ -1,6 +1,6 @@
 // Şablonlardan sayfa üretir (build.sh bunu CSS'ten önce çalıştırır):
-//   home.template.html   + home.i18n.js   → web/index.html, web/en/index.html
-//   synvia.template.html + synvia.i18n.js → web/synvia/index.html, web/en/synvia/index.html
+//   studio.template.html + studio.i18n.js → web/index.html, web/en/index.html (aydinapp vitrini: bütün uygulamalar)
+//   home.template.html   + home.i18n.js   → web/synvia/index.html, web/en/synvia/index.html (Synvia AI tanıtımı)
 //   changelog.template.html + changelog.i18n.js → web/synvia/yenilikler/, web/en/synvia/whats-new/
 //   apps.template.html   + apps.i18n.js   → web/uygulamalar/index.html, web/en/apps/index.html
 const fs = require('fs');
@@ -8,8 +8,8 @@ const path = require('path');
 
 const ICONS = require('./icons.json');
 const PAGES = [
+  { template: 'studio.template.html', i18n: require('./studio.i18n.js') },
   { template: 'home.template.html', i18n: require('./home.i18n.js') },
-  { template: 'synvia.template.html', i18n: require('./synvia.i18n.js') },
   { template: 'changelog.template.html', i18n: require('./changelog.i18n.js') },
   { template: 'apps.template.html', i18n: require('./apps.i18n.js') },
 ];

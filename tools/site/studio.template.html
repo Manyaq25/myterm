@@ -1,0 +1,242 @@
+<!DOCTYPE html><html lang="{{lang}}"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<!-- Bu dosya tools/site/studio.template.html şablonundan üretilir; doğrudan düzenleme. Stil: /assets/home.css + /assets/studio.css, hareket: /assets/studio.js -->
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<link rel="canonical" href="https://aydinapp.com.tr{{path}}">
+<link rel="alternate" hreflang="tr" href="https://aydinapp.com.tr/">
+<link rel="alternate" hreflang="en" href="https://aydinapp.com.tr/en/">
+<link rel="alternate" hreflang="x-default" href="https://aydinapp.com.tr/en/">
+<meta name="theme-color" content="#060d0c">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="aydinapp">
+<meta property="og:locale" content="{{locale}}">
+<meta property="og:url" content="https://aydinapp.com.tr{{path}}">
+<meta property="og:title" content="{{ogTitle}}">
+<meta property="og:description" content="{{ogDescription}}">
+<meta property="og:image" content="https://aydinapp.com.tr/{{ogImage}}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{ogTitle}}">
+<meta name="twitter:card" content="summary_large_image">
+<link href="/favicon.svg" rel="icon" type="image/svg+xml">
+<link href="/apple-touch-icon.png" rel="apple-touch-icon">
+<link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin-ext-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/home.css">
+<link rel="stylesheet" href="/assets/studio.css">
+</head><body class="studio">
+
+<div class="intro" aria-hidden="true">
+  <svg viewBox="0 0 100 100"><defs><linearGradient id="ig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#59DBC7"/><stop offset="1" stop-color="#FF6B4A"/></linearGradient></defs><path d="M30 72L50 26L70 72M38 56H62"/><circle cx="50" cy="40" r="3.5"/></svg>
+  <span class="count mono">aydinapp · 2026</span>
+</div>
+<div class="grid-bg" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"></div>
+
+<header class="hdr" id="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="#top" aria-label="{{brandLabel}}">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#59DBC7"/><stop offset="1" stop-color="#FF6B4A"/></linearGradient></defs><rect width="100" height="100" rx="26" fill="#0B1614"/><rect x="1" y="1" width="98" height="98" rx="25" fill="none" stroke="url(#bg1)" stroke-opacity=".45" stroke-width="1.5"/><path d="M30 72L50 26L70 72M38 56H62" fill="none" stroke="url(#bg1)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="40" r="3.5" fill="#59DBC7"/></svg>
+      <span>aydin<b>app</b></span>
+    </a>
+    <nav class="nav" aria-label="{{navLabel}}">
+      <a href="#uygulamalar">{{navApps}}</a>
+      <a href="#ilkeler">{{navPrinciples}}</a>
+      <a href="#hakkimda">{{navAbout}}</a>
+    </nav>
+    <div class="hdr-r">
+      <a class="pill" href="{{altPath}}" hreflang="{{altLang}}" lang="{{altLang}}" title="{{altLabel}}">{{icon:language}}{{altShort}}</a>
+      <a class="pill solid magnetic" href="#uygulamalar">{{navCta}}</a>
+    </div>
+  </div>
+</header>
+
+<nav class="rail" id="rail" aria-hidden="true">
+  <a href="#top" data-s="top" tabindex="-1"><i></i><span>01 {{railTop}}</span></a>
+  <a href="#uygulamalar" data-s="uygulamalar" tabindex="-1"><i></i><span>02 {{navApps}}</span></a>
+  <a href="#ilkeler" data-s="ilkeler" tabindex="-1"><i></i><span>03 {{navPrinciples}}</span></a>
+  <a href="#hakkimda" data-s="hakkimda" tabindex="-1"><i></i><span>04 {{navAbout}}</span></a>
+</nav>
+
+<main>
+<!-- 1. AÇILIŞ: stüdyo ve uygulamaların iki telefonu -->
+<section class="hero" id="top" data-sec>
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="status mono fade-up d1"><span class="live-dot"></span>{{statusText}}</p>
+      <h1 class="h-hero"><span class="ln"><span>{{heroL1}}</span></span><span class="ln"><span>{{heroL2}}</span></span><span class="ln"><span class="grad-text">{{heroL3}}</span></span></h1>
+      <p class="lede fade-up d3">{{lede}}</p>
+      <div class="cta-row fade-up d4">
+        <a class="btn-store magnetic" href="#uygulamalar">{{icon:apps}}<span><small>{{ctaSmall}}</small>{{ctaMain}}</span></a>
+        <a class="btn-ghost" href="#hakkimda">{{ctaAbout}} {{icon:keyboard_arrow_down}}</a>
+      </div>
+      <ul class="facts mono fade-up d5">
+        <li>{{icon:check}}{{fact1}}</li>
+        <li>{{icon:check}}{{fact2}}</li>
+        <li>{{icon:check}}{{fact3}}</li>
+      </ul>
+    </div>
+    <div class="hero-visual" id="hv" aria-hidden="true">
+      <div class="tilt duo" id="tilt">
+        <div class="phone ph-a"><img src="/apps/synvia-ai/screens/home.webp" alt="" width="660" height="1434" fetchpriority="high"><span class="sheen"></span></div>
+        <div class="phone ph-b">
+          <div class="uw-screen">
+            <div class="uw-top"><img src="/apps/unwrap/icon-96.webp" alt="" width="96" height="96"><b>Unwrap</b><span class="mono">{{uwYear}}</span></div>
+            <p class="uw-kick mono">{{uwKicker}}</p>
+            <p class="uw-big">12.480<small>{{uwMessages}}</small></p>
+            <div class="uw-split"><span style="--w:58%"><b>{{uwYou}}</b>58%</span><span style="--w:42%"><b>Ahmet</b>42%</span></div>
+            <div class="uw-tiles">
+              <div><small>{{uwFastest}}</small><b>Ahmet</b><span>2 {{uwMin}}</span></div>
+              <div><small>{{uwNight}}</small><b>{{uwYou}}</b><span>01:40</span></div>
+            </div>
+            <p class="uw-kick mono">{{uwEmojis}}</p>
+            <div class="uw-emo"><span>😂<i>412</i></span><span>❤️<i>288</i></span><span>🙏<i>97</i></span></div>
+            <div class="uw-share">{{icon:ios_share}}{{uwShare}}</div>
+          </div>
+          <span class="sheen"></span>
+        </div>
+        <div class="chip c1"><span class="ico">{{icon:notifications_active}}</span><div><b>{{chip1Title}}</b><span>{{chip1Text}}</span></div></div>
+        <div class="chip c2 uw"><span class="ico">{{icon:favorite}}</span><div><b>{{chip2Title}}</b><span>{{chip2Text}}</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="hud hud-bl mono" aria-hidden="true"><i></i>{{scroll}}</div>
+  <div class="hud hud-br mono" aria-hidden="true">{{hudApps}}</div>
+</section>
+
+<!-- 2. UYGULAMALAR: her uygulama kendi rengiyle büyük bir kart; tıklayınca tanıtım sayfası -->
+<section class="apps showcase" id="uygulamalar" data-sec>
+  <div class="ghost" id="ghost" aria-hidden="true">{{ghostWord}} · {{ghostWord}}</div>
+  <div class="wrap">
+    <header class="sec-head">
+      <p class="eyebrow mono">{{navApps}}</p>
+      <h2 class="h2">{{appsTitle}}</h2>
+      <p class="sub">{{appsSub}}</p>
+    </header>
+    <div class="sc-grid">
+      <article class="sc-card synvia" style="--acc:#59dbc7;--acc2:#ff6b4a">
+        <span class="glare"></span>
+        <a class="sc-hit" href="{{synviaPath}}" aria-label="{{synviaGo}}"></a>
+        <div class="sc-info">
+          <div class="sc-id"><img src="/apps/synvia-ai/icon-192.webp" alt="" width="192" height="192" loading="lazy"><div><span class="badge mono"><span class="live-dot"></span>{{appLive}}</span><h3>Synvia AI</h3></div></div>
+          <p class="sc-tag">{{synviaTag}}</p>
+          <ul class="sc-feat">
+            <li>{{icon:screenshot_monitor}}{{synviaF1}}</li>
+            <li>{{icon:mic}}{{synviaF2}}</li>
+            <li>{{icon:notifications_active}}{{synviaF3}}</li>
+          </ul>
+          <div class="sc-act">
+            <a class="go" href="{{synviaPath}}"><i>{{icon:arrow_outward}}</i>{{learnMore}}</a>
+            <div class="store-row">
+              <a class="btn-store sm magnetic" href="https://apps.apple.com/app/id6812456837" target="_blank" rel="noopener noreferrer"><svg class="apple" viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span>App Store</span></a>
+              <a class="btn-play sm" data-play-btn data-get-label="Google Play" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597zm-13.09-7.84L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"/></svg><span data-play-label>Google Play</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="sc-shot"><img src="/apps/synvia-ai/screens/ai-metin.webp" alt="{{synviaShotAlt}}" width="660" height="1434" loading="lazy"></div>
+      </article>
+
+      <article class="sc-card unwrap" style="--acc:#ff8a85;--acc2:#ae2f34">
+        <span class="glare"></span>
+        <a class="sc-hit" href="{{unwrapPath}}" aria-label="{{unwrapGo}}"></a>
+        <div class="sc-info">
+          <div class="sc-id"><img src="/apps/unwrap/icon-192.webp" alt="" width="192" height="192" loading="lazy"><div><span class="badge mono soon">{{soonBadge}}</span><h3>Unwrap</h3></div></div>
+          <p class="sc-tag">{{unwrapTag}}</p>
+          <ul class="sc-feat">
+            <li>{{icon:bar_chart}}{{unwrapF1}}</li>
+            <li>{{icon:ios_share}}{{unwrapF2}}</li>
+            <li>{{icon:wand_stars}}{{unwrapF3}}</li>
+          </ul>
+          <div class="sc-act">
+            <a class="go" href="{{unwrapPath}}"><i>{{icon:arrow_outward}}</i>{{learnMore}}</a>
+            <span class="soon-note mono">{{unwrapSoon}}</span>
+          </div>
+        </div>
+        <div class="sc-shot uw-mini" aria-hidden="true">
+          <div class="uw-screen">
+            <p class="uw-kick mono">{{uwKicker}}</p>
+            <p class="uw-big">12.480<small>{{uwMessages}}</small></p>
+            <div class="uw-split"><span style="--w:58%"><b>{{uwYou}}</b>58%</span><span style="--w:42%"><b>Ahmet</b>42%</span></div>
+            <div class="uw-tiles"><div><small>{{uwFastest}}</small><b>Ahmet</b><span>2 {{uwMin}}</span></div><div><small>{{uwNight}}</small><b>{{uwYou}}</b><span>01:40</span></div></div>
+            <div class="uw-emo"><span>😂<i>412</i></span><span>❤️<i>288</i></span><span>🙏<i>97</i></span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="sc-card next">
+        <div class="next-art" aria-hidden="true"><i></i><span>+</span></div>
+        <div><h3>{{nextTitle}}</h3><p>{{nextText}}</p></div>
+        <a class="next-mail" href="mailto:aydinibrahim25@gmail.com">{{icon:mail}}{{nextMail}}</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 3. İLKELER: büyük cümle + dört söz -->
+<section class="statement" id="ilkeler" data-sec>
+  <div class="wrap">
+    <p class="eyebrow mono">{{navPrinciples}}</p>
+    <p class="big" id="big">{{bigA}}<span data-g>{{bigG1}}</span> <span data-g>{{bigG2}}</span>{{bigB}}</p>
+    <ul class="vows">
+      <li><span>{{icon:block}}</span><b>{{v1Title}}</b><p>{{v1Text}}</p></li>
+      <li><span>{{icon:payments}}</span><b>{{v2Title}}</b><p>{{v2Text}}</p></li>
+      <li><span>{{icon:lock}}</span><b>{{v3Title}}</b><p>{{v3Text}}</p></li>
+      <li><span>{{icon:language}}</span><b>{{v4Title}}</b><p>{{v4Text}}</p></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 4. HAKKIMDA -->
+<section class="about" id="hakkimda" data-sec>
+  <div class="about-in" id="aboutIn">
+    <div class="wrap about-grid">
+      <div>
+        <p class="eyebrow mono">{{navAbout}}</p>
+        <h2>{{aboutH1}}<mark>{{aboutM1}}</mark>{{aboutH2}}<mark>{{aboutM2}}</mark>{{aboutH3}}</h2>
+      </div>
+      <div class="txt">
+        <p>{{aboutHi}}<strong>İbrahim Aydın</strong>{{aboutText}}</p>
+        <ul class="princ">
+          <li>{{icon:bolt}}<div><b>{{p1Title}}</b><span>{{p1Text}}</span></div></li>
+          <li>{{icon:edit_note}}<div><b>{{p2Title}}</b><span>{{p2Text}}</span></div></li>
+          <li>{{icon:mail}}<div><b>{{p3Title}}</b><span>{{p3Text}}</span></div></li>
+        </ul>
+        <p class="sig">— İbrahim Aydın, aydinapp</p>
+      </div>
+    </div>
+  </div>
+  <div class="holo" aria-hidden="true"></div>
+</section>
+
+<!-- 5. KAPANIŞ -->
+<section class="outro" id="iletisim">
+  <div class="wrap outro-cta">
+    <p class="eyebrow mono">{{outroKicker}}</p>
+    <h2>{{outroTitle}}</h2>
+    <div class="store-row">
+      <a class="btn-store magnetic" href="{{synviaPath}}"><img class="btn-ic" src="/apps/synvia-ai/icon-96.webp" alt="" width="96" height="96"><span><small>{{outroSynviaSmall}}</small>Synvia AI</span></a>
+      <a class="btn-ghost" href="{{unwrapPath}}"><img class="btn-ic" src="/apps/unwrap/icon-96.webp" alt="" width="96" height="96">Unwrap · {{soonBadge}}</a>
+    </div>
+    <p class="mail">{{icon:mail}}{{mailText}} <a href="mailto:aydinibrahim25@gmail.com">aydinibrahim25@gmail.com</a></p>
+  </div>
+  <div class="word" id="word" aria-hidden="true"><span>a</span><span>y</span><span>d</span><span>i</span><span>n</span><span>a</span><span>p</span><span>p</span></div>
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <span>{{footerRights}}</span>
+      <nav aria-label="{{footNavLabel}}">
+        <a href="{{synviaPath}}">Synvia AI</a>
+        <a href="{{changelogPath}}">{{navNews}}</a>
+        <a href="{{unwrapPath}}">Unwrap</a>
+        <a href="{{appsPath}}">{{legalAll}}</a>
+      </nav>
+    </div>
+  </footer>
+</section>
+</main>
+
+<script src="/assets/studio.js" defer></script>
+<script src="/assets/store.js" defer></script>
+<script src="/_vercel/insights/script.js" defer></script>
+</body></html>

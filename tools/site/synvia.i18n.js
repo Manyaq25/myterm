@@ -1,5 +1,5 @@
-// /synvia/ (Türkçe) ve /en/synvia/ (İngilizce) sayfalarının metinleri.
-// Şablon: synvia.template.html — üretmek için: tools/site/build.sh
+// Eski /synvia/ sayfasının metinleri (sayfa kaldırıldı).
+// Eski Synvia sayfasının metinleri; sayfa artık home.template.html ile üretiliyor. Bu dosya yalnızca Yenilikler sayfasının üst menü/alt bilgi metinleri için kullanılıyor (changelog.i18n.js).
 // Kural: metinler uygulamayı hiç bilmeyen biri için yazılır (iç terim, kısaltma yok).
 module.exports = {
   tr: {
