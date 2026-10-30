@@ -67,6 +67,10 @@
 - Yapay zekâ kalitesi öncelikli; maliyet ölçülür (Upstash), birim maliyet ve fiyat zarar etmeyecek şekilde hesaplanır.
 - Site: her uygulama için `web/apps/<uygulama>/` altında gizlilik, destek, veri silme sayfaları (TR + `web/en/...`), koyu tasarım (`web/assets/legal.css`).
 
+## 7b. Site kimde
+- **aydinapp.com.tr sitesi (`web/` ve `tools/site/`) yalnızca Synvia sohbeti tarafından düzenlenir** (kullanıcı kararı, 30 Ekim). Diğer uygulama sohbetleri site dosyalarına dokunmaz; sitede bir değişiklik gerekiyorsa (yeni yasal sayfa, metin, ekran görüntüsü) içeriği hazırlayıp kullanıcı aracılığıyla Synvia sohbetine iletir.
+- Site yapısı: `/` aydinapp vitrini (bütün uygulamalar, `studio.template.html`), `/synvia/` Synvia'nın tanıtımı (`home.template.html`), her uygulamanın yasal sayfaları `web/apps/<uygulama>/`.
+
 ## 8. Kullanıcının yapması gereken (gerçekten kaçınılmaz) birkaç şey
 Sadece zamanı gelince, tek tek iste:
 1. App Store Connect'te yeni uygulama kaydı (gerekirse) ve ilk "Submit for Review".
