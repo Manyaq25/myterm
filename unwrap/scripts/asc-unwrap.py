@@ -643,6 +643,23 @@ def fill():
     audit()
 
 
+def site():
+    """Yalnız okur: site sayfaları ve Unwrap sunucusu açılıyor mu."""
+    for u in ['/', '/apps/unwrap/', '/apps/unwrap/support.html', '/apps/unwrap/privacy-policy.html', '/apps/unwrap/terms.html',
+              '/apps/unwrap/ornek-sohbet.txt', '/en/apps/unwrap/', '/en/apps/unwrap/support.html', '/en/apps/unwrap/privacy-policy.html',
+              '/en/apps/unwrap/terms.html', '/uygulamalar/', '/en/apps/']:
+        try:
+            r = requests.get(SITE + u, timeout=30)
+            print('site', r.status_code, f'{r.elapsed.total_seconds():.2f}s', u)
+        except requests.RequestException as e:
+            print('site HATA', u, type(e).__name__)
+    try:
+        r = requests.post('https://unwrap-backend.vercel.app/api/davet', json={'action': 'code'}, timeout=30)
+        print('sunucu', r.status_code, '(401 beklenir: imzasız istek reddedilir)')
+    except requests.RequestException as e:
+        print('sunucu HATA', type(e).__name__)
+
+
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else 'audit'
-    {'audit': audit, 'fill': fill, 'testnote': lambda: step('TestFlight notu', test_notes), 'iap': lambda: step('Tek seferlik ürünler', fill_iap), 'price': lambda: (step('Uygulama fiyatı', fill_price), audit()), 'review': lambda: (step('İnceleme bilgileri', fill_review), audit())}[cmd]()
+    {'audit': audit, 'site': site, 'fill': fill, 'testnote': lambda: step('TestFlight notu', test_notes), 'iap': lambda: step('Tek seferlik ürünler', fill_iap), 'price': lambda: (step('Uygulama fiyatı', fill_price), audit()), 'review': lambda: (step('İnceleme bilgileri', fill_review), audit())}[cmd]()
