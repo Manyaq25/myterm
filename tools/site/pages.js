@@ -2,6 +2,7 @@
 //   home.template.html   + home.i18n.js   → web/index.html, web/en/index.html
 //   synvia.template.html + synvia.i18n.js → web/synvia/index.html, web/en/synvia/index.html
 //   changelog.template.html + changelog.i18n.js → web/synvia/yenilikler/, web/en/synvia/whats-new/
+//   apps.template.html   + apps.i18n.js   → web/uygulamalar/index.html, web/en/apps/index.html
 const fs = require('fs');
 const path = require('path');
 
@@ -10,6 +11,7 @@ const PAGES = [
   { template: 'home.template.html', i18n: require('./home.i18n.js') },
   { template: 'synvia.template.html', i18n: require('./synvia.i18n.js') },
   { template: 'changelog.template.html', i18n: require('./changelog.i18n.js') },
+  { template: 'apps.template.html', i18n: require('./apps.i18n.js') },
 ];
 const APP_STORE = 'https://apps.apple.com/app/id6812456837';
 

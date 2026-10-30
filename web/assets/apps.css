@@ -1,0 +1,25 @@
+/* Uygulamalar sayfası (/uygulamalar/, /en/apps/). legal.css'ten sonra yüklenir; her uygulama için bir kart. */
+.page.wide { max-width: 900px; }
+.lede { color: var(--muted); font-size: 17px; max-width: 34em; margin-top: -6px; }
+.apps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 18px; }
+.app { gap: 16px; }
+.app-head { display: flex; align-items: center; gap: 14px; }
+.app-head img { width: 64px; height: 64px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, .5); flex-shrink: 0; }
+.app h2 { font-size: 22px; }
+.app h2::before { display: none; }
+.badge { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; padding: 3px 10px; border-radius: 99px;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .06em; background: rgba(89, 219, 199, .12); color: var(--teal-hi); }
+.badge.soon { background: rgba(255, 180, 163, .12); color: var(--coral-soft); }
+.stores { display: flex; flex-wrap: wrap; gap: 10px; }
+.store { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 14px; font-weight: 700; font-size: 14px;
+  text-decoration: none; background: var(--fg); color: #0b1614; transition: background .2s; }
+.store:hover { background: var(--teal-hi); color: #0b1614; }
+.store svg { width: 18px; height: 18px; fill: currentColor; }
+.store.off { background: transparent; color: var(--muted); border: 1px dashed rgba(121, 248, 227, .22); cursor: default; }
+.app-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line);
+  font-family: var(--mono); font-size: 12px; letter-spacing: .04em; }
+.app-links a { color: var(--muted); text-decoration: none; }
+.app-links a:hover { color: var(--teal-hi); }
+/* Uygulamanın tanıtım/yenilikler bağlantıları (yalnız Synvia); yasal dört bağlantı .app-links'te, iki uygulamada aynı sırada */
+.app-more { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; font-weight: 700; }
+.app-more a { text-decoration: none; }

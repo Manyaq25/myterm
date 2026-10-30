@@ -1,0 +1,39 @@
+/* Unwrap destek, gizlilik, koşullar ve veri silme sayfaları (TR/EN). legal.css'ten sonra yüklenir:
+   düzen aynı, vurgu rengi Unwrap'in kırmızısı (#AE2F34). Yalnız /apps/unwrap/ ve /en/apps/unwrap/ sayfalarında kullanılır. */
+:root {
+  --bg: #100a0b; --card: rgba(38, 22, 24, .72);
+  --fg: #f5eced; --muted: #b9a5a4; --line: rgba(255, 138, 133, .11);
+  --red: #AE2F34; --red-hi: #FF8A85; --red-soft: #FFC2BD;
+  --grad: linear-gradient(100deg, var(--red-soft) 0%, var(--red-hi) 40%, #FF6B6B 70%, var(--red) 100%);
+}
+body::after { background: radial-gradient(closest-side, rgba(174, 47, 52, .30), rgba(255, 107, 107, .07) 55%, transparent 75%); }
+::selection { background: var(--red-hi); color: #1a0b0c; }
+:focus-visible { outline-color: var(--red-hi); }
+p, ul, ol { color: #e3d4d3; }
+li::marker { color: var(--red-hi); }
+a { color: var(--red-hi); }
+a:hover { color: var(--red-soft); }
+.back:hover { color: var(--red-hi); }
+.lang { border-color: rgba(255, 138, 133, .25); }
+.lang:hover { border-color: var(--red-hi); color: var(--red-hi); }
+.brand img { box-shadow: 0 0 22px rgba(174, 47, 52, .6); }
+.card:hover { border-color: rgba(255, 138, 133, .22); }
+.card.soft { background: linear-gradient(135deg, rgba(174, 47, 52, .22), rgba(38, 22, 24, .72) 70%); border-color: rgba(255, 138, 133, .26); }
+.note { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border-radius: 14px; background: rgba(174, 47, 52, .13); border-left: 3px solid var(--red); }
+h3 { font-size: 15.5px; letter-spacing: -0.005em; margin: 6px 0 0; color: var(--fg); }
+code { font-family: var(--mono); font-size: .85em; padding: 1px 6px; border-radius: 6px; background: rgba(255, 255, 255, .07); }
+ol ul, ul ul { margin-top: 6px; }
+
+.subnav { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--mono); font-size: 12px; letter-spacing: .04em; }
+.subnav a { color: var(--muted); text-decoration: none; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); transition: border-color .2s, color .2s; }
+.subnav a:hover { color: var(--fg); border-color: rgba(255, 138, 133, .35); }
+.subnav a[aria-current] { color: var(--fg); border-color: var(--red-hi); background: rgba(174, 47, 52, .2); }
+
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; }
+table { border-collapse: collapse; width: 100%; min-width: 460px; font-size: 14px; line-height: 1.55; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); color: #e3d4d3; }
+th { background: rgba(255, 255, 255, .04); color: var(--fg); font-weight: 700; }
+tr:last-child td { border-bottom: 0; }
+
+ul.faq ol, ul.faq ul { font-size: 14px; color: var(--muted); gap: 4px; }
+ul.faq ol li, ul.faq ul li { display: list-item; }

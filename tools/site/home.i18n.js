@@ -21,6 +21,12 @@ module.exports = {
     supportHref: '/apps/synvia-ai/support.html',
     privacyHref: '/apps/synvia-ai/privacy-policy.html',
     deleteHref: '/apps/synvia-ai/delete-data.html',
+    termsHref: '/apps/synvia-ai/terms.html',
+    appsPath: '/uygulamalar/',
+    unwrapSupportHref: '/apps/unwrap/support.html',
+    unwrapPrivacyHref: '/apps/unwrap/privacy-policy.html',
+    unwrapTermsHref: '/apps/unwrap/terms.html',
+    unwrapDeleteHref: '/apps/unwrap/delete-data.html',
 
     // Üst menü
     brandLabel: 'aydinapp ana sayfa',
@@ -180,8 +186,9 @@ module.exports = {
     deleteData: 'Veri silme',
     shotAlt: 'Synvia AI yapay zekâ ile ekleme ekranı',
     soonBadge: 'Yakında',
-    soonTitle: 'Sıradaki uygulama',
-    soonText: 'Üzerinde çalışıyorum. Hazır olduğunda ilk burada duyacaksın.',
+    unwrapText: 'WhatsApp ve Telegram sohbetlerini telefonunda eğlenceli istatistiklere, paylaşım kartlarına ve yapay zekâ raporlarına dönüştürür. App Store ve Google Play’e hazırlanıyor.',
+    terms: 'Koşullar',
+    allApps: 'Tüm uygulamalar',
 
     // Hakkımda
     aboutH1: 'Uygulamalarımda ',
@@ -223,6 +230,12 @@ module.exports = {
     supportHref: '/en/apps/synvia-ai/support.html',
     privacyHref: '/en/apps/synvia-ai/privacy-policy.html',
     deleteHref: '/en/apps/synvia-ai/delete-data.html',
+    termsHref: '/en/apps/synvia-ai/terms.html',
+    appsPath: '/en/apps/',
+    unwrapSupportHref: '/en/apps/unwrap/support.html',
+    unwrapPrivacyHref: '/en/apps/unwrap/privacy-policy.html',
+    unwrapTermsHref: '/en/apps/unwrap/terms.html',
+    unwrapDeleteHref: '/en/apps/unwrap/delete-data.html',
 
     brandLabel: 'aydinapp home',
     navLabel: 'Sections',
@@ -375,8 +388,9 @@ module.exports = {
     deleteData: 'Data deletion',
     shotAlt: 'Synvia AI add-with-AI screen',
     soonBadge: 'Coming soon',
-    soonTitle: 'The next app',
-    soonText: 'I’m working on it. You’ll hear about it here first.',
+    unwrapText: 'Turns your WhatsApp and Telegram chats into fun stats, share cards and AI reports, right on your phone. Getting ready for the App Store and Google Play.',
+    terms: 'Terms',
+    allApps: 'All apps',
 
     aboutH1: 'My apps have ',
     aboutM1: 'no ads,',

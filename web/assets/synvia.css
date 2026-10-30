@@ -1,0 +1,8 @@
+/* Synvia AI destek, gizlilik, koşullar ve veri silme sayfaları (TR/EN). legal.css'ten sonra yüklenir:
+   düzen ve renkler legal.css'teki Synvia turkuazı/mercanı; burada yalnız Unwrap sayfalarıyla aynı yapıdaki
+   sekme satırı (.subnav) ve uyarı kutusu (.note) var. Yalnız /apps/synvia-ai/ ve /en/apps/synvia-ai/ sayfalarında kullanılır. */
+.subnav { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--mono); font-size: 12px; letter-spacing: .04em; }
+.subnav a { color: var(--muted); text-decoration: none; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line); transition: border-color .2s, color .2s; }
+.subnav a:hover { color: var(--fg); border-color: rgba(121, 248, 227, .35); }
+.subnav a[aria-current] { color: var(--fg); border-color: var(--teal); background: rgba(89, 219, 199, .14); }
+.note { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border-radius: 14px; background: rgba(89, 219, 199, .08); border-left: 3px solid var(--teal); }

@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://aydinapp.com.tr/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://aydinapp.com.tr/en/</loc><lastmod>2026-10-07</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/en/</loc><lastmod>2026-10-24</lastmod></url>
   <url><loc>https://aydinapp.com.tr/synvia/</loc><lastmod>2026-10-06</lastmod></url>
   <url><loc>https://aydinapp.com.tr/en/synvia/</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://aydinapp.com.tr/apps/synvia-ai/support.html</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://aydinapp.com.tr/apps/synvia-ai/privacy-policy.html</loc><lastmod>2026-10-07</lastmod></url>
-  <url><loc>https://aydinapp.com.tr/apps/synvia-ai/delete-data.html</loc><lastmod>2026-10-06</lastmod></url>
-  <url><loc>https://aydinapp.com.tr/en/apps/synvia-ai/support.html</loc><lastmod>2026-10-07</lastmod></url>
-  <url><loc>https://aydinapp.com.tr/en/apps/synvia-ai/privacy-policy.html</loc><lastmod>2026-10-07</lastmod></url>
-  <url><loc>https://aydinapp.com.tr/en/apps/synvia-ai/delete-data.html</loc><lastmod>2026-10-07</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/apps/synvia-ai/support.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/apps/synvia-ai/privacy-policy.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/apps/synvia-ai/terms.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/apps/synvia-ai/delete-data.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/en/apps/synvia-ai/support.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/en/apps/synvia-ai/privacy-policy.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/en/apps/synvia-ai/terms.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/en/apps/synvia-ai/delete-data.html</loc><lastmod>2026-10-24</lastmod></url>
   <url><loc>https://aydinapp.com.tr/synvia/yenilikler/</loc><lastmod>2026-10-07</lastmod></url>
   <url><loc>https://aydinapp.com.tr/en/synvia/whats-new/</loc><lastmod>2026-10-07</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/uygulamalar/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/en/apps/</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/apps/unwrap/support.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/apps/unwrap/privacy-policy.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/apps/unwrap/terms.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/apps/unwrap/delete-data.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/en/apps/unwrap/support.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/en/apps/unwrap/privacy-policy.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/en/apps/unwrap/terms.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://aydinapp.com.tr/en/apps/unwrap/delete-data.html</loc><lastmod>2026-10-24</lastmod></url>
 </urlset>
