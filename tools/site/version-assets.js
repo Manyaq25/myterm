@@ -7,7 +7,7 @@ const path = require('path');
 const crypto = require('crypto');
 
 const web = path.join(__dirname, '../../web');
-const assets = ['site.css', 'store.js', 'home.css', 'home.js', 'studio.css', 'studio.js'];
+const assets = ['site.css', 'store.js', 'home.css', 'home.js', 'studio.css', 'studio.js', 'app.js'];
 const hashes = Object.fromEntries(
   assets.map((f) => [f, crypto.createHash('sha256').update(fs.readFileSync(path.join(web, 'assets', f))).digest('hex').slice(0, 10)])
 );

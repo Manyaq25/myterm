@@ -13,16 +13,30 @@
       "appStore": "https://apps.apple.com/app/id6812456837",
       "googlePlay": "https://play.google.com/store/apps/details?id=com.manyaq25.benimyerimetakipet",
       "generate": false,
-      "page": { "tr": "/synvia/", "en": "/en/synvia/" },
+      "page": {
+        "tr": "/synvia/",
+        "en": "/en/synvia/"
+      },
       "legalDir": "synvia-ai",
-      "category": { "tr": "Hatırlatıcı & Yapay zekâ asistanı", "en": "Reminders & AI assistant" },
+      "category": {
+        "tr": "Hatırlatıcı & Yapay zekâ asistanı",
+        "en": "Reminders & AI assistant"
+      },
       "tagline": {
         "tr": "Mesajlardaki işleri ve verdiğin sözleri bulur, zamanı gelince sana hatırlatır.",
         "en": "Finds the tasks and promises in your messages and reminds you right on time."
       },
       "feature": {
-        "tr": ["Ekran görüntüsünden işleri bulur", "Sesli not ya da PDF ile ekle", "Zamanı gelince hatırlatır"],
-        "en": ["Finds tasks in a screenshot", "Add by voice note or PDF", "Reminds you right on time"]
+        "tr": [
+          "Ekran görüntüsünden işleri bulur",
+          "Sesli not ya da PDF ile ekle",
+          "Zamanı gelince hatırlatır"
+        ],
+        "en": [
+          "Finds tasks in a screenshot",
+          "Add by voice note or PDF",
+          "Reminds you right on time"
+        ]
       }
     },
     {
@@ -37,16 +51,30 @@
       "appStore": "https://apps.apple.com/app/id6824578615",
       "googlePlay": "https://play.google.com/store/apps/details?id=com.aydinapp.unwrap",
       "generate": true,
-      "page": { "tr": "/apps/unwrap/", "en": "/en/apps/unwrap/" },
+      "page": {
+        "tr": "/apps/unwrap/",
+        "en": "/en/apps/unwrap/"
+      },
       "legalDir": "unwrap",
-      "category": { "tr": "Sohbet analizi & İlişki koçu", "en": "Chat analysis & Relationship coach" },
+      "category": {
+        "tr": "Sohbet analizi & İlişki koçu",
+        "en": "Chat analysis & Relationship coach"
+      },
       "tagline": {
         "tr": "WhatsApp ve Telegram sohbetini yükle; sohbet karneni, ilişki analizini ve AI koç Mila’nın tavsiyelerini gör.",
         "en": "Upload a WhatsApp or Telegram chat; see your chat report card, relationship analysis and advice from AI coach Mila."
       },
       "feature": {
-        "tr": ["Sohbet karnesi: kim daha çok yazıyor, kim daha hızlı cevaplıyor", "Yapay zekâ ile ilişki analizi", "AI koç Mila ile sohbetine özel tavsiyeler"],
-        "en": ["Chat report card: who texts more, who replies faster", "AI relationship analysis", "Advice from AI coach Mila, tailored to your chat"]
+        "tr": [
+          "Sohbet karnesi: kim daha çok yazıyor, kim daha hızlı cevaplıyor",
+          "Yapay zekâ ile ilişki analizi",
+          "AI koç Mila ile sohbetine özel tavsiyeler"
+        ],
+        "en": [
+          "Chat report card: who texts more, who replies faster",
+          "AI relationship analysis",
+          "Advice from AI coach Mila, tailored to your chat"
+        ]
       },
       "details": {
         "tr": {
@@ -55,12 +83,43 @@
           "heroL1": "Sohbetin",
           "heroL2": "ne anlatıyor?",
           "steps": [
-            ["Sohbeti dışa aktar", "WhatsApp’ta sohbeti “medya olmadan” dışa aktar, paylaşım menüsünden Unwrap’i seç. Telegram için bilgisayardaki Telegram Desktop’ı kullan."],
-            ["Karneni gör", "Kim daha çok yazıyor, kim daha hızlı cevaplıyor, en çok hangi saatlerde ve hangi emojilerle konuşuyorsunuz: hepsi telefonunda hesaplanır."],
-            ["Mila’ya sor", "Unwrap Pro ile yapay zekâ ilişki raporu çıkar, AI koç Mila’dan sohbetine özel tavsiye al ya da bir konuşmayı onunla prova et."]
+            [
+              "Sohbeti dışa aktar",
+              "WhatsApp’ta sohbete gir, “Sohbeti dışa aktar” → “Medya olmadan” de ve paylaşım menüsünden Unwrap’i seç. Telegram için bilgisayardaki Telegram Desktop’ı kullan."
+            ],
+            [
+              "Unwrap okusun",
+              "Binlerce mesaj saniyeler içinde telefonunda okunur. Sohbetin hiçbir sunucuya yüklenmez."
+            ],
+            [
+              "Karneni gör",
+              "Kim daha çok yazıyor, kim daha hızlı cevaplıyor, en çok hangi saatlerde ve hangi emojilerle konuşuyorsunuz: sohbet karnen hazır."
+            ],
+            [
+              "Mila’ya sor",
+              "Unwrap Pro ile yapay zekâ ilişki raporu çıkar, AI koç Mila’dan sohbetine özel tavsiye al ya da bir konuşmayı onunla prova et."
+            ]
           ],
           "privacy": "Sohbetin telefonunda açılır ve telefonunda saklanır; hesap açman gerekmez. Yapay zekâ raporu istediğinde yalnız seçilmiş mesajlar, telefon numarası ve e-posta gibi bilgiler gizlenerek analize gider ve sunucuda saklanmaz.",
-          "age": "Unwrap 18 yaş ve üzeri kullanıcılar içindir."
+          "age": "Unwrap 18 yaş ve üzeri kullanıcılar içindir.",
+          "scene": {
+            "waName": "Ahmet",
+            "waOnline": "çevrimiçi",
+            "waB1": "Yarın akşam müsait misin?",
+            "waB2": "Bakarım, haber veririm 🙂",
+            "waB3": "Tamam 👍",
+            "exportOpt": "Sohbeti dışa aktar",
+            "noMedia": "Medya olmadan",
+            "shareTo": "Paylaş",
+            "readTitle": "Sohbetin okunuyor",
+            "readSub": "Yalnız telefonunda",
+            "chk1": "Kim daha çok yazıyor",
+            "chk2": "Cevap süreleri",
+            "chk3": "Saatler ve emojiler",
+            "askQ": "Ahmet son günlerde kısa cevap veriyor, ne yapmalıyım?",
+            "milaA": "Akşamları ikiniz de daha uzun yazıyorsunuz. Önemli konuyu akşam aç, önce onun gününü sor.",
+            "proTag": "Pro"
+          }
         },
         "en": {
           "title": "Unwrap — Chat analysis and relationship coach",
@@ -68,12 +127,43 @@
           "heroL1": "What is your",
           "heroL2": "chat saying?",
           "steps": [
-            ["Export the chat", "In WhatsApp, export the chat “without media” and pick Unwrap in the share menu. For Telegram, use Telegram Desktop on a computer."],
-            ["See your report card", "Who texts more, who replies faster, at what hours and with which emojis you talk most: all calculated on your phone."],
-            ["Ask Mila", "With Unwrap Pro, get an AI relationship report, advice from AI coach Mila tailored to your chat, or rehearse a conversation with her."]
+            [
+              "Export the chat",
+              "Open the chat in WhatsApp, tap “Export chat” → “Without media” and pick Unwrap in the share menu. For Telegram, use Telegram Desktop on a computer."
+            ],
+            [
+              "Let Unwrap read it",
+              "Thousands of messages are read on your phone in seconds. Your chat is never uploaded to a server."
+            ],
+            [
+              "See your report card",
+              "Who texts more, who replies faster, at what hours and with which emojis you talk most: your chat report card is ready."
+            ],
+            [
+              "Ask Mila",
+              "With Unwrap Pro, get an AI relationship report, advice from AI coach Mila tailored to your chat, or rehearse a conversation with her."
+            ]
           ],
           "privacy": "Your chat is opened and stored on your phone; no account needed. When you ask for an AI report, only selected messages are sent for analysis, with details like phone numbers and e-mails hidden, and nothing is stored on a server.",
-          "age": "Unwrap is for users aged 18 and over."
+          "age": "Unwrap is for users aged 18 and over.",
+          "scene": {
+            "waName": "Ahmet",
+            "waOnline": "online",
+            "waB1": "Free tomorrow evening?",
+            "waB2": "I'll check and let you know 🙂",
+            "waB3": "Okay 👍",
+            "exportOpt": "Export chat",
+            "noMedia": "Without media",
+            "shareTo": "Share",
+            "readTitle": "Reading your chat",
+            "readSub": "Only on your phone",
+            "chk1": "Who texts more",
+            "chk2": "Reply times",
+            "chk3": "Hours and emojis",
+            "askQ": "Ahmet has been giving short replies lately, what should I do?",
+            "milaA": "You both write longer in the evening. Bring up the big topic then, and ask about his day first.",
+            "proTag": "Pro"
+          }
         }
       }
     }

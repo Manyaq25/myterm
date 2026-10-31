@@ -115,6 +115,7 @@ module.exports = {
       mailText: 'Bir sorun ya da önerin mi var?',
       footerRights: '© 2026 İbrahim Aydın',
       noAds: 'Reklam yok',
+      stepWord: 'Adım',
     },
   },
 
@@ -227,6 +228,7 @@ module.exports = {
       mailText: 'Have a problem or a suggestion?',
       footerRights: '© 2026 İbrahim Aydın',
       noAds: 'No ads',
+      stepWord: 'Step',
     },
   },
 };
