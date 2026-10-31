@@ -187,7 +187,7 @@ module.exports = {
     deleteData: 'Veri silme',
     shotAlt: 'Synvia AI yapay zekâ ile ekleme ekranı',
     soonBadge: 'Yakında',
-    unwrapText: 'WhatsApp ve Telegram sohbetlerini telefonunda eğlenceli istatistiklere, paylaşım kartlarına ve yapay zekâ raporlarına dönüştürür. App Store ve Google Play’e hazırlanıyor.',
+    unwrapText: 'WhatsApp ve Telegram sohbetini yükle; sohbet karneni, ilişki analizini ve AI koç Mila’nın tavsiyelerini gör.',
     terms: 'Koşullar',
     allApps: 'Tüm uygulamalar',
 
@@ -390,7 +390,7 @@ module.exports = {
     deleteData: 'Data deletion',
     shotAlt: 'Synvia AI add-with-AI screen',
     soonBadge: 'Coming soon',
-    unwrapText: 'Turns your WhatsApp and Telegram chats into fun stats, share cards and AI reports, right on your phone. Getting ready for the App Store and Google Play.',
+    unwrapText: 'Upload a WhatsApp or Telegram chat; see your chat report card, relationship analysis and advice from AI coach Mila.',
     terms: 'Terms',
     allApps: 'All apps',
 

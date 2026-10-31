@@ -1,4 +1,4 @@
-// aydinapp vitrin sayfası (/ ve /en/): parçacıklı A, iki telefon, eğilen uygulama kartları, büyük cümle,
+// aydinapp vitrin sayfası (/ ve /en/): parçacıklı A, dönen öne çıkan kart, eğilen uygulama kartları, büyük cümle,
 // açılan açık bölüm, kapanış yazısı. Şablon: tools/site/studio.template.html. Parçalar home.js'ten alındı.
 // Dile bağlı metinler HTML'den ve data-* özniteliklerinden okunur.
 (() => {
@@ -63,7 +63,7 @@
     cv.width = CW * dpr; cv.height = CH * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const r = hv.getBoundingClientRect();
     // "A" telefonu bir çadır gibi sarar: tepesi telefonun üstünde, bacakları iki yanında
-    const pr = $('#tilt').getBoundingClientRect(), phoneH = (pr.height || 600) * .82;
+    const pr = $('#spot').getBoundingClientRect(), phoneH = (pr.height || 500) * .9;
     const size = Math.min(phoneH * 1.18 / .46, CW * (vw < 900 ? 2.4 : 1.3));
     const ax = r.left - hr.left + r.width / 2, ay = pr.top - hr.top - phoneH * .1 + .23 * size;
     const n = vw < 900 ? 600 : 2000, pts = aPoints(n), dust = Math.round(n * .18);
@@ -119,18 +119,28 @@
   }
   new IntersectionObserver(([e]) => (heroOn = e.isIntersecting)).observe(hero);
 
-  /* telefon eğimi */
-  const tilt = $('#tilt'), sheen = $('.sheen');
-  let rx = 4, ry = -14;
-  function tiltFrame(t) {
-    let trx = 4, try_ = -14;
-    if (fine && mx > -999) { trx = 4 - (my / vh - .5) * 12; try_ = -14 + (mx / vw - .5) * 26; }
-    else if (!reduce) { trx = 4 + Math.sin(t * .0007) * 3; try_ = -14 + Math.sin(t * .0005) * 9; }
-    rx = lerp(rx, trx, .06); ry = lerp(ry, try_, .06);
-    const fl = reduce ? 0 : Math.sin(t * .0011) * 8;
-    tilt.style.transform = `translateY(${fl}px) rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
-    sheen.style.setProperty('--sx', `${50 + ry * 3}%`);
+  /* öne çıkan kart: uygulamalar arasında kendiliğinden döner (apps.json'daki sıra) */
+  const spot = $('#spot'), cards = $$('.spot-card', spot), icons = $$('.spot-ic', spot);
+  const SPOT_MS = +spot.dataset.interval || 4200;
+  let si = 0, sT = 0, sPaused = false;
+  spot.style.setProperty('--dur', `${SPOT_MS}ms`);
+  function showSpot(i) {
+    si = (i + cards.length) % cards.length;
+    cards.forEach((c, k) => { const on = k === si; c.classList.toggle('on', on); c.toggleAttribute('aria-hidden', !on); c.tabIndex = on ? 0 : -1; });
+    icons.forEach((b, k) => { b.classList.remove('on'); b.setAttribute('aria-selected', k === si); });
+    void spot.offsetWidth; // çubuk animasyonu baştan başlasın
+    icons[si].classList.add('on');
+    sT = performance.now();
   }
+  icons.forEach((b) => b.addEventListener('click', () => showSpot(+b.dataset.i)));
+  spot.addEventListener('pointerenter', () => { sPaused = true; spot.classList.add('paused'); });
+  spot.addEventListener('pointerleave', () => { sPaused = false; spot.classList.remove('paused'); sT = performance.now(); });
+  function spotFrame(t) {
+    if (reduce || sPaused || cards.length < 2) return;
+    if (t - sT > SPOT_MS) showSpot(si + 1);
+  }
+  showSpot(0);
+
 
 
   /* ---------- 4. büyük cümle ---------- */
@@ -158,7 +168,7 @@
     if (r.bottom < 0 || r.top > vh) return;
     ghost.style.transform = `translateX(${(vw * .1 - (vh - r.top) * .35).toFixed(1)}px)`;
   }
-  if (fine && !reduce) $$('.sc-card:not(.next)').forEach((c) => {
+  if (fine && !reduce) $$('.ac:not(.next)').forEach((c) => {
     c.addEventListener('pointermove', (e) => {
       const r = c.getBoundingClientRect(), u = (e.clientX - r.left) / r.width, v = (e.clientY - r.top) / r.height;
       c.style.transition = 'transform .15s ease-out';
@@ -212,7 +222,7 @@
   let rT;
   addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(layout, 150); });
   function frame(t) {
-    if (heroOn && !document.hidden) { drawField(t); tiltFrame(t); }
+    if (heroOn && !document.hidden) { drawField(t); spotFrame(t); }
     if (fine) { cx = lerp(cx, mx, .12); cy = lerp(cy, my, .12); cursor.style.transform = `translate(${cx.toFixed(1)}px, ${cy.toFixed(1)}px)`; }
     bigFrame(); appsFrame(); aboutFrame(); wordFrame(); chrome();
     requestAnimationFrame(frame);

@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="{{lang}}"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<!-- Bu dosya tools/site/app.template.html şablonundan apps.json ile üretilir; doğrudan düzenleme. Stil: /assets/home.css + /assets/studio.css -->
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<link rel="canonical" href="https://aydinapp.com.tr{{path}}">
+<link rel="alternate" hreflang="{{lang}}" href="https://aydinapp.com.tr{{path}}">
+<link rel="alternate" hreflang="{{altLang}}" href="https://aydinapp.com.tr{{altPath}}">
+<meta name="theme-color" content="{{appBg}}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="aydinapp">
+<meta property="og:locale" content="{{locale}}">
+<meta property="og:url" content="https://aydinapp.com.tr{{path}}">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:image" content="https://aydinapp.com.tr/{{ogImage}}">
+<meta name="twitter:card" content="summary_large_image">
+<link href="/favicon.svg" rel="icon" type="image/svg+xml">
+<link href="/apple-touch-icon.png" rel="apple-touch-icon">
+<link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/home.css">
+<link rel="stylesheet" href="/assets/studio.css">
+</head><body class="apppage" style="--acc:{{accent}};--acc2:{{accent2}};--abg:{{appBg}}">
+<div class="grid-bg" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="hdr scrolled" id="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="{{homePath}}" aria-label="{{brandLabel}}">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#59DBC7"/><stop offset="1" stop-color="#FF6B4A"/></linearGradient></defs><rect width="100" height="100" rx="26" fill="#0B1614"/><rect x="1" y="1" width="98" height="98" rx="25" fill="none" stroke="url(#bg1)" stroke-opacity=".45" stroke-width="1.5"/><path d="M30 72L50 26L70 72M38 56H62" fill="none" stroke="url(#bg1)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="40" r="3.5" fill="#59DBC7"/></svg>
+      <span>aydin<b>app</b></span>
+    </a>
+    <div class="hdr-r">
+      <a class="pill" href="{{altPath}}" hreflang="{{altLang}}" lang="{{altLang}}" title="{{altLabel}}">{{icon:language}}{{altShort}}</a>
+      <a class="pill solid" href="{{homePath}}#uygulamalar">{{backHome}}</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="ap-hero">
+  <div class="wrap ap-grid">
+    <div class="ap-copy">
+      <div class="ap-id"><img src="{{icon192}}" alt="" width="192" height="192"><div><span class="badge mono soon">{{statusBadge}}</span><b>{{appName}}</b></div></div>
+      <p class="ap-cat mono">{{category}}</p>
+      <h1 class="ap-h1"><span>{{heroL1}}</span> <span class="ap-grad">{{heroL2}}</span></h1>
+      <p class="lede">{{tagline}}</p>
+      <div class="store-row ap-store">{{appStores}}</div>
+      <ul class="facts mono"><li>{{icon:check}}{{noAds}}</li><li>{{icon:check}}{{age}}</li></ul>
+    </div>
+    <div class="ap-visual" aria-hidden="true">{{appMock}}</div>
+  </div>
+</section>
+
+<section class="ap-how">
+  <div class="wrap">
+    <p class="eyebrow mono">{{howTitle}}</p>
+    <ol class="ap-steps">
+{{appSteps}}
+    </ol>
+  </div>
+</section>
+
+<section class="ap-more">
+  <div class="wrap ap-two">
+    <div class="ap-box"><h2>{{icon:lock}}{{privacyTitle}}</h2><p>{{privacy}}</p><a href="{{privacyHref}}">{{privacyLink}} &rarr;</a></div>
+    <div class="ap-box"><h2>{{icon:mail}}{{legalTitle}}</h2>
+      <p class="links-row"><a href="{{supportHref}}">{{support}}</a><a href="{{privacyHref}}">{{privacyLink}}</a><a href="{{termsHref}}">{{terms}}</a><a href="{{deleteHref}}">{{deleteData}}</a></p>
+      <p>{{mailText}} <a href="mailto:aydinibrahim25@gmail.com">aydinibrahim25@gmail.com</a></p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot ap-foot">
+  <div class="wrap foot-in"><span>{{footerRights}}</span><nav><a href="{{homePath}}">aydinapp</a><a href="{{supportHref}}">{{support}}</a><a href="{{privacyHref}}">{{privacyLink}}</a><a href="{{termsHref}}">{{terms}}</a></nav></div>
+</footer>
+<script src="/_vercel/insights/script.js" defer></script>
+</body></html>

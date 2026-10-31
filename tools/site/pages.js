@@ -3,16 +3,45 @@
 //   home.template.html   + home.i18n.js   → web/synvia/index.html, web/en/synvia/index.html (Synvia AI tanıtımı)
 //   changelog.template.html + changelog.i18n.js → web/synvia/yenilikler/, web/en/synvia/whats-new/
 //   apps.template.html   + apps.i18n.js   → web/uygulamalar/index.html, web/en/apps/index.html
+//   app.template.html    + apps.json      → web/apps/<id>/index.html, web/en/apps/<id>/index.html ("generate": true olan uygulamalar)
+// Uygulama listesi tek yerde: apps.json. Ana sayfadaki kartlar, sayı etiketi ve dönen kart oradan üretilir.
 const fs = require('fs');
 const path = require('path');
 
 const ICONS = require('./icons.json');
+const APPS = require('./apps.json').apps;
+const STUDIO = require('./studio.i18n.js');
 const PAGES = [
   { template: 'studio.template.html', i18n: require('./studio.i18n.js') },
   { template: 'home.template.html', i18n: require('./home.i18n.js') },
   { template: 'changelog.template.html', i18n: require('./changelog.i18n.js') },
   { template: 'apps.template.html', i18n: require('./apps.i18n.js') },
 ];
+// Kendi tanıtım sayfası üretilecek uygulamalar (apps.json → "generate": true)
+for (const app of APPS.filter((a) => a.generate)) {
+  const i18n = {};
+  for (const lang of ['tr', 'en']) {
+    const other = lang === 'tr' ? 'en' : 'tr';
+    const ui = STUDIO[lang];
+    const d = app.details[lang];
+    i18n[lang] = {
+      ...ui.appPage,
+      lang, locale: ui.locale, path: app.page[lang], homePath: ui.path,
+      altLang: other, altPath: app.page[other], altLabel: ui.altLabel, altShort: ui.altShort,
+      ogImage: ui.ogImage, title: d.title, description: d.description,
+      appId: app.id, appName: app.name, category: app.category[lang], tagline: app.tagline[lang],
+      heroL1: d.heroL1, heroL2: d.heroL2, privacy: d.privacy, age: d.age,
+      accent: app.accent, accent2: app.accent2, appBg: app.bg, icon192: app.icon192,
+      supportHref: `${lang === 'en' ? '/en' : ''}/apps/${app.legalDir}/support.html`,
+      privacyHref: `${lang === 'en' ? '/en' : ''}/apps/${app.legalDir}/privacy-policy.html`,
+      termsHref: `${lang === 'en' ? '/en' : ''}/apps/${app.legalDir}/terms.html`,
+      deleteHref: `${lang === 'en' ? '/en' : ''}/apps/${app.legalDir}/delete-data.html`,
+      statusBadge: app.status === 'live' ? ui.appLive : ui.soonBadge,
+      _app: app, _steps: d.steps, _ui: ui,
+    };
+  }
+  PAGES.push({ template: 'app.template.html', i18n });
+}
 const APP_STORE = 'https://apps.apple.com/app/id6812456837';
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -80,6 +109,58 @@ ${e.items.map(([emoji, title, text]) => `<li class="flex items-start gap-space-s
 <summary class="flex items-center justify-between gap-space-md cursor-pointer list-none font-headline-sm text-base text-on-surface [&::-webkit-details-marker]:hidden">${esc(t[q])}${icon('keyboard_arrow_down', 'text-xl text-on-surface-variant transition-transform group-open:rotate-180')}</summary>
 <p class="mt-space-sm text-on-surface-variant">${esc(t[a])}</p>
 </details>`,
+
+  // ---- apps.json'dan üretilen parçalar (ana sayfa ve uygulama sayfaları) ----
+  // "2 uygulama · 1 yayında, 1 yakında"
+  appCount: (t) => {
+    const live = APPS.filter((a) => a.status === 'live').length, soon = APPS.length - live;
+    const parts = [];
+    if (live) parts.push(t.countLive.replace('{n}', live));
+    if (soon) parts.push(t.countSoon.replace('{n}', soon));
+    return esc(`${t.countApps.replace('{n}', APPS.length)} · ${parts.join(', ')}`);
+  },
+  // Giriş bölümünde kendiliğinden dönen öne çıkan kart + altında bütün uygulama simgeleri
+  appSpotlight: (t) => `<div class="spot" id="spot" data-interval="4200">
+${APPS.map((a, i) => `<a class="spot-card${i === 0 ? ' on' : ''}" href="${a.page[t.lang]}" style="--acc:${a.accent};--acc2:${a.accent2};--abg:${a.bg}" data-i="${i}"${i ? ' tabindex="-1" aria-hidden="true"' : ''}>
+<span class="spot-glow" aria-hidden="true"></span>
+<img src="${a.icon192}" alt="" width="192" height="192">
+<span class="spot-meta"><span class="badge mono${a.status === 'live' ? '' : ' soon'}">${a.status === 'live' ? '<span class="live-dot"></span>' + esc(t.appLive) : esc(t.soonBadge)}</span><span class="spot-cat mono">${esc(a.category[t.lang])}</span></span>
+<b class="spot-name">${esc(a.name)}</b>
+<span class="spot-tag">${esc(a.tagline[t.lang])}</span>
+<span class="spot-go">${esc(t.inspect)} ${icon('arrow_outward')}</span>
+</a>`).join('\n')}
+<div class="spot-icons" role="tablist" aria-label="${esc(t.navApps)}">
+${APPS.map((a, i) => `<button type="button" class="spot-ic${i === 0 ? ' on' : ''}" data-i="${i}" role="tab" aria-selected="${i === 0}" aria-label="${esc(a.name)}" style="--acc:${a.accent}"><img src="${a.icon96}" alt="" width="96" height="96"><i class="bar"></i></button>`).join('\n')}
+<span class="spot-more" aria-hidden="true">+</span>
+</div>
+</div>`,
+  // Mağaza düğmeleri: yayındaysa bağlantı, değilse "Yakında"
+  storePair: (t, app, size = '') => {
+    const live = app.status === 'live';
+    const apple = '<svg class="apple" viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>';
+    const play = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.994 1.994 0 01-.61-1.471V3.285c0-.566.231-1.08.609-1.471zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626c.624.361.994.985.994 1.68s-.37 1.319-.994 1.68l-2.808 1.626-2.595-2.595 2.596-2.597zm-13.09-7.84L15.943 8l-2.302 2.302-8.635-8.635a1.982 1.982 0 01.602.002z"/></svg>';
+    if (!live) return `<span class="btn-store ${size} off" aria-disabled="true">${apple}<span>App Store · ${esc(t.soonShort)}</span></span><span class="btn-play ${size}" aria-disabled="true">${play}<span>Google Play · ${esc(t.soonShort)}</span></span>`;
+    return `<a class="btn-store ${size} magnetic" href="${app.appStore}" target="_blank" rel="noopener noreferrer">${apple}<span>App Store</span></a><a class="btn-play ${size}" href="${app.googlePlay}" target="_blank" rel="noopener noreferrer">${play}<span>Google Play</span></a>`;
+  },
+  // "Uygulamalarımız" kartları
+  appCards: (t) => APPS.map((a) => `<article class="ac" style="--acc:${a.accent};--acc2:${a.accent2};--abg:${a.bg}">
+<span class="glare"></span>
+<a class="ac-hit" href="${a.page[t.lang]}" aria-label="${esc(`${a.name}: ${t.inspect}`)}"></a>
+<div class="ac-top"><img src="${a.icon192}" alt="" width="192" height="192" loading="lazy"><span class="badge mono${a.status === 'live' ? '' : ' soon'}">${a.status === 'live' ? '<span class="live-dot"></span>' + esc(t.appLive) : esc(t.soonBadge)}</span></div>
+<h3>${esc(a.name)}</h3>
+<p class="ac-cat mono">${esc(a.category[t.lang])}</p>
+<p class="ac-tag">${esc(a.tagline[t.lang])}</p>
+<div class="ac-store">${components.storePair(t, a, 'sm')}</div>
+<a class="go" href="${a.page[t.lang]}"><i>${icon('arrow_outward')}</i>${esc(t.inspect)}</a>
+</article>`).join('\n'),
+  footApps: (t) => APPS.map((a) => `<a href="${a.page[t.lang]}">${esc(a.name)}</a>`).join('\n        '),
+  // Uygulama sayfası: mağaza düğmeleri, adımlar, telefon çizimi
+  appStores: (t) => components.storePair(t._ui, t._app),
+  appSteps: (t) => t._steps.map(([h, p], i) => `<li><span class="n mono">0${i + 1}</span><h3>${esc(h)}</h3><p>${esc(p)}</p></li>`).join('\n'),
+  appMock: (t) => {
+    const f = path.join(__dirname, 'partials', `mock-${t.appId}.html`);
+    return fs.existsSync(f) ? fs.readFileSync(f, 'utf8').trimEnd().replace(/\{\{(\w+)\}\}/g, (m, k) => esc(t[k] ?? t._ui[k] ?? m)) : `<img class="mock-icon" src="${t.icon192}" alt="" width="192" height="192">`;
+  },
 };
 
 function jsonLd(t) {
