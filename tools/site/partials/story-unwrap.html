@@ -1,0 +1,42 @@
+<!-- Unwrap "Nasıl çalışır" sahneleri: her adımda telefonda biri görünür (studio.css .scene, app.js). Metinler apps.json → details.<dil>.scene -->
+<div class="scene sc-wa" data-s="0">
+  <div class="wa-h"><span class="av">AY</span><div><b>{{waName}}</b><small>{{waOnline}}</small></div></div>
+  <div class="wa-body">
+    <div class="wb in">{{waB1}}<time>21:02</time></div>
+    <div class="wb out">{{waB2}}<time>21:05</time></div>
+    <div class="wb in">{{waB3}}<time>21:06</time></div>
+  </div>
+  <div class="wa-sheet">
+    <div class="opt hl">{{exportOpt}}</div>
+    <div class="opt sub">{{noMedia}}</div>
+    <div class="share"><small>{{shareTo}}</small><div class="wa-apps"><i></i><i></i><span class="uw"><img src="/apps/unwrap/icon-96.webp" alt="" width="96" height="96"></span><i></i></div></div>
+  </div>
+</div>
+<div class="scene sc-read" data-s="1">
+  <div class="rd-logo"><img src="/apps/unwrap/icon-192.webp" alt="" width="192" height="192"><span class="rd-ring"></span></div>
+  <b class="rd-title">{{readTitle}}</b>
+  <p class="rd-count"><span data-count="12480">0</span> {{uwMessages}}</p>
+  <div class="rd-bar"><i></i></div>
+  <ul class="rd-chk"><li>{{chk1}}</li><li>{{chk2}}</li><li>{{chk3}}</li></ul>
+  <small class="rd-sub">{{icon:lock}}{{readSub}}</small>
+</div>
+<div class="scene sc-card uw-screen" data-s="2">
+  <div class="uw-top"><img src="/apps/unwrap/icon-96.webp" alt="" width="96" height="96"><b>Unwrap</b><span class="mono">{{uwYear}}</span></div>
+  <p class="uw-kick mono">{{uwKicker}}</p>
+  <p class="uw-big"><span data-count="12480">12.480</span><small>{{uwMessages}}</small></p>
+  <div class="uw-split"><span style="--w:58%"><b>{{uwYou}}</b>58%</span><span style="--w:42%"><b>Ahmet</b>42%</span></div>
+  <div class="uw-tiles">
+    <div><small>{{uwFastest}}</small><b>Ahmet</b><span>2 {{uwMin}}</span></div>
+    <div><small>{{uwNight}}</small><b>{{uwYou}}</b><span>01:40</span></div>
+  </div>
+  <p class="uw-kick mono">{{uwEmojis}}</p>
+  <div class="uw-emo"><span>😂<i>412</i></span><span>❤️<i>288</i></span><span>🙏<i>97</i></span></div>
+</div>
+<div class="scene sc-mila" data-s="3">
+  <div class="ml-h"><span class="ml-av">M</span><div><b>Mila</b><small>AI</small></div><span class="ml-pro mono">{{proTag}}</span></div>
+  <div class="ml-body">
+    <div class="mb out">{{askQ}}</div>
+    <div class="mb in typing"><i></i><i></i><i></i></div>
+    <div class="mb in ans">{{milaA}}</div>
+  </div>
+</div>

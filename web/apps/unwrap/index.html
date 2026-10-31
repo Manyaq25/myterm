@@ -18,7 +18,7 @@
 <link href="/apple-touch-icon.png" rel="apple-touch-icon">
 <link rel="preload" href="/assets/fonts/plus-jakarta-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/home.css?v=7487e81a5d">
-<link rel="stylesheet" href="/assets/studio.css?v=4da866c99b">
+<link rel="stylesheet" href="/assets/studio.css?v=9c308df67c">
 </head><body class="apppage" style="--acc:#ff8a85;--acc2:#ae2f34;--abg:#140c0d">
 <div class="grid-bg" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
@@ -63,14 +63,62 @@
   </div>
 </section>
 
-<section class="ap-how">
+<section class="ap-how" id="nasil">
   <div class="wrap">
     <p class="eyebrow mono">Nasıl çalışır?</p>
-    <ol class="ap-steps">
-<li><span class="n mono">01</span><h3>Sohbeti dışa aktar</h3><p>WhatsApp’ta sohbeti “medya olmadan” dışa aktar, paylaşım menüsünden Unwrap’i seç. Telegram için bilgisayardaki Telegram Desktop’ı kullan.</p></li>
-<li><span class="n mono">02</span><h3>Karneni gör</h3><p>Kim daha çok yazıyor, kim daha hızlı cevaplıyor, en çok hangi saatlerde ve hangi emojilerle konuşuyorsunuz: hepsi telefonunda hesaplanır.</p></li>
-<li><span class="n mono">03</span><h3>Mila’ya sor</h3><p>Unwrap Pro ile yapay zekâ ilişki raporu çıkar, AI koç Mila’dan sohbetine özel tavsiye al ya da bir konuşmayı onunla prova et.</p></li>
-    </ol>
+<div class="ap-story" id="story" style="--n:4">
+<div class="ap-story-steps">
+<article class="st on" data-i="0"><span class="n mono">Adım 1 / 4</span><h3>Sohbeti dışa aktar</h3><p>WhatsApp’ta sohbete gir, “Sohbeti dışa aktar” → “Medya olmadan” de ve paylaşım menüsünden Unwrap’i seç. Telegram için bilgisayardaki Telegram Desktop’ı kullan.</p></article>
+<article class="st" data-i="1"><span class="n mono">Adım 2 / 4</span><h3>Unwrap okusun</h3><p>Binlerce mesaj saniyeler içinde telefonunda okunur. Sohbetin hiçbir sunucuya yüklenmez.</p></article>
+<article class="st" data-i="2"><span class="n mono">Adım 3 / 4</span><h3>Karneni gör</h3><p>Kim daha çok yazıyor, kim daha hızlı cevaplıyor, en çok hangi saatlerde ve hangi emojilerle konuşuyorsunuz: sohbet karnen hazır.</p></article>
+<article class="st" data-i="3"><span class="n mono">Adım 4 / 4</span><h3>Mila’ya sor</h3><p>Unwrap Pro ile yapay zekâ ilişki raporu çıkar, AI koç Mila’dan sohbetine özel tavsiye al ya da bir konuşmayı onunla prova et.</p></article>
+</div>
+<div class="ap-stage" aria-hidden="true">
+<div class="phone story-phone"><div class="scenes" data-step="0"><!-- Unwrap "Nasıl çalışır" sahneleri: her adımda telefonda biri görünür (studio.css .scene, app.js). Metinler apps.json → details.<dil>.scene -->
+<div class="scene sc-wa" data-s="0">
+  <div class="wa-h"><span class="av">AY</span><div><b>Ahmet</b><small>çevrimiçi</small></div></div>
+  <div class="wa-body">
+    <div class="wb in">Yarın akşam müsait misin?<time>21:02</time></div>
+    <div class="wb out">Bakarım, haber veririm 🙂<time>21:05</time></div>
+    <div class="wb in">Tamam 👍<time>21:06</time></div>
+  </div>
+  <div class="wa-sheet">
+    <div class="opt hl">Sohbeti dışa aktar</div>
+    <div class="opt sub">Medya olmadan</div>
+    <div class="share"><small>Paylaş</small><div class="wa-apps"><i></i><i></i><span class="uw"><img src="/apps/unwrap/icon-96.webp" alt="" width="96" height="96"></span><i></i></div></div>
+  </div>
+</div>
+<div class="scene sc-read" data-s="1">
+  <div class="rd-logo"><img src="/apps/unwrap/icon-192.webp" alt="" width="192" height="192"><span class="rd-ring"></span></div>
+  <b class="rd-title">Sohbetin okunuyor</b>
+  <p class="rd-count"><span data-count="12480">0</span> mesaj</p>
+  <div class="rd-bar"><i></i></div>
+  <ul class="rd-chk"><li>Kim daha çok yazıyor</li><li>Cevap süreleri</li><li>Saatler ve emojiler</li></ul>
+  <small class="rd-sub"><svg class="ms" viewBox="0 -960 960 960" aria-hidden="true"><path d="M220-80q-24.75 0-42.37-17.63Q160-115.25 160-140v-434q0-24.75 17.63-42.38Q195.25-634 220-634h70v-96q0-78.85 55.61-134.42Q401.21-920 480.11-920q78.89 0 134.39 55.58Q670-808.85 670-730v96h70q24.75 0 42.38 17.62Q800-598.75 800-574v434q0 24.75-17.62 42.37Q764.75-80 740-80H220Zm0-60h520v-434H220v434Zm314.5-162.03Q557-324.06 557-355q0-30-22.67-54.5t-54.5-24.5q-31.83 0-54.33 24.5t-22.5 55q0 30.5 22.67 52.5t54.5 22q31.83 0 54.33-22.03ZM350-634h260v-96q0-54.17-37.88-92.08-37.88-37.92-92-37.92T388-822.08q-38 37.91-38 92.08v96ZM220-140v-434 434Z"/></svg>Yalnız telefonunda</small>
+</div>
+<div class="scene sc-card uw-screen" data-s="2">
+  <div class="uw-top"><img src="/apps/unwrap/icon-96.webp" alt="" width="96" height="96"><b>Unwrap</b><span class="mono">2026 karnesi</span></div>
+  <p class="uw-kick mono">Sohbet karnesi</p>
+  <p class="uw-big"><span data-count="12480">12.480</span><small>mesaj</small></p>
+  <div class="uw-split"><span style="--w:58%"><b>Sen</b>58%</span><span style="--w:42%"><b>Ahmet</b>42%</span></div>
+  <div class="uw-tiles">
+    <div><small>En hızlı cevap</small><b>Ahmet</b><span>2 dk</span></div>
+    <div><small>Gece kuşu</small><b>Sen</b><span>01:40</span></div>
+  </div>
+  <p class="uw-kick mono">En sevilen emojiler</p>
+  <div class="uw-emo"><span>😂<i>412</i></span><span>❤️<i>288</i></span><span>🙏<i>97</i></span></div>
+</div>
+<div class="scene sc-mila" data-s="3">
+  <div class="ml-h"><span class="ml-av">M</span><div><b>Mila</b><small>AI</small></div><span class="ml-pro mono">Pro</span></div>
+  <div class="ml-body">
+    <div class="mb out">Ahmet son günlerde kısa cevap veriyor, ne yapmalıyım?</div>
+    <div class="mb in typing"><i></i><i></i><i></i></div>
+    <div class="mb in ans">Akşamları ikiniz de daha uzun yazıyorsunuz. Önemli konuyu akşam aç, önce onun gününü sor.</div>
+  </div>
+</div></div><span class="sheen"></span></div>
+<div class="story-nav"><b class="on"></b><b></b><b></b><b></b></div>
+</div>
+</div>
   </div>
 </section>
 
@@ -88,5 +136,6 @@
 <footer class="foot ap-foot">
   <div class="wrap foot-in"><span>© 2026 İbrahim Aydın</span><nav><a href="/">aydinapp</a><a href="/apps/unwrap/support.html">Destek</a><a href="/apps/unwrap/privacy-policy.html">Gizlilik</a><a href="/apps/unwrap/terms.html">Koşullar</a></nav></div>
 </footer>
+<script src="/assets/app.js?v=a31f65b64c" defer></script>
 <script src="/_vercel/insights/script.js" defer></script>
 </body></html>

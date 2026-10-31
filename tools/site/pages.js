@@ -37,6 +37,7 @@ for (const app of APPS.filter((a) => a.generate)) {
       termsHref: `${lang === 'en' ? '/en' : ''}/apps/${app.legalDir}/terms.html`,
       deleteHref: `${lang === 'en' ? '/en' : ''}/apps/${app.legalDir}/delete-data.html`,
       statusBadge: app.status === 'live' ? ui.appLive : ui.soonBadge,
+      ...(d.scene || {}),
       _app: app, _steps: d.steps, _ui: ui,
     };
   }
@@ -156,6 +157,24 @@ ${APPS.map((a, i) => `<button type="button" class="spot-ic${i === 0 ? ' on' : ''
   footApps: (t) => APPS.map((a) => `<a href="${a.page[t.lang]}">${esc(a.name)}</a>`).join('\n        '),
   // Uygulama sayfası: mağaza düğmeleri, adımlar, telefon çizimi
   appStores: (t) => components.storePair(t._ui, t._app),
+  // Kaydırdıkça değişen "Nasıl çalışır" sahnesi: solda adımlar, sağda yapışkan telefon (partials/story-<id>.html varsa)
+  appStory: (t) => {
+    const f = path.join(__dirname, 'partials', `story-${t.appId}.html`);
+    if (!fs.existsSync(f)) return `<ol class="ap-steps">${components.appSteps(t)}</ol>`;
+    const scenes = fs.readFileSync(f, 'utf8').trimEnd()
+      .replace(/\{\{icon:(\w+)\}\}/g, (m, n) => icon(n))
+      .replace(/\{\{(\w+)\}\}/g, (m, k) => esc(t[k] ?? t._ui[k] ?? m));
+    const n = t._steps.length;
+    return `<div class="ap-story" id="story" style="--n:${n}">
+<div class="ap-story-steps">
+${t._steps.map(([h, p], i) => `<article class="st${i === 0 ? ' on' : ''}" data-i="${i}"><span class="n mono">${esc(t.stepWord)} ${i + 1} / ${n}</span><h3>${esc(h)}</h3><p>${esc(p)}</p></article>`).join('\n')}
+</div>
+<div class="ap-stage" aria-hidden="true">
+<div class="phone story-phone"><div class="scenes" data-step="0">${scenes}</div><span class="sheen"></span></div>
+<div class="story-nav">${t._steps.map((_, i) => `<b${i === 0 ? ' class="on"' : ''}></b>`).join('')}</div>
+</div>
+</div>`;
+  },
   appSteps: (t) => t._steps.map(([h, p], i) => `<li><span class="n mono">0${i + 1}</span><h3>${esc(h)}</h3><p>${esc(p)}</p></li>`).join('\n'),
   appMock: (t) => {
     const f = path.join(__dirname, 'partials', `mock-${t.appId}.html`);
