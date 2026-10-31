@@ -1,0 +1,81 @@
+{
+  "_note": "aydinapp uygulama listesi. Ana sayfadaki kartlar, üstteki 'N uygulama · ...' etiketi, giriş bölümündeki dönen kart ve /apps/<id>/ tanıtım sayfaları buradan üretilir (tools/site/pages.js). Yeni uygulama = bu listeye bir kayıt + icon dosyaları (web/apps/<id>/icon-96.webp, icon-192.webp) + tools/site/build.sh. status: 'live' (yayında) ya da 'soon' (yakında; mağaza düğmeleri 'Yakında' olarak görünür). page: tanıtım sayfası; 'generate': true ise /apps/<id>/ ve /en/apps/<id>/ app.template.html ile üretilir.",
+  "apps": [
+    {
+      "id": "synvia-ai",
+      "name": "Synvia AI",
+      "status": "live",
+      "accent": "#59dbc7",
+      "accent2": "#ff6b4a",
+      "bg": "#0c1513",
+      "icon96": "/apps/synvia-ai/icon-96.webp",
+      "icon192": "/apps/synvia-ai/icon-192.webp",
+      "appStore": "https://apps.apple.com/app/id6812456837",
+      "googlePlay": "https://play.google.com/store/apps/details?id=com.manyaq25.benimyerimetakipet",
+      "generate": false,
+      "page": { "tr": "/synvia/", "en": "/en/synvia/" },
+      "legalDir": "synvia-ai",
+      "category": { "tr": "Hatırlatıcı & Yapay zekâ asistanı", "en": "Reminders & AI assistant" },
+      "tagline": {
+        "tr": "Mesajlardaki işleri ve verdiğin sözleri bulur, zamanı gelince sana hatırlatır.",
+        "en": "Finds the tasks and promises in your messages and reminds you right on time."
+      },
+      "feature": {
+        "tr": ["Ekran görüntüsünden işleri bulur", "Sesli not ya da PDF ile ekle", "Zamanı gelince hatırlatır"],
+        "en": ["Finds tasks in a screenshot", "Add by voice note or PDF", "Reminds you right on time"]
+      }
+    },
+    {
+      "id": "unwrap",
+      "name": "Unwrap",
+      "status": "soon",
+      "accent": "#ff8a85",
+      "accent2": "#ae2f34",
+      "bg": "#140c0d",
+      "icon96": "/apps/unwrap/icon-96.webp",
+      "icon192": "/apps/unwrap/icon-192.webp",
+      "appStore": "https://apps.apple.com/app/id6824578615",
+      "googlePlay": "https://play.google.com/store/apps/details?id=com.aydinapp.unwrap",
+      "generate": true,
+      "page": { "tr": "/apps/unwrap/", "en": "/en/apps/unwrap/" },
+      "legalDir": "unwrap",
+      "category": { "tr": "Sohbet analizi & İlişki koçu", "en": "Chat analysis & Relationship coach" },
+      "tagline": {
+        "tr": "WhatsApp ve Telegram sohbetini yükle; sohbet karneni, ilişki analizini ve AI koç Mila’nın tavsiyelerini gör.",
+        "en": "Upload a WhatsApp or Telegram chat; see your chat report card, relationship analysis and advice from AI coach Mila."
+      },
+      "feature": {
+        "tr": ["Sohbet karnesi: kim daha çok yazıyor, kim daha hızlı cevaplıyor", "Yapay zekâ ile ilişki analizi", "AI koç Mila ile sohbetine özel tavsiyeler"],
+        "en": ["Chat report card: who texts more, who replies faster", "AI relationship analysis", "Advice from AI coach Mila, tailored to your chat"]
+      },
+      "details": {
+        "tr": {
+          "title": "Unwrap — Sohbet analizi ve ilişki koçu",
+          "description": "WhatsApp ve Telegram sohbetini yükle; sohbet karneni, ilişki analizini ve AI koç Mila’nın tavsiyelerini gör. Sohbetin telefonunda kalır, reklam yok.",
+          "heroL1": "Sohbetin",
+          "heroL2": "ne anlatıyor?",
+          "steps": [
+            ["Sohbeti dışa aktar", "WhatsApp’ta sohbeti “medya olmadan” dışa aktar, paylaşım menüsünden Unwrap’i seç. Telegram için bilgisayardaki Telegram Desktop’ı kullan."],
+            ["Karneni gör", "Kim daha çok yazıyor, kim daha hızlı cevaplıyor, en çok hangi saatlerde ve hangi emojilerle konuşuyorsunuz: hepsi telefonunda hesaplanır."],
+            ["Mila’ya sor", "Unwrap Pro ile yapay zekâ ilişki raporu çıkar, AI koç Mila’dan sohbetine özel tavsiye al ya da bir konuşmayı onunla prova et."]
+          ],
+          "privacy": "Sohbetin telefonunda açılır ve telefonunda saklanır; hesap açman gerekmez. Yapay zekâ raporu istediğinde yalnız seçilmiş mesajlar, telefon numarası ve e-posta gibi bilgiler gizlenerek analize gider ve sunucuda saklanmaz.",
+          "age": "Unwrap 18 yaş ve üzeri kullanıcılar içindir."
+        },
+        "en": {
+          "title": "Unwrap — Chat analysis and relationship coach",
+          "description": "Upload a WhatsApp or Telegram chat; see your chat report card, relationship analysis and advice from AI coach Mila. Your chat stays on your phone, no ads.",
+          "heroL1": "What is your",
+          "heroL2": "chat saying?",
+          "steps": [
+            ["Export the chat", "In WhatsApp, export the chat “without media” and pick Unwrap in the share menu. For Telegram, use Telegram Desktop on a computer."],
+            ["See your report card", "Who texts more, who replies faster, at what hours and with which emojis you talk most: all calculated on your phone."],
+            ["Ask Mila", "With Unwrap Pro, get an AI relationship report, advice from AI coach Mila tailored to your chat, or rehearse a conversation with her."]
+          ],
+          "privacy": "Your chat is opened and stored on your phone; no account needed. When you ask for an AI report, only selected messages are sent for analysis, with details like phone numbers and e-mails hidden, and nothing is stored on a server.",
+          "age": "Unwrap is for users aged 18 and over."
+        }
+      }
+    }
+  ]
+}
